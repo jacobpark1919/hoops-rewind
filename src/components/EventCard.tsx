@@ -23,17 +23,21 @@ export function EventCard({
     pending: "timeline-card-pending",
   };
 
-  const isPlaced = status !== null || showYear;
+  // Pending cards should still be draggable
+  const isPending = status === "pending";
+  const isPlaced = (status !== null && !isPending) || showYear;
+  const canDrag = !isPlaced || isPending;
 
   return (
     <div
-      draggable={!isPlaced}
+      draggable={canDrag && !!onDragStart}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       className={`
-        ${isPlaced ? "timeline-card" : "game-card"}
+        ${isPlaced || isPending ? "timeline-card" : "game-card"}
         ${isDragging ? "game-card-dragging" : ""}
         ${status ? statusClasses[status] : ""}
+        ${isPending ? "cursor-grab active:cursor-grabbing" : ""}
         select-none
       `}
     >
