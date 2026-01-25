@@ -1,6 +1,8 @@
 import { SportsEvent } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { DropZone } from "./DropZone";
+import { Button } from "@/components/ui/button";
+import { Check, X } from "lucide-react";
 
 interface TimelineProps {
   placedEvents: Array<{ event: SportsEvent; status: "correct" | "incorrect" | "pending" | null }>;
@@ -9,6 +11,8 @@ interface TimelineProps {
   onDrop: (position: number) => void;
   onDragOver: (position: number) => void;
   onDragLeave: () => void;
+  onConfirm?: () => void;
+  onCancel?: () => void;
 }
 
 export function Timeline({
@@ -18,6 +22,8 @@ export function Timeline({
   onDrop,
   onDragOver,
   onDragLeave,
+  onConfirm,
+  onCancel,
 }: TimelineProps) {
   const items: JSX.Element[] = [];
 
@@ -36,13 +42,36 @@ export function Timeline({
   }
 
   placedEvents.forEach((item, index) => {
+    const isPending = item.status === "pending";
+    
     items.push(
-      <EventCard
-        key={item.event.id}
-        event={item.event}
-        showYear
-        status={item.status}
-      />
+      <div key={item.event.id} className="relative">
+        <EventCard
+          event={item.event}
+          showYear={!isPending}
+          status={item.status}
+        />
+        {/* Small popup buttons for pending card */}
+        {isPending && onConfirm && onCancel && (
+          <div className="absolute -right-2 top-1/2 -translate-y-1/2 flex gap-1 z-10">
+            <Button
+              onClick={onConfirm}
+              size="icon"
+              className="h-8 w-8 rounded-full shadow-lg"
+            >
+              <Check className="w-4 h-4" />
+            </Button>
+            <Button
+              onClick={onCancel}
+              variant="outline"
+              size="icon"
+              className="h-8 w-8 rounded-full shadow-lg bg-background"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+        )}
+      </div>
     );
 
     // Add drop zone after each card if dragging
