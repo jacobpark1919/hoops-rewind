@@ -3,7 +3,7 @@ import { SportsEvent } from "@/data/sportsEvents";
 interface EventCardProps {
   event: SportsEvent;
   showYear?: boolean;
-  status?: "correct" | "incorrect" | "pending" | null;
+  status?: "correct" | "incorrect" | "pending" | "corrected" | null;
   isDragging?: boolean;
   onDragStart?: () => void;
   onDragEnd?: () => void;
@@ -21,6 +21,7 @@ export function EventCard({
     correct: "timeline-card-correct",
     incorrect: "timeline-card-incorrect animate-shake",
     pending: "timeline-card-pending",
+    corrected: "timeline-card-corrected",
   };
 
   // Pending cards should still be draggable

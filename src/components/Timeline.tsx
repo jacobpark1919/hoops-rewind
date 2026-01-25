@@ -4,7 +4,7 @@ import { DropZone } from "./DropZone";
 import { Button } from "@/components/ui/button";
 
 interface TimelineProps {
-  placedEvents: Array<{ event: SportsEvent; status: "correct" | "incorrect" | "pending" | null }>;
+  placedEvents: Array<{ event: SportsEvent; status: "correct" | "incorrect" | "pending" | "corrected" | null }>;
   activeDropZone: number | null;
   isDragging: boolean;
   onDrop: (position: number) => void;
