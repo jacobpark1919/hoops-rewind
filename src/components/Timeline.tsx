@@ -3,7 +3,7 @@ import { EventCard } from "./EventCard";
 import { DropZone } from "./DropZone";
 
 interface TimelineProps {
-  placedEvents: Array<{ event: SportsEvent; status: "correct" | "incorrect" | null }>;
+  placedEvents: Array<{ event: SportsEvent; status: "correct" | "incorrect" | "pending" | null }>;
   activeDropZone: number | null;
   isDragging: boolean;
   onDrop: (position: number) => void;

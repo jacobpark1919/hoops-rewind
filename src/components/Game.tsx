@@ -4,13 +4,15 @@ import { EventCard } from "./EventCard";
 import { Timeline } from "./Timeline";
 import { GameHeader } from "./GameHeader";
 import { GameComplete } from "./GameComplete";
+import { Button } from "@/components/ui/button";
+import { Check, X } from "lucide-react";
 
 const TOTAL_ROUNDS = 8;
 const MAX_LIVES = 3;
 
 interface PlacedEvent {
   event: SportsEvent;
-  status: "correct" | "incorrect" | null;
+  status: "correct" | "incorrect" | "pending" | null;
 }
 
 export function Game() {
@@ -22,10 +24,10 @@ export function Game() {
   const [isDragging, setIsDragging] = useState(false);
   const [activeDropZone, setActiveDropZone] = useState<number | null>(null);
   const [gameComplete, setGameComplete] = useState(false);
+  const [pendingPlacement, setPendingPlacement] = useState<{ position: number } | null>(null);
 
   const initializeGame = useCallback(async () => {
     const events = await getRandomEvents(TOTAL_ROUNDS);
-    // Sort by year to know correct positions
     events.sort((a, b) => a.year - b.year);
     
     setGameEvents(events);
@@ -34,8 +36,9 @@ export function Game() {
       setCurrentEventIndex(1);
     }
     setLives(MAX_LIVES);
-    setCorrectCount(1); // First card is free
+    setCorrectCount(1);
     setGameComplete(false);
+    setPendingPlacement(null);
   }, []);
 
   useEffect(() => {
@@ -44,24 +47,32 @@ export function Game() {
 
   const currentEvent = gameEvents[currentEventIndex];
 
+  // Handle dropping a card - now just sets pending state
   const handleDrop = (position: number) => {
-    if (!currentEvent) return;
+    if (!currentEvent || pendingPlacement) return;
 
     setIsDragging(false);
     setActiveDropZone(null);
 
-    // Create new array with the event inserted at position
+    // Insert the event at position with pending status
     const newPlaced = [...placedEvents];
-    newPlaced.splice(position, 0, { event: currentEvent, status: null });
+    newPlaced.splice(position, 0, { event: currentEvent, status: "pending" });
+    setPlacedEvents(newPlaced);
+    setPendingPlacement({ position });
+  };
+
+  // Confirm the placement
+  const handleConfirm = () => {
+    if (!currentEvent || !pendingPlacement) return;
 
     // Check if placement is correct by verifying chronological order
-    const isCorrect = newPlaced.every((item, index) => {
+    const isCorrect = placedEvents.every((item, index) => {
       if (index === 0) return true;
-      return item.event.year >= newPlaced[index - 1].event.year;
+      return item.event.year >= placedEvents[index - 1].event.year;
     });
 
-    // Update status of the new card
-    const finalPlaced = newPlaced.map((item, index) => {
+    // Update status of the pending card
+    const finalPlaced = placedEvents.map((item) => {
       if (item.event.id === currentEvent.id) {
         return { ...item, status: isCorrect ? "correct" as const : "incorrect" as const };
       }
@@ -69,6 +80,7 @@ export function Game() {
     });
 
     setPlacedEvents(finalPlaced);
+    setPendingPlacement(null);
 
     if (isCorrect) {
       setCorrectCount((c) => c + 1);
@@ -99,6 +111,16 @@ export function Game() {
     }
   };
 
+  // Cancel the placement
+  const handleCancel = () => {
+    if (!currentEvent || !pendingPlacement) return;
+
+    // Remove the pending card from placed events
+    const filtered = placedEvents.filter((item) => item.event.id !== currentEvent.id);
+    setPlacedEvents(filtered);
+    setPendingPlacement(null);
+  };
+
   if (gameEvents.length === 0) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -108,6 +130,7 @@ export function Game() {
   }
 
   const isGameWon = correctCount === TOTAL_ROUNDS;
+  const hasPendingPlacement = pendingPlacement !== null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -120,7 +143,7 @@ export function Game() {
         />
 
         {/* Current card to place */}
-        {currentEvent && !gameComplete && (
+        {currentEvent && !gameComplete && !hasPendingPlacement && (
           <div className="mb-8">
             <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
               Place this event in the timeline
@@ -137,6 +160,25 @@ export function Game() {
           </div>
         )}
 
+        {/* Confirmation buttons when card is placed */}
+        {hasPendingPlacement && (
+          <div className="mb-8 p-4 bg-card border border-border rounded-xl">
+            <p className="text-sm text-muted-foreground mb-4 font-medium uppercase tracking-wider text-center">
+              Confirm your placement
+            </p>
+            <div className="flex gap-3 justify-center">
+              <Button onClick={handleConfirm} size="lg" className="flex-1 max-w-[160px]">
+                <Check className="w-5 h-5 mr-2" />
+                Lock In
+              </Button>
+              <Button onClick={handleCancel} variant="outline" size="lg" className="flex-1 max-w-[160px]">
+                <X className="w-5 h-5 mr-2" />
+                Cancel
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Timeline */}
         <div className="mb-8">
           <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
@@ -145,7 +187,7 @@ export function Game() {
           <Timeline
             placedEvents={placedEvents}
             activeDropZone={activeDropZone}
-            isDragging={isDragging}
+            isDragging={isDragging && !hasPendingPlacement}
             onDrop={handleDrop}
             onDragOver={setActiveDropZone}
             onDragLeave={() => setActiveDropZone(null)}
