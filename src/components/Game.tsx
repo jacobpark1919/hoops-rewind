@@ -23,14 +23,16 @@ export function Game() {
   const [activeDropZone, setActiveDropZone] = useState<number | null>(null);
   const [gameComplete, setGameComplete] = useState(false);
 
-  const initializeGame = useCallback(() => {
-    const events = getRandomEvents(TOTAL_ROUNDS);
+  const initializeGame = useCallback(async () => {
+    const events = await getRandomEvents(TOTAL_ROUNDS);
     // Sort by year to know correct positions
     events.sort((a, b) => a.year - b.year);
     
     setGameEvents(events);
-    setPlacedEvents([{ event: events[0], status: null }]);
-    setCurrentEventIndex(1);
+    if (events.length > 0) {
+      setPlacedEvents([{ event: events[0], status: null }]);
+      setCurrentEventIndex(1);
+    }
     setLives(MAX_LIVES);
     setCorrectCount(1); // First card is free
     setGameComplete(false);
