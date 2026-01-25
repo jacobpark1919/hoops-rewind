@@ -12,6 +12,8 @@ interface TimelineProps {
   onDragLeave: () => void;
   onConfirm?: () => void;
   onCancel?: () => void;
+  onPendingDragStart?: () => void;
+  onPendingDragEnd?: () => void;
 }
 
 export function Timeline({
@@ -23,8 +25,13 @@ export function Timeline({
   onDragLeave,
   onConfirm,
   onCancel,
+  onPendingDragStart,
+  onPendingDragEnd,
 }: TimelineProps) {
   const items: JSX.Element[] = [];
+
+  // Find the pending card's current index (if any)
+  const pendingIndex = placedEvents.findIndex((item) => item.status === "pending");
 
   // Add drop zone at start if dragging
   if (isDragging) {
@@ -40,8 +47,17 @@ export function Timeline({
     );
   }
 
+  // Track the position offset for drop zones when pending card is being dragged
+  let dropPositionOffset = 0;
+
   placedEvents.forEach((item, index) => {
     const isPending = item.status === "pending";
+
+    // Skip rendering the pending card if it's being dragged
+    if (isPending && isDragging) {
+      dropPositionOffset = -1; // Offset future drop positions since pending card is removed
+      return;
+    }
     
     items.push(
       <div key={item.event.id} className="relative flex items-center gap-3 animate-slide-in">
@@ -53,15 +69,26 @@ export function Timeline({
         )}
         
         <div className="flex-1">
-          <EventCard
-            event={item.event}
-            showYear={false}
-            status={item.status}
-          />
+          {isPending ? (
+            <EventCard
+              event={item.event}
+              showYear={false}
+              status={item.status}
+              isDragging={false}
+              onDragStart={onPendingDragStart}
+              onDragEnd={onPendingDragEnd}
+            />
+          ) : (
+            <EventCard
+              event={item.event}
+              showYear={false}
+              status={item.status}
+            />
+          )}
         </div>
         
         {/* Small popup button for pending card */}
-        {isPending && onConfirm && (
+        {isPending && onConfirm && !isDragging && (
           <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10">
             <Button
               onClick={onConfirm}
@@ -77,11 +104,13 @@ export function Timeline({
 
     // Add drop zone after each card if dragging
     if (isDragging) {
+      // Calculate the actual drop position
+      const dropPosition = index + 1 + dropPositionOffset;
       items.push(
         <DropZone
-          key={`drop-${index + 1}`}
-          position={index + 1}
-          isActive={activeDropZone === index + 1}
+          key={`drop-${dropPosition}`}
+          position={dropPosition}
+          isActive={activeDropZone === dropPosition}
           onDrop={onDrop}
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}

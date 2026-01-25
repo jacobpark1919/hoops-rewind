@@ -53,18 +53,36 @@ export function Game({ sportFilter }: GameProps) {
 
   const currentEvent = gameEvents[currentEventIndex];
 
-  // Handle dropping a card - now just sets pending state
+  // Handle dropping a card - sets pending state or moves pending card
   const handleDrop = (position: number) => {
-    if (!currentEvent || pendingPlacement) return;
+    if (!currentEvent) return;
 
     setIsDragging(false);
     setActiveDropZone(null);
 
-    // Insert the event at position with pending status
-    const newPlaced = [...placedEvents];
-    newPlaced.splice(position, 0, { event: currentEvent, status: "pending" });
-    setPlacedEvents(newPlaced);
-    setPendingPlacement({ position });
+    if (pendingPlacement) {
+      // Move the pending card to a new position
+      const filtered = placedEvents.filter((item) => item.event.id !== currentEvent.id);
+      filtered.splice(position, 0, { event: currentEvent, status: "pending" });
+      setPlacedEvents(filtered);
+      setPendingPlacement({ position });
+    } else {
+      // Insert the event at position with pending status
+      const newPlaced = [...placedEvents];
+      newPlaced.splice(position, 0, { event: currentEvent, status: "pending" });
+      setPlacedEvents(newPlaced);
+      setPendingPlacement({ position });
+    }
+  };
+
+  // Handle starting to drag the pending card
+  const handlePendingDragStart = () => {
+    setIsDragging(true);
+  };
+
+  const handlePendingDragEnd = () => {
+    setIsDragging(false);
+    setActiveDropZone(null);
   };
 
   // Confirm the placement
@@ -194,12 +212,14 @@ export function Game({ sportFilter }: GameProps) {
           <Timeline
             placedEvents={placedEvents}
             activeDropZone={activeDropZone}
-            isDragging={isDragging && !hasPendingPlacement}
+            isDragging={isDragging}
             onDrop={handleDrop}
             onDragOver={setActiveDropZone}
             onDragLeave={() => setActiveDropZone(null)}
             onConfirm={hasPendingPlacement ? handleConfirm : undefined}
             onCancel={hasPendingPlacement ? handleCancel : undefined}
+            onPendingDragStart={handlePendingDragStart}
+            onPendingDragEnd={handlePendingDragEnd}
           />
         </div>
 
