@@ -4,8 +4,6 @@ import { EventCard } from "./EventCard";
 import { Timeline } from "./Timeline";
 import { GameHeader } from "./GameHeader";
 import { GameComplete } from "./GameComplete";
-import { Button } from "@/components/ui/button";
-import { Check, X } from "lucide-react";
 
 const TOTAL_ROUNDS = 8;
 const MAX_LIVES = 3;
@@ -160,25 +158,6 @@ export function Game() {
           </div>
         )}
 
-        {/* Confirmation buttons when card is placed */}
-        {hasPendingPlacement && (
-          <div className="mb-8 p-4 bg-card border border-border rounded-xl">
-            <p className="text-sm text-muted-foreground mb-4 font-medium uppercase tracking-wider text-center">
-              Confirm your placement
-            </p>
-            <div className="flex gap-3 justify-center">
-              <Button onClick={handleConfirm} size="lg" className="flex-1 max-w-[160px]">
-                <Check className="w-5 h-5 mr-2" />
-                Lock In
-              </Button>
-              <Button onClick={handleCancel} variant="outline" size="lg" className="flex-1 max-w-[160px]">
-                <X className="w-5 h-5 mr-2" />
-                Cancel
-              </Button>
-            </div>
-          </div>
-        )}
-
         {/* Timeline */}
         <div className="mb-8">
           <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
@@ -191,6 +170,8 @@ export function Game() {
             onDrop={handleDrop}
             onDragOver={setActiveDropZone}
             onDragLeave={() => setActiveDropZone(null)}
+            onConfirm={hasPendingPlacement ? handleConfirm : undefined}
+            onCancel={hasPendingPlacement ? handleCancel : undefined}
           />
         </div>
 
