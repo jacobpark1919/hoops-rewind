@@ -1,9 +1,12 @@
 import { useState, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { SportsEvent, getRandomEvents } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { Timeline } from "./Timeline";
 import { GameHeader } from "./GameHeader";
 import { GameComplete } from "./GameComplete";
+import { Button } from "./ui/button";
+import { ArrowLeft } from "lucide-react";
 
 const TOTAL_ROUNDS = 8;
 const MAX_LIVES = 3;
@@ -13,7 +16,12 @@ interface PlacedEvent {
   status: "correct" | "incorrect" | "pending" | null;
 }
 
-export function Game() {
+interface GameProps {
+  sportFilter?: string | null;
+}
+
+export function Game({ sportFilter }: GameProps) {
+  const navigate = useNavigate();
   const [gameEvents, setGameEvents] = useState<SportsEvent[]>([]);
   const [placedEvents, setPlacedEvents] = useState<PlacedEvent[]>([]);
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
@@ -25,7 +33,7 @@ export function Game() {
   const [pendingPlacement, setPendingPlacement] = useState<{ position: number } | null>(null);
 
   const initializeGame = useCallback(async () => {
-    const events = await getRandomEvents(TOTAL_ROUNDS);
+    const events = await getRandomEvents(TOTAL_ROUNDS, sportFilter);
     events.sort((a, b) => a.year - b.year);
     
     setGameEvents(events);
@@ -37,7 +45,7 @@ export function Game() {
     setCorrectCount(1);
     setGameComplete(false);
     setPendingPlacement(null);
-  }, []);
+  }, [sportFilter]);
 
   useEffect(() => {
     initializeGame();
@@ -130,9 +138,27 @@ export function Game() {
   const isGameWon = correctCount === TOTAL_ROUNDS;
   const hasPendingPlacement = pendingPlacement !== null;
 
+  const sportLabel = sportFilter || "All Sports";
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container max-w-2xl mx-auto py-6 px-4">
+        {/* Back button and sport label */}
+        <div className="flex items-center justify-between mb-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/")}
+            className="gap-2 text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+          <span className="text-sm font-medium text-primary px-3 py-1 bg-primary/10 rounded-full">
+            {sportLabel}
+          </span>
+        </div>
+
         <GameHeader
           lives={lives}
           maxLives={MAX_LIVES}

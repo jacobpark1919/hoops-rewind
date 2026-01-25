@@ -8,10 +8,16 @@ export interface SportsEvent {
   icon: string;
 }
 
-export async function getRandomEvents(count: number = 8): Promise<SportsEvent[]> {
-  const { data, error } = await supabase
+export async function getRandomEvents(count: number = 8, sportFilter?: string | null): Promise<SportsEvent[]> {
+  let query = supabase
     .from("sports_events")
     .select("id, title, year, sport, icon");
+
+  if (sportFilter) {
+    query = query.eq("sport", sportFilter);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error("Error fetching sports events:", error);
