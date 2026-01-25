@@ -30,8 +30,8 @@ export function Timeline({
 }: TimelineProps) {
   const items: JSX.Element[] = [];
 
-  // Find the pending card's current index (if any)
-  const pendingIndex = placedEvents.findIndex((item) => item.status === "pending");
+  // Filter out non-pending items for drop position calculation
+  const nonPendingEvents = placedEvents.filter((item) => item.status !== "pending");
 
   // Add drop zone at start if dragging
   if (isDragging) {
@@ -47,15 +47,11 @@ export function Timeline({
     );
   }
 
-  // Track the position offset for drop zones when pending card is being dragged
-  let dropPositionOffset = 0;
-
   placedEvents.forEach((item, index) => {
     const isPending = item.status === "pending";
 
-    // Skip rendering the pending card if it's being dragged
+    // Hide the pending card visually while dragging (it will reappear when dropped or drag ends)
     if (isPending && isDragging) {
-      dropPositionOffset = -1; // Offset future drop positions since pending card is removed
       return;
     }
     
@@ -102,10 +98,11 @@ export function Timeline({
       </div>
     );
 
-    // Add drop zone after each card if dragging
-    if (isDragging) {
-      // Calculate the actual drop position
-      const dropPosition = index + 1 + dropPositionOffset;
+    // Add drop zone after each non-pending card if dragging
+    if (isDragging && !isPending) {
+      // Find this card's position in the non-pending list to determine drop position
+      const nonPendingIndex = nonPendingEvents.findIndex((e) => e.event.id === item.event.id);
+      const dropPosition = nonPendingIndex + 1;
       items.push(
         <DropZone
           key={`drop-${dropPosition}`}
