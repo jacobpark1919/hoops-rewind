@@ -23,16 +23,17 @@ export function EventCard({
     pending: "timeline-card-pending",
   };
 
+  const isPlaced = status !== null || showYear;
+
   return (
     <div
-      draggable={!showYear}
+      draggable={!isPlaced}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       className={`
-        ${showYear ? "timeline-card" : "game-card"}
+        ${isPlaced ? "timeline-card" : "game-card"}
         ${isDragging ? "game-card-dragging" : ""}
         ${status ? statusClasses[status] : ""}
-        ${showYear ? "animate-bounce-in" : ""}
         select-none
       `}
     >
@@ -45,11 +46,6 @@ export function EventCard({
           <p className="text-sm text-muted-foreground mt-1">{event.sport}</p>
         </div>
       </div>
-      {showYear && (
-        <div className="mt-3 flex justify-end">
-          <span className="year-badge">{event.year}</span>
-        </div>
-      )}
     </div>
   );
 }
