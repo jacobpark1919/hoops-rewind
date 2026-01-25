@@ -140,23 +140,25 @@ export function Game() {
           totalRounds={TOTAL_ROUNDS}
         />
 
-        {/* Current card to place */}
-        {currentEvent && !gameComplete && !hasPendingPlacement && (
-          <div className="mb-8">
-            <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
-              Place this event in the timeline
-            </p>
-            <EventCard
-              event={currentEvent}
-              isDragging={isDragging}
-              onDragStart={() => setIsDragging(true)}
-              onDragEnd={() => {
-                setIsDragging(false);
-                setActiveDropZone(null);
-              }}
-            />
-          </div>
-        )}
+        {/* Current card to place - fixed height container to prevent layout shift */}
+        <div className="mb-8 min-h-[120px]">
+          {currentEvent && !gameComplete && !hasPendingPlacement && (
+            <div key={currentEvent.id} className="animate-fade-in-up">
+              <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
+                Place this event in the timeline
+              </p>
+              <EventCard
+                event={currentEvent}
+                isDragging={isDragging}
+                onDragStart={() => setIsDragging(true)}
+                onDragEnd={() => {
+                  setIsDragging(false);
+                  setActiveDropZone(null);
+                }}
+              />
+            </div>
+          )}
+        </div>
 
         {/* Timeline */}
         <div className="mb-8">
