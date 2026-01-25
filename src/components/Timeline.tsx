@@ -2,7 +2,6 @@ import { SportsEvent } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { DropZone } from "./DropZone";
 import { Button } from "@/components/ui/button";
-import { Check, X } from "lucide-react";
 
 interface TimelineProps {
   placedEvents: Array<{ event: SportsEvent; status: "correct" | "incorrect" | "pending" | null }>;
@@ -51,23 +50,15 @@ export function Timeline({
           showYear={!isPending}
           status={item.status}
         />
-        {/* Small popup buttons for pending card */}
-        {isPending && onConfirm && onCancel && (
-          <div className="absolute -right-2 top-1/2 -translate-y-1/2 flex gap-1 z-10">
+        {/* Small popup button for pending card */}
+        {isPending && onConfirm && (
+          <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10">
             <Button
               onClick={onConfirm}
-              size="icon"
-              className="h-8 w-8 rounded-full shadow-lg"
+              size="sm"
+              className="rounded-full shadow-lg px-4 text-sm font-medium"
             >
-              <Check className="w-4 h-4" />
-            </Button>
-            <Button
-              onClick={onCancel}
-              variant="outline"
-              size="icon"
-              className="h-8 w-8 rounded-full shadow-lg bg-background"
-            >
-              <X className="w-4 h-4" />
+              Tap to place
             </Button>
           </div>
         )}
