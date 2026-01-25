@@ -44,12 +44,22 @@ export function Timeline({
     const isPending = item.status === "pending";
     
     items.push(
-      <div key={item.event.id} className="relative">
-        <EventCard
-          event={item.event}
-          showYear={!isPending}
-          status={item.status}
-        />
+      <div key={item.event.id} className="relative flex items-center gap-3 animate-slide-in">
+        {/* Year badge on the left */}
+        {!isPending && (
+          <div className="absolute -left-12 top-1/2 -translate-y-1/2 w-10 flex justify-center">
+            <span className="year-badge text-xs px-2 py-0.5">{item.event.year}</span>
+          </div>
+        )}
+        
+        <div className="flex-1">
+          <EventCard
+            event={item.event}
+            showYear={false}
+            status={item.status}
+          />
+        </div>
+        
         {/* Small popup button for pending card */}
         {isPending && onConfirm && (
           <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10">
@@ -86,7 +96,7 @@ export function Timeline({
       <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border" />
       
       {/* Timeline content */}
-      <div className="relative space-y-3 pl-12">
+      <div className="relative space-y-4 pl-14">
         {items}
       </div>
     </div>
