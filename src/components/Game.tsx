@@ -13,7 +13,7 @@ const MAX_LIVES = 3;
 
 interface PlacedEvent {
   event: SportsEvent;
-  status: "correct" | "incorrect" | "pending" | null;
+  status: "correct" | "incorrect" | "pending" | "corrected" | null;
 }
 
 interface GameProps {
@@ -114,11 +114,22 @@ export function Game({ sportFilter }: GameProps) {
       // Shake and then reorder after delay
       setTimeout(() => {
         const sorted = [...finalPlaced].sort((a, b) => a.event.year - b.event.year);
+        // Mark the corrected card with "corrected" status so it highlights
         const corrected = sorted.map((item) => ({
           ...item,
-          status: null,
+          status: item.event.id === currentEvent.id ? "corrected" as const : null,
         }));
         setPlacedEvents(corrected);
+        
+        // After animation completes, reset the corrected status to null
+        setTimeout(() => {
+          setPlacedEvents((prev) =>
+            prev.map((item) => ({
+              ...item,
+              status: item.status === "corrected" ? null : item.status,
+            }))
+          );
+        }, 2000);
       }, 1000);
     }
 
