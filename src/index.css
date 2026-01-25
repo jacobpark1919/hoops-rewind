@@ -2,10 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
+    --background: 40 30% 96%;
+    --foreground: 30 10% 15%;
+
+    --card: 40 25% 92%;
+    --card-foreground: 30 10% 15%;
+    --card-hover: 40 20% 88%;
+
+    --popover: 40 25% 94%;
+    --popover-foreground: 30 10% 15%;
+
+    --primary: 25 85% 45%;
+    --primary-foreground: 40 30% 98%;
+
+    --secondary: 35 15% 85%;
+    --secondary-foreground: 30 10% 20%;
+
+    --muted: 35 12% 88%;
+    --muted-foreground: 30 8% 45%;
+
+    --accent: 15 90% 50%;
+    --accent-foreground: 40 30% 98%;
+
+    --success: 142 70% 40%;
+    --success-foreground: 40 30% 98%;
+
+    --destructive: 0 80% 55%;
+    --destructive-foreground: 40 30% 98%;
+
+    --border: 35 20% 82%;
+    --input: 35 20% 82%;
+    --ring: 25 85% 45%;
+
+    --radius: 0.75rem;
+
+    --timeline-line: 35 15% 78%;
+    --card-glow: 25 85% 45%;
+    --drop-zone: 25 85% 45%;
+  }
+
+  .dark {
     --background: 222 47% 6%;
     --foreground: 60 9% 98%;
 
@@ -38,8 +78,6 @@
     --input: 222 30% 20%;
     --ring: 45 93% 58%;
 
-    --radius: 0.75rem;
-
     --timeline-line: 222 30% 25%;
     --card-glow: 45 93% 58%;
     --drop-zone: 45 93% 58%;
@@ -64,16 +102,36 @@
   .game-card {
     @apply bg-card border border-border rounded-xl p-4 cursor-grab active:cursor-grabbing
            transition-all duration-200 ease-out
-           hover:bg-card-hover hover:border-primary/50 hover:shadow-card-glow;
+           hover:bg-card-hover hover:border-primary/50;
+    box-shadow: 
+      0 4px 6px -1px hsl(var(--foreground) / 0.08),
+      0 2px 4px -2px hsl(var(--foreground) / 0.06),
+      inset 0 1px 0 hsl(var(--background) / 0.5);
+    transform: translateY(0);
+  }
+
+  .game-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 8px 12px -2px hsl(var(--foreground) / 0.12),
+      0 4px 6px -2px hsl(var(--foreground) / 0.08),
+      inset 0 1px 0 hsl(var(--background) / 0.5);
   }
 
   .game-card-dragging {
-    @apply scale-105 shadow-card-glow-lg rotate-2 z-50;
+    @apply scale-105 rotate-2 z-50;
+    box-shadow: 
+      0 20px 25px -5px hsl(var(--foreground) / 0.15),
+      0 10px 10px -5px hsl(var(--foreground) / 0.1);
   }
 
   .timeline-card {
     @apply bg-card border-2 border-border rounded-xl p-4
            transition-all duration-300 ease-out;
+    box-shadow: 
+      0 4px 6px -1px hsl(var(--foreground) / 0.08),
+      0 2px 4px -2px hsl(var(--foreground) / 0.06),
+      inset 0 1px 0 hsl(var(--background) / 0.5);
   }
 
   .timeline-card-correct {
@@ -114,8 +172,8 @@
     box-shadow: 0 0 40px hsl(var(--card-glow) / 0.25);
   }
 
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent;
+  .text-headline {
+    @apply text-primary font-bold tracking-tight;
   }
 
   .animate-pulse-glow {

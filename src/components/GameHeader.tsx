@@ -1,4 +1,5 @@
 import { Heart } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface GameHeaderProps {
   lives: number;
@@ -11,15 +12,15 @@ export function GameHeader({ lives, maxLives, currentRound, totalRounds }: GameH
   return (
     <header className="flex items-center justify-between mb-8">
       <div>
-        <h1 className="font-display text-3xl md:text-4xl font-bold gradient-text">
-          SPORTS FLASHBACK
+        <h1 className="font-display text-3xl md:text-4xl font-bold text-primary tracking-tight">
+          Sports Flashback
         </h1>
         <p className="text-muted-foreground mt-1">
           Order the moments in history
         </p>
       </div>
       
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-4">
         {/* Round counter */}
         <div className="text-center">
           <p className="text-xs text-muted-foreground uppercase tracking-wider">Round</p>
@@ -41,6 +42,9 @@ export function GameHeader({ lives, maxLives, currentRound, totalRounds }: GameH
             />
           ))}
         </div>
+
+        {/* Theme toggle */}
+        <ThemeToggle />
       </div>
     </header>
   );
