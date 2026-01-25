@@ -142,6 +142,10 @@
     @apply border-destructive bg-destructive/10;
   }
 
+  .timeline-card-pending {
+    @apply border-primary bg-primary/10 animate-pulse;
+  }
+
   .drop-zone {
     @apply border-2 border-dashed border-muted rounded-xl
            transition-all duration-200 ease-out
