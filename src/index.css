@@ -156,14 +156,14 @@
     animation: highlight-corrected 2s ease-out;
   }
 
-  .drop-zone {
-    @apply border-2 border-dashed border-muted rounded-xl
-           transition-all duration-200 ease-out
-           min-h-[80px] flex items-center justify-center;
+  .drop-zone-collapsed {
+    @apply border-2 border-dashed border-transparent rounded-xl
+           transition-all duration-300 ease-out
+           h-3 flex items-center justify-center overflow-hidden;
   }
 
-  .drop-zone-active {
-    @apply border-primary bg-primary/10 scale-105;
+  .drop-zone-expanded {
+    @apply border-primary bg-primary/10 h-20;
   }
 
   .year-badge {
