@@ -167,9 +167,9 @@
   }
 
   .year-badge {
-    @apply inline-flex items-center justify-center px-4 py-1.5 
+    @apply inline-flex items-center justify-center px-2.5 py-1 
            bg-primary text-primary-foreground font-display font-bold 
-           rounded-full text-base min-w-[4rem];
+           rounded-full text-sm;
   }
 
   .score-display {
