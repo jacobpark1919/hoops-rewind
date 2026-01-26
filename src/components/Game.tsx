@@ -1,16 +1,21 @@
 import { useState, useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { SportsEvent, getRandomEvents } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { Timeline } from "./Timeline";
 import { GameHeader } from "./GameHeader";
 import { GameComplete } from "./GameComplete";
 import { InstructionsModal } from "./InstructionsModal";
-import { Button } from "./ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 const TOTAL_ROUNDS = 8;
 const MAX_LIVES = 3;
+
+const SPORT_OPTIONS = [
+  { label: "Everything", value: null, icon: "🏆" },
+  { label: "Football", value: "American Football", icon: "🏈" },
+  { label: "Basketball", value: "Basketball", icon: "🏀" },
+  { label: "Baseball", value: "Baseball", icon: "⚾" },
+];
 
 interface PlacedEvent {
   event: SportsEvent;
@@ -19,10 +24,11 @@ interface PlacedEvent {
 
 interface GameProps {
   sportFilter?: string | null;
+  onSportChange?: (sport: string | null) => void;
 }
 
-export function Game({ sportFilter }: GameProps) {
-  const navigate = useNavigate();
+export function Game({ sportFilter, onSportChange }: GameProps) {
+  const [sportDropdownOpen, setSportDropdownOpen] = useState(false);
   const [gameEvents, setGameEvents] = useState<SportsEvent[]>([]);
   const [placedEvents, setPlacedEvents] = useState<PlacedEvent[]>([]);
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
@@ -169,25 +175,47 @@ export function Game({ sportFilter }: GameProps) {
   const isGameWon = correctCount === TOTAL_ROUNDS;
   const hasPendingPlacement = pendingPlacement !== null;
 
-  const sportLabel = sportFilter || "All Sports";
+  const currentSport = SPORT_OPTIONS.find(s => s.value === sportFilter) || SPORT_OPTIONS[0];
+
+  const handleSportSelect = (sport: typeof SPORT_OPTIONS[0]) => {
+    setSportDropdownOpen(false);
+    if (sport.value !== sportFilter) {
+      onSportChange?.(sport.value);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <div className="container max-w-2xl mx-auto py-6 px-4">
-        {/* Back button and sport label */}
-        <div className="flex items-center justify-between mb-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate("/")}
-            className="gap-2 text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </Button>
-          <span className="text-sm font-medium text-primary px-3 py-1 bg-primary/10 rounded-full">
-            {sportLabel}
-          </span>
+        {/* Sport dropdown */}
+        <div className="flex justify-end mb-4">
+          <div className="relative">
+            <button
+              onClick={() => setSportDropdownOpen(!sportDropdownOpen)}
+              className="flex items-center gap-2 text-sm font-medium text-primary px-3 py-1.5 bg-primary/10 rounded-full hover:bg-primary/20 transition-colors"
+            >
+              <span>{currentSport.icon}</span>
+              <span>{currentSport.label}</span>
+              <ChevronDown className={`w-4 h-4 transition-transform ${sportDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {sportDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
+                {SPORT_OPTIONS.map((sport) => (
+                  <button
+                    key={sport.label}
+                    onClick={() => handleSportSelect(sport)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-muted/50 ${
+                      sport.value === sportFilter ? 'bg-primary/10' : ''
+                    }`}
+                  >
+                    <span className="text-lg">{sport.icon}</span>
+                    <span className="font-medium text-foreground">{sport.label}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <GameHeader
