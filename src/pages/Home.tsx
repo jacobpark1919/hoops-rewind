@@ -114,19 +114,19 @@ export default function Home() {
 
             {/* Dropdown Menu */}
             {isOpen && (
-              <div className="absolute z-50 w-full mt-2 bg-card border border-border rounded-xl shadow-xl overflow-auto max-h-72 animate-fade-in-up">
+              <div className="absolute z-50 w-full bottom-full mb-2 bg-card border border-border rounded-xl shadow-xl overflow-hidden animate-fade-in-up">
                 {sportOptions.map((sport) => (
                   <button
                     key={sport.id}
                     onClick={() => handleSelectSport(sport)}
-                    className={`w-full flex items-center gap-3 p-4 text-left transition-colors hover:bg-muted/50 ${
+                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-muted/50 ${
                       selected?.id === sport.id ? 'bg-primary/10' : ''
                     }`}
                   >
-                    <span className="text-2xl">{sport.icon}</span>
+                    <span className="text-xl">{sport.icon}</span>
                     <div>
-                      <p className="font-display font-bold text-foreground">{sport.name}</p>
-                      <p className="text-sm text-muted-foreground">{sport.description}</p>
+                      <p className="font-display font-semibold text-foreground text-sm">{sport.name}</p>
+                      <p className="text-xs text-muted-foreground">{sport.description}</p>
                     </div>
                   </button>
                 ))}
