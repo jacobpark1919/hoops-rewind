@@ -1,9 +1,12 @@
-import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
 import { Game } from "@/components/Game";
 
 export default function Play() {
-  const [searchParams] = useSearchParams();
-  const sportFilter = searchParams.get("sport");
+  const [sportFilter, setSportFilter] = useState<string | null>(null);
 
-  return <Game sportFilter={sportFilter} />;
+  const handleSportChange = (sport: string | null) => {
+    setSportFilter(sport);
+  };
+
+  return <Game sportFilter={sportFilter} onSportChange={handleSportChange} />;
 }
