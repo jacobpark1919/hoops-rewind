@@ -28,10 +28,13 @@ export function GameHeader({ lives, maxLives, currentRound, totalRounds }: GameH
   return (
     <header className="flex items-center justify-between mb-8">
       <div>
-        <h1 className="font-display text-3xl md:text-4xl font-bold text-primary tracking-tight">
-          Sports Flashback
+        <h1 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight">
+          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+            Sports
+          </span>
+          <span className="text-foreground ml-1">Flashback</span>
         </h1>
-        <p className="text-muted-foreground mt-1">
+        <p className="text-muted-foreground mt-1 text-sm tracking-wide uppercase">
           Order the moments in history
         </p>
       </div>
