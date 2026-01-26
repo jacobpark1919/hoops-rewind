@@ -159,11 +159,12 @@
   .drop-zone-collapsed {
     @apply border-2 border-dashed border-transparent rounded-xl
            transition-all duration-300 ease-out
-           h-3 flex items-center justify-center overflow-hidden;
+           h-3 flex items-center justify-center overflow-hidden
+           py-4 -my-4;
   }
 
   .drop-zone-expanded {
-    @apply border-primary bg-primary/10 h-20;
+    @apply border-primary bg-primary/10 h-20 py-0 my-0;
   }
 
   .year-badge {
