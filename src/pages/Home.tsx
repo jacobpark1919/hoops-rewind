@@ -81,52 +81,61 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Sport Selection Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
-          {sportOptions.map((sport, index) => (
-            <button
-              key={sport.id}
-              onClick={() => handleSelectSport(sport)}
-              className="group relative bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-6 text-left transition-all duration-300 hover:bg-card hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background animate-fade-in-up"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              {/* Card glow effect on hover */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 via-primary/0 to-accent/0 group-hover:from-primary/5 group-hover:to-accent/5 transition-all duration-300" />
-              
-              <div className="relative flex items-center gap-4">
-                <div className="flex-shrink-0 w-14 h-14 bg-background/50 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-3xl" role="img" aria-label={sport.name}>
-                    {sport.icon}
-                  </span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h2 className="font-display text-xl font-bold text-foreground mb-0.5 group-hover:text-primary transition-colors">
-                    {sport.name}
-                  </h2>
-                  <p className="text-sm text-muted-foreground font-body line-clamp-2">
-                    {sport.description}
-                  </p>
-                </div>
+        {/* Sport Selection - Horizontal Scroll */}
+        <div className="relative max-w-5xl mx-auto">
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide px-4 -mx-4">
+            {sportOptions.map((sport, index) => (
+              <button
+                key={sport.id}
+                onClick={() => handleSelectSport(sport)}
+                className="group relative flex-shrink-0 w-72 h-44 bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-6 text-left transition-all duration-300 hover:bg-card hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background animate-fade-in-up snap-center"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {/* Card gradient overlay on hover */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 via-transparent to-accent/0 group-hover:from-primary/10 group-hover:to-accent/10 transition-all duration-300" />
                 
-                {/* Arrow indicator */}
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1">
-                  <svg
-                    className="w-4 h-4 text-primary"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
+                <div className="relative h-full flex flex-col">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-16 h-16 bg-background/50 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-4xl" role="img" aria-label={sport.name}>
+                        {sport.icon}
+                      </span>
+                    </div>
+                    
+                    {/* Arrow indicator */}
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1">
+                      <svg
+                        className="w-5 h-5 text-primary"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2.5}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-auto">
+                    <h2 className="font-display text-2xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
+                      {sport.name}
+                    </h2>
+                    <p className="text-sm text-muted-foreground font-body">
+                      {sport.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </button>
-          ))}
+              </button>
+            ))}
+          </div>
+          
+          {/* Scroll hint gradients */}
+          <div className="absolute left-0 top-0 bottom-4 w-8 bg-gradient-to-r from-background to-transparent pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-4 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none" />
         </div>
 
         {/* Footer hint */}
