@@ -56,10 +56,10 @@ export function Timeline({
         key={item.event.id} 
         className={`relative flex items-center gap-3 animate-slide-in ${isPendingAndDragging ? 'opacity-50' : ''}`}
       >
-        {/* Year badge on the left */}
+        {/* Year badge centered on timeline line */}
         {!isPending && (
-          <div className="absolute -left-12 top-1/2 -translate-y-1/2 w-10 flex justify-center">
-            <span className="year-badge text-xs px-2 py-0.5">{item.event.year}</span>
+          <div className="absolute -left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
+            <span className="year-badge">{item.event.year}</span>
           </div>
         )}
         
