@@ -5,6 +5,7 @@ import { EventCard } from "./EventCard";
 import { Timeline } from "./Timeline";
 import { GameHeader } from "./GameHeader";
 import { GameComplete } from "./GameComplete";
+import { InstructionsModal } from "./InstructionsModal";
 import { Button } from "./ui/button";
 import { ArrowLeft } from "lucide-react";
 
@@ -31,6 +32,7 @@ export function Game({ sportFilter }: GameProps) {
   const [activeDropZone, setActiveDropZone] = useState<number | null>(null);
   const [gameComplete, setGameComplete] = useState(false);
   const [pendingPlacement, setPendingPlacement] = useState<{ position: number } | null>(null);
+  const [showInstructions, setShowInstructions] = useState(true);
 
   const initializeGame = useCallback(async () => {
     const events = await getRandomEvents(TOTAL_ROUNDS, sportFilter);
@@ -243,6 +245,11 @@ export function Game({ sportFilter }: GameProps) {
             livesRemaining={lives}
             onPlayAgain={initializeGame}
           />
+        )}
+
+        {/* Instructions Modal */}
+        {showInstructions && (
+          <InstructionsModal onClose={() => setShowInstructions(false)} />
         )}
       </div>
     </div>
