@@ -145,7 +145,7 @@ export default function Home() {
         </div>
 
         {/* Footer hint */}
-        <div className="text-center mt-16">
+        <div className="text-center mt-32">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-full">
             <span className="text-destructive">❤️❤️❤️</span>
             <span className="text-sm text-muted-foreground font-body">
