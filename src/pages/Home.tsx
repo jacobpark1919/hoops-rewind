@@ -69,14 +69,14 @@ export default function Home() {
         <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-accent/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="container max-w-4xl mx-auto py-12 px-4 relative z-10">
+      <div className="container max-w-4xl mx-auto py-6 px-4 relative z-10">
         {/* Header */}
-        <div className="flex justify-end mb-12">
+        <div className="flex justify-end mb-6">
           <ThemeToggle />
         </div>
 
         {/* Hero Section */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <div className="inline-block mb-6">
             <span className="text-6xl md:text-7xl animate-bounce-in">🏆</span>
           </div>
@@ -114,7 +114,7 @@ export default function Home() {
 
             {/* Dropdown Menu */}
             {isOpen && (
-              <div className="absolute z-50 w-full mt-2 bg-card border border-border rounded-xl shadow-xl overflow-hidden animate-fade-in-up">
+              <div className="absolute z-50 w-full mt-2 bg-card border border-border rounded-xl shadow-xl overflow-auto max-h-72 animate-fade-in-up">
                 {sportOptions.map((sport) => (
                   <button
                     key={sport.id}
