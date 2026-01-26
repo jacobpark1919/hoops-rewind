@@ -1,11 +1,14 @@
-import { Trophy, RotateCcw, Share2 } from "lucide-react";
+import { Trophy, RotateCcw, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 interface GameCompleteProps {
   won: boolean;
   correctCount: number;
   totalRounds: number;
   livesRemaining: number;
+  resultHistory: boolean[];
+  sportFilter?: string | null;
   onPlayAgain: () => void;
 }
 
@@ -14,9 +17,38 @@ export function GameComplete({
   correctCount,
   totalRounds,
   livesRemaining,
+  resultHistory,
+  sportFilter,
   onPlayAgain,
 }: GameCompleteProps) {
-  const percentage = Math.round((correctCount / totalRounds) * 100);
+  const [copied, setCopied] = useState(false);
+
+  // Generate the emoji grid (first result is always the anchor, so it's "free")
+  const emojiGrid = resultHistory.map((correct) => (correct ? "🟩" : "🟥")).join("");
+  
+  // Create shareable text
+  const sportLabel = sportFilter || "Everything";
+  const shareText = `Sports Flashback ${sportLabel}
+${emojiGrid}
+${correctCount}/${totalRounds} correct • ${livesRemaining}❤️ remaining`;
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(shareText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback for older browsers
+      const textArea = document.createElement("textarea");
+      textArea.value = shareText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-background/95 backdrop-blur-sm flex items-center justify-center z-50 animate-slide-up">
@@ -47,18 +79,57 @@ export function GameComplete({
           </>
         )}
 
-        <div className="grid grid-cols-2 gap-4 mb-8">
+        {/* Emoji Result Grid */}
+        <div className="bg-card rounded-xl p-4 border border-border mb-6">
+          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">Your Results</p>
+          <div className="flex justify-center gap-1 flex-wrap mb-3">
+            {resultHistory.map((correct, index) => (
+              <span 
+                key={index} 
+                className="text-2xl animate-bounce-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {correct ? "🟩" : "🟥"}
+              </span>
+            ))}
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {correctCount}/{totalRounds} correct • {livesRemaining}❤️ remaining
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 mb-6">
           <div className="bg-card rounded-xl p-4 border border-border">
-            <p className="text-4xl font-display font-bold text-primary">{correctCount}</p>
-            <p className="text-sm text-muted-foreground">Correct</p>
+            <p className="text-3xl font-display font-bold text-primary">{correctCount}</p>
+            <p className="text-xs text-muted-foreground">Correct</p>
           </div>
           <div className="bg-card rounded-xl p-4 border border-border">
-            <p className="text-4xl font-display font-bold text-foreground">{percentage}%</p>
-            <p className="text-sm text-muted-foreground">Accuracy</p>
+            <p className="text-3xl font-display font-bold text-foreground">
+              {Math.round((correctCount / totalRounds) * 100)}%
+            </p>
+            <p className="text-xs text-muted-foreground">Accuracy</p>
           </div>
         </div>
 
         <div className="flex flex-col gap-3">
+          <Button
+            onClick={handleCopy}
+            size="lg"
+            variant="outline"
+            className="w-full font-display text-lg"
+          >
+            {copied ? (
+              <>
+                <Check className="w-5 h-5 mr-2 text-success" />
+                Copied!
+              </>
+            ) : (
+              <>
+                <Copy className="w-5 h-5 mr-2" />
+                Copy Results
+              </>
+            )}
+          </Button>
           <Button
             onClick={onPlayAgain}
             size="lg"
@@ -66,20 +137,6 @@ export function GameComplete({
           >
             <RotateCcw className="w-5 h-5 mr-2" />
             Play Again
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="w-full font-display text-lg"
-            onClick={() => {
-              navigator.share?.({
-                title: "Sports Flashback",
-                text: `I got ${correctCount}/${totalRounds} correct on Sports Flashback! Can you beat me?`,
-              });
-            }}
-          >
-            <Share2 className="w-5 h-5 mr-2" />
-            Share Result
           </Button>
         </div>
       </div>
