@@ -39,6 +39,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [gameComplete, setGameComplete] = useState(false);
   const [pendingPlacement, setPendingPlacement] = useState<{ position: number } | null>(null);
   const [showInstructions, setShowInstructions] = useState(true);
+  const [resultHistory, setResultHistory] = useState<boolean[]>([]);
 
   const initializeGame = useCallback(async () => {
     const events = await getRandomEvents(TOTAL_ROUNDS, sportFilter);
@@ -53,6 +54,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setCorrectCount(1);
     setGameComplete(false);
     setPendingPlacement(null);
+    setResultHistory([]);
   }, [sportFilter]);
 
   useEffect(() => {
@@ -113,6 +115,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
     setPlacedEvents(finalPlaced);
     setPendingPlacement(null);
+    
+    // Track result for share screen
+    setResultHistory((prev) => [...prev, isCorrect]);
 
     if (isCorrect) {
       setCorrectCount((c) => c + 1);
@@ -271,6 +276,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             correctCount={correctCount}
             totalRounds={TOTAL_ROUNDS}
             livesRemaining={lives}
+            resultHistory={resultHistory}
+            sportFilter={sportFilter}
             onPlayAgain={initializeGame}
           />
         )}
