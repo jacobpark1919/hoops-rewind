@@ -114,12 +114,12 @@ export default function Home() {
 
             {/* Dropdown Menu */}
             {isOpen && (
-              <div className="absolute z-50 w-full bottom-full mb-2 bg-card border border-border rounded-xl shadow-xl overflow-hidden animate-fade-in-up">
+              <div className="absolute z-50 w-full mt-2 bg-card border border-border rounded-xl shadow-xl overflow-y-auto max-h-[280px] animate-fade-in-up">
                 {sportOptions.map((sport) => (
                   <button
                     key={sport.id}
                     onClick={() => handleSelectSport(sport)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-muted/50 ${
+                    className={`w-full flex items-center gap-3 px-4 py-3.5 text-left transition-colors hover:bg-muted/50 ${
                       selected?.id === sport.id ? 'bg-primary/10' : ''
                     }`}
                   >
