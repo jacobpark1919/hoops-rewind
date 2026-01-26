@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 interface SportOption {
   id: string;
@@ -42,10 +44,18 @@ const sportOptions: SportOption[] = [
 
 export default function Home() {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState<SportOption | null>(null);
 
   const handleSelectSport = (sport: SportOption) => {
-    if (sport.filter) {
-      navigate(`/play?sport=${encodeURIComponent(sport.filter)}`);
+    setSelected(sport);
+    setIsOpen(false);
+  };
+
+  const handlePlay = () => {
+    if (!selected) return;
+    if (selected.filter) {
+      navigate(`/play?sport=${encodeURIComponent(selected.filter)}`);
     } else {
       navigate("/play");
     }
@@ -81,53 +91,57 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Sport Selection - Vertical Stack */}
-        <div className="flex flex-col gap-4 max-w-xl mx-auto">
-          {sportOptions.map((sport, index) => (
+        {/* Sport Selection Dropdown */}
+        <div className="max-w-md mx-auto space-y-4">
+          <div className="relative">
             <button
-              key={sport.id}
-              onClick={() => handleSelectSport(sport)}
-              className="group relative w-full bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-5 text-left transition-all duration-300 hover:bg-card hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background animate-fade-in-up"
-              style={{ animationDelay: `${index * 80}ms` }}
+              onClick={() => setIsOpen(!isOpen)}
+              className="w-full flex items-center justify-between gap-4 bg-card border border-border rounded-xl p-4 text-left transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
             >
-              {/* Card gradient overlay on hover */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/0 via-transparent to-accent/0 group-hover:from-primary/5 group-hover:to-accent/5 transition-all duration-300" />
-              
-              <div className="relative flex items-center gap-5">
-                <div className="flex-shrink-0 w-14 h-14 bg-background/50 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-3xl" role="img" aria-label={sport.name}>
-                    {sport.icon}
-                  </span>
+              {selected ? (
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{selected.icon}</span>
+                  <div>
+                    <p className="font-display font-bold text-foreground">{selected.name}</p>
+                    <p className="text-sm text-muted-foreground">{selected.description}</p>
+                  </div>
                 </div>
-                
-                <div className="flex-1 min-w-0">
-                  <h2 className="font-display text-xl font-bold text-foreground group-hover:text-primary transition-colors">
-                    {sport.name}
-                  </h2>
-                  <p className="text-sm text-muted-foreground font-body">
-                    {sport.description}
-                  </p>
-                </div>
-                
-                {/* Arrow indicator */}
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-1">
-                  <svg
-                    className="w-5 h-5 text-primary"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </div>
-              </div>
+              ) : (
+                <span className="text-muted-foreground font-body">Choose a category...</span>
+              )}
+              <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
             </button>
-          ))}
+
+            {/* Dropdown Menu */}
+            {isOpen && (
+              <div className="absolute z-50 w-full mt-2 bg-card border border-border rounded-xl shadow-xl overflow-hidden animate-fade-in-up">
+                {sportOptions.map((sport) => (
+                  <button
+                    key={sport.id}
+                    onClick={() => handleSelectSport(sport)}
+                    className={`w-full flex items-center gap-3 p-4 text-left transition-colors hover:bg-muted/50 ${
+                      selected?.id === sport.id ? 'bg-primary/10' : ''
+                    }`}
+                  >
+                    <span className="text-2xl">{sport.icon}</span>
+                    <div>
+                      <p className="font-display font-bold text-foreground">{sport.name}</p>
+                      <p className="text-sm text-muted-foreground">{sport.description}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Play Button */}
+          <button
+            onClick={handlePlay}
+            disabled={!selected}
+            className="w-full py-4 px-6 bg-primary text-primary-foreground font-display font-bold text-lg rounded-xl transition-all duration-200 hover:opacity-90 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          >
+            Play Now
+          </button>
         </div>
 
         {/* Footer hint */}
