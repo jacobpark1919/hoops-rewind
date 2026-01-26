@@ -51,10 +51,15 @@ export function Timeline({
     const isPending = item.status === "pending";
     const isPendingAndDragging = isPending && isDragging;
     
+    // Skip rendering pending card in its original position if dragging
+    if (isPendingAndDragging) {
+      return;
+    }
+    
     items.push(
       <div 
         key={item.event.id} 
-        className={`relative flex items-center gap-3 animate-slide-in ${isPendingAndDragging ? 'opacity-50' : ''}`}
+        className={`relative flex items-center gap-3 animate-slide-in`}
       >
         {/* Year badge centered on timeline line */}
         {!isPending && (
@@ -65,14 +70,21 @@ export function Timeline({
         
         <div className="flex-1">
           {isPending ? (
-            <EventCard
-              event={item.event}
-              showYear={false}
-              status={item.status}
-              isDragging={isDragging}
-              onDragStart={onPendingDragStart}
+            <div
+              draggable={true}
+              onDragStart={(e) => {
+                e.dataTransfer.effectAllowed = 'move';
+                onPendingDragStart?.();
+              }}
               onDragEnd={onPendingDragEnd}
-            />
+              className="cursor-grab active:cursor-grabbing"
+            >
+              <EventCard
+                event={item.event}
+                showYear={false}
+                status={item.status}
+              />
+            </div>
           ) : (
             <EventCard
               event={item.event}
@@ -97,8 +109,7 @@ export function Timeline({
       </div>
     );
 
-    // Add drop zone after each card if dragging
-    // Skip drop zone after the pending card itself when it's being dragged
+    // Add drop zone after each non-pending card if dragging
     if (isDragging && !isPending) {
       // Find this card's position in the non-pending list to determine drop position
       const nonPendingIndex = nonPendingEvents.findIndex((e) => e.event.id === item.event.id);
