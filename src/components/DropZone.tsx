@@ -15,7 +15,10 @@ export function DropZone({
 }: DropZoneProps) {
   return (
     <div
-      className={`drop-zone ${isActive ? "drop-zone-active" : ""}`}
+      className={`
+        drop-zone-collapsed
+        ${isActive ? "drop-zone-expanded" : ""}
+      `}
       onDragOver={(e) => {
         e.preventDefault();
         onDragOver(position);
@@ -26,9 +29,14 @@ export function DropZone({
         onDrop(position);
       }}
     >
-      <span className="text-muted-foreground text-sm font-medium">
-        {isActive ? "Drop here" : ""}
-      </span>
+      <div className={`
+        transition-all duration-200 ease-out
+        ${isActive ? "opacity-100 scale-100" : "opacity-0 scale-95"}
+      `}>
+        <span className="text-primary text-sm font-medium">
+          Drop here
+        </span>
+      </div>
     </div>
   );
 }
