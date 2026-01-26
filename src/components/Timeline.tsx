@@ -51,15 +51,10 @@ export function Timeline({
     const isPending = item.status === "pending";
     const isPendingAndDragging = isPending && isDragging;
     
-    // Skip rendering pending card in its original position if dragging
-    if (isPendingAndDragging) {
-      return;
-    }
-    
     items.push(
       <div 
         key={item.event.id} 
-        className={`relative flex items-center gap-3 animate-slide-in`}
+        className={`relative flex items-center gap-3 animate-slide-in ${isPendingAndDragging ? 'opacity-50' : ''}`}
       >
         {/* Year badge centered on timeline line */}
         {!isPending && (
