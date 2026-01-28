@@ -160,7 +160,7 @@
     @apply border-2 border-dashed border-transparent rounded-xl
            transition-all duration-300 ease-out
            h-3 flex items-center justify-center overflow-hidden
-           py-4 -my-4;
+           py-4 -my-4 z-30 relative;
   }
 
   .drop-zone-expanded {
