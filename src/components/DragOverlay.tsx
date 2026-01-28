@@ -1,5 +1,4 @@
 import { SportsEvent } from "@/data/sportsEvents";
-import { EventCard } from "./EventCard";
 import { DragState } from "@/hooks/useDrag";
 
 interface DragOverlayProps {
@@ -19,7 +18,7 @@ export function DragOverlay({ event, dragState }: DragOverlayProps) {
         width: dragState.cardRect.width,
       }}
     >
-      <div className="game-card game-card-dragging shadow-2xl">
+      <div className="game-card shadow-2xl scale-105">
         <div className="flex items-start gap-3">
           <span className="text-3xl">{event.icon}</span>
           <div className="flex-1 min-w-0">
