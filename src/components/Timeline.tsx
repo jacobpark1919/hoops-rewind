@@ -54,7 +54,7 @@ export function Timeline({
     items.push(
       <div 
         key={item.event.id} 
-        className={`relative flex items-center gap-3 animate-slide-in ${isPendingAndDragging ? 'opacity-50' : ''}`}
+        className={`relative flex items-center gap-3 animate-slide-in ${isPendingAndDragging ? 'opacity-50 pointer-events-none' : ''}`}
       >
         {/* Year badge centered on timeline line */}
         {!isPending && (
