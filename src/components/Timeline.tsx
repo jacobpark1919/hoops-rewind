@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { SportsEvent } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { DropZone } from "./DropZone";
@@ -28,13 +29,16 @@ export function Timeline({
   onPendingDragStart,
   onPendingDragEnd,
 }: TimelineProps) {
+  const [isOverTimeline, setIsOverTimeline] = useState(false);
+  
+  const showDropZones = isDragging && isOverTimeline;
   const items: JSX.Element[] = [];
 
   // Filter out non-pending items for drop position calculation
   const nonPendingEvents = placedEvents.filter((item) => item.status !== "pending");
 
-  // Add drop zone at start if dragging
-  if (isDragging) {
+  // Add drop zone at start if hovering over timeline while dragging
+  if (showDropZones) {
     items.push(
       <DropZone
         key="drop-start"
@@ -104,8 +108,8 @@ export function Timeline({
       </div>
     );
 
-    // Add drop zone after each non-pending card if dragging
-    if (isDragging && !isPending) {
+    // Add drop zone after each non-pending card if hovering over timeline while dragging
+    if (showDropZones && !isPending) {
       // Find this card's position in the non-pending list to determine drop position
       const nonPendingIndex = nonPendingEvents.findIndex((e) => e.event.id === item.event.id);
       const dropPosition = nonPendingIndex + 1;
@@ -122,8 +126,33 @@ export function Timeline({
     }
   });
 
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsOverTimeline(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    // Only set to false if we're leaving the timeline container entirely
+    const rect = e.currentTarget.getBoundingClientRect();
+    const { clientX, clientY } = e;
+    if (
+      clientX < rect.left ||
+      clientX > rect.right ||
+      clientY < rect.top ||
+      clientY > rect.bottom
+    ) {
+      setIsOverTimeline(false);
+      onDragLeave();
+    }
+  };
+
   return (
-    <div className="relative">
+    <div 
+      className="relative"
+      onDragEnter={handleDragEnter}
+      onDragOver={(e) => e.preventDefault()}
+      onDragLeave={handleDragLeave}
+    >
       {/* Timeline line */}
       <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border" />
       
