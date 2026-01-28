@@ -1,10 +1,12 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { SportsEvent, getRandomEvents } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { Timeline } from "./Timeline";
 import { GameHeader } from "./GameHeader";
 import { GameComplete } from "./GameComplete";
 import { InstructionsModal } from "./InstructionsModal";
+import { DragOverlay } from "./DragOverlay";
+import { useDrag } from "@/hooks/useDrag";
 import { ChevronDown } from "lucide-react";
 
 const TOTAL_ROUNDS = 8;
@@ -34,12 +36,31 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
   const [lives, setLives] = useState(MAX_LIVES);
   const [correctCount, setCorrectCount] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
   const [activeDropZone, setActiveDropZone] = useState<number | null>(null);
   const [gameComplete, setGameComplete] = useState(false);
   const [pendingPlacement, setPendingPlacement] = useState<{ position: number } | null>(null);
   const [showInstructions, setShowInstructions] = useState(true);
   const [resultHistory, setResultHistory] = useState<boolean[]>([]);
+  const [dragSource, setDragSource] = useState<"new" | "pending" | null>(null);
+  
+  const cardRef = useRef<HTMLDivElement>(null);
+  const pendingDropZoneRef = useRef<number | null>(null);
+
+  // Store the active drop zone for use in drag end
+  useEffect(() => {
+    pendingDropZoneRef.current = activeDropZone;
+  }, [activeDropZone]);
+
+  const handleDragEnd = useCallback((clientY: number) => {
+    const dropZone = pendingDropZoneRef.current;
+    if (dropZone !== null) {
+      handleDrop(dropZone);
+    }
+    setDragSource(null);
+    setActiveDropZone(null);
+  }, []);
+
+  const { dragState, startDrag } = useDrag({ onDragEnd: handleDragEnd });
 
   const initializeGame = useCallback(async () => {
     const events = await getRandomEvents(TOTAL_ROUNDS, sportFilter);
@@ -55,6 +76,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setGameComplete(false);
     setPendingPlacement(null);
     setResultHistory([]);
+    setDragSource(null);
   }, [sportFilter]);
 
   useEffect(() => {
@@ -66,9 +88,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   // Handle dropping a card - sets pending state or moves pending card
   const handleDrop = (position: number) => {
     if (!currentEvent) return;
-
-    setIsDragging(false);
-    setActiveDropZone(null);
 
     if (pendingPlacement) {
       // Move the pending card to a new position
@@ -85,14 +104,18 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     }
   };
 
-  // Handle starting to drag the pending card
-  const handlePendingDragStart = () => {
-    setIsDragging(true);
+  // Handle starting to drag the new card
+  const handleNewCardDragStart = (e: React.MouseEvent) => {
+    if (cardRef.current) {
+      setDragSource("new");
+      startDrag(e, cardRef.current);
+    }
   };
 
-  const handlePendingDragEnd = () => {
-    setIsDragging(false);
-    setActiveDropZone(null);
+  // Handle starting to drag the pending card
+  const handlePendingDragStart = (e: React.MouseEvent, element: HTMLElement) => {
+    setDragSource("pending");
+    startDrag(e, element);
   };
 
   // Confirm the placement
@@ -179,6 +202,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
   const isGameWon = correctCount === TOTAL_ROUNDS;
   const hasPendingPlacement = pendingPlacement !== null;
+  const isDragging = dragState.isDragging;
+  const isDraggingNewCard = isDragging && dragSource === "new";
 
   const currentSport = SPORT_OPTIONS.find(s => s.value === sportFilter) || SPORT_OPTIONS[0];
 
@@ -230,22 +255,27 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           totalRounds={TOTAL_ROUNDS}
         />
 
-        {/* Current card to place - fixed height container to prevent layout shift */}
-        <div className="mb-8 min-h-[120px]">
+        {/* Current card to place - collapses when dragging */}
+        <div 
+          className={`mb-8 transition-all duration-300 ease-out overflow-hidden ${
+            isDraggingNewCard ? "h-0 opacity-0 mb-0" : "min-h-[120px]"
+          }`}
+        >
           {currentEvent && !gameComplete && !hasPendingPlacement && (
             <div key={currentEvent.id} className="animate-fade-in-up">
               <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
                 Place this event in the timeline
               </p>
-              <EventCard
-                event={currentEvent}
-                isDragging={isDragging}
-                onDragStart={() => setIsDragging(true)}
-                onDragEnd={() => {
-                  setIsDragging(false);
-                  setActiveDropZone(null);
-                }}
-              />
+              <div
+                ref={cardRef}
+                onMouseDown={handleNewCardDragStart}
+                className="cursor-grab active:cursor-grabbing select-none"
+              >
+                <EventCard
+                  event={currentEvent}
+                  isDragging={false}
+                />
+              </div>
             </div>
           )}
         </div>
@@ -259,15 +289,20 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             placedEvents={placedEvents}
             activeDropZone={activeDropZone}
             isDragging={isDragging}
+            dragY={isDragging ? dragState.currentY : null}
             onDrop={handleDrop}
-            onDragOver={setActiveDropZone}
-            onDragLeave={() => setActiveDropZone(null)}
+            onDropZoneChange={setActiveDropZone}
             onConfirm={hasPendingPlacement ? handleConfirm : undefined}
             onCancel={hasPendingPlacement ? handleCancel : undefined}
             onPendingDragStart={handlePendingDragStart}
-            onPendingDragEnd={handlePendingDragEnd}
+            onPendingDragEnd={() => setDragSource(null)}
           />
         </div>
+
+        {/* Drag overlay - the floating card that follows cursor */}
+        {currentEvent && isDragging && (
+          <DragOverlay event={currentEvent} dragState={dragState} />
+        )}
 
         {/* Game Complete Modal */}
         {gameComplete && (
