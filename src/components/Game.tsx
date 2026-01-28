@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { SportsEvent, getRandomEvents } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { Timeline } from "./Timeline";
@@ -230,8 +230,12 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           totalRounds={TOTAL_ROUNDS}
         />
 
-        {/* Current card to place - fixed height container to prevent layout shift */}
-        <div className="mb-8 min-h-[120px]">
+        {/* Current card to place - container that collapses when dragging */}
+        <div 
+          className={`mb-8 transition-all duration-300 ease-out overflow-hidden ${
+            isDragging && !hasPendingPlacement ? "h-0 opacity-0" : "min-h-[120px]"
+          }`}
+        >
           {currentEvent && !gameComplete && !hasPendingPlacement && (
             <div key={currentEvent.id} className="animate-fade-in-up">
               <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
