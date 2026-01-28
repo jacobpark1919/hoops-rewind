@@ -45,20 +45,53 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   
   const cardRef = useRef<HTMLDivElement>(null);
   const pendingDropZoneRef = useRef<number | null>(null);
+  const gameEventsRef = useRef<SportsEvent[]>([]);
+  const currentEventIndexRef = useRef(0);
 
-  // Store the active drop zone for use in drag end
+  // Keep refs in sync
+  useEffect(() => {
+    gameEventsRef.current = gameEvents;
+  }, [gameEvents]);
+
+  useEffect(() => {
+    currentEventIndexRef.current = currentEventIndex;
+  }, [currentEventIndex]);
+
   useEffect(() => {
     pendingDropZoneRef.current = activeDropZone;
   }, [activeDropZone]);
 
+  // Handle dropping a card using refs for latest values
+  const handleDropWithRefs = useCallback((position: number) => {
+    const events = gameEventsRef.current;
+    const eventIndex = currentEventIndexRef.current;
+    const event = events[eventIndex];
+    if (!event) return;
+
+    setPlacedEvents(prev => {
+      const hasPending = prev.some(item => item.status === "pending");
+      
+      if (hasPending) {
+        const filtered = prev.filter((item) => item.event.id !== event.id);
+        filtered.splice(position, 0, { event, status: "pending" });
+        return filtered;
+      } else {
+        const newPlaced = [...prev];
+        newPlaced.splice(position, 0, { event, status: "pending" });
+        return newPlaced;
+      }
+    });
+    setPendingPlacement({ position });
+  }, []);
+
   const handleDragEnd = useCallback((clientY: number) => {
     const dropZone = pendingDropZoneRef.current;
     if (dropZone !== null) {
-      handleDrop(dropZone);
+      handleDropWithRefs(dropZone);
     }
     setDragSource(null);
     setActiveDropZone(null);
-  }, []);
+  }, [handleDropWithRefs]);
 
   const { dragState, startDrag } = useDrag({ onDragEnd: handleDragEnd });
 
@@ -85,25 +118,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
   const currentEvent = gameEvents[currentEventIndex];
 
-  // Handle dropping a card - sets pending state or moves pending card
-  const handleDrop = (position: number) => {
-    if (!currentEvent) return;
-
-    if (pendingPlacement) {
-      // Move the pending card to a new position
-      const filtered = placedEvents.filter((item) => item.event.id !== currentEvent.id);
-      filtered.splice(position, 0, { event: currentEvent, status: "pending" });
-      setPlacedEvents(filtered);
-      setPendingPlacement({ position });
-    } else {
-      // Insert the event at position with pending status
-      const newPlaced = [...placedEvents];
-      newPlaced.splice(position, 0, { event: currentEvent, status: "pending" });
-      setPlacedEvents(newPlaced);
-      setPendingPlacement({ position });
-    }
-  };
-
   // Handle starting to drag the new card
   const handleNewCardDragStart = (e: React.MouseEvent) => {
     if (cardRef.current) {
@@ -122,13 +136,11 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const handleConfirm = () => {
     if (!currentEvent || !pendingPlacement) return;
 
-    // Check if placement is correct by verifying chronological order
     const isCorrect = placedEvents.every((item, index) => {
       if (index === 0) return true;
       return item.event.year >= placedEvents[index - 1].event.year;
     });
 
-    // Update status of the pending card
     const finalPlaced = placedEvents.map((item) => {
       if (item.event.id === currentEvent.id) {
         return { ...item, status: isCorrect ? "correct" as const : "incorrect" as const };
@@ -138,8 +150,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
     setPlacedEvents(finalPlaced);
     setPendingPlacement(null);
-    
-    // Track result for share screen
     setResultHistory((prev) => [...prev, isCorrect]);
 
     if (isCorrect) {
@@ -147,17 +157,14 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     } else {
       setLives((l) => l - 1);
       
-      // Shake and then reorder after delay
       setTimeout(() => {
         const sorted = [...finalPlaced].sort((a, b) => a.event.year - b.event.year);
-        // Mark the corrected card with "corrected" status so it highlights
         const corrected = sorted.map((item) => ({
           ...item,
           status: item.event.id === currentEvent.id ? "corrected" as const : null,
         }));
         setPlacedEvents(corrected);
         
-        // After animation completes, reset the corrected status to null
         setTimeout(() => {
           setPlacedEvents((prev) =>
             prev.map((item) => ({
@@ -169,7 +176,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
       }, 1000);
     }
 
-    // Check game end conditions
     const nextIndex = currentEventIndex + 1;
     const newLives = isCorrect ? lives : lives - 1;
 
@@ -182,11 +188,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     }
   };
 
-  // Cancel the placement
   const handleCancel = () => {
     if (!currentEvent || !pendingPlacement) return;
-
-    // Remove the pending card from placed events
     const filtered = placedEvents.filter((item) => item.event.id !== currentEvent.id);
     setPlacedEvents(filtered);
     setPendingPlacement(null);
@@ -290,7 +293,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             activeDropZone={activeDropZone}
             isDragging={isDragging}
             dragY={isDragging ? dragState.currentY : null}
-            onDrop={handleDrop}
+            onDrop={handleDropWithRefs}
             onDropZoneChange={setActiveDropZone}
             onConfirm={hasPendingPlacement ? handleConfirm : undefined}
             onCancel={hasPendingPlacement ? handleCancel : undefined}
