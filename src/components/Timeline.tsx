@@ -30,22 +30,22 @@ export function Timeline({
   onPendingDragEnd,
 }: TimelineProps) {
   const timelineRef = useRef<HTMLDivElement>(null);
-  const dropZoneRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+  const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [isOverTimeline, setIsOverTimeline] = useState(false);
 
   // Filter out non-pending items for drop position calculation
   const nonPendingEvents = placedEvents.filter((item) => item.status !== "pending");
-  const totalDropZones = nonPendingEvents.length + 1;
 
-  // Calculate which drop zone the cursor is over based on Y position
+  // Calculate which drop zone the cursor is over based on Y position relative to cards
   useEffect(() => {
     if (!isDragging || dragY === null || !timelineRef.current) {
       setIsOverTimeline(false);
+      onDropZoneChange(null);
       return;
     }
 
     const timelineRect = timelineRef.current.getBoundingClientRect();
-    const isOver = dragY >= timelineRect.top - 50 && dragY <= timelineRect.bottom + 50;
+    const isOver = dragY >= timelineRect.top - 100 && dragY <= timelineRect.bottom + 100;
     setIsOverTimeline(isOver);
 
     if (!isOver) {
@@ -53,35 +53,62 @@ export function Timeline({
       return;
     }
 
-    // Find the closest drop zone based on Y position
-    let closestZone: number | null = null;
-    let closestDistance = Infinity;
-
-    dropZoneRefs.current.forEach((element, position) => {
-      const rect = element.getBoundingClientRect();
-      const zoneCenterY = rect.top + rect.height / 2;
-      const distance = Math.abs(dragY - zoneCenterY);
-      
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestZone = position;
+    // Get card positions for non-pending events
+    const cardPositions: { id: string; top: number; bottom: number; index: number }[] = [];
+    
+    nonPendingEvents.forEach((item, index) => {
+      const element = cardRefs.current.get(item.event.id);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        cardPositions.push({
+          id: item.event.id,
+          top: rect.top,
+          bottom: rect.bottom,
+          index,
+        });
       }
     });
 
-    // Only activate if within reasonable distance
-    if (closestDistance < 80) {
-      onDropZoneChange(closestZone);
-    } else {
-      onDropZoneChange(null);
+    if (cardPositions.length === 0) {
+      // No cards yet, drop at position 0
+      onDropZoneChange(0);
+      return;
     }
-  }, [isDragging, dragY, onDropZoneChange]);
 
-  // Handle drop when dragging ends over timeline
-  useEffect(() => {
-    if (!isDragging && activeDropZone !== null && isOverTimeline) {
-      onDrop(activeDropZone);
+    // Sort by top position
+    cardPositions.sort((a, b) => a.top - b.top);
+
+    // Find the drop position based on cursor Y
+    // Position 0 = before first card
+    // Position N = after card N-1
+    
+    // Check if above the first card
+    if (dragY < cardPositions[0].top) {
+      onDropZoneChange(0);
+      return;
     }
-  }, [isDragging]);
+
+    // Check between cards and after
+    for (let i = 0; i < cardPositions.length; i++) {
+      const card = cardPositions[i];
+      const nextCard = cardPositions[i + 1];
+      
+      if (nextCard) {
+        // Check if cursor is between this card and next
+        const midpoint = (card.bottom + nextCard.top) / 2;
+        if (dragY < midpoint) {
+          onDropZoneChange(i + 1);
+          return;
+        }
+      } else {
+        // This is the last card, drop after it
+        onDropZoneChange(i + 1);
+        return;
+      }
+    }
+
+    onDropZoneChange(cardPositions.length);
+  }, [isDragging, dragY, nonPendingEvents.length, onDropZoneChange]);
 
   const showDropZones = isDragging && isOverTimeline;
   const items: JSX.Element[] = [];
@@ -89,21 +116,14 @@ export function Timeline({
   // Add drop zone at start if hovering over timeline while dragging
   if (showDropZones) {
     items.push(
-      <div
+      <DropZone
         key="drop-start"
-        ref={(el) => {
-          if (el) dropZoneRefs.current.set(0, el);
-          else dropZoneRefs.current.delete(0);
-        }}
-      >
-        <DropZone
-          position={0}
-          isActive={activeDropZone === 0}
-          onDrop={onDrop}
-          onDragOver={onDropZoneChange}
-          onDragLeave={() => onDropZoneChange(null)}
-        />
-      </div>
+        position={0}
+        isActive={activeDropZone === 0}
+        onDrop={onDrop}
+        onDragOver={onDropZoneChange}
+        onDragLeave={() => onDropZoneChange(null)}
+      />
     );
   }
 
@@ -113,7 +133,11 @@ export function Timeline({
     
     items.push(
       <div 
-        key={item.event.id} 
+        key={item.event.id}
+        ref={(el) => {
+          if (el) cardRefs.current.set(item.event.id, el);
+          else cardRefs.current.delete(item.event.id);
+        }}
         className={`relative flex items-center gap-3 animate-slide-in ${isPendingAndDragging ? 'opacity-50 pointer-events-none' : ''}`}
       >
         {/* Year badge centered on timeline line */}
@@ -164,25 +188,17 @@ export function Timeline({
 
     // Add drop zone after each non-pending card if hovering over timeline while dragging
     if (showDropZones && !isPending) {
-      // Find this card's position in the non-pending list to determine drop position
       const nonPendingIndex = nonPendingEvents.findIndex((e) => e.event.id === item.event.id);
       const dropPosition = nonPendingIndex + 1;
       items.push(
-        <div
+        <DropZone
           key={`drop-${dropPosition}`}
-          ref={(el) => {
-            if (el) dropZoneRefs.current.set(dropPosition, el);
-            else dropZoneRefs.current.delete(dropPosition);
-          }}
-        >
-          <DropZone
-            position={dropPosition}
-            isActive={activeDropZone === dropPosition}
-            onDrop={onDrop}
-            onDragOver={onDropZoneChange}
-            onDragLeave={() => onDropZoneChange(null)}
-          />
-        </div>
+          position={dropPosition}
+          isActive={activeDropZone === dropPosition}
+          onDrop={onDrop}
+          onDragOver={onDropZoneChange}
+          onDragLeave={() => onDropZoneChange(null)}
+        />
       );
     }
   });
