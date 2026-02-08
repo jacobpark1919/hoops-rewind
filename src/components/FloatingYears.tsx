@@ -29,10 +29,10 @@ export function FloatingYears() {
     const container = containerRef.current;
     const rect = container.getBoundingClientRect();
     
-    // Estimate particle size based on font size
+    // Estimate particle size based on font size (smaller now)
     const isMobile = window.innerWidth < 768;
-    const estimatedWidth = isMobile ? 180 : 250;
-    const estimatedHeight = isMobile ? 80 : 110;
+    const estimatedWidth = isMobile ? 120 : 170;
+    const estimatedHeight = isMobile ? 50 : 75;
     
     // Create safe zone in the center for the card (roughly 400x500 area)
     const centerX = rect.width / 2;
@@ -194,7 +194,7 @@ export function FloatingYears() {
       {particles.map((particle) => (
         <span
           key={particle.id}
-          className="absolute text-[5rem] md:text-[7rem] font-display font-bold text-muted-foreground/10 leading-none transition-none"
+          className="absolute text-[3rem] md:text-[4.5rem] font-display font-bold text-muted-foreground/10 leading-none transition-none"
           style={{
             transform: `translate(${particle.x}px, ${particle.y}px)`,
             willChange: 'transform',
