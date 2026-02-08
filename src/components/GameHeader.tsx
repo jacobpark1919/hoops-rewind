@@ -1,6 +1,7 @@
 import { Heart, HeartCrack } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 interface GameHeaderProps {
   lives: number;
@@ -27,17 +28,17 @@ export function GameHeader({ lives, maxLives, currentRound, totalRounds }: GameH
 
   return (
     <header className="flex items-center justify-between mb-8">
-      <div>
+      <Link to="/" className="group">
         <h1 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight">
-          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">
             Sports
           </span>
-          <span className="text-foreground ml-1">Flashback</span>
+          <span className="text-foreground ml-1 group-hover:opacity-80 transition-opacity">Flashback</span>
         </h1>
         <p className="text-muted-foreground mt-1 text-sm tracking-wide uppercase">
           Order the moments in history
         </p>
-      </div>
+      </Link>
       
       <div className="flex items-center gap-4">
         {/* Round counter */}
