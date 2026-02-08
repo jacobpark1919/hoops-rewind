@@ -7,7 +7,7 @@ import { InstructionsModal } from "./InstructionsModal";
 import { DragOverlay } from "./DragOverlay";
 import { ThemeToggle } from "./ThemeToggle";
 import { useDrag } from "@/hooks/useDrag";
-import { ChevronDown, Heart } from "lucide-react";
+import { ChevronDown, Heart, Home } from "lucide-react";
 
 const TOTAL_ROUNDS = 8;
 const MAX_LIVES = 3;
@@ -257,12 +257,21 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
       <div className="container max-w-2xl mx-auto py-4 px-4">
         {/* Compact header row with everything */}
         <header className="flex items-center justify-between mb-4">
-          {/* Left: Round counter */}
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground uppercase tracking-wider">Round</span>
-            <span className="font-display text-lg font-bold text-foreground">
-              {currentEventIndex}/{TOTAL_ROUNDS}
-            </span>
+          {/* Left: Home button + Round counter */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => window.location.href = '/'}
+              className="p-1.5 rounded-full hover:bg-muted transition-colors"
+              aria-label="Back to home"
+            >
+              <Home className="w-5 h-5 text-muted-foreground hover:text-foreground" />
+            </button>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground uppercase tracking-wider">Round</span>
+              <span className="font-display text-lg font-bold text-foreground">
+                {currentEventIndex}/{TOTAL_ROUNDS}
+              </span>
+            </div>
           </div>
           
           {/* Right: Sport selector, Lives, Theme toggle */}
