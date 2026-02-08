@@ -337,46 +337,65 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         </header>
 
         {/* Current card to place OR cancel drop zone */}
-        <div 
-          ref={cancelZoneRef}
-          className="mb-8"
-        >
-          {currentEvent && !gameComplete && !hasPendingPlacement ? (
-            <>
-              {!isDraggingNewCard ? (
-                <div className="min-h-[120px] transition-all duration-300 ease-out">
-                  <div key={currentEvent.id} className="animate-fade-in-up">
-                    <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
-                      Place this event in the timeline
-                    </p>
-                    <div
-                      ref={cardRef}
-                      onMouseDown={handleNewCardDragStart}
-                      className="cursor-grab active:cursor-grabbing select-none"
-                    >
-                      <EventCard
-                        event={currentEvent}
-                        isDragging={false}
-                      />
+        {(() => {
+          // Only collapse the card area when user has dragged far enough toward the timeline
+          const hasMovedTowardTimeline = isDraggingNewCard && dragState.offsetY > 50;
+          
+          return (
+            <div 
+              ref={cancelZoneRef}
+              className="mb-8"
+            >
+              {currentEvent && !gameComplete && !hasPendingPlacement ? (
+                <>
+                  {!isDraggingNewCard ? (
+                    // Normal state - card visible
+                    <div className="min-h-[120px]">
+                      <div key={currentEvent.id} className="animate-fade-in-up">
+                        <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
+                          Place this event in the timeline
+                        </p>
+                        <div
+                          ref={cardRef}
+                          onMouseDown={handleNewCardDragStart}
+                          className="cursor-grab active:cursor-grabbing select-none"
+                        >
+                          <EventCard
+                            event={currentEvent}
+                            isDragging={false}
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ) : (
-                <div 
-                  className={`transition-all duration-300 ease-out border-2 border-dashed rounded-xl flex items-center justify-center ${
-                    hoveringCancelZone 
-                      ? "h-16 border-primary bg-primary/10" 
-                      : "h-0 border-transparent overflow-hidden"
-                  }`}
-                >
-                  <div className={`transition-all duration-200 ease-out ${hoveringCancelZone ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
-                    <span className="text-primary text-sm font-medium">Drop here to cancel</span>
-                  </div>
-                </div>
-              )}
-            </>
-          ) : null}
-        </div>
+                  ) : (
+                    // Dragging state - maintain space until moved toward timeline
+                    <div 
+                      className={`transition-all duration-300 ease-out ${
+                        hasMovedTowardTimeline 
+                          ? "h-0 overflow-hidden" 
+                          : "min-h-[120px]"
+                      }`}
+                    >
+                      <div 
+                        className={`transition-all duration-300 ease-out border-2 border-dashed rounded-xl flex items-center justify-center ${
+                          hoveringCancelZone 
+                            ? "h-16 border-primary bg-primary/10" 
+                            : hasMovedTowardTimeline
+                              ? "h-0 overflow-hidden border-transparent"
+                              : "h-[120px] border-transparent"
+                        }`}
+                      >
+                        <div className={`transition-all duration-200 ease-out ${hoveringCancelZone ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
+                          <span className="text-primary text-sm font-medium">Drop here to cancel</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : null}
+            </div>
+          );
+        })()}
 
         {/* Timeline */}
         <div className="mb-8">
