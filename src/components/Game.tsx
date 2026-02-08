@@ -124,6 +124,16 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   }, [dragState.isDragging, dragState.currentY]);
 
   const initializeGame = useCallback(async () => {
+    // Reset all state first
+    setGameComplete(false);
+    setLives(MAX_LIVES);
+    setCorrectCount(1);
+    setPendingPlacement(null);
+    setResultHistory([]);
+    setDragSource(null);
+    setActiveDropZone(null);
+    setHoveringCancelZone(false);
+    
     const events = await getRandomEvents(TOTAL_ROUNDS, sportFilter);
     events.sort((a, b) => a.year - b.year);
     
@@ -131,13 +141,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     if (events.length > 0) {
       setPlacedEvents([{ event: events[0], status: null }]);
       setCurrentEventIndex(1);
+    } else {
+      setPlacedEvents([]);
+      setCurrentEventIndex(0);
     }
-    setLives(MAX_LIVES);
-    setCorrectCount(1);
-    setGameComplete(false);
-    setPendingPlacement(null);
-    setResultHistory([]);
-    setDragSource(null);
   }, [sportFilter]);
 
   useEffect(() => {
