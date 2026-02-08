@@ -341,35 +341,37 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           ref={cancelZoneRef}
           className="mb-8"
         >
-          {currentEvent && !gameComplete && !hasPendingPlacement && !isDraggingNewCard ? (
+          {currentEvent && !gameComplete && !hasPendingPlacement ? (
             <div className="min-h-[120px] transition-all duration-300 ease-out">
-              <div key={currentEvent.id} className="animate-fade-in-up">
-                <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
-                  Place this event in the timeline
-                </p>
-                <div
-                  ref={cardRef}
-                  onMouseDown={handleNewCardDragStart}
-                  className="cursor-grab active:cursor-grabbing select-none"
-                >
-                  <EventCard
-                    event={currentEvent}
-                    isDragging={false}
-                  />
+              {!isDraggingNewCard ? (
+                <div key={currentEvent.id} className="animate-fade-in-up">
+                  <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
+                    Place this event in the timeline
+                  </p>
+                  <div
+                    ref={cardRef}
+                    onMouseDown={handleNewCardDragStart}
+                    className="cursor-grab active:cursor-grabbing select-none"
+                  >
+                    <EventCard
+                      event={currentEvent}
+                      isDragging={false}
+                    />
+                  </div>
                 </div>
-              </div>
-            </div>
-          ) : isDragging ? (
-            <div 
-              className={`transition-all duration-300 ease-out border-2 border-dashed rounded-xl flex items-center justify-center ${
-                hoveringCancelZone 
-                  ? "h-16 border-primary bg-primary/10" 
-                  : "h-0 border-transparent overflow-hidden"
-              }`}
-            >
-              <div className={`transition-all duration-200 ease-out ${hoveringCancelZone ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
-                <span className="text-primary text-sm font-medium">Drop here</span>
-              </div>
+              ) : (
+                <div 
+                  className={`transition-all duration-300 ease-out border-2 border-dashed rounded-xl flex items-center justify-center ${
+                    hoveringCancelZone 
+                      ? "h-16 border-primary bg-primary/10" 
+                      : "h-16 border-transparent"
+                  }`}
+                >
+                  <div className={`transition-all duration-200 ease-out ${hoveringCancelZone ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
+                    <span className="text-primary text-sm font-medium">Drop here to cancel</span>
+                  </div>
+                </div>
+              )}
             </div>
           ) : null}
         </div>
