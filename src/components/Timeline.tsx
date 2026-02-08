@@ -1,9 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { SportsEvent } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
-import { DropZone } from "./DropZone";
 import { Button } from "@/components/ui/button";
-
 interface TimelineProps {
   placedEvents: Array<{ event: SportsEvent; status: "correct" | "incorrect" | "pending" | "corrected" | null }>;
   activeDropZone: number | null;
@@ -148,14 +146,24 @@ export function Timeline({
     items.push(
       <div 
         key="drop-0"
-        className={`relative transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
+        className={`relative pointer-events-none transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-[70] ${
           activeDropZone === 0 
-            ? 'h-20 border-primary bg-primary/20 mb-3 shadow-lg' 
+            ? 'h-28 border-primary bg-primary/25 mb-4 shadow-2xl ring-2 ring-primary/35' 
             : 'h-0 border-transparent overflow-hidden'
         }`}
       >
         {activeDropZone === 0 && (
-          <span className="text-primary text-sm font-semibold">Drop here</span>
+          <>
+            <div className="absolute -left-10 top-1/2 -translate-y-1/2">
+              <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center text-sm font-bold">
+                ↓
+              </div>
+            </div>
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-primary text-sm font-semibold">Release to drop</span>
+              <span className="text-xs text-muted-foreground">Insert at start</span>
+            </div>
+          </>
         )}
       </div>
     );
@@ -171,7 +179,6 @@ export function Timeline({
     // Get drop position for after this card
     const nonPendingIndex = nonPendingEvents.findIndex((e) => e.event.id === item.event.id);
     const dropPositionAfter = nonPendingIndex + 1;
-    const showDropAfter = !isPending && isDragging && activeDropZone === dropPositionAfter;
     
     items.push(
       <div 
@@ -240,14 +247,24 @@ export function Timeline({
       items.push(
         <div 
           key={`drop-${dropPositionAfter}`}
-          className={`relative transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
+          className={`relative pointer-events-none transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-[70] ${
             activeDropZone === dropPositionAfter 
-              ? 'h-20 border-primary bg-primary/20 mt-3 shadow-lg' 
+              ? 'h-28 border-primary bg-primary/25 mt-4 shadow-2xl ring-2 ring-primary/35' 
               : 'h-0 border-transparent overflow-hidden'
           }`}
         >
           {activeDropZone === dropPositionAfter && (
-            <span className="text-primary text-sm font-semibold">Drop here</span>
+            <>
+              <div className="absolute -left-10 top-1/2 -translate-y-1/2">
+                <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center text-sm font-bold">
+                  ↓
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-primary text-sm font-semibold">Release to drop</span>
+                <span className="text-xs text-muted-foreground">Insert here</span>
+              </div>
+            </>
           )}
         </div>
       );
