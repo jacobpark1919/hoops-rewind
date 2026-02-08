@@ -18,11 +18,14 @@ interface TimelineProps {
 }
 
 // Constants for card sizing and overlap behavior
-const CARD_HEIGHT = 72; // Approximate card height in px
-const NORMAL_GAP = 16; // Normal gap between cards
-const MIN_VISIBLE_HEIGHT = 28; // Minimum visible portion when overlapped
-const MAX_CONTAINER_HEIGHT = 380; // Maximum height before overlapping kicks in
-const DROP_ZONE_HEIGHT = 64; // Height of expanded drop zone
+// NOTE: These are intentionally a bit "generous" so overlap kicks in early and we never need page scrolling.
+const CARD_HEIGHT = 112; // Estimated rendered card height in px
+const NORMAL_GAP = 14; // Normal gap between cards
+const MIN_VISIBLE_HEIGHT = 18; // Minimum visible portion when overlapped
+const DEFAULT_MAX_CONTAINER_HEIGHT = 380; // Fallback if measurement isn't available
+
+// When a drop zone expands during dragging, reserve some vertical space for it
+const ACTIVE_DROP_ZONE_ALLOWANCE = 92;
 
 export function Timeline({
   placedEvents,
@@ -39,24 +42,49 @@ export function Timeline({
   const timelineRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+  const [availableHeight, setAvailableHeight] = useState<number | null>(null);
+
+  // Measure the space we actually have (depends on whether the top "new card" area is showing)
+  useEffect(() => {
+    const el = timelineRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      setAvailableHeight(entry.contentRect.height);
+    });
+
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   // Filter out pending items for drop position calculation
   const nonPendingEvents = placedEvents.filter((item) => item.status !== "pending");
   const totalCards = placedEvents.length;
 
-  // Calculate spacing - keep cards compact, only compress when needed
+  // Calculate spacing - keep compact, compress/overlap as soon as we'd otherwise overflow
   const calculateSpacing = () => {
-    const normalSpacing = CARD_HEIGHT + NORMAL_GAP; // 88px per card slot
-    const neededHeight = totalCards * CARD_HEIGHT + (totalCards - 1) * NORMAL_GAP;
-    
-    // If everything fits with normal spacing, use normal spacing
-    if (neededHeight <= MAX_CONTAINER_HEIGHT) {
-      return normalSpacing;
-    }
-    
-    // Need to compress - calculate how much space we have per card
-    const availableHeight = MAX_CONTAINER_HEIGHT;
-    const spacing = (availableHeight - CARD_HEIGHT) / Math.max(1, totalCards - 1);
+    const normalSpacing = CARD_HEIGHT + NORMAL_GAP;
+
+    const containerHeight = Math.max(
+      200,
+      Math.floor(availableHeight ?? DEFAULT_MAX_CONTAINER_HEIGHT)
+    );
+
+    const dropZoneAllowance =
+      isDragging && activeDropZone !== null ? ACTIVE_DROP_ZONE_ALLOWANCE : 0;
+
+    const maxHeightForCards = Math.max(160, containerHeight - dropZoneAllowance);
+
+    const neededHeight =
+      totalCards <= 1
+        ? CARD_HEIGHT
+        : totalCards * CARD_HEIGHT + (totalCards - 1) * NORMAL_GAP;
+
+    if (neededHeight <= maxHeightForCards) return normalSpacing;
+
+    const spacing = (maxHeightForCards - CARD_HEIGHT) / Math.max(1, totalCards - 1);
     return Math.max(MIN_VISIBLE_HEIGHT, spacing);
   };
 
@@ -257,8 +285,8 @@ export function Timeline({
   return (
     <div 
       ref={timelineRef}
-      className="relative"
-      style={{ minHeight: 100 }}
+      className="relative h-full"
+      style={{ minHeight: 0 }}
     >
       {/* Timeline line - absolutely positioned, won't move */}
       <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border" />
