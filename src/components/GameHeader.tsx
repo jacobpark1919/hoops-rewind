@@ -27,28 +27,16 @@ export function GameHeader({ lives, maxLives, currentRound, totalRounds }: GameH
   }, [lives, previousLives]);
 
   return (
-    <header className="flex items-center justify-between mb-8">
-      <Link to="/" className="group">
-        <h1 className="font-display text-3xl md:text-4xl font-extrabold tracking-tight">
-          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent group-hover:opacity-80 transition-opacity">
-            Sports
-          </span>
-          <span className="text-foreground ml-1 group-hover:opacity-80 transition-opacity">Flashback</span>
-        </h1>
-        <p className="text-muted-foreground mt-1 text-sm tracking-wide uppercase">
-          Order the moments in history
-        </p>
-      </Link>
+    <header className="flex items-center justify-between mb-4">
+      {/* Round counter */}
+      <div className="flex items-center gap-2">
+        <span className="text-xs text-muted-foreground uppercase tracking-wider">Round</span>
+        <span className="font-display text-lg font-bold text-foreground">
+          {currentRound}/{totalRounds}
+        </span>
+      </div>
       
-      <div className="flex items-center gap-4">
-        {/* Round counter */}
-        <div className="text-center">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider">Round</p>
-          <p className="font-display text-2xl font-bold text-foreground">
-            {currentRound}/{totalRounds}
-          </p>
-        </div>
-        
+      <div className="flex items-center gap-3">
         {/* Lives */}
         <div className="flex items-center gap-1">
           {Array.from({ length: maxLives }).map((_, i) => {
@@ -59,11 +47,11 @@ export function GameHeader({ lives, maxLives, currentRound, totalRounds }: GameH
               <div key={i} className="relative">
                 {isBreaking ? (
                   <HeartCrack
-                    className="w-6 h-6 text-destructive animate-heart-break"
+                    className="w-5 h-5 text-destructive animate-heart-break"
                   />
                 ) : (
                   <Heart
-                    className={`w-6 h-6 transition-all duration-300 ${
+                    className={`w-5 h-5 transition-all duration-300 ${
                       isActive
                         ? "fill-destructive text-destructive"
                         : "text-muted-foreground"

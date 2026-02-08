@@ -2,12 +2,12 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { SportsEvent, getRandomEvents } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { Timeline } from "./Timeline";
-import { GameHeader } from "./GameHeader";
 import { GameComplete } from "./GameComplete";
 import { InstructionsModal } from "./InstructionsModal";
 import { DragOverlay } from "./DragOverlay";
+import { ThemeToggle } from "./ThemeToggle";
 import { useDrag } from "@/hooks/useDrag";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Heart } from "lucide-react";
 
 const TOTAL_ROUNDS = 8;
 const MAX_LIVES = 3;
@@ -254,44 +254,69 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container max-w-2xl mx-auto py-6 px-4">
-        {/* Sport dropdown */}
-        <div className="flex justify-end mb-4">
-          <div className="relative">
-            <button
-              onClick={() => setSportDropdownOpen(!sportDropdownOpen)}
-              className="flex items-center gap-2 text-sm font-medium text-primary px-3 py-1.5 bg-primary/10 rounded-full hover:bg-primary/20 transition-colors"
-            >
-              <span>{currentSport.icon}</span>
-              <span>{currentSport.label}</span>
-              <ChevronDown className={`w-4 h-4 transition-transform ${sportDropdownOpen ? 'rotate-180' : ''}`} />
-            </button>
-            
-            {sportDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
-                {SPORT_OPTIONS.map((sport) => (
-                  <button
-                    key={sport.label}
-                    onClick={() => handleSportSelect(sport)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-muted/50 ${
-                      sport.value === sportFilter ? 'bg-primary/10' : ''
-                    }`}
-                  >
-                    <span className="text-lg">{sport.icon}</span>
-                    <span className="font-medium text-foreground">{sport.label}</span>
-                  </button>
-                ))}
-              </div>
-            )}
+      <div className="container max-w-2xl mx-auto py-4 px-4">
+        {/* Compact header row with everything */}
+        <header className="flex items-center justify-between mb-4">
+          {/* Left: Round counter */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground uppercase tracking-wider">Round</span>
+            <span className="font-display text-lg font-bold text-foreground">
+              {currentEventIndex}/{TOTAL_ROUNDS}
+            </span>
           </div>
-        </div>
+          
+          {/* Right: Sport selector, Lives, Theme toggle */}
+          <div className="flex items-center gap-3">
+            {/* Sport dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setSportDropdownOpen(!sportDropdownOpen)}
+                className="flex items-center gap-1.5 text-sm font-medium text-primary px-2.5 py-1 bg-primary/10 rounded-full hover:bg-primary/20 transition-colors"
+              >
+                <span>{currentSport.icon}</span>
+                <span className="hidden sm:inline">{currentSport.label}</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${sportDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {sportDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
+                  {SPORT_OPTIONS.map((sport) => (
+                    <button
+                      key={sport.label}
+                      onClick={() => handleSportSelect(sport)}
+                      className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-muted/50 ${
+                        sport.value === sportFilter ? 'bg-primary/10' : ''
+                      }`}
+                    >
+                      <span className="text-lg">{sport.icon}</span>
+                      <span className="font-medium text-foreground">{sport.label}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
-        <GameHeader
-          lives={lives}
-          maxLives={MAX_LIVES}
-          currentRound={currentEventIndex}
-          totalRounds={TOTAL_ROUNDS}
-        />
+            {/* Lives */}
+            <div className="flex items-center gap-1">
+              {Array.from({ length: MAX_LIVES }).map((_, i) => {
+                const isActive = i < lives;
+                return (
+                  <Heart
+                    key={i}
+                    className={`w-5 h-5 transition-all duration-300 ${
+                      isActive
+                        ? "fill-destructive text-destructive"
+                        : "text-muted-foreground"
+                    }`}
+                  />
+                );
+              })}
+            </div>
+
+            {/* Theme toggle */}
+            <ThemeToggle />
+          </div>
+        </header>
 
         {/* Current card to place OR cancel drop zone */}
         <div 
