@@ -291,12 +291,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           ref={cancelZoneRef}
           className="mb-8"
         >
-          {currentEvent && !gameComplete && !hasPendingPlacement ? (
-            <div 
-              className={`transition-all duration-300 ease-out overflow-hidden ${
-                isDraggingNewCard ? "h-0 opacity-0" : "min-h-[120px]"
-              }`}
-            >
+          {currentEvent && !gameComplete && !hasPendingPlacement && !isDraggingNewCard ? (
+            <div className="min-h-[120px] transition-all duration-300 ease-out">
               <div key={currentEvent.id} className="animate-fade-in-up">
                 <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
                   Place this event in the timeline
@@ -313,7 +309,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 </div>
               </div>
             </div>
-          ) : hasPendingPlacement && isDragging && dragSource === "pending" ? (
+          ) : isDragging ? (
             <div 
               className={`transition-all duration-300 ease-out border-2 border-dashed rounded-xl flex items-center justify-center ${
                 hoveringCancelZone 
