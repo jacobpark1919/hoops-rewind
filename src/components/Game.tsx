@@ -313,13 +313,13 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             <div 
               className={`transition-all duration-300 ease-out border-2 border-dashed rounded-xl flex items-center justify-center ${
                 hoveringCancelZone 
-                  ? "h-24 border-primary bg-primary/10" 
+                  ? "h-16 border-primary bg-primary/10" 
                   : "h-0 border-transparent overflow-hidden"
               }`}
             >
-              {hoveringCancelZone && (
-                <span className="text-primary text-sm font-medium">Drop here to cancel</span>
-              )}
+              <div className={`transition-all duration-200 ease-out ${hoveringCancelZone ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
+                <span className="text-primary text-sm font-medium">Drop here</span>
+              </div>
             </div>
           ) : null}
         </div>
