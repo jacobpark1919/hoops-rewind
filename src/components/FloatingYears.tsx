@@ -12,8 +12,8 @@ interface YearParticle {
 }
 
 const YEARS = ["1985", "1972", "2008", "1996", "1954", "2019", "1967", "2003"];
-const PARTICLE_SPEED = 0.5;
-const BOUNCE_DAMPENING = 0.9;
+const PARTICLE_SPEED = 1.2;
+const BOUNCE_DAMPENING = 0.95;
 
 export function FloatingYears() {
   const containerRef = useRef<HTMLDivElement>(null);
