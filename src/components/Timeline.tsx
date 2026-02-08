@@ -45,7 +45,7 @@ export function Timeline({
     }
 
     const timelineRect = timelineRef.current.getBoundingClientRect();
-    const isOver = dragY >= timelineRect.top - 100 && dragY <= timelineRect.bottom + 100;
+    const isOver = dragY >= timelineRect.top - 20 && dragY <= timelineRect.bottom + 20;
     setIsOverTimeline(isOver);
 
     if (!isOver) {
