@@ -258,13 +258,13 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           totalRounds={TOTAL_ROUNDS}
         />
 
-        {/* Current card to place - collapses when dragging */}
-        <div 
-          className={`mb-8 transition-all duration-300 ease-out overflow-hidden ${
-            isDraggingNewCard ? "h-0 opacity-0 mb-0" : "min-h-[120px]"
-          }`}
-        >
-          {currentEvent && !gameComplete && !hasPendingPlacement && (
+        {/* Current card to place - only render when needed */}
+        {currentEvent && !gameComplete && !hasPendingPlacement && (
+          <div 
+            className={`mb-8 transition-all duration-300 ease-out overflow-hidden ${
+              isDraggingNewCard ? "h-0 opacity-0 mb-0" : "min-h-[120px]"
+            }`}
+          >
             <div key={currentEvent.id} className="animate-fade-in-up">
               <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
                 Place this event in the timeline
@@ -280,8 +280,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 />
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Timeline */}
         <div className="mb-8">
