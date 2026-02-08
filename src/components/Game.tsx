@@ -189,6 +189,15 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
     if (isCorrect) {
       setCorrectCount((c) => c + 1);
+      // Clear the correct status after a brief moment
+      setTimeout(() => {
+        setPlacedEvents((prev) =>
+          prev.map((item) => ({
+            ...item,
+            status: item.status === "correct" ? null : item.status,
+          }))
+        );
+      }, 800);
     } else {
       setLives((l) => l - 1);
       
