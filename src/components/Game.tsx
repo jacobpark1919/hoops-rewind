@@ -342,21 +342,23 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           className="mb-8"
         >
           {currentEvent && !gameComplete && !hasPendingPlacement ? (
-            <div className="min-h-[120px] transition-all duration-300 ease-out">
+            <>
               {!isDraggingNewCard ? (
-                <div key={currentEvent.id} className="animate-fade-in-up">
-                  <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
-                    Place this event in the timeline
-                  </p>
-                  <div
-                    ref={cardRef}
-                    onMouseDown={handleNewCardDragStart}
-                    className="cursor-grab active:cursor-grabbing select-none"
-                  >
-                    <EventCard
-                      event={currentEvent}
-                      isDragging={false}
-                    />
+                <div className="min-h-[120px] transition-all duration-300 ease-out">
+                  <div key={currentEvent.id} className="animate-fade-in-up">
+                    <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
+                      Place this event in the timeline
+                    </p>
+                    <div
+                      ref={cardRef}
+                      onMouseDown={handleNewCardDragStart}
+                      className="cursor-grab active:cursor-grabbing select-none"
+                    >
+                      <EventCard
+                        event={currentEvent}
+                        isDragging={false}
+                      />
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -364,7 +366,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   className={`transition-all duration-300 ease-out border-2 border-dashed rounded-xl flex items-center justify-center ${
                     hoveringCancelZone 
                       ? "h-16 border-primary bg-primary/10" 
-                      : "h-16 border-transparent"
+                      : "h-0 border-transparent overflow-hidden"
                   }`}
                 >
                   <div className={`transition-all duration-200 ease-out ${hoveringCancelZone ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
@@ -372,7 +374,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   </div>
                 </div>
               )}
-            </div>
+            </>
           ) : null}
         </div>
 
