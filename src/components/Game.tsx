@@ -262,8 +262,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container max-w-2xl mx-auto py-4 px-4">
+    <div className="h-[100dvh] bg-background overflow-hidden">
+      <div className="container max-w-2xl mx-auto h-full flex flex-col py-4 px-4">
         {/* Compact header row with everything */}
         <header className="flex items-center justify-between mb-4">
           {/* Left: Home button + Round counter */}
@@ -339,7 +339,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         {/* Current card to place OR cancel drop zone */}
         <div 
           ref={cancelZoneRef}
-          className="mb-8"
+          className="mb-4 shrink-0"
         >
           {currentEvent && !gameComplete && !hasPendingPlacement && !isDraggingNewCard ? (
             <div className="min-h-[120px] transition-all duration-300 ease-out">
@@ -375,22 +375,24 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         </div>
 
         {/* Timeline */}
-        <div className="mb-8">
-          <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
+        <div className="flex-1 min-h-0 flex flex-col">
+          <p className="text-sm text-muted-foreground mb-2 font-medium uppercase tracking-wider shrink-0">
             Timeline (Earliest to Latest)
           </p>
-          <Timeline
-            placedEvents={placedEvents}
-            activeDropZone={activeDropZone}
-            isDragging={isDragging}
-            dragY={isDragging ? dragState.currentY : null}
-            onDrop={handleDropWithRefs}
-            onDropZoneChange={setActiveDropZone}
-            onConfirm={hasPendingPlacement ? handleConfirm : undefined}
-            onCancel={hasPendingPlacement ? handleCancel : undefined}
-            onPendingDragStart={handlePendingDragStart}
-            onPendingDragEnd={() => setDragSource(null)}
-          />
+          <div className="flex-1 min-h-0">
+            <Timeline
+              placedEvents={placedEvents}
+              activeDropZone={activeDropZone}
+              isDragging={isDragging}
+              dragY={isDragging ? dragState.currentY : null}
+              onDrop={handleDropWithRefs}
+              onDropZoneChange={setActiveDropZone}
+              onConfirm={hasPendingPlacement ? handleConfirm : undefined}
+              onCancel={hasPendingPlacement ? handleCancel : undefined}
+              onPendingDragStart={handlePendingDragStart}
+              onPendingDragEnd={() => setDragSource(null)}
+            />
+          </div>
         </div>
 
         {/* Drag overlay - the floating card that follows cursor */}
