@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { SportsEvent } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { DropZone } from "./DropZone";
@@ -17,6 +17,12 @@ interface TimelineProps {
   onPendingDragEnd?: () => void;
 }
 
+// Constants for card sizing and overlap behavior
+const CARD_HEIGHT = 72; // Approximate card height in px
+const MIN_VISIBLE_HEIGHT = 28; // Minimum visible portion when overlapped
+const MAX_CONTAINER_HEIGHT = 400; // Maximum height before overlapping kicks in
+const DROP_ZONE_HEIGHT = 64; // Height of expanded drop zone
+
 export function Timeline({
   placedEvents,
   activeDropZone,
@@ -31,9 +37,33 @@ export function Timeline({
 }: TimelineProps) {
   const timelineRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
 
   // Filter out pending items for drop position calculation
   const nonPendingEvents = placedEvents.filter((item) => item.status !== "pending");
+  const totalCards = placedEvents.length;
+
+  // Calculate overlap amount based on number of cards
+  const calculateSpacing = () => {
+    if (totalCards <= 2) return CARD_HEIGHT + 16; // Normal spacing
+    
+    // Calculate how much space we need vs how much we have
+    const neededHeight = totalCards * CARD_HEIGHT + (totalCards - 1) * 16;
+    
+    if (neededHeight <= MAX_CONTAINER_HEIGHT) {
+      // No overlap needed, just reduce gap
+      const availableGap = (MAX_CONTAINER_HEIGHT - totalCards * CARD_HEIGHT) / (totalCards - 1);
+      return CARD_HEIGHT + Math.max(4, availableGap);
+    }
+    
+    // Need to overlap - calculate how much each card should be offset
+    const availableHeight = MAX_CONTAINER_HEIGHT;
+    const spacing = (availableHeight - CARD_HEIGHT) / (totalCards - 1);
+    return Math.max(MIN_VISIBLE_HEIGHT, spacing);
+  };
+
+  const cardSpacing = isDragging ? CARD_HEIGHT + 16 : calculateSpacing(); // Expand when dragging
+  const isOverlapping = cardSpacing < CARD_HEIGHT;
 
   // Calculate which drop zone the cursor is over based on Y position relative to cards
   useEffect(() => {
@@ -100,24 +130,48 @@ export function Timeline({
     onDropZoneChange(cardPositions.length);
   }, [isDragging, dragY, nonPendingEvents.length, onDropZoneChange]);
 
-  // Build items with drop zones always present (but collapsed when inactive)
+  // Calculate vertical offset for each card
+  const getCardStyle = (index: number, isPending: boolean, eventId: string) => {
+    const isHovered = hoveredCardId === eventId && isOverlapping && !isDragging;
+    const baseZIndex = index + 1; // Later cards have higher z-index (overlap on top)
+    
+    return {
+      zIndex: isHovered ? 50 : baseZIndex,
+      transform: isHovered ? 'translateY(-20px) scale(1.02)' : 'none',
+      transition: 'transform 0.2s ease-out, z-index 0s',
+    };
+  };
+
+  // Build items with drop zones
   const items: JSX.Element[] = [];
 
-  // Drop zone at start (always present, just collapsed when not active)
+  // Drop zone at start
   items.push(
-    <DropZone
-      key="drop-start"
-      position={0}
-      isActive={isDragging && activeDropZone === 0}
-      onDrop={onDrop}
-      onDragOver={onDropZoneChange}
-      onDragLeave={() => onDropZoneChange(null)}
-    />
+    <div 
+      key="drop-start" 
+      style={{ 
+        height: isDragging && activeDropZone === 0 ? DROP_ZONE_HEIGHT : 0,
+        transition: 'height 0.2s ease-out',
+        overflow: 'hidden',
+      }}
+    >
+      <DropZone
+        position={0}
+        isActive={isDragging && activeDropZone === 0}
+        onDrop={onDrop}
+        onDragOver={onDropZoneChange}
+        onDragLeave={() => onDropZoneChange(null)}
+      />
+    </div>
   );
 
   placedEvents.forEach((item, index) => {
     const isPending = item.status === "pending";
     const isPendingAndDragging = isPending && isDragging;
+    const isLastCard = index === placedEvents.length - 1;
+    
+    // Calculate margin for stacking effect
+    const marginTop = index === 0 ? 0 : (isDragging ? 16 : cardSpacing - CARD_HEIGHT);
     
     items.push(
       <div 
@@ -127,6 +181,12 @@ export function Timeline({
           else cardRefs.current.delete(item.event.id);
         }}
         className={`relative flex items-center gap-3 ${isPendingAndDragging ? 'opacity-50 pointer-events-none' : ''}`}
+        style={{
+          marginTop: index === 0 ? 0 : marginTop,
+          ...getCardStyle(index, isPending, item.event.id),
+        }}
+        onMouseEnter={() => !isDragging && setHoveredCardId(item.event.id)}
+        onMouseLeave={() => setHoveredCardId(null)}
       >
         {/* Year badge centered on timeline line - fixed position */}
         <div 
@@ -162,7 +222,7 @@ export function Timeline({
         
         {/* Small popup button for pending card */}
         {isPending && onConfirm && !isDragging && (
-          <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10">
+          <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-20">
             <Button
               onClick={onConfirm}
               size="sm"
@@ -175,19 +235,30 @@ export function Timeline({
       </div>
     );
 
-    // Add drop zone after each non-pending card (always present)
+    // Add drop zone after each non-pending card
     if (!isPending) {
       const nonPendingIndex = nonPendingEvents.findIndex((e) => e.event.id === item.event.id);
       const dropPosition = nonPendingIndex + 1;
+      const isActiveDropZone = isDragging && activeDropZone === dropPosition;
+      
       items.push(
-        <DropZone
+        <div 
           key={`drop-${dropPosition}`}
-          position={dropPosition}
-          isActive={isDragging && activeDropZone === dropPosition}
-          onDrop={onDrop}
-          onDragOver={onDropZoneChange}
-          onDragLeave={() => onDropZoneChange(null)}
-        />
+          style={{ 
+            height: isActiveDropZone ? DROP_ZONE_HEIGHT : 0,
+            marginTop: isActiveDropZone ? 8 : 0,
+            transition: 'height 0.2s ease-out, margin 0.2s ease-out',
+            overflow: 'hidden',
+          }}
+        >
+          <DropZone
+            position={dropPosition}
+            isActive={isActiveDropZone}
+            onDrop={onDrop}
+            onDragOver={onDropZoneChange}
+            onDragLeave={() => onDropZoneChange(null)}
+          />
+        </div>
       );
     }
   });
@@ -195,13 +266,14 @@ export function Timeline({
   return (
     <div 
       ref={timelineRef}
-      className="relative min-h-[200px]"
+      className="relative"
+      style={{ minHeight: 100 }}
     >
       {/* Timeline line - absolutely positioned, won't move */}
       <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border" />
       
       {/* Timeline content */}
-      <div className="relative pl-14 flex flex-col gap-4">
+      <div className="relative pl-14 flex flex-col">
         {items}
       </div>
     </div>
