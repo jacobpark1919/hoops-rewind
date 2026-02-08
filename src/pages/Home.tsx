@@ -3,23 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { FloatingYears } from "@/components/FloatingYears";
+import { DarkModeHint } from "@/components/DarkModeHint";
 
 const SPORT_OPTIONS = [
   { label: "Everything", value: null, icon: "🏆" },
   { label: "Football", value: "American Football", icon: "🏈" },
   { label: "Basketball", value: "Basketball", icon: "🏀" },
   { label: "Baseball", value: "Baseball", icon: "⚾" },
-];
-
-const FLOATING_YEARS = [
-  { year: "1985", className: "top-[8%] left-[3%] animate-float-1" },
-  { year: "1972", className: "top-[3%] right-[6%] animate-float-2" },
-  { year: "2008", className: "bottom-[12%] left-[12%] animate-float-3" },
-  { year: "1996", className: "bottom-[8%] right-[3%] animate-float-4" },
-  { year: "1954", className: "top-[45%] left-[0%] animate-float-5" },
-  { year: "2019", className: "top-[38%] right-[1%] animate-float-6" },
-  { year: "1967", className: "top-[70%] left-[8%] animate-float-2" },
-  { year: "2003", className: "top-[18%] right-[15%] animate-float-4" },
 ];
 
 export default function Home() {
@@ -50,17 +41,11 @@ export default function Home() {
         <ThemeToggle />
       </header>
 
-      {/* Background decorative floating years */}
-      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-        {FLOATING_YEARS.map(({ year, className }) => (
-          <span
-            key={year + className}
-            className={`absolute text-[5rem] md:text-[7rem] font-display font-bold text-muted-foreground/10 leading-none ${className}`}
-          >
-            {year}
-          </span>
-        ))}
-      </div>
+      {/* Dark mode hint */}
+      <DarkModeHint />
+
+      {/* Background decorative floating years with physics */}
+      <FloatingYears />
 
       {/* Main content centered */}
       <div className="flex-1 flex items-center justify-center">
@@ -72,7 +57,7 @@ export default function Home() {
           </div>
 
           {/* Title */}
-          <h2 className="font-display text-3xl font-bold text-foreground mb-1">
+          <h2 className="font-display text-4xl font-bold text-foreground mb-1">
             Sports Flashback
           </h2>
           
