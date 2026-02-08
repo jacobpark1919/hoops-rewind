@@ -19,8 +19,9 @@ interface TimelineProps {
 
 // Constants for card sizing and overlap behavior
 const CARD_HEIGHT = 72; // Approximate card height in px
+const NORMAL_GAP = 16; // Normal gap between cards
 const MIN_VISIBLE_HEIGHT = 28; // Minimum visible portion when overlapped
-const MAX_CONTAINER_HEIGHT = 400; // Maximum height before overlapping kicks in
+const MAX_CONTAINER_HEIGHT = 380; // Maximum height before overlapping kicks in
 const DROP_ZONE_HEIGHT = 64; // Height of expanded drop zone
 
 export function Timeline({
@@ -43,26 +44,23 @@ export function Timeline({
   const nonPendingEvents = placedEvents.filter((item) => item.status !== "pending");
   const totalCards = placedEvents.length;
 
-  // Calculate overlap amount based on number of cards
+  // Calculate spacing - keep cards compact, only compress when needed
   const calculateSpacing = () => {
-    if (totalCards <= 2) return CARD_HEIGHT + 16; // Normal spacing
+    const normalSpacing = CARD_HEIGHT + NORMAL_GAP; // 88px per card slot
+    const neededHeight = totalCards * CARD_HEIGHT + (totalCards - 1) * NORMAL_GAP;
     
-    // Calculate how much space we need vs how much we have
-    const neededHeight = totalCards * CARD_HEIGHT + (totalCards - 1) * 16;
-    
+    // If everything fits with normal spacing, use normal spacing
     if (neededHeight <= MAX_CONTAINER_HEIGHT) {
-      // No overlap needed, just reduce gap
-      const availableGap = (MAX_CONTAINER_HEIGHT - totalCards * CARD_HEIGHT) / (totalCards - 1);
-      return CARD_HEIGHT + Math.max(4, availableGap);
+      return normalSpacing;
     }
     
-    // Need to overlap - calculate how much each card should be offset
+    // Need to compress - calculate how much space we have per card
     const availableHeight = MAX_CONTAINER_HEIGHT;
-    const spacing = (availableHeight - CARD_HEIGHT) / (totalCards - 1);
+    const spacing = (availableHeight - CARD_HEIGHT) / Math.max(1, totalCards - 1);
     return Math.max(MIN_VISIBLE_HEIGHT, spacing);
   };
 
-  const cardSpacing = isDragging ? CARD_HEIGHT + 16 : calculateSpacing(); // Expand when dragging
+  const cardSpacing = calculateSpacing();
   const isOverlapping = cardSpacing < CARD_HEIGHT;
 
   // Calculate which drop zone the cursor is over based on Y position relative to cards
