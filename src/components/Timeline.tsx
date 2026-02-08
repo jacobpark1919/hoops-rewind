@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { SportsEvent } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { DropZone } from "./DropZone";
@@ -31,22 +31,19 @@ export function Timeline({
 }: TimelineProps) {
   const timelineRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
-  const [isOverTimeline, setIsOverTimeline] = useState(false);
 
-  // Filter out non-pending items for drop position calculation
+  // Filter out pending items for drop position calculation
   const nonPendingEvents = placedEvents.filter((item) => item.status !== "pending");
 
   // Calculate which drop zone the cursor is over based on Y position relative to cards
   useEffect(() => {
     if (!isDragging || dragY === null || !timelineRef.current) {
-      setIsOverTimeline(false);
       onDropZoneChange(null);
       return;
     }
 
     const timelineRect = timelineRef.current.getBoundingClientRect();
-    const isOver = dragY >= timelineRect.top - 20 && dragY <= timelineRect.bottom + 20;
-    setIsOverTimeline(isOver);
+    const isOver = dragY >= timelineRect.top - 40 && dragY <= timelineRect.bottom + 40;
 
     if (!isOver) {
       onDropZoneChange(null);
@@ -70,7 +67,6 @@ export function Timeline({
     });
 
     if (cardPositions.length === 0) {
-      // No cards yet, drop at position 0
       onDropZoneChange(0);
       return;
     }
@@ -78,10 +74,6 @@ export function Timeline({
     // Sort by top position
     cardPositions.sort((a, b) => a.top - b.top);
 
-    // Find the drop position based on cursor Y
-    // Position 0 = before first card
-    // Position N = after card N-1
-    
     // Check if above the first card
     if (dragY < cardPositions[0].top) {
       onDropZoneChange(0);
@@ -94,14 +86,12 @@ export function Timeline({
       const nextCard = cardPositions[i + 1];
       
       if (nextCard) {
-        // Check if cursor is between this card and next
         const midpoint = (card.bottom + nextCard.top) / 2;
         if (dragY < midpoint) {
           onDropZoneChange(i + 1);
           return;
         }
       } else {
-        // This is the last card, drop after it
         onDropZoneChange(i + 1);
         return;
       }
@@ -110,22 +100,20 @@ export function Timeline({
     onDropZoneChange(cardPositions.length);
   }, [isDragging, dragY, nonPendingEvents.length, onDropZoneChange]);
 
-  const showDropZones = isDragging && isOverTimeline;
+  // Build items with drop zones always present (but collapsed when inactive)
   const items: JSX.Element[] = [];
 
-  // Add drop zone at start if hovering over timeline while dragging
-  if (showDropZones) {
-    items.push(
-      <DropZone
-        key="drop-start"
-        position={0}
-        isActive={activeDropZone === 0}
-        onDrop={onDrop}
-        onDragOver={onDropZoneChange}
-        onDragLeave={() => onDropZoneChange(null)}
-      />
-    );
-  }
+  // Drop zone at start (always present, just collapsed when not active)
+  items.push(
+    <DropZone
+      key="drop-start"
+      position={0}
+      isActive={isDragging && activeDropZone === 0}
+      onDrop={onDrop}
+      onDragOver={onDropZoneChange}
+      onDragLeave={() => onDropZoneChange(null)}
+    />
+  );
 
   placedEvents.forEach((item, index) => {
     const isPending = item.status === "pending";
@@ -138,14 +126,15 @@ export function Timeline({
           if (el) cardRefs.current.set(item.event.id, el);
           else cardRefs.current.delete(item.event.id);
         }}
-        className={`relative flex items-center gap-3 animate-slide-in ${isPendingAndDragging ? 'opacity-50 pointer-events-none' : ''}`}
+        className={`relative flex items-center gap-3 ${isPendingAndDragging ? 'opacity-50 pointer-events-none' : ''}`}
       >
-        {/* Year badge centered on timeline line */}
-        {!isPending && (
-          <div className="absolute -left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
-            <span className="year-badge">{item.event.year}</span>
-          </div>
-        )}
+        {/* Year badge centered on timeline line - fixed position */}
+        <div 
+          className="absolute -left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10"
+          style={{ opacity: isPending ? 0 : 1 }}
+        >
+          <span className="year-badge">{item.event.year}</span>
+        </div>
         
         <div className="flex-1">
           {isPending ? (
@@ -186,15 +175,15 @@ export function Timeline({
       </div>
     );
 
-    // Add drop zone after each non-pending card if hovering over timeline while dragging
-    if (showDropZones && !isPending) {
+    // Add drop zone after each non-pending card (always present)
+    if (!isPending) {
       const nonPendingIndex = nonPendingEvents.findIndex((e) => e.event.id === item.event.id);
       const dropPosition = nonPendingIndex + 1;
       items.push(
         <DropZone
           key={`drop-${dropPosition}`}
           position={dropPosition}
-          isActive={activeDropZone === dropPosition}
+          isActive={isDragging && activeDropZone === dropPosition}
           onDrop={onDrop}
           onDragOver={onDropZoneChange}
           onDragLeave={() => onDropZoneChange(null)}
@@ -206,13 +195,13 @@ export function Timeline({
   return (
     <div 
       ref={timelineRef}
-      className="relative"
+      className="relative min-h-[200px]"
     >
-      {/* Timeline line */}
+      {/* Timeline line - absolutely positioned, won't move */}
       <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border" />
       
       {/* Timeline content */}
-      <div className="relative space-y-4 pl-14">
+      <div className="relative pl-14 flex flex-col gap-4">
         {items}
       </div>
     </div>
