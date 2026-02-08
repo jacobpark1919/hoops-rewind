@@ -12,12 +12,14 @@ const SPORT_OPTIONS = [
 ];
 
 const FLOATING_YEARS = [
-  { year: "1985", className: "top-[10%] left-[5%] animate-float-1" },
-  { year: "1972", className: "top-[5%] right-[8%] animate-float-2" },
-  { year: "2008", className: "bottom-[15%] left-[15%] animate-float-3" },
-  { year: "1996", className: "bottom-[10%] right-[5%] animate-float-4" },
-  { year: "1954", className: "top-[40%] left-[2%] animate-float-2" },
-  { year: "2019", className: "top-[35%] right-[3%] animate-float-1" },
+  { year: "1985", className: "top-[8%] left-[3%] animate-float-1" },
+  { year: "1972", className: "top-[3%] right-[6%] animate-float-2" },
+  { year: "2008", className: "bottom-[12%] left-[12%] animate-float-3" },
+  { year: "1996", className: "bottom-[8%] right-[3%] animate-float-4" },
+  { year: "1954", className: "top-[45%] left-[0%] animate-float-5" },
+  { year: "2019", className: "top-[38%] right-[1%] animate-float-6" },
+  { year: "1967", className: "top-[70%] left-[8%] animate-float-2" },
+  { year: "2003", className: "top-[18%] right-[15%] animate-float-4" },
 ];
 
 export default function Home() {
@@ -53,7 +55,7 @@ export default function Home() {
         {FLOATING_YEARS.map(({ year, className }) => (
           <span
             key={year + className}
-            className={`absolute text-[8rem] md:text-[12rem] font-display font-bold text-muted-foreground/10 leading-none ${className}`}
+            className={`absolute text-[5rem] md:text-[7rem] font-display font-bold text-muted-foreground/10 leading-none ${className}`}
           >
             {year}
           </span>
@@ -63,7 +65,7 @@ export default function Home() {
       {/* Main content centered */}
       <div className="flex-1 flex items-center justify-center">
         {/* Central card */}
-        <div className="relative z-10 bg-card border border-border rounded-2xl shadow-xl p-8 max-w-md w-full mx-4 text-center">
+        <div className="relative z-10 bg-card border border-border rounded-2xl shadow-2xl p-6 max-w-sm w-full mx-4 text-center" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 12px 24px -8px rgba(0, 0, 0, 0.15)' }}>
           {/* Icon */}
           <div className="flex justify-center mb-4">
             <div className="text-5xl">🏆</div>
