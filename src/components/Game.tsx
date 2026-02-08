@@ -86,6 +86,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
   const handleDragEnd = useCallback((clientY: number) => {
     const dropZone = pendingDropZoneRef.current;
+    // Only place if there's an active drop zone, otherwise card returns to top
     if (dropZone !== null) {
       handleDropWithRefs(dropZone);
     }
