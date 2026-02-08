@@ -42,11 +42,14 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [showInstructions, setShowInstructions] = useState(true);
   const [resultHistory, setResultHistory] = useState<boolean[]>([]);
   const [dragSource, setDragSource] = useState<"new" | "pending" | null>(null);
+  const [hoveringCancelZone, setHoveringCancelZone] = useState(false);
   
   const cardRef = useRef<HTMLDivElement>(null);
+  const cancelZoneRef = useRef<HTMLDivElement>(null);
   const pendingDropZoneRef = useRef<number | null>(null);
   const gameEventsRef = useRef<SportsEvent[]>([]);
   const currentEventIndexRef = useRef(0);
+  const hoveringCancelZoneRef = useRef(false);
 
   // Keep refs in sync
   useEffect(() => {
@@ -60,6 +63,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   useEffect(() => {
     pendingDropZoneRef.current = activeDropZone;
   }, [activeDropZone]);
+
+  useEffect(() => {
+    hoveringCancelZoneRef.current = hoveringCancelZone;
+  }, [hoveringCancelZone]);
 
   // Handle dropping a card using refs for latest values
   const handleDropWithRefs = useCallback((position: number) => {
@@ -86,15 +93,35 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
   const handleDragEnd = useCallback((clientY: number) => {
     const dropZone = pendingDropZoneRef.current;
-    // Only place if there's an active drop zone, otherwise card returns to top
-    if (dropZone !== null) {
+    const cancellingPlacement = hoveringCancelZoneRef.current;
+    
+    // If hovering over cancel zone, remove from timeline
+    if (cancellingPlacement) {
+      setPlacedEvents(prev => prev.filter(item => item.status !== "pending"));
+      setPendingPlacement(null);
+    } else if (dropZone !== null) {
+      // Place in timeline at drop zone
       handleDropWithRefs(dropZone);
     }
+    
     setDragSource(null);
     setActiveDropZone(null);
+    setHoveringCancelZone(false);
   }, [handleDropWithRefs]);
 
   const { dragState, startDrag } = useDrag({ onDragEnd: handleDragEnd });
+
+  // Check if dragging over cancel zone
+  useEffect(() => {
+    if (!dragState.isDragging || dragState.currentY === null || !cancelZoneRef.current) {
+      setHoveringCancelZone(false);
+      return;
+    }
+    
+    const rect = cancelZoneRef.current.getBoundingClientRect();
+    const isOver = dragState.currentY >= rect.top - 20 && dragState.currentY <= rect.bottom + 20;
+    setHoveringCancelZone(isOver);
+  }, [dragState.isDragging, dragState.currentY]);
 
   const initializeGame = useCallback(async () => {
     const events = await getRandomEvents(TOTAL_ROUNDS, sportFilter);
@@ -259,30 +286,47 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           totalRounds={TOTAL_ROUNDS}
         />
 
-        {/* Current card to place - only render when needed */}
-        {currentEvent && !gameComplete && !hasPendingPlacement && (
-          <div 
-            className={`mb-8 transition-all duration-300 ease-out overflow-hidden ${
-              isDraggingNewCard ? "h-0 opacity-0 mb-0" : "min-h-[120px]"
-            }`}
-          >
-            <div key={currentEvent.id} className="animate-fade-in-up">
-              <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
-                Place this event in the timeline
-              </p>
-              <div
-                ref={cardRef}
-                onMouseDown={handleNewCardDragStart}
-                className="cursor-grab active:cursor-grabbing select-none"
-              >
-                <EventCard
-                  event={currentEvent}
-                  isDragging={false}
-                />
+        {/* Current card to place OR cancel drop zone */}
+        <div 
+          ref={cancelZoneRef}
+          className="mb-8"
+        >
+          {currentEvent && !gameComplete && !hasPendingPlacement ? (
+            <div 
+              className={`transition-all duration-300 ease-out overflow-hidden ${
+                isDraggingNewCard ? "h-0 opacity-0" : "min-h-[120px]"
+              }`}
+            >
+              <div key={currentEvent.id} className="animate-fade-in-up">
+                <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
+                  Place this event in the timeline
+                </p>
+                <div
+                  ref={cardRef}
+                  onMouseDown={handleNewCardDragStart}
+                  className="cursor-grab active:cursor-grabbing select-none"
+                >
+                  <EventCard
+                    event={currentEvent}
+                    isDragging={false}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          ) : hasPendingPlacement && isDragging && dragSource === "pending" ? (
+            <div 
+              className={`transition-all duration-300 ease-out border-2 border-dashed rounded-xl flex items-center justify-center ${
+                hoveringCancelZone 
+                  ? "h-24 border-primary bg-primary/10" 
+                  : "h-0 border-transparent overflow-hidden"
+              }`}
+            >
+              {hoveringCancelZone && (
+                <span className="text-primary text-sm font-medium">Drop here to cancel</span>
+              )}
+            </div>
+          ) : null}
+        </div>
 
         {/* Timeline */}
         <div className="mb-8">
