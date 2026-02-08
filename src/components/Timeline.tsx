@@ -113,23 +113,12 @@ export function Timeline({
   const showDropZones = isDragging && isOverTimeline;
   const items: JSX.Element[] = [];
 
-  // Add drop zone at start if hovering over timeline while dragging
-  if (showDropZones) {
-    items.push(
-      <DropZone
-        key="drop-start"
-        position={0}
-        isActive={activeDropZone === 0}
-        onDrop={onDrop}
-        onDragOver={onDropZoneChange}
-        onDragLeave={() => onDropZoneChange(null)}
-      />
-    );
-  }
-
   placedEvents.forEach((item, index) => {
     const isPending = item.status === "pending";
     const isPendingAndDragging = isPending && isDragging;
+    const nonPendingIndex = nonPendingEvents.findIndex((e) => e.event.id === item.event.id);
+    const isActiveTarget = showDropZones && !isPending && activeDropZone === nonPendingIndex + 1;
+    const isFirstActiveTarget = showDropZones && index === 0 && activeDropZone === 0;
     
     items.push(
       <div 
@@ -140,6 +129,15 @@ export function Timeline({
         }}
         className={`relative flex items-center gap-3 animate-slide-in ${isPendingAndDragging ? 'opacity-50 pointer-events-none' : ''}`}
       >
+        {/* Drop indicator above card */}
+        {isFirstActiveTarget && (
+          <div className="absolute -top-2 left-0 right-0 h-1 bg-primary rounded-full animate-pulse" />
+        )}
+        
+        {/* Drop indicator below card */}
+        {isActiveTarget && (
+          <div className="absolute -bottom-2 left-0 right-0 h-1 bg-primary rounded-full animate-pulse" />
+        )}
         {/* Year badge centered on timeline line */}
         {!isPending && (
           <div className="absolute -left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
@@ -186,21 +184,7 @@ export function Timeline({
       </div>
     );
 
-    // Add drop zone after each non-pending card if hovering over timeline while dragging
-    if (showDropZones && !isPending) {
-      const nonPendingIndex = nonPendingEvents.findIndex((e) => e.event.id === item.event.id);
-      const dropPosition = nonPendingIndex + 1;
-      items.push(
-        <DropZone
-          key={`drop-${dropPosition}`}
-          position={dropPosition}
-          isActive={activeDropZone === dropPosition}
-          onDrop={onDrop}
-          onDragOver={onDropZoneChange}
-          onDragLeave={() => onDropZoneChange(null)}
-        />
-      );
-    }
+    // No drop zones between cards - we use visual indicator only
   });
 
   return (
