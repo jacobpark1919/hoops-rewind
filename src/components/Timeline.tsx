@@ -18,9 +18,10 @@ interface TimelineProps {
 }
 
 // Constants for card sizing and overlap behavior
-const CARD_HEIGHT = 72; // Approximate card height in px
+const CARD_HEIGHT = 80; // Approximate card height in px
 const NORMAL_GAP = 16; // Normal gap between cards
-const MIN_VISIBLE_HEIGHT = 28; // Minimum visible portion when overlapped
+const MIN_VISIBLE_HEIGHT = 32; // Minimum visible portion when overlapped
+const PENDING_EXTRA_SPACE = 48; // Extra space for pending card's "Tap to place" button
 
 export function Timeline({
   placedEvents,
@@ -43,15 +44,27 @@ export function Timeline({
   useEffect(() => {
     const measure = () => {
       if (timelineRef.current) {
-        const rect = timelineRef.current.getBoundingClientRect();
-        // Available height = from timeline top to bottom of viewport, with some padding
-        const height = window.innerHeight - rect.top - 40;
-        setAvailableHeight(Math.max(200, height));
+        // Use requestAnimationFrame to get accurate post-layout measurements
+        requestAnimationFrame(() => {
+          if (timelineRef.current) {
+            const rect = timelineRef.current.getBoundingClientRect();
+            const height = window.innerHeight - rect.top - 40;
+            setAvailableHeight(Math.max(200, height));
+          }
+        });
       }
     };
     measure();
     window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
+    // Also re-measure when content above changes (e.g. card placed, instructions dismissed)
+    const observer = new ResizeObserver(measure);
+    if (timelineRef.current?.parentElement) {
+      observer.observe(timelineRef.current.parentElement);
+    }
+    return () => {
+      window.removeEventListener('resize', measure);
+      observer.disconnect();
+    };
   }, [placedEvents.length]);
 
   // Filter out pending items for drop position calculation
@@ -59,17 +72,22 @@ export function Timeline({
   const totalCards = placedEvents.length;
 
   // Calculate spacing - only compress when cards would overflow available space
+  const hasPending = placedEvents.some(item => item.status === "pending");
+  
   const calculateSpacing = () => {
-    const normalSpacing = CARD_HEIGHT + NORMAL_GAP; // 88px per card slot
-    const neededHeight = totalCards * CARD_HEIGHT + (totalCards - 1) * NORMAL_GAP;
+    const normalSpacing = CARD_HEIGHT + NORMAL_GAP;
+    // Account for pending card needing extra space for button
+    const extraForPending = hasPending ? PENDING_EXTRA_SPACE : 0;
+    const neededHeight = totalCards * CARD_HEIGHT + (totalCards - 1) * NORMAL_GAP + extraForPending;
     
     // If everything fits with normal spacing, use normal spacing
     if (neededHeight <= availableHeight) {
       return normalSpacing;
     }
     
-    // Need to compress - calculate how much space we have per card
-    const spacing = (availableHeight - CARD_HEIGHT) / Math.max(1, totalCards - 1);
+    // Need to compress - subtract pending extra space from available
+    const effectiveAvailable = availableHeight - extraForPending;
+    const spacing = (effectiveAvailable - CARD_HEIGHT) / Math.max(1, totalCards - 1);
     return Math.max(MIN_VISIBLE_HEIGHT, spacing);
   };
 
@@ -144,7 +162,17 @@ export function Timeline({
   // Calculate vertical offset for each card
   const getCardStyle = (index: number, isPending: boolean, eventId: string) => {
     const isHovered = hoveredCardId === eventId && isOverlapping && !isDragging;
-    const baseZIndex = index + 1; // Later cards have higher z-index (overlap on top)
+    const baseZIndex = index + 1;
+    
+    // Pending cards always get high z-index so they're fully visible and clickable
+    if (isPending && !isDragging) {
+      return {
+        zIndex: 50,
+        transform: 'none',
+        transition: 'transform 0.2s ease-out, z-index 0s',
+        marginBottom: isOverlapping ? `${PENDING_EXTRA_SPACE}px` : undefined,
+      };
+    }
     
     return {
       zIndex: isHovered ? 50 : baseZIndex,
