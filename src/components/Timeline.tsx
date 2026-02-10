@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { SportsEvent } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { DropZone } from "./DropZone";
@@ -21,8 +21,6 @@ interface TimelineProps {
 const CARD_HEIGHT = 72; // Approximate card height in px
 const NORMAL_GAP = 16; // Normal gap between cards
 const MIN_VISIBLE_HEIGHT = 28; // Minimum visible portion when overlapped
-const MAX_CONTAINER_HEIGHT = 380; // Maximum height before overlapping kicks in
-const DROP_ZONE_HEIGHT = 64; // Height of expanded drop zone
 
 export function Timeline({
   placedEvents,
@@ -39,23 +37,38 @@ export function Timeline({
   const timelineRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+  const [availableHeight, setAvailableHeight] = useState<number>(9999);
+
+  // Measure available space from timeline top to bottom of viewport
+  useEffect(() => {
+    const measure = () => {
+      if (timelineRef.current) {
+        const rect = timelineRef.current.getBoundingClientRect();
+        // Available height = from timeline top to bottom of viewport, with some padding
+        const height = window.innerHeight - rect.top - 40;
+        setAvailableHeight(Math.max(200, height));
+      }
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [placedEvents.length]);
 
   // Filter out pending items for drop position calculation
   const nonPendingEvents = placedEvents.filter((item) => item.status !== "pending");
   const totalCards = placedEvents.length;
 
-  // Calculate spacing - keep cards compact, only compress when needed
+  // Calculate spacing - only compress when cards would overflow available space
   const calculateSpacing = () => {
     const normalSpacing = CARD_HEIGHT + NORMAL_GAP; // 88px per card slot
     const neededHeight = totalCards * CARD_HEIGHT + (totalCards - 1) * NORMAL_GAP;
     
     // If everything fits with normal spacing, use normal spacing
-    if (neededHeight <= MAX_CONTAINER_HEIGHT) {
+    if (neededHeight <= availableHeight) {
       return normalSpacing;
     }
     
     // Need to compress - calculate how much space we have per card
-    const availableHeight = MAX_CONTAINER_HEIGHT;
     const spacing = (availableHeight - CARD_HEIGHT) / Math.max(1, totalCards - 1);
     return Math.max(MIN_VISIBLE_HEIGHT, spacing);
   };
