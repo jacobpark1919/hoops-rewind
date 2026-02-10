@@ -150,7 +150,7 @@ export function Timeline({
         key="drop-0"
         className={`relative transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
           activeDropZone === 0 
-            ? 'h-28 border-primary bg-primary/20 mb-3 shadow-lg' 
+            ? 'h-36 border-primary bg-primary/20 mb-3 shadow-lg' 
             : 'h-0 border-transparent overflow-hidden'
         }`}
       >
@@ -242,7 +242,7 @@ export function Timeline({
           key={`drop-${dropPositionAfter}`}
           className={`relative transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
             activeDropZone === dropPositionAfter 
-              ? 'h-28 border-primary bg-primary/20 mt-3 shadow-lg' 
+              ? 'h-36 border-primary bg-primary/20 mt-3 shadow-lg' 
               : 'h-0 border-transparent overflow-hidden'
           }`}
         >
