@@ -365,7 +365,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 <div 
                   className={`transition-all duration-300 ease-out border-2 border-dashed rounded-xl flex items-center justify-center ${
                     hoveringCancelZone 
-                      ? "h-16 border-primary bg-primary/10" 
+                      ? "h-24 border-primary bg-primary/10" 
                       : "h-0 border-transparent overflow-hidden"
                   }`}
                 >
