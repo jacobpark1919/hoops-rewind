@@ -41,14 +41,17 @@ export function Timeline({
   const [availableHeight, setAvailableHeight] = useState<number>(9999);
   const [lockedSpacing, setLockedSpacing] = useState<number | null>(null);
 
-  // Measure available space from timeline top to bottom of viewport
+  // Measure available space: viewport height minus timeline's absolute page position
+  // Uses scroll-independent calculation so overlapping is consistent
   useEffect(() => {
     const measure = () => {
       if (timelineRef.current) {
         requestAnimationFrame(() => {
           if (timelineRef.current) {
-            // Use viewport height minus a fixed header allowance, NOT scroll-dependent rect.top
-            const height = window.innerHeight - 160;
+            // absoluteTop = distance from document top (scroll-independent)
+            const rect = timelineRef.current.getBoundingClientRect();
+            const absoluteTop = rect.top + window.scrollY;
+            const height = window.innerHeight - absoluteTop - 24;
             setAvailableHeight(Math.max(200, height));
           }
         });
