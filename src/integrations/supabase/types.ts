@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      daily_challenge_events: {
+        Row: {
+          challenge_id: string
+          created_at: string
+          event_id: string
+          id: string
+          position: number
+        }
+        Insert: {
+          challenge_id: string
+          created_at?: string
+          event_id: string
+          id?: string
+          position: number
+        }
+        Update: {
+          challenge_id?: string
+          created_at?: string
+          event_id?: string
+          id?: string
+          position?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_challenge_events_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "daily_challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "daily_challenge_events_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "sports_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      daily_challenges: {
+        Row: {
+          challenge_date: string
+          created_at: string
+          id: string
+          sport_filter: string | null
+        }
+        Insert: {
+          challenge_date: string
+          created_at?: string
+          id?: string
+          sport_filter?: string | null
+        }
+        Update: {
+          challenge_date?: string
+          created_at?: string
+          id?: string
+          sport_filter?: string | null
+        }
+        Relationships: []
+      }
       sports_events: {
         Row: {
           created_at: string
