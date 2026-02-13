@@ -65,6 +65,11 @@ export default function Admin() {
   const [newIcon, setNewIcon] = useState("🏀");
   const [showAddEvent, setShowAddEvent] = useState(false);
 
+  // Inline event creation (within challenge form)
+  const [inlineTitle, setInlineTitle] = useState("");
+  const [inlineYear, setInlineYear] = useState("");
+  const [showInlineAdd, setShowInlineAdd] = useState(false);
+
   // Create challenge form
   const [challengeDate, setChallengeDate] = useState("");
   const [challengeSport, setChallengeSport] = useState<string | null>(null);
@@ -146,6 +151,28 @@ export default function Admin() {
           ? [...prev, eventId]
           : prev
     );
+  };
+
+  const handleInlineAddEvent = async () => {
+    if (!inlineTitle || !inlineYear) return;
+    setLoading(true);
+    const sport = challengeSport || filterSport;
+    const icon = SPORT_ICONS[sport] || "🏆";
+    const result = await callAdmin("add-event", "POST", {
+      title: inlineTitle,
+      year: parseInt(inlineYear),
+      sport,
+      icon,
+    }, undefined, passwordInput);
+    if (result?.id) {
+      await fetchEvents();
+      // Auto-select the new event if under 8
+      setSelectedEventIds(prev => prev.length < 8 ? [...prev, result.id] : prev);
+    }
+    setInlineTitle("");
+    setInlineYear("");
+    setShowInlineAdd(false);
+    setLoading(false);
   };
 
   const filteredEvents = events.filter(e => e.sport === filterSport);
@@ -286,6 +313,43 @@ export default function Admin() {
                       );
                     })}
                   </div>
+
+                  {/* Inline new event creation */}
+                  {!showInlineAdd ? (
+                    <button
+                      onClick={() => setShowInlineAdd(true)}
+                      className="w-full text-left px-3 py-2 rounded-lg text-sm text-primary hover:bg-primary/10 border border-dashed border-primary/30 flex items-center gap-2 mt-2 transition-colors"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Create new event</span>
+                    </button>
+                  ) : (
+                    <div className="border border-primary/30 rounded-lg p-3 space-y-2 mt-2 bg-primary/5">
+                      <input
+                        type="text"
+                        placeholder="Event title (e.g. LeBron scores 60 points...)"
+                        value={inlineTitle}
+                        onChange={e => setInlineTitle(e.target.value)}
+                        className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
+                        autoFocus
+                      />
+                      <div className="flex gap-2">
+                        <input
+                          type="number"
+                          placeholder="Year"
+                          value={inlineYear}
+                          onChange={e => setInlineYear(e.target.value)}
+                          className="w-24 px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
+                        />
+                        <Button onClick={handleInlineAddEvent} disabled={!inlineTitle || !inlineYear || loading} size="sm">
+                          Add & Select
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => { setShowInlineAdd(false); setInlineTitle(""); setInlineYear(""); }}>
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <Button onClick={handleCreateChallenge} disabled={selectedEventIds.length !== 8 || !challengeDate || loading} size="sm">
