@@ -47,9 +47,9 @@ export function EventCard({
       }}
     >
       <div className="flex items-start gap-3">
-        <span className="text-3xl">{event.icon}</span>
+        <span className="text-2xl">{event.icon}</span>
         <div className="flex-1 min-w-0">
-          <p className="font-display text-lg font-semibold leading-tight text-foreground">
+          <p className="font-display text-base font-semibold leading-tight text-foreground">
             {event.title}
           </p>
           <p className="text-sm text-muted-foreground mt-1">{event.sport}</p>

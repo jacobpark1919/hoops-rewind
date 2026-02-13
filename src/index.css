@@ -109,7 +109,7 @@ html, body {
 
 @layer components {
   .game-card {
-    @apply bg-card border border-border rounded-xl p-4 cursor-grab active:cursor-grabbing
+    @apply bg-card border border-border rounded-xl px-4 py-2.5 cursor-grab active:cursor-grabbing
            transition-all duration-200 ease-out
            hover:bg-card-hover hover:border-primary/50;
     box-shadow:
@@ -135,7 +135,7 @@ html, body {
   }
 
   .timeline-card {
-    @apply bg-card border-2 border-border rounded-xl p-4
+    @apply bg-card border-2 border-border rounded-xl px-4 py-2.5
            transition-all duration-300 ease-out;
     box-shadow:
       0 4px 6px -1px hsl(var(--foreground) / 0.08),

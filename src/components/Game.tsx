@@ -354,10 +354,15 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           </div>
         </header>
 
+        {/* Date challenge label */}
+        <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-3">
+          {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} Challenge
+        </p>
+
         {/* Current card to place OR cancel drop zone */}
         <div 
           ref={cancelZoneRef}
-          className="mb-8"
+          className="mb-6"
         >
           {currentEvent && !gameComplete && !hasPendingPlacement ? (
             <>
@@ -397,9 +402,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         </div>
 
         {/* Timeline */}
-        <div className="mb-8">
-          <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
-            Timeline (Earliest to Latest)
+        <div className="mb-4">
+          <p className="text-xs text-muted-foreground mb-2 font-medium uppercase tracking-wider">
+            Timeline (Earliest → Latest)
           </p>
           <Timeline
             placedEvents={placedEvents}
