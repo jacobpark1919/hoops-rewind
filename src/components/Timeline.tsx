@@ -211,13 +211,18 @@ export function Timeline({
     );
   }
 
+  // Track which drop zone positions are active for margin adjustments
+  let prevWasActiveDropZone = activeDropZone === 0;
+
   placedEvents.forEach((item, index) => {
     const isPending = item.status === "pending";
     const isPendingAndDragging = isPending && isDragging;
     
     // Calculate margin - pending cards get extra space around them for readability
     const isPrevPending = index > 0 && placedEvents[index - 1].status === "pending";
-    const marginTop = index === 0 ? 0 : isPending ? NORMAL_GAP : isPrevPending ? NORMAL_GAP : cardSpacing - CARD_HEIGHT;
+    // If the previous drop zone is active, use normal gap so the card doesn't overlap into the drop zone
+    const baseMargin = index === 0 ? 0 : isPending ? NORMAL_GAP : isPrevPending ? NORMAL_GAP : cardSpacing - CARD_HEIGHT;
+    const marginTop = prevWasActiveDropZone ? Math.max(baseMargin, NORMAL_GAP) : baseMargin;
     
     // Get drop position for after this card
     const nonPendingIndex = nonPendingEvents.findIndex((e) => e.event.id === item.event.id);
@@ -288,20 +293,24 @@ export function Timeline({
 
     // Drop zone AFTER this non-pending card
     if (!isPending && isDragging) {
+      const isActive = activeDropZone === dropPositionAfter;
       items.push(
         <div 
           key={`drop-${dropPositionAfter}`}
           className={`relative transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
-            activeDropZone === dropPositionAfter 
+            isActive 
               ? 'h-36 border-primary bg-primary/20 mt-3 shadow-lg' 
               : 'h-0 border-transparent overflow-hidden'
           }`}
         >
-          {activeDropZone === dropPositionAfter && (
+          {isActive && (
             <span className="text-primary text-sm font-semibold">Drop here</span>
           )}
         </div>
       );
+      prevWasActiveDropZone = isActive;
+    } else {
+      prevWasActiveDropZone = false;
     }
   });
 
