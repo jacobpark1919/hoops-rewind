@@ -150,14 +150,17 @@ export function Timeline({
       return;
     }
 
-    // Check between cards and after
+    // Check between cards and after — use a 35/65 split biased toward the top
+    // so dragging upward triggers the drop zone earlier
     for (let i = 0; i < cardPositions.length; i++) {
       const card = cardPositions[i];
       const nextCard = cardPositions[i + 1];
       
       if (nextCard) {
-        const midpoint = (card.bottom + nextCard.top) / 2;
-        if (dragY < midpoint) {
+        // Bias the split point 35% from top card's bottom (easier to trigger when dragging up)
+        const gap = nextCard.top - card.bottom;
+        const splitPoint = card.bottom + gap * 0.35;
+        if (dragY < splitPoint) {
           onDropZoneChange(i + 1);
           return;
         }
@@ -200,11 +203,12 @@ export function Timeline({
     items.push(
       <div 
         key="drop-0"
-        className={`relative transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
+        className={`relative rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
           activeDropZone === 0 
             ? 'h-36 border-primary bg-primary/20 mb-3 shadow-lg' 
             : 'h-0 border-transparent overflow-hidden'
         }`}
+        style={{ transition: 'height 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), margin 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), border-color 0.2s, background-color 0.2s, box-shadow 0.2s' }}
       >
         {activeDropZone === 0 && (
           <span className="text-primary text-sm font-semibold">Drop here</span>
@@ -241,6 +245,7 @@ export function Timeline({
         className={`relative flex items-center gap-3 ${isPendingAndDragging ? 'opacity-50 pointer-events-none' : ''}`}
         style={{
           marginTop,
+          transition: 'margin-top 0.4s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.3s ease-out, z-index 0s',
           ...getCardStyle(index, isPending, item.event.id),
         }}
         onMouseEnter={() => !isDragging && setHoveredCardId(item.event.id)}
@@ -299,11 +304,12 @@ export function Timeline({
       items.push(
         <div 
           key={`drop-${dropPositionAfter}`}
-          className={`relative transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
+          className={`relative rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
             isActive 
               ? 'h-36 border-primary bg-primary/20 mt-3 shadow-lg' 
               : 'h-0 border-transparent overflow-hidden'
           }`}
+          style={{ transition: 'height 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), margin 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), border-color 0.2s, background-color 0.2s, box-shadow 0.2s' }}
         >
           {isActive && (
             <span className="text-primary text-sm font-semibold">Drop here</span>
