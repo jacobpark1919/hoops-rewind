@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from "react";
-import { SportsEvent, getRandomEvents } from "@/data/sportsEvents";
+import { SportsEvent, getDailyChallengeEvents } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { Timeline } from "./Timeline";
 import { GameComplete } from "./GameComplete";
@@ -151,7 +151,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setActiveDropZone(null);
     setHoveringCancelZone(false);
     
-    const events = await getRandomEvents(TOTAL_ROUNDS, sportFilter);
+    const events = await getDailyChallengeEvents(sportFilter);
     events.sort((a, b) => a.year - b.year);
     
     setGameEvents(events);
