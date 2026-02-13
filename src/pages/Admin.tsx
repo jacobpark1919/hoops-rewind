@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { Home, Plus, Trash2, Calendar, ChevronDown, ChevronUp } from "lucide-react";
+import { Home, Plus, Trash2, Calendar, ChevronDown, ChevronUp, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface SportEvent {
@@ -45,8 +45,13 @@ function callAdmin(action: string, method: "GET" | "POST" = "GET", body?: any, p
   }).then(r => r.json());
 }
 
+const ADMIN_PASSWORD = "LeBronGoat123!";
+
 export default function Admin() {
   const navigate = useNavigate();
+  const [authenticated, setAuthenticated] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
   const [tab, setTab] = useState<"events" | "challenges">("challenges");
   const [events, setEvents] = useState<SportEvent[]>([]);
   const [challenges, setChallenges] = useState<Challenge[]>([]);
@@ -66,6 +71,14 @@ export default function Admin() {
   const [showCreateChallenge, setShowCreateChallenge] = useState(false);
   const [filterSport, setFilterSport] = useState<string>("Basketball");
   const [expandedChallenge, setExpandedChallenge] = useState<string | null>(null);
+
+  // Enable scrolling only on admin page
+  useEffect(() => {
+    document.documentElement.classList.add("admin-scroll");
+    return () => {
+      document.documentElement.classList.remove("admin-scroll");
+    };
+  }, []);
 
   const fetchEvents = useCallback(async () => {
     const data = await callAdmin("events", "GET");
@@ -135,6 +148,41 @@ export default function Admin() {
   };
 
   const filteredEvents = events.filter(e => e.sport === filterSport);
+
+  const handlePasswordSubmit = () => {
+    if (passwordInput === ADMIN_PASSWORD) {
+      setAuthenticated(true);
+      setPasswordError(false);
+    } else {
+      setPasswordError(true);
+    }
+  };
+
+  if (!authenticated) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="w-full max-w-xs space-y-4 p-6">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Lock className="w-5 h-5 text-muted-foreground" />
+            <h1 className="font-display text-lg font-bold text-foreground">Admin Access</h1>
+          </div>
+          <input
+            type="password"
+            placeholder="Enter password"
+            value={passwordInput}
+            onChange={e => { setPasswordInput(e.target.value); setPasswordError(false); }}
+            onKeyDown={e => e.key === "Enter" && handlePasswordSubmit()}
+            className={`w-full px-4 py-3 rounded-xl border bg-background text-foreground text-sm ${
+              passwordError ? "border-destructive" : "border-border"
+            }`}
+            autoFocus
+          />
+          {passwordError && <p className="text-destructive text-xs">Incorrect password</p>}
+          <Button onClick={handlePasswordSubmit} className="w-full">Enter</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

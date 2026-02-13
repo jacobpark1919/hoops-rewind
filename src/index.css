@@ -6,6 +6,10 @@ html, body {
   overflow: hidden;
 }
 
+html.admin-scroll, html.admin-scroll body {
+  overflow: auto;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap");
 
 @layer base {
