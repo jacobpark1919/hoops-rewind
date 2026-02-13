@@ -20,8 +20,8 @@ interface TimelineProps {
 // Constants for card sizing and overlap behavior
 const CARD_HEIGHT = 80; // Approximate card height in px
 const NORMAL_GAP = 16; // Normal gap between cards
-const MIN_VISIBLE_HEIGHT = 32; // Minimum visible portion when overlapped
-const PENDING_EXTRA_SPACE = 24; // Extra space for pending card's "Tap to place" button
+const MIN_VISIBLE_HEIGHT = 20; // Minimum visible portion when overlapped
+const PENDING_EXTRA_SPACE = 20; // Extra space for pending card's "Tap to place" button
 
 export function Timeline({
   placedEvents,
