@@ -45,11 +45,10 @@ export function Timeline({
   useEffect(() => {
     const measure = () => {
       if (timelineRef.current) {
-        // Use requestAnimationFrame to get accurate post-layout measurements
         requestAnimationFrame(() => {
           if (timelineRef.current) {
-            const rect = timelineRef.current.getBoundingClientRect();
-            const height = window.innerHeight - rect.top - 40;
+            // Use viewport height minus a fixed header allowance, NOT scroll-dependent rect.top
+            const height = window.innerHeight - 160;
             setAvailableHeight(Math.max(200, height));
           }
         });
