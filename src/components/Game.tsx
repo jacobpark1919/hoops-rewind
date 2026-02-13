@@ -44,6 +44,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [dragSource, setDragSource] = useState<"new" | "pending" | null>(null);
   const [hoveringCancelZone, setHoveringCancelZone] = useState(false);
   const [hasDragMoved, setHasDragMoved] = useState(false);
+  const [hasLeftCancelZone, setHasLeftCancelZone] = useState(false);
   
   const cardRef = useRef<HTMLDivElement>(null);
   const cancelZoneRef = useRef<HTMLDivElement>(null);
@@ -109,6 +110,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setActiveDropZone(null);
     setHoveringCancelZone(false);
     setHasDragMoved(false);
+    setHasLeftCancelZone(false);
   }, [handleDropWithRefs]);
 
   const { dragState, startDrag } = useDrag({ onDragEnd: handleDragEnd });
@@ -121,7 +123,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     }
   }, [dragState.isDragging, dragState.offsetY]);
 
-  // Check if dragging over cancel zone
+  // Check if dragging over cancel zone — only after card has left it first
   useEffect(() => {
     if (!dragState.isDragging || dragState.currentY === null || !cancelZoneRef.current) {
       setHoveringCancelZone(false);
@@ -130,8 +132,13 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     
     const rect = cancelZoneRef.current.getBoundingClientRect();
     const isOver = dragState.currentY >= rect.top - 20 && dragState.currentY <= rect.bottom + 20;
-    setHoveringCancelZone(isOver);
-  }, [dragState.isDragging, dragState.currentY]);
+    
+    if (!isOver && !hasLeftCancelZone) {
+      setHasLeftCancelZone(true);
+    }
+    
+    setHoveringCancelZone(isOver && hasLeftCancelZone);
+  }, [dragState.isDragging, dragState.currentY, hasLeftCancelZone]);
 
   const initializeGame = useCallback(async () => {
     // Reset all state first
