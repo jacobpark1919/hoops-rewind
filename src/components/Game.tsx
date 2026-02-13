@@ -152,10 +152,15 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setHoveringCancelZone(false);
     
     const events = await getDailyChallengeEvents(sportFilter);
-    events.sort((a, b) => a.year - b.year);
+    // Shuffle events so they're served in random order
+    for (let i = events.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [events[i], events[j]] = [events[j], events[i]];
+    }
     
     setGameEvents(events);
     if (events.length > 0) {
+      // First card is placed as the seed (shown with its year)
       setPlacedEvents([{ event: events[0], status: null }]);
       setCurrentEventIndex(1);
     } else {
@@ -285,21 +290,24 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         {/* Compact header row with everything */}
         <header className="flex items-center justify-between mb-4">
           {/* Left: Home button + Round counter */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => window.location.href = '/'}
-              className="p-1.5 rounded-full hover:bg-muted transition-colors"
-              aria-label="Back to home"
-            >
-              <Home className="w-5 h-5 text-muted-foreground hover:text-foreground" />
-            </button>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider">Round</span>
-              <span className="font-display text-lg font-bold text-foreground">
-                {currentEventIndex}/{TOTAL_ROUNDS}
-              </span>
-            </div>
-          </div>
+           <div className="flex items-center gap-3">
+             <button
+               onClick={() => window.location.href = '/'}
+               className="p-1.5 rounded-full hover:bg-muted transition-colors"
+               aria-label="Back to home"
+             >
+               <Home className="w-5 h-5 text-muted-foreground hover:text-foreground" />
+             </button>
+             <div className="flex items-center gap-2">
+               <span className="text-xs text-muted-foreground uppercase tracking-wider">Round</span>
+               <span className="font-display text-lg font-bold text-foreground">
+                 {currentEventIndex}/{TOTAL_ROUNDS}
+               </span>
+             </div>
+             <span className="text-[10px] text-muted-foreground uppercase tracking-wider hidden sm:inline">
+               {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+             </span>
+           </div>
           
           {/* Right: Sport selector, Lives, Theme toggle */}
           <div className="flex items-center gap-3">
@@ -353,11 +361,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             <ThemeToggle />
           </div>
         </header>
-
-        {/* Date challenge label */}
-        <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-3">
-          {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} Challenge
-        </p>
 
         {/* Current card to place OR cancel drop zone */}
         <div 
