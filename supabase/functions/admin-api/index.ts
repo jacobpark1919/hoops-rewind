@@ -2,7 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-admin-password",
 };
 
 Deno.serve(async (req) => {
@@ -40,8 +40,17 @@ Deno.serve(async (req) => {
       }
     }
 
-    // POST actions
+    // POST actions require password
     if (req.method === "POST") {
+      const adminPassword = Deno.env.get("ADMIN_PASSWORD");
+      const providedPassword = req.headers.get("x-admin-password");
+      if (!adminPassword || providedPassword !== adminPassword) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
       const body = await req.json();
 
       if (action === "add-event") {
@@ -103,6 +112,10 @@ Deno.serve(async (req) => {
         const { event_id } = body;
         const { error } = await supabase.from("sports_events").delete().eq("id", event_id);
         if (error) throw error;
+        return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+
+      if (action === "verify") {
         return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
     }

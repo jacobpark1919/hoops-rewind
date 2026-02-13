@@ -30,22 +30,23 @@ const SPORT_ICONS: Record<string, string> = {
   "Baseball": "⚾",
 };
 
-function callAdmin(action: string, method: "GET" | "POST" = "GET", body?: any, params?: Record<string, string>) {
+function callAdmin(action: string, method: "GET" | "POST" = "GET", body?: any, params?: Record<string, string>, password?: string) {
   const url = new URL(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-api`);
   url.searchParams.set("action", action);
   if (params) Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
 
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+  };
+  if (password) headers["x-admin-password"] = password;
+
   return fetch(url.toString(), {
     method,
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-    },
+    headers,
     body: body ? JSON.stringify(body) : undefined,
   }).then(r => r.json());
 }
-
-const ADMIN_PASSWORD = "LeBronGoat123!";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -103,7 +104,7 @@ export default function Admin() {
       year: parseInt(newYear),
       sport: newSport,
       icon: newIcon,
-    });
+    }, undefined, passwordInput);
     setNewTitle("");
     setNewYear("");
     setShowAddEvent(false);
@@ -113,7 +114,7 @@ export default function Admin() {
 
   const handleDeleteEvent = async (eventId: string) => {
     if (!confirm("Delete this event? It will also be removed from any challenges.")) return;
-    await callAdmin("delete-event", "POST", { event_id: eventId });
+    await callAdmin("delete-event", "POST", { event_id: eventId }, undefined, passwordInput);
     await fetchEvents();
   };
 
@@ -124,7 +125,7 @@ export default function Admin() {
       challenge_date: challengeDate,
       sport_filter: challengeSport,
       event_ids: selectedEventIds,
-    });
+    }, undefined, passwordInput);
     setSelectedEventIds([]);
     setShowCreateChallenge(false);
     await fetchChallenges();
@@ -133,7 +134,7 @@ export default function Admin() {
 
   const handleDeleteChallenge = async (challengeId: string) => {
     if (!confirm("Delete this challenge?")) return;
-    await callAdmin("delete-challenge", "POST", { challenge_id: challengeId });
+    await callAdmin("delete-challenge", "POST", { challenge_id: challengeId }, undefined, passwordInput);
     await fetchChallenges();
   };
 
@@ -149,12 +150,14 @@ export default function Admin() {
 
   const filteredEvents = events.filter(e => e.sport === filterSport);
 
-  const handlePasswordSubmit = () => {
-    if (passwordInput === ADMIN_PASSWORD) {
+  const handlePasswordSubmit = async () => {
+    // Verify password server-side with a lightweight POST
+    const result = await callAdmin("verify", "POST", {}, undefined, passwordInput);
+    if (result?.error === "Unauthorized") {
+      setPasswordError(true);
+    } else {
       setAuthenticated(true);
       setPasswordError(false);
-    } else {
-      setPasswordError(true);
     }
   };
 
