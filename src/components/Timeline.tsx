@@ -144,33 +144,39 @@ export function Timeline({
     // Sort by top position
     cardPositions.sort((a, b) => a.top - b.top);
 
-    // Check if above the first card
-    if (dragY < cardPositions[0].top) {
+    // Buffer: how far into a card the cursor can be and still trigger the adjacent gap
+    const TRIGGER_BUFFER = 20;
+
+    // Check if above the first card (with buffer into the card)
+    if (dragY < cardPositions[0].top + TRIGGER_BUFFER) {
       onDropZoneChange(0);
       return;
     }
 
-    // Check between cards and after — use a 35/65 split biased toward the top
-    // so dragging upward triggers the drop zone earlier
-    for (let i = 0; i < cardPositions.length; i++) {
+    // Check if below the last card (with buffer into the card)
+    const lastCard = cardPositions[cardPositions.length - 1];
+    if (dragY > lastCard.bottom - TRIGGER_BUFFER) {
+      onDropZoneChange(cardPositions.length);
+      return;
+    }
+
+    // Check between cards — only trigger when cursor is actually in/near the gap
+    for (let i = 0; i < cardPositions.length - 1; i++) {
       const card = cardPositions[i];
       const nextCard = cardPositions[i + 1];
       
-      if (nextCard) {
-        // Bias the split point 35% from top card's bottom (easier to trigger when dragging up)
-        const gap = nextCard.top - card.bottom;
-        const splitPoint = card.bottom + gap * 0.35;
-        if (dragY < splitPoint) {
-          onDropZoneChange(i + 1);
-          return;
-        }
-      } else {
+      // The gap region, expanded by TRIGGER_BUFFER into each card
+      const gapTop = card.bottom - TRIGGER_BUFFER;
+      const gapBottom = nextCard.top + TRIGGER_BUFFER;
+      
+      if (dragY >= gapTop && dragY <= gapBottom) {
         onDropZoneChange(i + 1);
         return;
       }
     }
 
-    onDropZoneChange(cardPositions.length);
+    // Cursor is solidly on a card, not near any gap — no drop zone
+    onDropZoneChange(null);
   }, [isDragging, dragY, nonPendingEvents.length, onDropZoneChange]);
 
   // Calculate vertical offset for each card
