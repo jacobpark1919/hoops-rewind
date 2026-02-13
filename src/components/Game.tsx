@@ -43,6 +43,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [resultHistory, setResultHistory] = useState<boolean[]>([]);
   const [dragSource, setDragSource] = useState<"new" | "pending" | null>(null);
   const [hoveringCancelZone, setHoveringCancelZone] = useState(false);
+  const [hasDragMoved, setHasDragMoved] = useState(false);
   
   const cardRef = useRef<HTMLDivElement>(null);
   const cancelZoneRef = useRef<HTMLDivElement>(null);
@@ -107,9 +108,18 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setDragSource(null);
     setActiveDropZone(null);
     setHoveringCancelZone(false);
+    setHasDragMoved(false);
   }, [handleDropWithRefs]);
 
   const { dragState, startDrag } = useDrag({ onDragEnd: handleDragEnd });
+
+  // Detect when mouse has actually moved during drag
+  useEffect(() => {
+    if (!dragState.isDragging) return;
+    if (Math.abs(dragState.offsetY) > 2) {
+      setHasDragMoved(true);
+    }
+  }, [dragState.isDragging, dragState.offsetY]);
 
   // Check if dragging over cancel zone
   useEffect(() => {
@@ -251,6 +261,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const hasPendingPlacement = pendingPlacement !== null;
   const isDragging = dragState.isDragging;
   const isDraggingNewCard = isDragging && dragSource === "new";
+  const cardCollapsed = isDraggingNewCard && hasDragMoved;
 
   const currentSport = SPORT_OPTIONS.find(s => s.value === sportFilter) || SPORT_OPTIONS[0];
 
@@ -343,7 +354,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         >
           {currentEvent && !gameComplete && !hasPendingPlacement ? (
             <>
-              {!isDraggingNewCard ? (
+              {!cardCollapsed ? (
                 <div className="min-h-[120px] transition-all duration-300 ease-out">
                   <div key={currentEvent.id} className="animate-fade-in-up">
                     <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
