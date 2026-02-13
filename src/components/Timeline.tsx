@@ -39,6 +39,7 @@ export function Timeline({
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [availableHeight, setAvailableHeight] = useState<number>(9999);
+  const [lockedSpacing, setLockedSpacing] = useState<number | null>(null);
 
   // Measure available space from timeline top to bottom of viewport
   useEffect(() => {
@@ -76,22 +77,30 @@ export function Timeline({
   
   const calculateSpacing = () => {
     const normalSpacing = CARD_HEIGHT + NORMAL_GAP;
-    // Account for pending card needing extra space for button
     const extraForPending = hasPending ? PENDING_EXTRA_SPACE : 0;
     const neededHeight = totalCards * CARD_HEIGHT + (totalCards - 1) * NORMAL_GAP + extraForPending;
     
-    // If everything fits with normal spacing, use normal spacing
     if (neededHeight <= availableHeight) {
       return normalSpacing;
     }
     
-    // Need to compress - subtract pending extra space from available
     const effectiveAvailable = availableHeight - extraForPending;
     const spacing = (effectiveAvailable - CARD_HEIGHT) / Math.max(1, totalCards - 1);
     return Math.max(MIN_VISIBLE_HEIGHT, spacing);
   };
 
-  const cardSpacing = calculateSpacing();
+  const computedSpacing = calculateSpacing();
+  
+  // Lock spacing when drag starts so timeline doesn't shift
+  useEffect(() => {
+    if (isDragging) {
+      setLockedSpacing(computedSpacing);
+    } else {
+      setLockedSpacing(null);
+    }
+  }, [isDragging]); // intentionally only depend on isDragging, not computedSpacing
+
+  const cardSpacing = lockedSpacing !== null ? lockedSpacing : computedSpacing;
   const isOverlapping = cardSpacing < CARD_HEIGHT;
 
   // Calculate which drop zone the cursor is over based on Y position relative to cards
@@ -206,8 +215,9 @@ export function Timeline({
     const isPending = item.status === "pending";
     const isPendingAndDragging = isPending && isDragging;
     
-    // Calculate margin for stacking effect - ALWAYS use compressed spacing
-    const marginTop = index === 0 ? 0 : cardSpacing - CARD_HEIGHT;
+    // Calculate margin - pending cards get extra space around them for readability
+    const isPrevPending = index > 0 && placedEvents[index - 1].status === "pending";
+    const marginTop = index === 0 ? 0 : isPending ? NORMAL_GAP : isPrevPending ? NORMAL_GAP : cardSpacing - CARD_HEIGHT;
     
     // Get drop position for after this card
     const nonPendingIndex = nonPendingEvents.findIndex((e) => e.event.id === item.event.id);
