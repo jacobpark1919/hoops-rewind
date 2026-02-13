@@ -357,7 +357,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         {/* Current card to place OR cancel drop zone */}
         <div 
           ref={cancelZoneRef}
-          className="mb-8"
+          className="mb-4"
         >
           {currentEvent && !gameComplete && !hasPendingPlacement ? (
             <>
@@ -397,8 +397,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         </div>
 
         {/* Timeline */}
-        <div className="mb-8">
-          <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
+        <div className="mb-4">
+          <p className="text-sm text-muted-foreground mb-2 font-medium uppercase tracking-wider">
             Timeline (Earliest to Latest)
           </p>
           <Timeline
