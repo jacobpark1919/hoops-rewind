@@ -18,7 +18,7 @@ export function DragOverlay({ event, dragState }: DragOverlayProps) {
         width: dragState.cardRect.width,
       }}
     >
-      <div className="game-card shadow-2xl scale-105">
+      <div className="game-card shadow-2xl">
         <div className="flex items-start gap-3">
           <span className="text-3xl">{event.icon}</span>
           <div className="flex-1 min-w-0">
