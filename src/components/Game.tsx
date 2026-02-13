@@ -412,8 +412,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           <Timeline
             placedEvents={placedEvents}
             activeDropZone={activeDropZone}
-            isDragging={isDragging}
-            dragY={isDragging ? dragState.currentY : null}
+            isDragging={isDragging && hasDragMoved}
+            dragY={isDragging && hasDragMoved ? dragState.currentY : null}
             onDrop={handleDropWithRefs}
             onDropZoneChange={setActiveDropZone}
             onConfirm={hasPendingPlacement ? handleConfirm : undefined}
