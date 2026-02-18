@@ -394,7 +394,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             activeDropZone={activeDropZone}
             isDragging={isDragging && hasDragMoved}
             incorrectEventIds={incorrectEventIds}
-            dragY={isDragging && hasDragMoved ? dragState.currentY : null}
+            dragY={isDragging && hasDragMoved && dragState.cardRect
+              ? dragState.currentY + (dragState.cardRect.top + dragState.cardRect.height / 2 - dragState.startY)
+              : null}
             onDrop={handleDropWithRefs}
             onDropZoneChange={setActiveDropZone}
             onConfirm={hasPendingPlacement ? handleConfirm : undefined}
