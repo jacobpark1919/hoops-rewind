@@ -167,6 +167,12 @@ export function Timeline({
       return;
     }
 
+    // Single card: split at its center
+    if (centers.length === 1) {
+      onDropZoneChange(dragY < centers[0] ? 0 : 1);
+      return;
+    }
+
     // Build boundaries using midpoints between consecutive card centers.
     // Position 0 gets everything above the first midpoint, giving it equal
     // space to other zones instead of just the tiny area above card 0's center.
