@@ -207,23 +207,41 @@ export function Timeline({
     };
   };
 
-  // Build items - drop zones are overlays that don't displace cards
+  // Build items
   const items: JSX.Element[] = [];
+
+  // Drop zone BEFORE first card
+  if (isDragging) {
+    items.push(
+      <div
+        key="drop-0"
+        className={`relative transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
+          activeDropZone === 0
+            ? 'h-36 border-primary bg-primary/20 mb-3 shadow-lg'
+            : 'h-0 border-transparent overflow-hidden'
+        }`}
+      >
+        {activeDropZone === 0 && (
+          <span className="text-primary text-sm font-semibold">Drop here</span>
+        )}
+      </div>
+    );
+  }
+
+  let prevWasActiveDropZone = activeDropZone === 0;
 
   placedEvents.forEach((item, index) => {
     const isPending = item.status === "pending";
     const isPendingAndDragging = isPending && isDragging;
 
     const isPrevPending = index > 0 && placedEvents[index - 1].status === "pending";
+    // Pending cards always get normal gap to stay readable
     const gap = index === 0 ? 0 : (isPending || isPrevPending) ? Math.max(NORMAL_GAP, activeGap) : activeGap;
+    const marginTop = prevWasActiveDropZone ? Math.max(gap, NORMAL_GAP) : gap;
 
     const nonPendingIndex = nonPendingEvents.findIndex((e) => e.event.id === item.event.id);
-    const dropPositionBefore = nonPendingIndex;
     const dropPositionAfter = nonPendingIndex + 1;
-
-    // Drop indicator BEFORE this card (only for the first non-pending card)
-    const isFirstNonPending = nonPendingIndex === 0;
-    const showDropBefore = isFirstNonPending && !isPending && isDragging && activeDropZone === 0;
+    const showDropAfter = !isPending && isDragging && activeDropZone === dropPositionAfter;
 
     items.push(
       <div
@@ -234,19 +252,12 @@ export function Timeline({
         }}
         className={`relative flex items-center gap-3 ${isPendingAndDragging ? 'hidden' : ''}`}
         style={{
-          marginTop: gap,
+          marginTop,
           ...getCardStyle(index, isPending, item.event.id),
         }}
         onMouseEnter={() => !isDragging && setHoveredCardId(item.event.id)}
         onMouseLeave={() => setHoveredCardId(null)}
       >
-        {/* Drop indicator BEFORE first card - absolutely positioned */}
-        {showDropBefore && (
-          <div className="absolute -top-2 left-0 right-0 z-40 flex items-center pointer-events-none" style={{ transform: 'translateY(-100%)' }}>
-            <div className="w-full h-1 bg-primary rounded-full shadow-[0_0_8px_2px_hsl(var(--primary)/0.4)]" />
-          </div>
-        )}
-
         {/* Year badge */}
         <div
           className="absolute -left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10"
@@ -271,13 +282,6 @@ export function Timeline({
           )}
         </div>
 
-        {/* Drop indicator AFTER this card - absolutely positioned */}
-        {!isPending && isDragging && activeDropZone === dropPositionAfter && (
-          <div className="absolute -bottom-2 left-0 right-0 z-40 flex items-center pointer-events-none" style={{ transform: 'translateY(100%)' }}>
-            <div className="w-full h-1 bg-primary rounded-full shadow-[0_0_8px_2px_hsl(var(--primary)/0.4)]" />
-          </div>
-        )}
-
         {/* Tap to place button for pending card */}
         {isPending && onConfirm && !isDragging && (
           <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-20">
@@ -288,8 +292,29 @@ export function Timeline({
         )}
       </div>
     );
-  });
 
+    // Drop zone AFTER this non-pending card
+    if (!isPending && isDragging) {
+      const isActive = activeDropZone === dropPositionAfter;
+      items.push(
+        <div
+          key={`drop-${dropPositionAfter}`}
+          className={`relative transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
+            isActive
+              ? 'h-36 border-primary bg-primary/20 mt-3 shadow-lg'
+              : 'h-0 border-transparent overflow-hidden'
+          }`}
+        >
+          {isActive && (
+            <span className="text-primary text-sm font-semibold">Drop here</span>
+          )}
+        </div>
+      );
+      prevWasActiveDropZone = isActive;
+    } else {
+      prevWasActiveDropZone = false;
+    }
+  });
 
   return (
     <div
