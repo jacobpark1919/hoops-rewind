@@ -181,6 +181,10 @@ html.admin-scroll, html.admin-scroll body {
            rounded-full text-sm;
   }
 
+  .year-badge-incorrect {
+    @apply bg-destructive text-destructive-foreground;
+  }
+
   .score-display {
     @apply font-display text-4xl font-bold text-primary;
   }

@@ -8,6 +8,7 @@ interface TimelineProps {
   placedEvents: Array<{ event: SportsEvent; status: "correct" | "incorrect" | "pending" | "corrected" | null }>;
   activeDropZone: number | null;
   isDragging: boolean;
+  incorrectEventIds?: Set<string>;
   dragY: number | null;
   onDrop: (position: number) => void;
   onDropZoneChange: (position: number | null) => void;
@@ -26,6 +27,7 @@ export function Timeline({
   placedEvents,
   activeDropZone,
   isDragging,
+  incorrectEventIds,
   dragY,
   onDrop,
   onDropZoneChange,
@@ -164,7 +166,10 @@ export function Timeline({
       const nextCard = cardPositions[i + 1];
 
       if (nextCard) {
-        const midpoint = (card.bottom + nextCard.top) / 2;
+        // Use card centers for midpoint to handle overlapping cards
+        const cardMid = (card.top + card.bottom) / 2;
+        const nextCardMid = (nextCard.top + nextCard.bottom) / 2;
+        const midpoint = (cardMid + nextCardMid) / 2;
         if (dragY < midpoint) {
           onDropZoneChange(i + 1);
           return;
@@ -255,7 +260,7 @@ export function Timeline({
           className="absolute -left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10"
           style={{ opacity: isPending ? 0 : 1 }}
         >
-          <span className="year-badge">{item.event.year}</span>
+          <span className={`year-badge ${incorrectEventIds?.has(item.event.id) ? 'year-badge-incorrect' : ''}`}>{item.event.year}</span>
         </div>
 
         <div className="flex-1">

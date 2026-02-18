@@ -39,6 +39,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [pendingPlacement, setPendingPlacement] = useState<{ position: number } | null>(null);
   const [showInstructions, setShowInstructions] = useState(true);
   const [resultHistory, setResultHistory] = useState<boolean[]>([]);
+  const [incorrectEventIds, setIncorrectEventIds] = useState<Set<string>>(new Set());
   const [dragSource, setDragSource] = useState<"new" | "pending" | null>(null);
   const [hoveringCancelZone, setHoveringCancelZone] = useState(false);
   const [hasDragMoved, setHasDragMoved] = useState(false);
@@ -144,6 +145,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setCorrectCount(1);
     setPendingPlacement(null);
     setResultHistory([]);
+    setIncorrectEventIds(new Set());
     setDragSource(null);
     setActiveDropZone(null);
     setHoveringCancelZone(false);
@@ -218,6 +220,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         );
       }, 800);
     } else {
+      setIncorrectEventIds(prev => new Set(prev).add(currentEvent.id));
       
       setTimeout(() => {
         const sorted = [...finalPlaced].sort((a, b) => a.event.year - b.event.year);
@@ -390,6 +393,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             placedEvents={placedEvents}
             activeDropZone={activeDropZone}
             isDragging={isDragging && hasDragMoved}
+            incorrectEventIds={incorrectEventIds}
             dragY={isDragging && hasDragMoved ? dragState.currentY : null}
             onDrop={handleDropWithRefs}
             onDropZoneChange={setActiveDropZone}
