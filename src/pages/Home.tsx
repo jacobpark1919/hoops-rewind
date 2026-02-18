@@ -10,7 +10,6 @@ const SPORT_OPTIONS = [
   { label: "Everything", value: null, icon: "🏆" },
   { label: "Football", value: "American Football", icon: "🏈" },
   { label: "Basketball", value: "Basketball", icon: "🏀" },
-  { label: "Baseball", value: "Baseball", icon: "⚾" },
 ];
 
 export default function Home() {
@@ -50,51 +49,46 @@ export default function Home() {
       {/* Main content centered */}
       <div className="flex-1 flex items-center justify-center">
         {/* Central card */}
-        <div className="relative z-10 bg-card border border-border rounded-2xl shadow-2xl p-6 max-w-sm w-full mx-4 text-center" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 12px 24px -8px rgba(0, 0, 0, 0.15)' }}>
-          {/* Icon */}
-          <div className="flex justify-center mb-4">
-            <div className="text-5xl">🏆</div>
-          </div>
-
+        <div className="relative z-10 bg-card border border-border rounded-xl shadow-2xl p-5 max-w-xs w-full mx-4 text-center" style={{ boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.2), 0 8px 16px -6px rgba(0, 0, 0, 0.12)' }}>
           {/* Title */}
-          <h2 className="font-display text-4xl font-bold text-foreground mb-1">
+          <h2 className="font-display text-2xl font-bold text-foreground mb-0.5">
             Sports Flashback
           </h2>
           
           {/* Date */}
-          <p className="text-muted-foreground text-sm mb-4">
+          <p className="text-muted-foreground text-xs mb-3">
             {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
           </p>
 
           {/* Description */}
-          <p className="text-foreground/80 mb-6">
-            Can you place 8 sports events in chronological order?
+          <p className="text-foreground/80 text-sm mb-4">
+            Place 8 events in chronological order
           </p>
 
           {/* Sport selector dropdown */}
-          <div className="relative mb-6">
+          <div className="relative mb-4">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="w-full flex items-center justify-between gap-2 px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground font-medium hover:bg-secondary transition-colors"
+              className="w-full flex items-center justify-between gap-2 px-3 py-2.5 bg-secondary/50 border border-border rounded-lg text-sm text-foreground font-medium hover:bg-secondary transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <span className="text-xl">{selectedSport.icon}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-lg">{selectedSport.icon}</span>
                 <span>{selectedSport.label}</span>
               </div>
-              <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {dropdownOpen && (
-              <div className="absolute left-0 right-0 mt-2 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
+              <div className="absolute left-0 right-0 mt-1.5 bg-card border border-border rounded-lg shadow-xl z-50 overflow-hidden">
                 {SPORT_OPTIONS.map((sport) => (
                   <button
                     key={sport.label}
                     onClick={() => handleSportSelect(sport)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-muted/50 ${
+                    className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm text-left transition-colors hover:bg-muted/50 ${
                       sport.value === selectedSport.value ? 'bg-primary/10' : ''
                     }`}
                   >
-                    <span className="text-xl">{sport.icon}</span>
+                    <span className="text-lg">{sport.icon}</span>
                     <span className="font-medium text-foreground">{sport.label}</span>
                   </button>
                 ))}
@@ -103,7 +97,7 @@ export default function Home() {
           </div>
 
           {/* Start button */}
-          <Button onClick={handleStart} size="lg" className="w-full text-base">
+          <Button onClick={handleStart} className="w-full text-sm">
             Start Game →
           </Button>
         </div>
