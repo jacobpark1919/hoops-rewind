@@ -7,10 +7,9 @@ import { InstructionsModal } from "./InstructionsModal";
 import { DragOverlay } from "./DragOverlay";
 import { ThemeToggle } from "./ThemeToggle";
 import { useDrag } from "@/hooks/useDrag";
-import { ChevronDown, Heart, Home } from "lucide-react";
+import { ChevronDown, Home } from "lucide-react";
 
 const TOTAL_ROUNDS = 8;
-const MAX_LIVES = 3;
 
 const SPORT_OPTIONS = [
   { label: "Everything", value: null, icon: "🏆" },
@@ -34,7 +33,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [gameEvents, setGameEvents] = useState<SportsEvent[]>([]);
   const [placedEvents, setPlacedEvents] = useState<PlacedEvent[]>([]);
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
-  const [lives, setLives] = useState(MAX_LIVES);
   const [correctCount, setCorrectCount] = useState(0);
   const [activeDropZone, setActiveDropZone] = useState<number | null>(null);
   const [gameComplete, setGameComplete] = useState(false);
@@ -142,8 +140,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
   const initializeGame = useCallback(async () => {
     // Reset all state first
-    setGameComplete(false);
-    setLives(MAX_LIVES);
+    setCorrectCount(1);
     setCorrectCount(1);
     setPendingPlacement(null);
     setResultHistory([]);
@@ -221,7 +218,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         );
       }, 800);
     } else {
-      setLives((l) => l - 1);
       
       setTimeout(() => {
         const sorted = [...finalPlaced].sort((a, b) => a.event.year - b.event.year);
@@ -243,12 +239,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     }
 
     const nextIndex = currentEventIndex + 1;
-    const newLives = isCorrect ? lives : lives - 1;
 
-    if (newLives <= 0) {
-      setTimeout(() => setGameComplete(true), 1200);
-    } else if (nextIndex >= gameEvents.length) {
-      setTimeout(() => setGameComplete(true), 500);
+    if (nextIndex >= gameEvents.length) {
+      const delay = isCorrect ? 500 : 2500;
+      setTimeout(() => setGameComplete(true), delay);
     } else {
       setCurrentEventIndex(nextIndex);
     }
@@ -340,23 +334,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               )}
             </div>
 
-            {/* Lives */}
-            <div className="flex items-center gap-1">
-              {Array.from({ length: MAX_LIVES }).map((_, i) => {
-                const isActive = i < lives;
-                return (
-                  <Heart
-                    key={i}
-                    className={`w-5 h-5 transition-all duration-300 ${
-                      isActive
-                        ? "fill-destructive text-destructive"
-                        : "text-muted-foreground"
-                    }`}
-                  />
-                );
-              })}
-            </div>
-
             {/* Theme toggle */}
             <ThemeToggle />
           </div>
@@ -434,7 +411,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             won={isGameWon}
             correctCount={correctCount}
             totalRounds={TOTAL_ROUNDS}
-            livesRemaining={lives}
             resultHistory={resultHistory}
             sportFilter={sportFilter}
             onPlayAgain={initializeGame}

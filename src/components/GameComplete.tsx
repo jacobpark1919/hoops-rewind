@@ -6,7 +6,6 @@ interface GameCompleteProps {
   won: boolean;
   correctCount: number;
   totalRounds: number;
-  livesRemaining: number;
   resultHistory: boolean[];
   sportFilter?: string | null;
   onPlayAgain: () => void;
@@ -16,7 +15,6 @@ export function GameComplete({
   won,
   correctCount,
   totalRounds,
-  livesRemaining,
   resultHistory,
   sportFilter,
   onPlayAgain,
@@ -30,7 +28,7 @@ export function GameComplete({
   const sportLabel = sportFilter || "Everything";
   const shareText = `Sports Flashback ${sportLabel}
 ${emojiGrid}
-${correctCount}/${totalRounds} correct • ${livesRemaining}❤️ remaining`;
+${correctCount}/${totalRounds} correct`;
 
   const handleCopy = async () => {
     try {
@@ -94,7 +92,7 @@ ${correctCount}/${totalRounds} correct • ${livesRemaining}❤️ remaining`;
             ))}
           </div>
           <p className="text-sm text-muted-foreground">
-            {correctCount}/{totalRounds} correct • {livesRemaining}❤️ remaining
+            {correctCount}/{totalRounds} correct
           </p>
         </div>
 
