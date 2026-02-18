@@ -152,7 +152,9 @@ export function Timeline({
 
     cardPositions.sort((a, b) => a.top - b.top);
 
-    if (dragY < cardPositions[0].top) {
+    // Give position 0 a fair zone: anything above the midpoint of the first card
+    const firstCardMid = (cardPositions[0].top + cardPositions[0].bottom) / 2;
+    if (dragY < firstCardMid) {
       onDropZoneChange(0);
       return;
     }
