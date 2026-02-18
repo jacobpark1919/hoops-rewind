@@ -240,7 +240,7 @@ export function Timeline({
           if (el) cardRefs.current.set(item.event.id, el);
           else cardRefs.current.delete(item.event.id);
         }}
-        className={`relative flex items-center gap-3 ${isPendingAndDragging ? 'opacity-50 pointer-events-none' : ''}`}
+        className={`relative flex items-center gap-3 ${isPendingAndDragging ? 'hidden' : ''}`}
         style={{
           marginTop,
           ...getCardStyle(index, isPending, item.event.id),
