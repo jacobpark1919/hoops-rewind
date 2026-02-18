@@ -167,17 +167,18 @@ export function Timeline({
       return;
     }
 
-    // Position 0: above first card center
-    if (dragY < centers[0]) {
-      onDropZoneChange(0);
-      return;
+    // Build boundaries using midpoints between consecutive card centers.
+    // Position 0 gets everything above the first midpoint, giving it equal
+    // space to other zones instead of just the tiny area above card 0's center.
+    const boundaries: number[] = [];
+    for (let i = 0; i < centers.length - 1; i++) {
+      boundaries.push((centers[i] + centers[i + 1]) / 2);
     }
 
-    // Between cards: use midpoints between consecutive card centers
-    for (let i = 0; i < centers.length - 1; i++) {
-      const midpoint = (centers[i] + centers[i + 1]) / 2;
-      if (dragY < midpoint) {
-        onDropZoneChange(i + 1);
+    // Find which zone the drag point falls into
+    for (let i = 0; i < boundaries.length; i++) {
+      if (dragY < boundaries[i]) {
+        onDropZoneChange(i);
         return;
       }
     }
