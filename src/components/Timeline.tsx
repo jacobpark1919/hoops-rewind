@@ -123,6 +123,29 @@ export function Timeline({
   const totalCards = placedEvents.length;
 
   // Calculate which drop zone the cursor is over
+  // We use a simple approach: divide the space evenly by card count using
+  // the original (pre-expansion) card center positions captured on drag start.
+  const originalCardCenters = useRef<number[]>([]);
+
+  // Capture card centers when drag starts (before any drop zones expand)
+  useEffect(() => {
+    if (isDragging && originalCardCenters.current.length === 0) {
+      const centers: number[] = [];
+      nonPendingEvents.forEach((item) => {
+        const element = cardRefs.current.get(item.event.id);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          centers.push((rect.top + rect.bottom) / 2);
+        }
+      });
+      centers.sort((a, b) => a - b);
+      originalCardCenters.current = centers;
+    }
+    if (!isDragging) {
+      originalCardCenters.current = [];
+    }
+  }, [isDragging]); // intentionally only depend on isDragging to capture once
+
   useEffect(() => {
     if (!isDragging || dragY === null || !timelineRef.current) {
       onDropZoneChange(null);
@@ -130,58 +153,38 @@ export function Timeline({
     }
 
     const timelineRect = timelineRef.current.getBoundingClientRect();
-    const isOver = dragY >= timelineRect.top - 40 && dragY <= timelineRect.bottom + 40;
+    const isOver = dragY >= timelineRect.top - 60 && dragY <= timelineRect.bottom + 60;
 
     if (!isOver) {
       onDropZoneChange(null);
       return;
     }
 
-    const cardPositions: { id: string; top: number; bottom: number; index: number }[] = [];
+    const centers = originalCardCenters.current;
 
-    nonPendingEvents.forEach((item, index) => {
-      const element = cardRefs.current.get(item.event.id);
-      if (element) {
-        const rect = element.getBoundingClientRect();
-        cardPositions.push({ id: item.event.id, top: rect.top, bottom: rect.bottom, index });
-      }
-    });
-
-    if (cardPositions.length === 0) {
+    if (centers.length === 0) {
       onDropZoneChange(0);
       return;
     }
 
-    cardPositions.sort((a, b) => a.top - b.top);
-
-    // Give position 0 a fair zone: anything above the midpoint of the first card
-    const firstCardMid = (cardPositions[0].top + cardPositions[0].bottom) / 2;
-    if (dragY < firstCardMid) {
+    // Position 0: above first card center
+    if (dragY < centers[0]) {
       onDropZoneChange(0);
       return;
     }
 
-    for (let i = 0; i < cardPositions.length; i++) {
-      const card = cardPositions[i];
-      const nextCard = cardPositions[i + 1];
-
-      if (nextCard) {
-        // Use card centers for midpoint to handle overlapping cards
-        const cardMid = (card.top + card.bottom) / 2;
-        const nextCardMid = (nextCard.top + nextCard.bottom) / 2;
-        const midpoint = (cardMid + nextCardMid) / 2;
-        if (dragY < midpoint) {
-          onDropZoneChange(i + 1);
-          return;
-        }
-      } else {
+    // Between cards: use midpoints between consecutive card centers
+    for (let i = 0; i < centers.length - 1; i++) {
+      const midpoint = (centers[i] + centers[i + 1]) / 2;
+      if (dragY < midpoint) {
         onDropZoneChange(i + 1);
         return;
       }
     }
 
-    onDropZoneChange(cardPositions.length);
-  }, [isDragging, dragY, nonPendingEvents.length, onDropZoneChange]);
+    // Position after last card
+    onDropZoneChange(centers.length);
+  }, [isDragging, dragY, onDropZoneChange]);
 
   // Card style for z-index and hover effects
   const getCardStyle = (index: number, isPending: boolean, eventId: string) => {
