@@ -23,8 +23,8 @@ export function GameComplete({
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
 
-  // Generate the emoji grid (first result is always the anchor, so it's "free")
-  const emojiGrid = resultHistory.map((correct) => (correct ? "🟩" : "🟥")).join("");
+  // Generate the emoji grid — prepend a free 🟩 for the anchor event
+  const emojiGrid = "🟩" + resultHistory.map((correct) => (correct ? "🟩" : "🟥")).join("");
   
   // Create shareable text
   const sportLabel = sportFilter || "Everything";
@@ -97,11 +97,13 @@ ${correctCount}/${totalRounds} correct`;
         <div className="bg-card rounded-xl p-4 border border-border mb-6">
           <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">Your Results</p>
           <div className="flex justify-center gap-1 flex-wrap mb-3">
+            {/* Free anchor square */}
+            <span className="text-2xl animate-bounce-in" style={{ animationDelay: '0ms' }}>🟩</span>
             {resultHistory.map((correct, index) => (
               <span 
                 key={index} 
                 className="text-2xl animate-bounce-in"
-                style={{ animationDelay: `${index * 100}ms` }}
+                style={{ animationDelay: `${(index + 1) * 100}ms` }}
               >
                 {correct ? "🟩" : "🟥"}
               </span>
