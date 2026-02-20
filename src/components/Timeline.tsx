@@ -227,18 +227,22 @@ export function Timeline({
   // Build items
   const items: JSX.Element[] = [];
 
+  // Whether we should show drop zones (during drag OR frozen/pending state)
+  const showDropZones = isDragging || activeDropZone !== null;
+
   // Drop zone BEFORE first card
-  if (isDragging) {
+  if (showDropZones) {
+    const isActive = activeDropZone === 0;
     items.push(
       <div
         key="drop-0"
-        className={`relative transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
-          activeDropZone === 0
+        className={`relative transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
+          isActive
             ? 'h-36 border-primary bg-primary/20 mb-3 shadow-lg'
             : 'h-0 border-transparent overflow-hidden'
         }`}
       >
-        {activeDropZone === 0 && (
+        {isActive && (
           <span className="text-primary text-sm font-semibold">Drop here</span>
         )}
       </div>
@@ -258,7 +262,7 @@ export function Timeline({
 
     const nonPendingIndex = nonPendingEvents.findIndex((e) => e.event.id === item.event.id);
     const dropPositionAfter = nonPendingIndex + 1;
-    const showDropAfter = !isPending && isDragging && activeDropZone === dropPositionAfter;
+    const showDropAfter = !isPending && showDropZones && activeDropZone === dropPositionAfter;
 
     items.push(
       <div
@@ -311,12 +315,12 @@ export function Timeline({
     );
 
     // Drop zone AFTER this non-pending card
-    if (!isPending && isDragging) {
+    if (!isPending && showDropZones) {
       const isActive = activeDropZone === dropPositionAfter;
       items.push(
         <div
           key={`drop-${dropPositionAfter}`}
-          className={`relative transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
+          className={`relative transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
             isActive
               ? 'h-36 border-primary bg-primary/20 mt-3 shadow-lg'
               : 'h-0 border-transparent overflow-hidden'
