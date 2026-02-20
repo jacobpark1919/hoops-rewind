@@ -222,34 +222,33 @@ export function Timeline({
     const isFrozen = isActive && !isDragging && pendingItem;
 
     if (isFrozen) {
-      // Render the pending card living inside the drop zone area
+      // Render the pending card living inside the drop zone area.
+      // No height transition — must be instantaneous to avoid layout jump.
       return (
         <div
           key={`drop-${position}`}
-          className={`relative transition-all duration-300 ease-out rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 p-3 ${marginClass ?? ''}`}
+          className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 p-2 ${marginClass ?? ''}`}
         >
-          {/* Year badge placeholder (hidden for pending) */}
-          <div className="absolute -left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 opacity-0">
-            <span className="year-badge">{pendingItem.event.year}</span>
-          </div>
-
           <div
+            ref={(el) => {
+              if (el) cardRefs.current.set(pendingItem.event.id, el);
+              else cardRefs.current.delete(pendingItem.event.id);
+            }}
             onMouseDown={(e) => {
               const target = e.currentTarget;
               onPendingDragStart?.(e, target);
             }}
-            className="cursor-grab active:cursor-grabbing"
+            className="cursor-grab active:cursor-grabbing relative"
           >
             <EventCard event={pendingItem.event} showYear={false} status={pendingItem.status} />
+            {onConfirm && (
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-20">
+                <Button onClick={onConfirm} size="sm" className="rounded-full shadow-lg px-4 text-sm font-medium">
+                  Tap to place
+                </Button>
+              </div>
+            )}
           </div>
-
-          {onConfirm && (
-            <div className="flex justify-center mt-3">
-              <Button onClick={onConfirm} size="sm" className="rounded-full shadow-lg px-4 text-sm font-medium">
-                Tap to place
-              </Button>
-            </div>
-          )}
         </div>
       );
     }
@@ -260,7 +259,7 @@ export function Timeline({
         key={`drop-${position}`}
         className={`relative transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
           isActive
-            ? `h-36 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
+            ? `h-24 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
             : 'h-0 border-transparent overflow-hidden'
         }`}
       >
