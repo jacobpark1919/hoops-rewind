@@ -1,4 +1,4 @@
-import { Trophy, RotateCcw, Copy, Check } from "lucide-react";
+import { Trophy, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ interface GameCompleteProps {
   totalRounds: number;
   resultHistory: boolean[];
   sportFilter?: string | null;
-  onPlayAgain: () => void;
+  onViewTimeline: () => void;
 }
 
 export function GameComplete({
@@ -18,7 +18,7 @@ export function GameComplete({
   totalRounds,
   resultHistory,
   sportFilter,
-  onPlayAgain,
+  onViewTimeline,
 }: GameCompleteProps) {
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
@@ -156,12 +156,11 @@ ${correctCount}/${totalRounds} correct`;
           </div>
 
           <Button
-            onClick={onPlayAgain}
+            onClick={onViewTimeline}
             size="lg"
             className="w-full font-display text-lg"
           >
-            <RotateCcw className="w-5 h-5 mr-2" />
-            Play Again
+            View Timeline
           </Button>
         </div>
       </div>

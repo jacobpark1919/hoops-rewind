@@ -217,12 +217,11 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     }
 
     const nextIndex = currentEventIndex + 1;
+    setCurrentEventIndex(nextIndex); // always advance so round counter hits 8/8 and ghost card disappears
 
     if (nextIndex >= gameEvents.length) {
       const delay = isCorrect ? 500 : 2500;
       setTimeout(() => setGameComplete(true), delay);
-    } else {
-      setCurrentEventIndex(nextIndex);
     }
   };
 
@@ -424,7 +423,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             totalRounds={TOTAL_ROUNDS}
             resultHistory={resultHistory}
             sportFilter={sportFilter}
-            onPlayAgain={initializeGame}
+            onViewTimeline={() => setGameComplete(false)}
           />
         )}
 
