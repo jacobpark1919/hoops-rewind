@@ -72,7 +72,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
             </div>
             <div className="flex items-start gap-3">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-sm flex items-center justify-center">3</span>
-              <p className="text-foreground text-sm">Try our different game modes!</p>
+              <p className="text-foreground text-sm">This is a daily game so come back tomorrow for a new puzzle!</p>
             </div>
           </div>
 
