@@ -223,11 +223,12 @@ export function Timeline({
 
     if (isFrozen) {
       // Render the pending card living inside the drop zone area.
-      // No height transition — must be instantaneous to avoid layout jump.
+      // No CSS transitions on this container — prevents any height animation on drop.
+      // min-h-28 matches the active drop zone height so the layout stays pixel-perfect static.
       return (
         <div
           key={`drop-${position}`}
-          className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 p-2 ${marginClass ?? ''}`}
+          className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 min-h-28 flex flex-col justify-center p-2 ${marginClass ?? ''}`}
         >
           <div
             ref={(el) => {
@@ -259,7 +260,7 @@ export function Timeline({
         key={`drop-${position}`}
         className={`relative transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
           isActive
-            ? `h-24 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
+            ? `h-28 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
             : 'h-0 border-transparent overflow-hidden'
         }`}
       >

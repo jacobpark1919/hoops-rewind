@@ -414,8 +414,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           <p
             className="text-xs text-muted-foreground font-medium uppercase tracking-wider transition-all duration-300 ease-out"
             style={{
-              marginBottom: isDragging && hasDragMoved ? 0 : 8,
-              transform: isDragging && hasDragMoved ? 'translateY(-8px)' : 'translateY(0)',
+              marginBottom: (isDragging && hasDragMoved) || hasPendingPlacement ? 0 : 8,
+              transform: (isDragging && hasDragMoved) || hasPendingPlacement ? 'translateY(-8px)' : 'translateY(0)',
             }}
           >
             Timeline (Earliest → Latest)
