@@ -21,13 +21,13 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
 
   return (
     <div 
-      className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-200 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 transition-all duration-200 ${
         isVisible ? 'bg-black/50' : 'bg-black/0'
       }`}
       onClick={handleClose}
     >
       <div 
-        className={`relative bg-card border border-border rounded-2xl p-6 max-w-sm w-full shadow-2xl transition-all duration-200 ${
+        className={`relative bg-card border border-border rounded-2xl p-4 sm:p-6 max-w-sm w-full shadow-2xl transition-all duration-200 ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -35,51 +35,51 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
         {/* Close button */}
         <button
           onClick={handleClose}
-          className="absolute top-3 right-3 p-1 rounded-full hover:bg-muted transition-colors"
+          className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 p-1 rounded-full hover:bg-muted transition-colors"
         >
-          <X className="w-5 h-5 text-muted-foreground" />
+          <X className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
         </button>
 
         {/* Content */}
         <div className="text-center">
-          <h2 className="font-display text-2xl font-bold text-foreground mb-2">
+          <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-1.5 sm:mb-2">
             How to Play
           </h2>
           
           {/* Drag illustration */}
-          <div className="my-6 flex justify-center">
-          <div className="w-full rounded-xl overflow-hidden bg-muted/30">
+          <div className="my-3 sm:my-6 flex justify-center">
+            <div className="w-full rounded-xl overflow-hidden bg-muted/30">
               <video
                 src={dragHintVideo}
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="w-full block"
+                className="w-full block max-h-32 sm:max-h-none object-cover"
               />
             </div>
           </div>
 
           {/* Instructions */}
-          <div className="space-y-3 text-left mb-6">
-            <div className="flex items-start gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-sm flex items-center justify-center">1</span>
-              <p className="text-foreground text-sm">Drag each event card into the timeline</p>
+          <div className="space-y-2 sm:space-y-3 text-left mb-4 sm:mb-6">
+            <div className="flex items-start gap-2 sm:gap-3">
+              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm flex items-center justify-center">1</span>
+              <p className="text-foreground text-xs sm:text-sm">Drag each event card into the timeline</p>
             </div>
-            <div className="flex items-start gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-sm flex items-center justify-center">2</span>
-              <p className="text-foreground text-sm">Place it where you think it belongs chronologically</p>
+            <div className="flex items-start gap-2 sm:gap-3">
+              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm flex items-center justify-center">2</span>
+              <p className="text-foreground text-xs sm:text-sm">Place it where you think it belongs chronologically</p>
             </div>
-            <div className="flex items-start gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-sm flex items-center justify-center">3</span>
-              <p className="text-foreground text-sm">This is a daily game so come back tomorrow for a new puzzle!</p>
+            <div className="flex items-start gap-2 sm:gap-3">
+              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm flex items-center justify-center">3</span>
+              <p className="text-foreground text-xs sm:text-sm">Daily game — come back tomorrow for a new puzzle!</p>
             </div>
           </div>
 
           {/* Start button */}
           <button
             onClick={handleClose}
-            className="w-full py-3 px-6 bg-primary text-primary-foreground font-display font-bold rounded-xl transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
+            className="w-full py-2.5 sm:py-3 px-6 bg-primary text-primary-foreground font-display font-bold text-sm sm:text-base rounded-xl transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
           >
             Let's Go!
           </button>
