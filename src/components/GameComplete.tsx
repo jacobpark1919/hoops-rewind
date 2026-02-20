@@ -3,6 +3,13 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const ALL_SPORT_OPTIONS = [
+  { label: "Everything", value: null, icon: "🏆", path: "/play" },
+  { label: "Football", value: "American Football", icon: "🏈", path: "/play?sport=American+Football" },
+  { label: "Basketball", value: "Basketball", icon: "🏀", path: "/play?sport=Basketball" },
+  { label: "Baseball", value: "Baseball", icon: "⚾", path: "/play?sport=Baseball" },
+];
+
 interface GameCompleteProps {
   won: boolean;
   correctCount: number;
@@ -134,27 +141,22 @@ ${correctCount}/${totalRounds} correct`;
             )}
           </Button>
 
-          {/* Try other modes */}
+          {/* Try other modes — exclude the current one */}
           <p className="text-xs text-muted-foreground uppercase tracking-wider flex items-center justify-center gap-1.5 mt-1">
             Try a different game mode
           </p>
           <div className="grid grid-cols-2 gap-3">
-            <Button
-              onClick={() => navigate("/play?sport=American+Football")}
-              size="lg"
-              variant="outline"
-              className="w-full font-display"
-            >
-              🏈 Football
-            </Button>
-            <Button
-              onClick={() => navigate("/play")}
-              size="lg"
-              variant="outline"
-              className="w-full font-display"
-            >
-              🏆 All Sports
-            </Button>
+            {ALL_SPORT_OPTIONS.filter(s => s.value !== (sportFilter ?? null)).map((sport) => (
+              <Button
+                key={sport.label}
+                onClick={() => navigate(sport.path)}
+                size="lg"
+                variant="outline"
+                className="w-full font-display"
+              >
+                {sport.icon} {sport.label}
+              </Button>
+            ))}
           </div>
 
           <Button
