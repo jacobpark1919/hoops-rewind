@@ -227,26 +227,20 @@ export function Timeline({
   // Build items
   const items: JSX.Element[] = [];
 
-  // Drop zone BEFORE first card — floats upward so existing cards never move
+  // Drop zone BEFORE first card
   if (isDragging) {
     items.push(
-      <div key="drop-0" className="relative h-0 overflow-visible z-40">
-        <div
-          className={`absolute left-0 right-0 rounded-xl border-2 border-dashed flex items-center justify-center transition-all duration-200 ease-out ${
-            activeDropZone === 0
-              ? 'border-primary bg-primary/20 shadow-lg opacity-100'
-              : 'border-transparent opacity-0 pointer-events-none'
-          }`}
-          style={{
-            bottom: 0,
-            height: 144,
-            transform: 'translateY(-100%)',
-          }}
-        >
-          {activeDropZone === 0 && (
-            <span className="text-primary text-sm font-semibold">Drop here</span>
-          )}
-        </div>
+      <div
+        key="drop-0"
+        className={`relative transition-all duration-200 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
+          activeDropZone === 0
+            ? 'h-36 border-primary bg-primary/20 mb-3 shadow-lg'
+            : 'h-0 border-transparent overflow-hidden'
+        }`}
+      >
+        {activeDropZone === 0 && (
+          <span className="text-primary text-sm font-semibold">Drop here</span>
+        )}
       </div>
     );
   }
