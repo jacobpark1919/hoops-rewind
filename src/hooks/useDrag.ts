@@ -4,6 +4,7 @@ export interface DragState {
   isDragging: boolean;
   startY: number;
   currentY: number;
+  prevY: number;
   offsetY: number;
   cardRect: DOMRect | null;
 }
@@ -17,6 +18,7 @@ export function useDrag(options: UseDragOptions = {}) {
     isDragging: false,
     startY: 0,
     currentY: 0,
+    prevY: 0,
     offsetY: 0,
     cardRect: null,
   });
@@ -31,6 +33,7 @@ export function useDrag(options: UseDragOptions = {}) {
       isDragging: true,
       startY: e.clientY,
       currentY: e.clientY,
+      prevY: e.clientY,
       offsetY: 0,
       cardRect: rect,
     });
@@ -42,6 +45,7 @@ export function useDrag(options: UseDragOptions = {}) {
     const handleMouseMove = (e: MouseEvent) => {
       setDragState(prev => ({
         ...prev,
+        prevY: prev.currentY,
         currentY: e.clientY,
         offsetY: e.clientY - prev.startY,
       }));
@@ -52,6 +56,7 @@ export function useDrag(options: UseDragOptions = {}) {
       setDragState(prev => ({
         ...prev,
         isDragging: false,
+        prevY: prev.currentY,
         offsetY: 0,
         cardRect: null,
       }));
