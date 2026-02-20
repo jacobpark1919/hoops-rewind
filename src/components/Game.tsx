@@ -413,14 +413,14 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             incorrectEventIds={incorrectEventIds}
             dragY={isDragging && hasDragMoved && dragState.cardRect
               ? (() => {
-                  const goingDown = dragState.currentY >= dragState.startY;
+                  const goingDown = dragState.currentY >= dragState.prevY;
                   const cardVisualTop = dragState.cardRect.top + (dragState.currentY - dragState.startY);
                   return goingDown
                     ? cardVisualTop + dragState.cardRect.height  // bottom edge when going down
                     : cardVisualTop;                             // top edge when going up
                 })()
               : null}
-            isDraggingDown={dragState.currentY >= dragState.startY}
+            isDraggingDown={dragState.currentY >= dragState.prevY}
             onDrop={handleDropWithRefs}
             onDropZoneChange={setActiveDropZone}
             onConfirm={hasPendingPlacement ? handleConfirm : undefined}
