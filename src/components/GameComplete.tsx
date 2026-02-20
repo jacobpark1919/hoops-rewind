@@ -134,7 +134,7 @@ ${correctCount}/${totalRounds} correct`;
 
           {/* Try other modes */}
           <p className="text-xs text-muted-foreground uppercase tracking-wider flex items-center justify-center gap-1.5 mt-1">
-            Try a different game mode <span>→</span>
+            Try a different game mode
           </p>
           <div className="grid grid-cols-2 gap-3">
             <Button
