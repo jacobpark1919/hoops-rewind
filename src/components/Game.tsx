@@ -397,12 +397,12 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 // so the layout doesn't shift when the card is dropped.
                 <div 
                   className={`border-2 rounded-xl flex items-center justify-center ${
-                    !hasPendingPlacement && hoveringCancelZone 
+                    dragState.isDragging && !hasPendingPlacement && hoveringCancelZone 
                       ? "h-24 border-dashed border-primary bg-primary/10 transition-all duration-300 ease-out" 
                       : "h-0 border-transparent overflow-hidden"
                   }`}
                 >
-                  {!hasPendingPlacement && (
+                  {dragState.isDragging && !hasPendingPlacement && (
                     <div className={`transition-all duration-200 ease-out ${hoveringCancelZone ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
                       <span className="text-primary text-sm font-medium">Drop here to cancel</span>
                     </div>
