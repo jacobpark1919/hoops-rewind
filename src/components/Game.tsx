@@ -396,9 +396,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 // Keep identical DOM structure whether dragging (collapsed) or pending placement
                 // so the layout doesn't shift when the card is dropped.
                 <div 
-                  className={`transition-all duration-300 ease-out border-2 border-dashed rounded-xl flex items-center justify-center ${
+                  className={`border-2 rounded-xl flex items-center justify-center ${
                     !hasPendingPlacement && hoveringCancelZone 
-                      ? "h-24 border-primary bg-primary/10" 
+                      ? "h-24 border-dashed border-primary bg-primary/10 transition-all duration-300 ease-out" 
                       : "h-0 border-transparent overflow-hidden"
                   }`}
                 >
