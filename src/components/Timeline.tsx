@@ -16,7 +16,7 @@ interface TimelineProps {
   onDropZoneChange: (position: number | null) => void;
   onConfirm?: () => void;
   onCancel?: () => void;
-  onPendingDragStart?: (e: React.MouseEvent, element: HTMLElement) => void;
+  onPendingDragStart?: (e: React.MouseEvent | React.TouchEvent, element: HTMLElement) => void;
   onPendingDragEnd?: () => void;
 }
 
@@ -248,7 +248,11 @@ export function Timeline({
               const target = e.currentTarget;
               onPendingDragStart?.(e, target);
             }}
-            className="cursor-grab active:cursor-grabbing relative"
+            onTouchStart={(e) => {
+              const target = e.currentTarget;
+              onPendingDragStart?.(e, target);
+            }}
+            className="cursor-grab active:cursor-grabbing relative touch-none"
           >
             <EventCard event={pendingItem.event} showYear={false} status={pendingItem.status} />
             {onConfirm && (
