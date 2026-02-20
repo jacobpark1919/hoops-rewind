@@ -298,7 +298,7 @@ export function Timeline({
     const dropPositionAfter = nonPendingIndex + 1;
 
     const isPrevActiveZone = prevWasActiveDropZone;
-    const gap = index === 0 ? 0 : activeGap;
+    const gap = nonPendingIndex === 0 ? 0 : activeGap;
     const marginTop = isPrevActiveZone ? Math.max(gap, NORMAL_GAP) : gap;
 
     const isHovered = hoveredCardId === item.event.id && isOverlapping && !isDragging;
