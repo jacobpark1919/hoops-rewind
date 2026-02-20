@@ -167,16 +167,20 @@ export function Timeline({
       return;
     }
 
-    // Position 0: above first card center
+    // dragY is already the trailing edge of the dragged card:
+    // - bottom edge when dragging down
+    // - top edge when dragging up
+    // Activate a drop zone when that edge crosses the center of the adjacent card.
+
+    // Position 0: dragged card's edge is above the center of the first card
     if (dragY < centers[0]) {
       onDropZoneChange(0);
       return;
     }
 
-    // Between cards: use midpoints between consecutive card centers
+    // Between cards: activate zone i+1 when edge crosses center of card i+1
     for (let i = 0; i < centers.length - 1; i++) {
-      const midpoint = (centers[i] + centers[i + 1]) / 2;
-      if (dragY < midpoint) {
+      if (dragY < centers[i + 1]) {
         onDropZoneChange(i + 1);
         return;
       }
