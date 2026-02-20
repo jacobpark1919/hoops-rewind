@@ -292,9 +292,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                  {currentEventIndex}/{TOTAL_ROUNDS}
                </span>
              </div>
-             <div className="flex flex-col leading-none">
-               <span className="text-xs font-semibold text-foreground">
-                 #{(() => {
+             <div className="flex flex-col gap-0.5 leading-none">
+               <span className="text-sm font-bold text-foreground">
+                 Puzzle #{(() => {
                    const origin = new Date('2026-02-12');
                    const today = new Date();
                    const todayLocal = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -302,7 +302,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                    return Math.max(1, diff + 1);
                  })()}
                </span>
-               <span className="text-[10px] text-muted-foreground">
+               <span className="text-xs text-muted-foreground">
                  {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                </span>
              </div>
