@@ -293,6 +293,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                </span>
              </div>
              <div className="flex items-center gap-1.5">
+               <span className="text-sm text-muted-foreground">
+                 {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+               </span>
+               <span className="text-muted-foreground text-sm">–</span>
                <span className="text-sm font-bold text-foreground">
                  Puzzle #{(() => {
                    const origin = new Date('2026-02-12');
@@ -301,10 +305,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                    const diff = Math.floor((todayLocal.getTime() - origin.getTime()) / (1000 * 60 * 60 * 24));
                    return Math.max(1, diff + 1);
                  })()}
-               </span>
-               <span className="text-muted-foreground text-sm">·</span>
-               <span className="text-sm text-muted-foreground">
-                 {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                </span>
              </div>
            </div>
