@@ -9,6 +9,7 @@ import { DarkModeHint } from "@/components/DarkModeHint";
 const SPORT_OPTIONS = [
   { label: "Everything", value: null, icon: "🏆" },
   { label: "Football", value: "American Football", icon: "🏈" },
+  { label: "Basketball", value: "Basketball", icon: "🏀" },
 ];
 
 export default function Home() {

@@ -14,6 +14,8 @@ const TOTAL_ROUNDS = 8;
 const SPORT_OPTIONS = [
   { label: "Everything", value: null, icon: "🏆" },
   { label: "Football", value: "American Football", icon: "🏈" },
+  { label: "Basketball", value: "Basketball", icon: "🏀" },
+  { label: "Baseball", value: "Baseball", icon: "⚾" },
 ];
 
 interface PlacedEvent {
@@ -276,28 +278,28 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     <div className="min-h-screen bg-background">
       <div className="container max-w-2xl mx-auto py-4 px-4">
         {/* Compact header row with everything */}
-        <header className="flex items-center justify-between mb-1 sm:mb-2 gap-0.5 sm:gap-1">
+        <header className="flex items-center justify-between mb-2 gap-1">
           {/* Left: Home button + Round counter + date/puzzle */}
-          <div className="flex items-center gap-1 sm:gap-3 min-w-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
             <button
               onClick={() => window.location.href = '/'}
-              className="p-1 sm:p-1.5 rounded-full hover:bg-muted transition-colors flex-shrink-0"
+              className="p-1.5 rounded-full hover:bg-muted transition-colors flex-shrink-0"
               aria-label="Back to home"
             >
-              <Home className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-muted-foreground hover:text-foreground" />
+              <Home className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground hover:text-foreground" />
             </button>
-            <div className="flex items-center gap-0.5 sm:gap-2 flex-shrink-0">
+            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
               <span className="text-xs text-muted-foreground uppercase tracking-wider hidden sm:inline">Round</span>
-              <span className="font-display text-[11px] sm:text-lg font-bold text-foreground whitespace-nowrap">
-                <span className="sm:hidden">R</span>{currentEventIndex}/{TOTAL_ROUNDS}
+              <span className="font-display text-sm sm:text-lg font-bold text-foreground whitespace-nowrap">
+                <span className="sm:hidden">R </span>{currentEventIndex}/{TOTAL_ROUNDS}
               </span>
             </div>
-            <div className="flex items-center gap-0.5 sm:gap-1.5 min-w-0">
-              <span className="text-[10px] sm:text-sm text-muted-foreground truncate">
-                {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+            <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
+              <span className="text-xs sm:text-sm text-muted-foreground truncate">
+                {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
               </span>
-              <span className="text-muted-foreground text-[10px] sm:text-sm flex-shrink-0">–</span>
-              <span className="text-[10px] sm:text-sm font-bold text-foreground whitespace-nowrap flex-shrink-0">
+              <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0">–</span>
+              <span className="text-xs sm:text-sm font-bold text-foreground whitespace-nowrap flex-shrink-0">
                 #{(() => {
                   const origin = new Date('2026-02-12');
                   const today = new Date();
@@ -310,16 +312,16 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           </div>
           
           {/* Right: Sport selector + Theme toggle */}
-          <div className="flex items-center gap-1 sm:gap-3 flex-shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             {/* Sport dropdown */}
             <div className="relative">
               <button
                 onClick={() => setSportDropdownOpen(!sportDropdownOpen)}
-                className="flex items-center gap-0.5 sm:gap-1.5 text-[10px] sm:text-sm font-semibold text-primary-foreground px-1.5 sm:px-2.5 py-0.5 sm:py-1 bg-primary rounded-full hover:bg-primary/80 transition-colors shadow-sm"
+                className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-semibold text-primary-foreground px-2 sm:px-2.5 py-1 bg-primary rounded-full hover:bg-primary/80 transition-colors shadow-sm"
               >
-                <span className="text-sm sm:text-base">{currentSport.icon}</span>
+                <span>{currentSport.icon}</span>
                 <span className="hidden sm:inline">{currentSport.label}</span>
-                <ChevronDown className={`w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 transition-transform ${sportDropdownOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform ${sportDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
               
               {sportDropdownOpen && (
@@ -352,7 +354,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               {!cardCollapsed && !hasPendingPlacement ? (
                 <div className="min-h-[120px] transition-all duration-300 ease-out">
                   <div key={currentEvent.id} className="animate-fade-in-up">
-                    <p className="text-[10px] sm:text-sm text-muted-foreground mb-1.5 sm:mb-3 font-medium uppercase tracking-wider">
+                    <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
                       Place this event in the timeline
                     </p>
                     <div
@@ -379,7 +381,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         {/* Timeline */}
         <div className="mb-4 relative">
           <p
-            className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider transition-all duration-300 ease-out"
+            className="text-xs text-muted-foreground font-medium uppercase tracking-wider transition-all duration-300 ease-out"
             style={{
               marginBottom: (isDragging && hasDragMoved) || hasPendingPlacement ? 0 : 8,
               transform: (isDragging && hasDragMoved) || hasPendingPlacement ? 'translateY(-8px)' : 'translateY(0)',

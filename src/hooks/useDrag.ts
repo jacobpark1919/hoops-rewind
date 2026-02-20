@@ -75,17 +75,9 @@ export function useDrag(options: UseDragOptions = {}) {
     // Touch handlers
     const handleTouchMove = (e: TouchEvent) => {
       e.preventDefault(); // prevent page scroll while dragging
-      e.stopPropagation();
-      if (e.touches.length > 0) {
-        handleMove(e.touches[0].clientY);
-      }
+      handleMove(e.touches[0].clientY);
     };
     const handleTouchEnd = (e: TouchEvent) => {
-      e.preventDefault();
-      const clientY = e.changedTouches[0]?.clientY ?? dragState.currentY;
-      handleEnd(clientY);
-    };
-    const handleTouchCancel = (e: TouchEvent) => {
       const clientY = e.changedTouches[0]?.clientY ?? dragState.currentY;
       handleEnd(clientY);
     };
@@ -93,15 +85,13 @@ export function useDrag(options: UseDragOptions = {}) {
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
-    document.addEventListener("touchend", handleTouchEnd, { passive: false });
-    document.addEventListener("touchcancel", handleTouchCancel);
+    document.addEventListener("touchend", handleTouchEnd);
 
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
-      document.removeEventListener("touchcancel", handleTouchCancel);
     };
   }, [dragState.isDragging, dragState.currentY]);
 

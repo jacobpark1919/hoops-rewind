@@ -46,13 +46,13 @@ export function EventCard({
         boxShadow: '0 4px 12px -2px rgba(0, 0, 0, 0.15), 0 2px 6px -2px rgba(0, 0, 0, 0.1)',
       }}
     >
-      <div className="flex items-start gap-1.5 sm:gap-3">
-        <span className="text-base sm:text-2xl">{event.icon}</span>
+      <div className="flex items-start gap-2 sm:gap-3">
+        <span className="text-xl sm:text-2xl">{event.icon}</span>
         <div className="flex-1 min-w-0">
-          <p className="font-display text-xs sm:text-base font-semibold leading-tight text-foreground">
+          <p className="font-display text-sm sm:text-base font-semibold leading-tight text-foreground">
             {event.title}
           </p>
-          <p className="text-[10px] sm:text-sm text-muted-foreground mt-0 sm:mt-1">{event.sport}</p>
+          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">{event.sport}</p>
         </div>
       </div>
     </div>
