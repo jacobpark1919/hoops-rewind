@@ -1,6 +1,7 @@
 import { Trophy, RotateCcw, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface GameCompleteProps {
   won: boolean;
@@ -20,6 +21,7 @@ export function GameComplete({
   onPlayAgain,
 }: GameCompleteProps) {
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
 
   // Generate the emoji grid (first result is always the anchor, so it's "free")
   const emojiGrid = resultHistory.map((correct) => (correct ? "🟩" : "🟥")).join("");
@@ -72,12 +74,26 @@ ${correctCount}/${totalRounds} correct`;
               GAME OVER
             </h2>
             <p className="text-muted-foreground text-lg mb-6">
-              Better luck next time!
+              Come back tomorrow for a new timeline!
             </p>
           </>
         )}
 
-        {/* Emoji Result Grid */}
+        {/* Stats grid - now first */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <p className="text-3xl font-display font-bold text-primary">{correctCount}</p>
+            <p className="text-xs text-muted-foreground">Correct</p>
+          </div>
+          <div className="bg-card rounded-xl p-4 border border-border">
+            <p className="text-3xl font-display font-bold text-foreground">
+              {Math.round((correctCount / totalRounds) * 100)}%
+            </p>
+            <p className="text-xs text-muted-foreground">Accuracy</p>
+          </div>
+        </div>
+
+        {/* Emoji Result Grid - now second */}
         <div className="bg-card rounded-xl p-4 border border-border mb-6">
           <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">Your Results</p>
           <div className="flex justify-center gap-1 flex-wrap mb-3">
@@ -94,19 +110,6 @@ ${correctCount}/${totalRounds} correct`;
           <p className="text-sm text-muted-foreground">
             {correctCount}/{totalRounds} correct
           </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="bg-card rounded-xl p-4 border border-border">
-            <p className="text-3xl font-display font-bold text-primary">{correctCount}</p>
-            <p className="text-xs text-muted-foreground">Correct</p>
-          </div>
-          <div className="bg-card rounded-xl p-4 border border-border">
-            <p className="text-3xl font-display font-bold text-foreground">
-              {Math.round((correctCount / totalRounds) * 100)}%
-            </p>
-            <p className="text-xs text-muted-foreground">Accuracy</p>
-          </div>
         </div>
 
         <div className="flex flex-col gap-3">
@@ -128,6 +131,27 @@ ${correctCount}/${totalRounds} correct`;
               </>
             )}
           </Button>
+
+          {/* Try other modes */}
+          <div className="grid grid-cols-2 gap-3">
+            <Button
+              onClick={() => navigate("/play?sport=American+Football")}
+              size="lg"
+              variant="outline"
+              className="w-full font-display"
+            >
+              🏈 Football
+            </Button>
+            <Button
+              onClick={() => navigate("/play")}
+              size="lg"
+              variant="outline"
+              className="w-full font-display"
+            >
+              🏆 All Sports
+            </Button>
+          </div>
+
           <Button
             onClick={onPlayAgain}
             size="lg"
