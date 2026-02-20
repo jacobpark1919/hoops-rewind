@@ -278,50 +278,50 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     <div className="min-h-screen bg-background">
       <div className="container max-w-2xl mx-auto py-4 px-4">
         {/* Compact header row with everything */}
-        <header className="flex items-center justify-between mb-2">
-          {/* Left: Home button + Round counter */}
-           <div className="flex items-center gap-3">
-             <button
-               onClick={() => window.location.href = '/'}
-               className="p-1.5 rounded-full hover:bg-muted transition-colors"
-               aria-label="Back to home"
-             >
-               <Home className="w-5 h-5 text-muted-foreground hover:text-foreground" />
-             </button>
-             <div className="flex items-center gap-2">
-               <span className="text-xs text-muted-foreground uppercase tracking-wider">Round</span>
-               <span className="font-display text-lg font-bold text-foreground">
-                 {currentEventIndex}/{TOTAL_ROUNDS}
-               </span>
-             </div>
-             <div className="flex items-center gap-1.5">
-               <span className="text-sm text-muted-foreground">
-                 {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-               </span>
-               <span className="text-muted-foreground text-sm">–</span>
-               <span className="text-sm font-bold text-foreground">
-                 Puzzle #{(() => {
-                   const origin = new Date('2026-02-12');
-                   const today = new Date();
-                   const todayLocal = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-                   const diff = Math.floor((todayLocal.getTime() - origin.getTime()) / (1000 * 60 * 60 * 24));
-                   return Math.max(1, diff + 1);
-                 })()}
-               </span>
-             </div>
-           </div>
+        <header className="flex items-center justify-between mb-2 gap-1">
+          {/* Left: Home button + Round counter + date/puzzle */}
+          <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
+            <button
+              onClick={() => window.location.href = '/'}
+              className="p-1.5 rounded-full hover:bg-muted transition-colors flex-shrink-0"
+              aria-label="Back to home"
+            >
+              <Home className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground hover:text-foreground" />
+            </button>
+            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+              <span className="text-xs text-muted-foreground uppercase tracking-wider hidden sm:inline">Round</span>
+              <span className="font-display text-sm sm:text-lg font-bold text-foreground whitespace-nowrap">
+                <span className="sm:hidden">R </span>{currentEventIndex}/{TOTAL_ROUNDS}
+              </span>
+            </div>
+            <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
+              <span className="text-xs sm:text-sm text-muted-foreground truncate">
+                {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              </span>
+              <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0">–</span>
+              <span className="text-xs sm:text-sm font-bold text-foreground whitespace-nowrap flex-shrink-0">
+                #{(() => {
+                  const origin = new Date('2026-02-12');
+                  const today = new Date();
+                  const todayLocal = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                  const diff = Math.floor((todayLocal.getTime() - origin.getTime()) / (1000 * 60 * 60 * 24));
+                  return Math.max(1, diff + 1);
+                })()}
+              </span>
+            </div>
+          </div>
           
-          {/* Right: Sport selector, Lives, Theme toggle */}
-          <div className="flex items-center gap-3">
+          {/* Right: Sport selector + Theme toggle */}
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             {/* Sport dropdown */}
             <div className="relative">
               <button
                 onClick={() => setSportDropdownOpen(!sportDropdownOpen)}
-                className="flex items-center gap-1.5 text-sm font-semibold text-primary-foreground px-2.5 py-1 bg-primary rounded-full hover:bg-primary/80 transition-colors shadow-sm"
+                className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-semibold text-primary-foreground px-2 sm:px-2.5 py-1 bg-primary rounded-full hover:bg-primary/80 transition-colors shadow-sm"
               >
                 <span>{currentSport.icon}</span>
                 <span className="hidden sm:inline">{currentSport.label}</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${sportDropdownOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform ${sportDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
               
               {sportDropdownOpen && (
