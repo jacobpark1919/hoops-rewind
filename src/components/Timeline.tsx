@@ -355,10 +355,10 @@ export function Timeline({
       style={{ minHeight: 100 }}
     >
       {/* Timeline line */}
-      <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border" />
+      <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
 
       {/* Timeline content */}
-      <div className="relative pl-14 flex flex-col">
+      <div className="relative pl-10 sm:pl-14 flex flex-col">
         {items}
       </div>
     </div>

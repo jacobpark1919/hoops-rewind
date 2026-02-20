@@ -113,7 +113,7 @@ html.admin-scroll, html.admin-scroll body {
 
 @layer components {
   .game-card {
-    @apply bg-card border border-border rounded-xl px-4 py-2.5 cursor-grab active:cursor-grabbing
+    @apply bg-card border border-border rounded-xl px-3 py-2 sm:px-4 sm:py-2.5 cursor-grab active:cursor-grabbing
            transition-all duration-200 ease-out
            hover:bg-card-hover hover:border-primary/50;
     box-shadow:
@@ -139,7 +139,7 @@ html.admin-scroll, html.admin-scroll body {
   }
 
   .timeline-card {
-    @apply bg-card border-2 border-border rounded-xl px-4 py-2.5
+    @apply bg-card border-2 border-border rounded-xl px-3 py-1.5 sm:px-4 sm:py-2.5
            transition-all duration-300 ease-out;
     box-shadow:
       0 4px 6px -1px hsl(var(--foreground) / 0.08),
@@ -177,9 +177,9 @@ html.admin-scroll, html.admin-scroll body {
   }
 
   .year-badge {
-    @apply inline-flex items-center justify-center px-2.5 py-1 
+    @apply inline-flex items-center justify-center px-1.5 py-0.5 sm:px-2.5 sm:py-1 
            bg-primary text-primary-foreground font-display font-bold 
-           rounded-full text-sm;
+           rounded-full text-xs sm:text-sm;
   }
 
   .year-badge-incorrect {
