@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import dragHintImage from "@/assets/drag-hint.png";
+import dragHintImage from "@/assets/drag-hint.gif";
 
 interface InstructionsModalProps {
   onClose: () => void;
