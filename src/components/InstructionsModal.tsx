@@ -27,7 +27,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
       onClick={handleClose}
     >
       <div 
-        className={`relative bg-card border border-border rounded-2xl p-6 max-w-lg w-full shadow-2xl transition-all duration-200 ${
+        className={`relative bg-card border border-border rounded-2xl p-6 max-w-sm w-full shadow-2xl transition-all duration-200 ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -48,11 +48,11 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
           
           {/* Drag illustration */}
           <div className="my-6 flex justify-center">
-            <div className="w-72 h-56 rounded-xl overflow-hidden bg-muted/30">
+          <div className="w-full h-72 rounded-xl overflow-hidden bg-muted/30">
               <img 
                 src={dragHintImage} 
                 alt="Drag cards to reorder" 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
             </div>
           </div>
