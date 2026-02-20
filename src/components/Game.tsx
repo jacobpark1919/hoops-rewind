@@ -45,6 +45,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [hasDragMoved, setHasDragMoved] = useState(false);
   const [hasLeftCancelZone, setHasLeftCancelZone] = useState(false);
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
+  // Keeps the drop zone visible (frozen) after drop until "Tap to place" is confirmed/cancelled
+  const [frozenDropZone, setFrozenDropZone] = useState<number | null>(null);
   
   const cardRef = useRef<HTMLDivElement>(null);
   const cancelZoneRef = useRef<HTMLDivElement>(null);
@@ -101,8 +103,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     if (cancellingPlacement) {
       setPlacedEvents(prev => prev.filter(item => item.status !== "pending"));
       setPendingPlacement(null);
+      setFrozenDropZone(null);
     } else if (dropZone !== null) {
-      // Place in timeline at drop zone
+      // Place in timeline at drop zone — freeze drop zone so it stays visible
+      setFrozenDropZone(dropZone);
       handleDropWithRefs(dropZone);
     }
     
@@ -199,6 +203,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
       return item.event.year >= placedEvents[index - 1].event.year;
     });
 
+    // Collapse the frozen drop zone smoothly before resolving
+    setFrozenDropZone(null);
+
     const finalPlaced = placedEvents.map((item) => {
       if (item.event.id === currentEvent.id) {
         return { ...item, status: isCorrect ? "correct" as const : "incorrect" as const };
@@ -258,6 +265,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     const filtered = placedEvents.filter((item) => item.event.id !== currentEvent.id);
     setPlacedEvents(filtered);
     setPendingPlacement(null);
+    setFrozenDropZone(null);
   };
 
   // Show spinner while loading, or error state if no events found
@@ -414,7 +422,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           </p>
           <Timeline
             placedEvents={placedEvents}
-            activeDropZone={activeDropZone}
+            activeDropZone={isDragging && hasDragMoved ? activeDropZone : frozenDropZone}
             isDragging={isDragging && hasDragMoved}
             incorrectEventIds={incorrectEventIds}
             dragY={isDragging && hasDragMoved && dragState.cardRect
