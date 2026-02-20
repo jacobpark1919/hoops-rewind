@@ -15,7 +15,6 @@ const SPORT_OPTIONS = [
   { label: "Everything", value: null, icon: "🏆" },
   { label: "Football", value: "American Football", icon: "🏈" },
   { label: "Basketball", value: "Basketball", icon: "🏀" },
-  { label: "Baseball", value: "Baseball", icon: "⚾" },
 ];
 
 interface PlacedEvent {
@@ -276,30 +275,30 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container max-w-2xl mx-auto py-4 px-4">
+      <div className="container max-w-2xl mx-auto py-2 sm:py-4 px-3 sm:px-4">
         {/* Compact header row with everything */}
-        <header className="flex items-center justify-between mb-2 gap-1">
+        <header className="flex items-center justify-between mb-1 sm:mb-2 gap-1">
           {/* Left: Home button + Round counter + date/puzzle */}
-          <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
+          <div className="flex items-center gap-1 sm:gap-3 min-w-0">
             <button
               onClick={() => window.location.href = '/'}
-              className="p-1.5 rounded-full hover:bg-muted transition-colors flex-shrink-0"
+              className="p-1 sm:p-1.5 rounded-full hover:bg-muted transition-colors flex-shrink-0"
               aria-label="Back to home"
             >
-              <Home className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground hover:text-foreground" />
+              <Home className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-muted-foreground hover:text-foreground" />
             </button>
-            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+            <div className="flex items-center gap-0.5 sm:gap-2 flex-shrink-0">
               <span className="text-xs text-muted-foreground uppercase tracking-wider hidden sm:inline">Round</span>
-              <span className="font-display text-sm sm:text-lg font-bold text-foreground whitespace-nowrap">
-                <span className="sm:hidden">R </span>{currentEventIndex}/{TOTAL_ROUNDS}
+              <span className="font-display text-xs sm:text-lg font-bold text-foreground whitespace-nowrap">
+                <span className="sm:hidden">R</span>{currentEventIndex}/{TOTAL_ROUNDS}
               </span>
             </div>
-            <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
-              <span className="text-xs sm:text-sm text-muted-foreground truncate">
-                {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            <div className="flex items-center gap-0.5 sm:gap-1.5 min-w-0">
+              <span className="text-[10px] sm:text-sm text-muted-foreground truncate">
+                {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </span>
-              <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0">–</span>
-              <span className="text-xs sm:text-sm font-bold text-foreground whitespace-nowrap flex-shrink-0">
+              <span className="text-muted-foreground text-[10px] sm:text-sm flex-shrink-0">·</span>
+              <span className="text-[10px] sm:text-sm font-bold text-foreground whitespace-nowrap flex-shrink-0">
                 #{(() => {
                   const origin = new Date('2026-02-12');
                   const today = new Date();
@@ -348,13 +347,13 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         </header>
 
         {/* Current card to place */}
-        <div className="mb-3">
+        <div className="mb-2 sm:mb-3">
         {currentEvent && !gameComplete ? (
             <>
               {!cardCollapsed && !hasPendingPlacement ? (
-                <div className="min-h-[120px] transition-all duration-300 ease-out">
+                <div className="min-h-[80px] sm:min-h-[120px] transition-all duration-300 ease-out">
                   <div key={currentEvent.id} className="animate-fade-in-up">
-                    <p className="text-sm text-muted-foreground mb-3 font-medium uppercase tracking-wider">
+                    <p className="text-[10px] sm:text-sm text-muted-foreground mb-1.5 sm:mb-3 font-medium uppercase tracking-wider">
                       Place this event in the timeline
                     </p>
                     <div
@@ -379,9 +378,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         </div>
 
         {/* Timeline */}
-        <div className="mb-4 relative">
+        <div className="mb-2 sm:mb-4 relative">
           <p
-            className="text-xs text-muted-foreground font-medium uppercase tracking-wider transition-all duration-300 ease-out"
+            className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider transition-all duration-300 ease-out"
             style={{
               marginBottom: (isDragging && hasDragMoved) || hasPendingPlacement ? 0 : 8,
               transform: (isDragging && hasDragMoved) || hasPendingPlacement ? 'translateY(-8px)' : 'translateY(0)',

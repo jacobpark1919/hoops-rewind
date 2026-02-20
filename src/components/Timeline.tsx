@@ -326,7 +326,7 @@ export function Timeline({
         onMouseLeave={() => setHoveredCardId(null)}
       >
         {/* Year badge */}
-        <div className="absolute -left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
+        <div className="absolute -left-6 sm:-left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
           <span className={`year-badge ${incorrectEventIds?.has(item.event.id) ? 'year-badge-incorrect' : ''}`}>
             {item.event.year}
           </span>
@@ -355,10 +355,10 @@ export function Timeline({
       style={{ minHeight: 100 }}
     >
       {/* Timeline line */}
-      <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-border" />
+      <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
 
       {/* Timeline content */}
-      <div className="relative pl-14 flex flex-col">
+      <div className="relative pl-10 sm:pl-14 flex flex-col">
         {items}
       </div>
     </div>
