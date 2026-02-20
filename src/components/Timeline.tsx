@@ -9,6 +9,7 @@ interface TimelineProps {
   activeDropZone: number | null;
   isDragging: boolean;
   isDraggingDown: boolean;
+  draggingCardHeight: number;
   incorrectEventIds?: Set<string>;
   dragY: number | null;
   onDrop: (position: number) => void;
@@ -29,6 +30,7 @@ export function Timeline({
   activeDropZone,
   isDragging,
   isDraggingDown,
+  draggingCardHeight,
   incorrectEventIds,
   dragY,
   onDrop,
@@ -172,7 +174,14 @@ export function Timeline({
       liveCenters.sort((a, b) => a - b);
 
       if (liveCenters.length === 0) { onDropZoneChange(0); return; }
-      if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
+
+      // Zone 0: use an extended threshold so it's reachable when picking up
+      // a new card from the top. The extra half-card-height means zone 0 stays
+      // active as long as the dragged card's *centre* is above the first
+      // timeline card's centre (matching the going-up top-edge symmetry).
+      const zone0Threshold = liveCenters[0] + draggingCardHeight / 2;
+      if (dragY < zone0Threshold) { onDropZoneChange(0); return; }
+
       for (let i = 0; i < liveCenters.length - 1; i++) {
         if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
       }
