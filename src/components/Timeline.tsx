@@ -110,14 +110,23 @@ export function Timeline({
     });
   }, [placedEvents, availableHeight]);
 
-  // Lock gap when drag starts
+  // Lock gap when dragging OR when a pending placement exists (card just dropped).
+  // This prevents any layout recalculation from shifting the timeline during the
+  // drag → drop → confirm flow. Gap is only released after the placement is resolved.
+  const hasPending = placedEvents.some(item => item.status === "pending");
+  const lockedRef = useRef<number | null>(null);
   useEffect(() => {
-    if (isDragging) {
-      setLockedGap(dynamicGap);
+    if (isDragging || hasPending) {
+      // Only capture once — don't overwrite once locked
+      if (lockedRef.current === null) {
+        lockedRef.current = dynamicGap;
+        setLockedGap(dynamicGap);
+      }
     } else {
+      lockedRef.current = null;
       setLockedGap(null);
     }
-  }, [isDragging]); // intentionally only depend on isDragging
+  }, [isDragging, hasPending]); // intentionally only depend on isDragging / hasPending
 
   const activeGap = lockedGap !== null ? lockedGap : dynamicGap;
   const isOverlapping = activeGap < 0;
