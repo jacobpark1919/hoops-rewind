@@ -183,7 +183,13 @@ export function Timeline({
       if (dragY < zone0Threshold) { onDropZoneChange(0); return; }
 
       for (let i = 0; i < liveCenters.length - 1; i++) {
-        if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
+        // Zone 0→1 transition: zone 0 expansion pushes ALL cards down, making
+        // liveCenters[1] far below its natural position. Use the snapshot center
+        // (pre-expansion) so the threshold feels consistent with other transitions.
+        const threshold = i === 0 && snapshotCenters.current.length > 1
+          ? snapshotCenters.current[1]
+          : liveCenters[i + 1];
+        if (dragY < threshold) { onDropZoneChange(i + 1); return; }
       }
       onDropZoneChange(liveCenters.length);
     } else {
