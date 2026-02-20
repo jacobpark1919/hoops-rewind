@@ -8,6 +8,7 @@ interface TimelineProps {
   placedEvents: Array<{ event: SportsEvent; status: "correct" | "incorrect" | "pending" | "corrected" | null }>;
   activeDropZone: number | null;
   isDragging: boolean;
+  isDraggingDown: boolean;
   incorrectEventIds?: Set<string>;
   dragY: number | null;
   onDrop: (position: number) => void;
@@ -27,6 +28,7 @@ export function Timeline({
   placedEvents,
   activeDropZone,
   isDragging,
+  isDraggingDown,
   incorrectEventIds,
   dragY,
   onDrop,
@@ -122,8 +124,27 @@ export function Timeline({
   const nonPendingEvents = placedEvents.filter((item) => item.status !== "pending");
   const totalCards = placedEvents.length;
 
-  // Determine active drop zone by comparing dragY against LIVE card centers read from the DOM.
-  // dragY is the leading edge of the dragged card (bottom when going down, top when going up).
+  // Snapshot card centers at the moment drag begins (before any zone expansion).
+  // Used for going-UP detection so zone expansion below doesn't shift thresholds.
+  const snapshotCenters = useRef<number[]>([]);
+
+  useEffect(() => {
+    if (isDragging && snapshotCenters.current.length === 0) {
+      const centers: number[] = [];
+      nonPendingEvents.forEach((item) => {
+        const el = cardRefs.current.get(item.event.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          centers.push((rect.top + rect.bottom) / 2);
+        }
+      });
+      snapshotCenters.current = centers; // already in card order, no sort needed
+    }
+    if (!isDragging) {
+      snapshotCenters.current = [];
+    }
+  }, [isDragging]); // capture once at drag start
+
   useEffect(() => {
     if (!isDragging || dragY === null || !timelineRef.current) {
       onDropZoneChange(null);
@@ -137,39 +158,41 @@ export function Timeline({
       return;
     }
 
-    // Read the current physical midpoint of each non-pending timeline card straight from the DOM.
-    const liveCenters: number[] = [];
-    nonPendingEvents.forEach((item) => {
-      const el = cardRefs.current.get(item.event.id);
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        liveCenters.push((rect.top + rect.bottom) / 2);
+    if (isDraggingDown) {
+      // GOING DOWN — bottom edge vs. live card centers.
+      // Zone expansion pushes cards further down, creating natural resistance.
+      const liveCenters: number[] = [];
+      nonPendingEvents.forEach((item) => {
+        const el = cardRefs.current.get(item.event.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          liveCenters.push((rect.top + rect.bottom) / 2);
+        }
+      });
+      liveCenters.sort((a, b) => a - b);
+
+      if (liveCenters.length === 0) { onDropZoneChange(0); return; }
+      if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
+      for (let i = 0; i < liveCenters.length - 1; i++) {
+        if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
       }
-    });
-    liveCenters.sort((a, b) => a - b);
+      onDropZoneChange(liveCenters.length);
+    } else {
+      // GOING UP — top edge vs. snapshot card centers.
+      // The card being approached is above the active zone so it hasn't been shifted;
+      // snapshot = live for that card. Using snapshot avoids sort-order issues caused
+      // by the zone expansion pushing lower cards out of natural order.
+      const centers = snapshotCenters.current;
 
-    if (liveCenters.length === 0) {
-      onDropZoneChange(0);
-      return;
-    }
-
-    // Zone 0: leading edge is above the midpoint of the first card
-    if (dragY < liveCenters[0]) {
-      onDropZoneChange(0);
-      return;
-    }
-
-    // Zone i+1: leading edge has passed midpoint of card i but not card i+1
-    for (let i = 0; i < liveCenters.length - 1; i++) {
-      if (dragY < liveCenters[i + 1]) {
-        onDropZoneChange(i + 1);
-        return;
+      if (centers.length === 0) { onDropZoneChange(0); return; }
+      if (dragY < centers[0]) { onDropZoneChange(0); return; }
+      for (let i = 0; i < centers.length - 1; i++) {
+        if (dragY < centers[i + 1]) { onDropZoneChange(i + 1); return; }
       }
+      onDropZoneChange(centers.length);
     }
+  }, [isDragging, isDraggingDown, dragY, onDropZoneChange, nonPendingEvents]);
 
-    // After last card
-    onDropZoneChange(liveCenters.length);
-  }, [isDragging, dragY, onDropZoneChange, nonPendingEvents]);
 
   // Card style for z-index and hover effects
   const getCardStyle = (index: number, isPending: boolean, eventId: string) => {
