@@ -41,19 +41,15 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [resultHistory, setResultHistory] = useState<boolean[]>([]);
   const [incorrectEventIds, setIncorrectEventIds] = useState<Set<string>>(new Set());
   const [dragSource, setDragSource] = useState<"new" | "pending" | null>(null);
-  const [hoveringCancelZone, setHoveringCancelZone] = useState(false);
   const [hasDragMoved, setHasDragMoved] = useState(false);
-  const [hasLeftCancelZone, setHasLeftCancelZone] = useState(false);
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
   // Keeps the drop zone visible (frozen) after drop until "Tap to place" is confirmed/cancelled
   const [frozenDropZone, setFrozenDropZone] = useState<number | null>(null);
   
   const cardRef = useRef<HTMLDivElement>(null);
-  const cancelZoneRef = useRef<HTMLDivElement>(null);
   const pendingDropZoneRef = useRef<number | null>(null);
   const gameEventsRef = useRef<SportsEvent[]>([]);
   const currentEventIndexRef = useRef(0);
-  const hoveringCancelZoneRef = useRef(false);
 
   // Keep refs in sync
   useEffect(() => {
@@ -67,10 +63,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   useEffect(() => {
     pendingDropZoneRef.current = activeDropZone;
   }, [activeDropZone]);
-
-  useEffect(() => {
-    hoveringCancelZoneRef.current = hoveringCancelZone;
-  }, [hoveringCancelZone]);
 
   // Handle dropping a card using refs for latest values
   const handleDropWithRefs = useCallback((position: number) => {
@@ -97,14 +89,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
   const handleDragEnd = useCallback((clientY: number) => {
     const dropZone = pendingDropZoneRef.current;
-    const cancellingPlacement = hoveringCancelZoneRef.current;
-    
-    // If hovering over cancel zone, remove from timeline
-    if (cancellingPlacement) {
-      setPlacedEvents(prev => prev.filter(item => item.status !== "pending"));
-      setPendingPlacement(null);
-      setFrozenDropZone(null);
-    } else if (dropZone !== null) {
+
+    if (dropZone !== null) {
       // Place in timeline at drop zone — freeze drop zone so it stays visible
       setFrozenDropZone(dropZone);
       handleDropWithRefs(dropZone);
@@ -112,9 +98,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     
     setDragSource(null);
     setActiveDropZone(null);
-    setHoveringCancelZone(false);
     setHasDragMoved(false);
-    setHasLeftCancelZone(false);
   }, [handleDropWithRefs]);
 
   const { dragState, startDrag } = useDrag({ onDragEnd: handleDragEnd });
@@ -127,23 +111,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     }
   }, [dragState.isDragging, dragState.offsetY]);
 
-  // Check if dragging over cancel zone — only after card has left it first
-  useEffect(() => {
-    if (!dragState.isDragging || dragState.currentY === null || !cancelZoneRef.current) {
-      setHoveringCancelZone(false);
-      return;
-    }
-    
-    const rect = cancelZoneRef.current.getBoundingClientRect();
-    const isOver = dragState.currentY >= rect.top - 20 && dragState.currentY <= rect.bottom + 20;
-    
-    if (!isOver && !hasLeftCancelZone) {
-      setHasLeftCancelZone(true);
-    }
-    
-    setHoveringCancelZone(isOver && hasLeftCancelZone);
-  }, [dragState.isDragging, dragState.currentY, hasLeftCancelZone]);
-
   const initializeGame = useCallback(async () => {
     // Reset all state first
     setCorrectCount(1);
@@ -152,7 +119,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setIncorrectEventIds(new Set());
     setDragSource(null);
     setActiveDropZone(null);
-    setHoveringCancelZone(false);
     setIsLoadingEvents(true);
     
     const events = await getDailyChallengeEvents(sportFilter);
@@ -367,11 +333,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           </div>
         </header>
 
-        {/* Current card to place OR cancel drop zone */}
-        <div 
-          ref={cancelZoneRef}
-          className="mb-3"
-        >
+        {/* Current card to place */}
+        <div className="mb-3">
         {currentEvent && !gameComplete ? (
             <>
               {!cardCollapsed && !hasPendingPlacement ? (
@@ -393,21 +356,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   </div>
                 </div>
               ) : (
-                // Keep identical DOM structure whether dragging (collapsed) or pending placement
-                // so the layout doesn't shift when the card is dropped.
-                <div 
-                  className={`border-2 rounded-xl flex items-center justify-center ${
-                    dragState.isDragging && !hasPendingPlacement && hoveringCancelZone && activeDropZone === null
-                      ? "h-24 border-dashed border-primary bg-primary/10 transition-all duration-300 ease-out" 
-                      : "h-0 border-transparent overflow-hidden"
-                  }`}
-                >
-                  {dragState.isDragging && !hasPendingPlacement && activeDropZone === null && (
-                    <div className={`transition-all duration-200 ease-out ${hoveringCancelZone ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
-                      <span className="text-primary text-sm font-medium">Drop here to cancel</span>
-                    </div>
-                  )}
-                </div>
+                // Empty placeholder to keep layout stable during drag / pending
+                <div className="h-0 overflow-hidden" />
               )}
             </>
           ) : null}
