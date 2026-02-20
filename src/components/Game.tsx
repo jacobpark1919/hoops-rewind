@@ -421,6 +421,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 })()
               : null}
             isDraggingDown={dragState.currentY >= dragState.prevY}
+            draggingCardHeight={dragState.cardRect?.height ?? 0}
             onDrop={handleDropWithRefs}
             onDropZoneChange={setActiveDropZone}
             onConfirm={hasPendingPlacement ? handleConfirm : undefined}
