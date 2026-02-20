@@ -150,7 +150,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const currentEvent = gameEvents[currentEventIndex];
 
   // Handle starting to drag the new card
-  const handleNewCardDragStart = (e: React.MouseEvent) => {
+  const handleNewCardDragStart = (e: React.MouseEvent | React.TouchEvent) => {
     if (cardRef.current) {
       setDragSource("new");
       startDrag(e, cardRef.current);
@@ -158,7 +158,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   };
 
   // Handle starting to drag the pending card
-  const handlePendingDragStart = (e: React.MouseEvent, element: HTMLElement) => {
+  const handlePendingDragStart = (e: React.MouseEvent | React.TouchEvent, element: HTMLElement) => {
     setDragSource("pending");
     startDrag(e, element);
   };
@@ -360,7 +360,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                     <div
                       ref={cardRef}
                       onMouseDown={handleNewCardDragStart}
-                      className="cursor-grab active:cursor-grabbing select-none"
+                      onTouchStart={handleNewCardDragStart}
+                      className="cursor-grab active:cursor-grabbing select-none touch-none"
                     >
                       <EventCard
                         event={currentEvent}

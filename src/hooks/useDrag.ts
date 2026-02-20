@@ -26,33 +26,39 @@ export function useDrag(options: UseDragOptions = {}) {
   const optionsRef = useRef(options);
   optionsRef.current = options;
 
-  const startDrag = useCallback((e: React.MouseEvent, cardElement: HTMLElement) => {
-    e.preventDefault();
+  // Helper to start a drag from either a mouse or touch clientY
+  const startDragAt = useCallback((clientY: number, cardElement: HTMLElement) => {
     const rect = cardElement.getBoundingClientRect();
     setDragState({
       isDragging: true,
-      startY: e.clientY,
-      currentY: e.clientY,
-      prevY: e.clientY,
+      startY: clientY,
+      currentY: clientY,
+      prevY: clientY,
       offsetY: 0,
       cardRect: rect,
     });
   }, []);
 
+  const startDrag = useCallback((e: React.MouseEvent | React.TouchEvent, cardElement: HTMLElement) => {
+    e.preventDefault();
+    const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+    startDragAt(clientY, cardElement);
+  }, [startDragAt]);
+
   useEffect(() => {
     if (!dragState.isDragging) return;
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMove = (clientY: number) => {
       setDragState(prev => ({
         ...prev,
         prevY: prev.currentY,
-        currentY: e.clientY,
-        offsetY: e.clientY - prev.startY,
+        currentY: clientY,
+        offsetY: clientY - prev.startY,
       }));
     };
 
-    const handleMouseUp = (e: MouseEvent) => {
-      optionsRef.current.onDragEnd?.(e.clientY);
+    const handleEnd = (clientY: number) => {
+      optionsRef.current.onDragEnd?.(clientY);
       setDragState(prev => ({
         ...prev,
         isDragging: false,
@@ -62,14 +68,32 @@ export function useDrag(options: UseDragOptions = {}) {
       }));
     };
 
+    // Mouse handlers
+    const handleMouseMove = (e: MouseEvent) => handleMove(e.clientY);
+    const handleMouseUp = (e: MouseEvent) => handleEnd(e.clientY);
+
+    // Touch handlers
+    const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault(); // prevent page scroll while dragging
+      handleMove(e.touches[0].clientY);
+    };
+    const handleTouchEnd = (e: TouchEvent) => {
+      const clientY = e.changedTouches[0]?.clientY ?? dragState.currentY;
+      handleEnd(clientY);
+    };
+
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+    document.addEventListener("touchend", handleTouchEnd);
 
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [dragState.isDragging]);
+  }, [dragState.isDragging, dragState.currentY]);
 
   return { dragState, startDrag };
 }

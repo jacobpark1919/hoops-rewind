@@ -457,3 +457,10 @@ html.admin-scroll, html.admin-scroll body {
     transform: translate(35px, -30px) rotate(4deg);
   }
 }
+
+/* Prevent text selection and callout during drag on touch devices */
+.cursor-grab, .cursor-grab * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
