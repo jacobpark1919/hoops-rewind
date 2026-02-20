@@ -44,6 +44,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [hoveringCancelZone, setHoveringCancelZone] = useState(false);
   const [hasDragMoved, setHasDragMoved] = useState(false);
   const [hasLeftCancelZone, setHasLeftCancelZone] = useState(false);
+  const [isLoadingEvents, setIsLoadingEvents] = useState(true);
   
   const cardRef = useRef<HTMLDivElement>(null);
   const cancelZoneRef = useRef<HTMLDivElement>(null);
@@ -142,13 +143,13 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const initializeGame = useCallback(async () => {
     // Reset all state first
     setCorrectCount(1);
-    setCorrectCount(1);
     setPendingPlacement(null);
     setResultHistory([]);
     setIncorrectEventIds(new Set());
     setDragSource(null);
     setActiveDropZone(null);
     setHoveringCancelZone(false);
+    setIsLoadingEvents(true);
     
     const events = await getDailyChallengeEvents(sportFilter);
     // Shuffle events so they're served in random order
@@ -158,6 +159,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     }
     
     setGameEvents(events);
+    setIsLoadingEvents(false);
     if (events.length > 0) {
       // First card is placed as the seed (shown with its year)
       setPlacedEvents([{ event: events[0], status: null }]);
@@ -258,10 +260,25 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setPendingPlacement(null);
   };
 
-  if (gameEvents.length === 0) {
+  // Show spinner while loading, or error state if no events found
+  if (isLoadingEvents || gameEvents.length === 0) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        {isLoadingEvents ? (
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        ) : (
+          <div className="text-center p-8">
+            <p className="text-2xl mb-2">😔</p>
+            <p className="font-display text-lg font-bold text-foreground mb-1">No challenge today</p>
+            <p className="text-muted-foreground text-sm mb-4">Check back tomorrow or try a different sport.</p>
+            <button
+              onClick={() => window.location.href = '/'}
+              className="text-primary text-sm underline underline-offset-2"
+            >
+              ← Back to home
+            </button>
+          </div>
+        )}
       </div>
     );
   }
