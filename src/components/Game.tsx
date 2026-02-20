@@ -310,7 +310,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     <div className="min-h-screen bg-background">
       <div className="container max-w-2xl mx-auto py-4 px-4">
         {/* Compact header row with everything */}
-        <header className="flex items-center justify-between mb-4">
+        <header className="flex items-center justify-between mb-2">
           {/* Left: Home button + Round counter */}
            <div className="flex items-center gap-3">
              <button
@@ -370,7 +370,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         {/* Current card to place OR cancel drop zone */}
         <div 
           ref={cancelZoneRef}
-          className="mb-6"
+          className="mb-3"
         >
         {currentEvent && !gameComplete ? (
             <>
