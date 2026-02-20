@@ -122,30 +122,8 @@ export function Timeline({
   const nonPendingEvents = placedEvents.filter((item) => item.status !== "pending");
   const totalCards = placedEvents.length;
 
-  // Calculate which drop zone the cursor is over
-  // We use a simple approach: divide the space evenly by card count using
-  // the original (pre-expansion) card center positions captured on drag start.
-  const originalCardCenters = useRef<number[]>([]);
-
-  // Capture card centers when drag starts (before any drop zones expand)
-  useEffect(() => {
-    if (isDragging && originalCardCenters.current.length === 0) {
-      const centers: number[] = [];
-      nonPendingEvents.forEach((item) => {
-        const element = cardRefs.current.get(item.event.id);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          centers.push((rect.top + rect.bottom) / 2);
-        }
-      });
-      centers.sort((a, b) => a - b);
-      originalCardCenters.current = centers;
-    }
-    if (!isDragging) {
-      originalCardCenters.current = [];
-    }
-  }, [isDragging]); // intentionally only depend on isDragging to capture once
-
+  // Determine active drop zone by comparing dragY against LIVE card centers read from the DOM.
+  // dragY is the leading edge of the dragged card (bottom when going down, top when going up).
   useEffect(() => {
     if (!isDragging || dragY === null || !timelineRef.current) {
       onDropZoneChange(null);
@@ -154,41 +132,44 @@ export function Timeline({
 
     const timelineRect = timelineRef.current.getBoundingClientRect();
     const isOver = dragY >= timelineRect.top - 60 && dragY <= timelineRect.bottom + 60;
-
     if (!isOver) {
       onDropZoneChange(null);
       return;
     }
 
-    const centers = originalCardCenters.current;
+    // Read the current physical midpoint of each non-pending timeline card straight from the DOM.
+    const liveCenters: number[] = [];
+    nonPendingEvents.forEach((item) => {
+      const el = cardRefs.current.get(item.event.id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        liveCenters.push((rect.top + rect.bottom) / 2);
+      }
+    });
+    liveCenters.sort((a, b) => a - b);
 
-    if (centers.length === 0) {
+    if (liveCenters.length === 0) {
       onDropZoneChange(0);
       return;
     }
 
-    // dragY is already the trailing edge of the dragged card:
-    // - bottom edge when dragging down
-    // - top edge when dragging up
-    // Activate a drop zone when that edge crosses the center of the adjacent card.
-
-    // Position 0: dragged card's edge is above the center of the first card
-    if (dragY < centers[0]) {
+    // Zone 0: leading edge is above the midpoint of the first card
+    if (dragY < liveCenters[0]) {
       onDropZoneChange(0);
       return;
     }
 
-    // Between cards: activate zone i+1 when edge crosses center of card i+1
-    for (let i = 0; i < centers.length - 1; i++) {
-      if (dragY < centers[i + 1]) {
+    // Zone i+1: leading edge has passed midpoint of card i but not card i+1
+    for (let i = 0; i < liveCenters.length - 1; i++) {
+      if (dragY < liveCenters[i + 1]) {
         onDropZoneChange(i + 1);
         return;
       }
     }
 
-    // Position after last card
-    onDropZoneChange(centers.length);
-  }, [isDragging, dragY, onDropZoneChange]);
+    // After last card
+    onDropZoneChange(liveCenters.length);
+  }, [isDragging, dragY, onDropZoneChange, nonPendingEvents]);
 
   // Card style for z-index and hover effects
   const getCardStyle = (index: number, isPending: boolean, eventId: string) => {
