@@ -36,6 +36,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [correctCount, setCorrectCount] = useState(0);
   const [activeDropZone, setActiveDropZone] = useState<number | null>(null);
   const [gameComplete, setGameComplete] = useState(false);
+  const [isViewingTimeline, setIsViewingTimeline] = useState(false);
   const [pendingPlacement, setPendingPlacement] = useState<{ position: number } | null>(null);
   const [showInstructions, setShowInstructions] = useState(true);
   const [resultHistory, setResultHistory] = useState<boolean[]>([]);
@@ -116,6 +117,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setCorrectCount(1);
     setPendingPlacement(null);
     setResultHistory([]);
+    setIsViewingTimeline(false);
+    setGameComplete(false);
     setIncorrectEventIds(new Set());
     setDragSource(null);
     setActiveDropZone(null);
@@ -423,8 +426,21 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             totalRounds={TOTAL_ROUNDS}
             resultHistory={resultHistory}
             sportFilter={sportFilter}
-            onViewTimeline={() => setGameComplete(false)}
+            onViewTimeline={() => { setGameComplete(false); setIsViewingTimeline(true); }}
           />
+        )}
+
+        {/* View Timeline banner */}
+        {isViewingTimeline && !gameComplete && (
+          <div className="mt-6 bg-card border border-border rounded-xl p-5 text-center flex flex-col items-center gap-4">
+            <p className="text-foreground font-medium">Come again tomorrow for a new timeline!</p>
+            <button
+              onClick={initializeGame}
+              className="px-6 py-2.5 rounded-full bg-primary text-primary-foreground font-display font-bold text-sm hover:bg-primary/80 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
         )}
 
         {/* Instructions Modal */}
