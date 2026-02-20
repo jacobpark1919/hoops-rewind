@@ -292,9 +292,20 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                  {currentEventIndex}/{TOTAL_ROUNDS}
                </span>
              </div>
-             <span className="text-[10px] text-muted-foreground uppercase tracking-wider hidden sm:inline">
-               {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-             </span>
+             <div className="flex flex-col leading-none">
+               <span className="text-xs font-semibold text-foreground">
+                 #{(() => {
+                   const origin = new Date('2026-02-12');
+                   const today = new Date();
+                   const todayLocal = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                   const diff = Math.floor((todayLocal.getTime() - origin.getTime()) / (1000 * 60 * 60 * 24));
+                   return Math.max(1, diff + 1);
+                 })()}
+               </span>
+               <span className="text-[10px] text-muted-foreground">
+                 {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+               </span>
+             </div>
            </div>
           
           {/* Right: Sport selector, Lives, Theme toggle */}
@@ -303,7 +314,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             <div className="relative">
               <button
                 onClick={() => setSportDropdownOpen(!sportDropdownOpen)}
-                className="flex items-center gap-1.5 text-sm font-medium text-primary px-2.5 py-1 bg-primary/10 rounded-full hover:bg-primary/20 transition-colors"
+                className="flex items-center gap-1.5 text-sm font-semibold text-primary-foreground px-2.5 py-1 bg-primary rounded-full hover:bg-primary/80 transition-colors shadow-sm"
               >
                 <span>{currentSport.icon}</span>
                 <span className="hidden sm:inline">{currentSport.label}</span>
