@@ -48,14 +48,14 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
           
           {/* Drag illustration */}
           <div className="my-6 flex justify-center">
-          <div className="w-full h-72 rounded-xl overflow-hidden bg-muted/30">
+          <div className="w-full rounded-xl overflow-hidden bg-muted/30">
               <video
                 src={dragHintVideo}
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="w-full h-full object-contain"
+                className="w-full block"
               />
             </div>
           </div>
