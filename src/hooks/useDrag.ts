@@ -45,6 +45,13 @@ export function useDrag(options: UseDragOptions = {}) {
     startDragAt(clientY, cardElement);
   }, [startDragAt]);
 
+  // Use a ref to track the latest currentY so the end handler can access it
+  // without needing currentY in the effect's dependency array.
+  const currentYRef = useRef(0);
+  useEffect(() => {
+    currentYRef.current = dragState.currentY;
+  }, [dragState.currentY]);
+
   useEffect(() => {
     if (!dragState.isDragging) return;
 
@@ -74,18 +81,18 @@ export function useDrag(options: UseDragOptions = {}) {
 
     // Touch handlers
     const handleTouchMove = (e: TouchEvent) => {
-      if (e.cancelable) e.preventDefault(); // prevent page scroll while dragging
+      if (e.cancelable) e.preventDefault();
       if (e.touches.length > 0) {
         handleMove(e.touches[0].clientY);
       }
     };
     const handleTouchEnd = (e: TouchEvent) => {
       if (e.cancelable) e.preventDefault();
-      const clientY = e.changedTouches[0]?.clientY ?? dragState.currentY;
+      const clientY = e.changedTouches[0]?.clientY ?? currentYRef.current;
       handleEnd(clientY);
     };
     const handleTouchCancel = (e: TouchEvent) => {
-      const clientY = e.changedTouches[0]?.clientY ?? dragState.currentY;
+      const clientY = e.changedTouches[0]?.clientY ?? currentYRef.current;
       handleEnd(clientY);
     };
 
@@ -102,7 +109,7 @@ export function useDrag(options: UseDragOptions = {}) {
       document.removeEventListener("touchend", handleTouchEnd);
       document.removeEventListener("touchcancel", handleTouchCancel);
     };
-  }, [dragState.isDragging, dragState.currentY]);
+  }, [dragState.isDragging]); // Only re-attach listeners when drag starts/stops
 
   return { dragState, startDrag };
 }
