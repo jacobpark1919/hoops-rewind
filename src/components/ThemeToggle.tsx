@@ -1,11 +1,10 @@
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export function ThemeToggle() {
+export function ThemeToggle({ size = "default" }: { size?: "default" | "lg" }) {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    // Default to light mode unless explicitly set to dark
     const stored = localStorage.getItem("theme");
     const shouldBeDark = stored === "dark";
     setIsDark(shouldBeDark);
@@ -19,16 +18,19 @@ export function ThemeToggle() {
     localStorage.setItem("theme", newValue ? "dark" : "light");
   };
 
+  const iconSize = size === "lg" ? "w-6 h-6" : "w-5 h-5";
+  const btnPad = size === "lg" ? "p-3" : "p-2";
+
   return (
     <button
       onClick={toggle}
-      className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+      className={`${btnPad} rounded-lg bg-secondary/50 hover:bg-secondary transition-colors`}
       aria-label="Toggle theme"
     >
       {isDark ? (
-        <Sun className="w-5 h-5 text-foreground" />
+        <Sun className={`${iconSize} text-foreground`} />
       ) : (
-        <Moon className="w-5 h-5 text-foreground" />
+        <Moon className={`${iconSize} text-foreground`} />
       )}
     </button>
   );
