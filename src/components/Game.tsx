@@ -348,29 +348,32 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         <div className="mb-2 sm:mb-3">
         {currentEvent && !gameComplete ? (
             <>
-              {!cardCollapsed && !hasPendingPlacement ? (
-                <div className="min-h-[80px] sm:min-h-[120px] transition-all duration-300 ease-out">
-                  <div key={currentEvent.id} className="animate-fade-in-up">
-                    <p className="text-[11px] sm:text-sm text-muted-foreground mb-1.5 sm:mb-3 font-medium uppercase tracking-wider">
-                      Place this event in the timeline
-                    </p>
-                    <div
-                      ref={cardRef}
-                      onMouseDown={handleNewCardDragStart}
-                      onTouchStart={handleNewCardDragStart}
-                      className="cursor-grab active:cursor-grabbing select-none touch-none"
-                    >
-                      <EventCard
-                        event={currentEvent}
-                        isDragging={false}
-                      />
-                    </div>
+              <div
+                className="transition-all duration-300 ease-out"
+                style={{
+                  minHeight: cardCollapsed || hasPendingPlacement ? 0 : undefined,
+                  height: cardCollapsed || hasPendingPlacement ? 0 : 'auto',
+                  overflow: cardCollapsed || hasPendingPlacement ? 'hidden' : 'visible',
+                  opacity: cardCollapsed || hasPendingPlacement ? 0 : 1,
+                }}
+              >
+                <div key={currentEvent.id} className="animate-fade-in-up">
+                  <p className="text-[11px] sm:text-sm text-muted-foreground mb-1.5 sm:mb-3 font-medium uppercase tracking-wider">
+                    Place this event in the timeline
+                  </p>
+                  <div
+                    ref={cardRef}
+                    onMouseDown={handleNewCardDragStart}
+                    onTouchStart={handleNewCardDragStart}
+                    className="cursor-grab active:cursor-grabbing select-none touch-none"
+                  >
+                    <EventCard
+                      event={currentEvent}
+                      isDragging={false}
+                    />
                   </div>
                 </div>
-              ) : (
-                // Empty placeholder to keep layout stable during drag / pending
-                <div className="h-0 overflow-hidden" />
-              )}
+              </div>
             </>
           ) : null}
         </div>

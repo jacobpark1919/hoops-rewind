@@ -27,7 +27,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
       onClick={handleClose}
     >
       <div 
-        className={`relative bg-card border border-border rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-[340px] sm:max-w-sm w-full shadow-2xl transition-all duration-200 max-h-[90vh] overflow-y-auto ${
+        className={`relative bg-card border border-border rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-[92vw] sm:max-w-sm w-full shadow-2xl transition-all duration-200 max-h-[95vh] overflow-y-auto ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -55,7 +55,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 loop
                 muted
                 playsInline
-                className="w-full block max-h-48 sm:max-h-none object-cover"
+                className="w-full block max-h-72 sm:max-h-none object-cover"
               />
             </div>
           </div>
