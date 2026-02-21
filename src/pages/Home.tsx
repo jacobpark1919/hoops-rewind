@@ -91,13 +91,13 @@ export default function Home() {
           {SPORT_MODES.map((mode) => (
             <div
               key={mode.label}
-              className="flex-1 bg-card border border-border rounded-xl p-5 flex flex-col items-center text-center shadow-md hover:shadow-lg transition-shadow"
+              className="flex-1 bg-card border border-border rounded-xl p-3 sm:p-5 flex flex-col items-center text-center shadow-md hover:shadow-lg transition-shadow"
             >
-              <span className="text-3xl mb-2 block">{mode.icon}</span>
-              <h2 className="font-display text-base sm:text-lg font-bold text-foreground mb-1">
+              <span className="text-2xl sm:text-3xl mb-1 sm:mb-2 block">{mode.icon}</span>
+              <h2 className="font-display text-sm sm:text-lg font-bold text-foreground mb-0.5 sm:mb-1">
                 {mode.label}
               </h2>
-              <p className="text-muted-foreground text-sm mb-4 flex-1">
+              <p className="text-muted-foreground text-xs sm:text-sm mb-2 sm:mb-4 flex-1">
                 {mode.description}
               </p>
               <Button
