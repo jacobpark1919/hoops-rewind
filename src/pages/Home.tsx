@@ -63,7 +63,7 @@ export default function Home() {
         <div className="flex items-center gap-2 mb-2">
           <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-primary fill-primary/20" />
           <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground uppercase">
-            Sports Vault
+            Sports Rewind
           </h1>
         </div>
 

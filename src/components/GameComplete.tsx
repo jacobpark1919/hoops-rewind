@@ -34,7 +34,7 @@ export function GameComplete({
   
   // Create shareable text
   const sportLabel = sportFilter || "Everything";
-  const shareText = `Sports Vault ${sportLabel}
+  const shareText = `Sports Rewind ${sportLabel}
 ${emojiGrid}
 ${correctCount}/${totalRounds} correct`;
 
