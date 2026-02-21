@@ -2,7 +2,6 @@ import { useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { DarkModeHint } from "@/components/DarkModeHint";
 import { Shield } from "lucide-react";
 import { useEffect } from "react";
 
@@ -146,7 +145,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col relative overflow-hidden">
-      <DarkModeHint />
       <div className="absolute top-4 right-4 z-20">
         <ThemeToggle size="lg" />
       </div>
@@ -168,45 +166,15 @@ export default function Home() {
           Select a mode to play today's puzzle:
         </p>
 
-        {/* Timeline decoration with drop zones */}
+        {/* Timeline decoration */}
         <div className="relative w-full max-w-2xl mb-8 hidden sm:flex items-center">
-          {/* Scribble hint for reordering */}
-          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 pointer-events-none select-none animate-fade-in z-10">
-            <div className="relative flex items-center gap-1">
-              <svg 
-                className="w-5 h-5 text-muted-foreground/70 -mb-1 rotate-90"
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14M14 6l6 6-6 6" />
-              </svg>
-              <span 
-                className="text-muted-foreground/70 text-sm whitespace-nowrap"
-                style={{ 
-                  fontFamily: "'Caveat', cursive",
-                  transform: 'rotate(3deg)',
-                  display: 'inline-block',
-                }}
-              >
-                try reordering!
-              </span>
-            </div>
-          </div>
-
-          <div className="w-6 h-6 rounded-lg border-2 border-dashed border-primary/40 bg-primary/5 mx-1 flex-shrink-0" />
           <div className="flex-1 h-0.5 bg-primary/60" />
           <div className="w-3 h-3 rounded-full bg-primary mx-1" />
-          <div className="w-6 h-6 rounded-lg border-2 border-dashed border-primary/40 bg-primary/5 mx-1 flex-shrink-0" />
           <div className="flex-1 h-0.5 bg-primary/60" />
           <div className="w-3 h-3 rounded-full bg-primary mx-1" />
-          <div className="w-6 h-6 rounded-lg border-2 border-dashed border-primary/40 bg-primary/5 mx-1 flex-shrink-0" />
           <div className="flex-1 h-0.5 bg-primary/60" />
           <div className="w-3 h-3 rounded-full bg-primary mx-1" />
-          <div className="w-6 h-6 rounded-lg border-2 border-dashed border-primary/40 bg-primary/5 mx-1 flex-shrink-0" />
+          <div className="flex-1 h-0.5 bg-primary/60" />
         </div>
 
         {/* Mode cards */}
