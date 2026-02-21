@@ -287,17 +287,16 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             >
               <Home className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-muted-foreground hover:text-foreground" />
             </button>
-            <div className="flex items-center gap-0.5 sm:gap-2 flex-shrink-0">
-              <span className="font-display text-sm sm:text-lg font-bold text-foreground whitespace-nowrap">
+            <div className="flex items-center gap-0.5 sm:gap-1.5 min-w-0">
+              <span className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">
                 Round {currentEventIndex}/{TOTAL_ROUNDS}
               </span>
-            </div>
-            <div className="flex items-center gap-0.5 sm:gap-1.5 min-w-0">
-              <span className="text-[11px] sm:text-sm text-muted-foreground truncate">
+              <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0">·</span>
+              <span className="text-xs sm:text-sm font-semibold text-foreground truncate">
                 {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </span>
-              <span className="text-muted-foreground text-[11px] sm:text-sm flex-shrink-0">·</span>
-              <span className="text-[11px] sm:text-sm font-bold text-foreground whitespace-nowrap flex-shrink-0">
+              <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0">·</span>
+              <span className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap flex-shrink-0">
                 Puzzle #{(() => {
                   const origin = new Date('2026-02-12');
                   const today = new Date();
