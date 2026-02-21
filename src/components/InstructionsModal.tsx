@@ -27,7 +27,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
       onClick={handleClose}
     >
       <div 
-        className={`relative bg-card border border-border rounded-xl sm:rounded-2xl p-3 sm:p-6 max-w-[280px] sm:max-w-sm w-full shadow-2xl transition-all duration-200 ${
+        className={`relative bg-card border border-border rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-[300px] sm:max-w-sm w-full shadow-2xl transition-all duration-200 ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -42,7 +42,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
 
         {/* Content */}
         <div className="text-center">
-          <h2 className="font-display text-base sm:text-2xl font-bold text-foreground mb-1 sm:mb-2">
+          <h2 className="font-display text-lg sm:text-2xl font-bold text-foreground mb-1.5 sm:mb-2">
             How to Play
           </h2>
           
@@ -55,31 +55,31 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 loop
                 muted
                 playsInline
-                className="w-full block max-h-24 sm:max-h-none object-cover"
+                className="w-full block max-h-36 sm:max-h-none object-cover"
               />
             </div>
           </div>
 
           {/* Instructions */}
-          <div className="space-y-1.5 sm:space-y-3 text-left mb-3 sm:mb-6">
-            <div className="flex items-start gap-1.5 sm:gap-3">
-              <span className="flex-shrink-0 w-4 h-4 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-[10px] sm:text-sm flex items-center justify-center">1</span>
-              <p className="text-foreground text-[11px] sm:text-sm">Drag each event card into the timeline</p>
+          <div className="space-y-2 sm:space-y-3 text-left mb-4 sm:mb-6">
+            <div className="flex items-start gap-2 sm:gap-3">
+              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">1</span>
+              <p className="text-foreground text-xs sm:text-sm">Drag each event card into the timeline</p>
             </div>
-            <div className="flex items-start gap-1.5 sm:gap-3">
-              <span className="flex-shrink-0 w-4 h-4 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-[10px] sm:text-sm flex items-center justify-center">2</span>
-              <p className="text-foreground text-[11px] sm:text-sm">Place it where you think it belongs chronologically</p>
+            <div className="flex items-start gap-2 sm:gap-3">
+              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">2</span>
+              <p className="text-foreground text-xs sm:text-sm">Place it where you think it belongs chronologically</p>
             </div>
-            <div className="flex items-start gap-1.5 sm:gap-3">
-              <span className="flex-shrink-0 w-4 h-4 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-[10px] sm:text-sm flex items-center justify-center">3</span>
-              <p className="text-foreground text-[11px] sm:text-sm">Daily game — come back tomorrow for a new puzzle!</p>
+            <div className="flex items-start gap-2 sm:gap-3">
+              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">3</span>
+              <p className="text-foreground text-xs sm:text-sm">Daily game — come back tomorrow for a new puzzle!</p>
             </div>
           </div>
 
           {/* Start button */}
           <button
             onClick={handleClose}
-            className="w-full py-2 sm:py-3 px-4 sm:px-6 bg-primary text-primary-foreground font-display font-bold text-xs sm:text-base rounded-lg sm:rounded-xl transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
+            className="w-full py-2.5 sm:py-3 px-4 sm:px-6 bg-primary text-primary-foreground font-display font-bold text-sm sm:text-base rounded-lg sm:rounded-xl transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
           >
             Let's Go!
           </button>

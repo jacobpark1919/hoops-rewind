@@ -289,16 +289,16 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             </button>
             <div className="flex items-center gap-0.5 sm:gap-2 flex-shrink-0">
               <span className="text-xs text-muted-foreground uppercase tracking-wider hidden sm:inline">Round</span>
-              <span className="font-display text-xs sm:text-lg font-bold text-foreground whitespace-nowrap">
+              <span className="font-display text-sm sm:text-lg font-bold text-foreground whitespace-nowrap">
                 <span className="sm:hidden">R</span>{currentEventIndex}/{TOTAL_ROUNDS}
               </span>
             </div>
             <div className="flex items-center gap-0.5 sm:gap-1.5 min-w-0">
-              <span className="text-[10px] sm:text-sm text-muted-foreground truncate">
+              <span className="text-[11px] sm:text-sm text-muted-foreground truncate">
                 {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </span>
-              <span className="text-muted-foreground text-[10px] sm:text-sm flex-shrink-0">·</span>
-              <span className="text-[10px] sm:text-sm font-bold text-foreground whitespace-nowrap flex-shrink-0">
+              <span className="text-muted-foreground text-[11px] sm:text-sm flex-shrink-0">·</span>
+              <span className="text-[11px] sm:text-sm font-bold text-foreground whitespace-nowrap flex-shrink-0">
                 #{(() => {
                   const origin = new Date('2026-02-12');
                   const today = new Date();
@@ -353,7 +353,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               {!cardCollapsed && !hasPendingPlacement ? (
                 <div className="min-h-[80px] sm:min-h-[120px] transition-all duration-300 ease-out">
                   <div key={currentEvent.id} className="animate-fade-in-up">
-                    <p className="text-[10px] sm:text-sm text-muted-foreground mb-1.5 sm:mb-3 font-medium uppercase tracking-wider">
+                    <p className="text-[11px] sm:text-sm text-muted-foreground mb-1.5 sm:mb-3 font-medium uppercase tracking-wider">
                       Place this event in the timeline
                     </p>
                     <div
