@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { Home, Plus, Trash2, Calendar, ChevronDown, ChevronUp, Lock } from "lucide-react";
+import { Home, Plus, Trash2, Calendar, ChevronDown, ChevronUp, Lock, Pencil } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface SportEvent {
@@ -23,11 +23,21 @@ interface Challenge {
   }>;
 }
 
-const SPORTS = ["American Football", "Basketball", "Baseball"];
+const SPORTS = [
+  "American Football", "Basketball", "Baseball", "Hockey", "Soccer",
+  "Golf", "Tennis", "Boxing", "UFC", "Olympics",
+];
 const SPORT_ICONS: Record<string, string> = {
   "American Football": "🏈",
   "Basketball": "🏀",
   "Baseball": "⚾",
+  "Hockey": "🏒",
+  "Soccer": "⚽",
+  "Golf": "⛳",
+  "Tennis": "🎾",
+  "Boxing": "🥊",
+  "UFC": "🥋",
+  "Olympics": "🏅",
 };
 
 function callAdmin(action: string, method: "GET" | "POST" = "GET", body?: any, params?: Record<string, string>, password?: string) {
@@ -77,6 +87,7 @@ export default function Admin() {
   const [showCreateChallenge, setShowCreateChallenge] = useState(false);
   const [filterSport, setFilterSport] = useState<string>("Basketball");
   const [expandedChallenge, setExpandedChallenge] = useState<string | null>(null);
+  const [editingChallengeId, setEditingChallengeId] = useState<string | null>(null);
 
   // Enable scrolling only on admin page
   useEffect(() => {
@@ -126,15 +137,38 @@ export default function Admin() {
   const handleCreateChallenge = async () => {
     if (!challengeDate || selectedEventIds.length !== 8) return;
     setLoading(true);
-    await callAdmin("create-challenge", "POST", {
-      challenge_date: challengeDate,
-      sport_filter: challengeSport,
-      event_ids: selectedEventIds,
-    }, undefined, passwordInput);
+    if (editingChallengeId) {
+      await callAdmin("update-challenge", "POST", {
+        challenge_id: editingChallengeId,
+        challenge_date: challengeDate,
+        sport_filter: challengeSport,
+        event_ids: selectedEventIds,
+      }, undefined, passwordInput);
+      setEditingChallengeId(null);
+    } else {
+      await callAdmin("create-challenge", "POST", {
+        challenge_date: challengeDate,
+        sport_filter: challengeSport,
+        event_ids: selectedEventIds,
+      }, undefined, passwordInput);
+    }
     setSelectedEventIds([]);
     setShowCreateChallenge(false);
     await fetchChallenges();
     setLoading(false);
+  };
+
+  const handleEditChallenge = (ch: Challenge) => {
+    setEditingChallengeId(ch.id);
+    setChallengeDate(ch.challenge_date);
+    setChallengeSport(ch.sport_filter);
+    const eventIds = ch.daily_challenge_events
+      ?.sort((a, b) => a.position - b.position)
+      .map(ce => ce.event_id) || [];
+    setSelectedEventIds(eventIds);
+    if (ch.sport_filter) setFilterSport(ch.sport_filter);
+    setShowCreateChallenge(true);
+    setExpandedChallenge(null);
   };
 
   const handleDeleteChallenge = async (challengeId: string) => {
@@ -175,7 +209,7 @@ export default function Admin() {
     setLoading(false);
   };
 
-  const filteredEvents = events.filter(e => e.sport === filterSport);
+  const filteredEvents = filterSport === "Everything" ? events : events.filter(e => e.sport === filterSport);
 
   const handlePasswordSubmit = async () => {
     // Verify password server-side with a lightweight POST
@@ -248,13 +282,25 @@ export default function Admin() {
         {/* CHALLENGES TAB */}
         {tab === "challenges" && (
           <div className="space-y-4">
-            <Button onClick={() => setShowCreateChallenge(!showCreateChallenge)} size="sm">
+            <Button onClick={() => {
+              if (showCreateChallenge) {
+                setShowCreateChallenge(false);
+                setEditingChallengeId(null);
+                setSelectedEventIds([]);
+              } else {
+                setEditingChallengeId(null);
+                setSelectedEventIds([]);
+                setChallengeDate("");
+                setChallengeSport(null);
+                setShowCreateChallenge(true);
+              }
+            }} size="sm">
               <Plus className="w-4 h-4 mr-1" /> New Challenge
             </Button>
 
             {showCreateChallenge && (
               <div className="border border-border rounded-xl p-4 space-y-4 bg-card">
-                <h3 className="font-semibold text-foreground">Create Challenge</h3>
+                <h3 className="font-semibold text-foreground">{editingChallengeId ? "Edit Challenge" : "Create Challenge"}</h3>
                 <div className="flex gap-3 flex-wrap">
                   <input
                     type="date"
@@ -284,6 +330,7 @@ export default function Admin() {
                       onChange={e => setFilterSport(e.target.value)}
                       className="ml-2 px-2 py-1 rounded border border-border bg-background text-foreground text-xs"
                     >
+                      <option value="Everything">Everything</option>
                       {SPORTS.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
                   </p>
@@ -353,8 +400,17 @@ export default function Admin() {
                 </div>
 
                 <Button onClick={handleCreateChallenge} disabled={selectedEventIds.length !== 8 || !challengeDate || loading} size="sm">
-                  Create Challenge
+                  {editingChallengeId ? "Save Changes" : "Create Challenge"}
                 </Button>
+                {editingChallengeId && (
+                  <Button variant="outline" size="sm" className="ml-2" onClick={() => {
+                    setEditingChallengeId(null);
+                    setShowCreateChallenge(false);
+                    setSelectedEventIds([]);
+                  }}>
+                    Cancel Edit
+                  </Button>
+                )}
               </div>
             )}
 
@@ -389,14 +445,22 @@ export default function Admin() {
                             <span className="ml-auto text-xs">{ce.sports_events?.year}</span>
                           </div>
                         ))}
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        className="mt-2"
-                        onClick={() => handleDeleteChallenge(ch.id)}
-                      >
-                        <Trash2 className="w-3 h-3 mr-1" /> Delete
-                      </Button>
+                      <div className="flex gap-2 mt-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEditChallenge(ch)}
+                        >
+                          <Pencil className="w-3 h-3 mr-1" /> Edit
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDeleteChallenge(ch.id)}
+                        >
+                          <Trash2 className="w-3 h-3 mr-1" /> Delete
+                        </Button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -420,6 +484,7 @@ export default function Admin() {
                 onChange={e => setFilterSport(e.target.value)}
                 className="px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
               >
+                <option value="Everything">Everything</option>
                 {SPORTS.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
