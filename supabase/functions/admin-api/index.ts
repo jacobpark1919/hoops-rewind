@@ -99,6 +99,30 @@ Deno.serve(async (req) => {
         return new Response(JSON.stringify(challenge), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
 
+      if (action === "update-challenge") {
+        const { challenge_id, challenge_date, sport_filter, event_ids } = body;
+        // Update challenge metadata
+        const updateData: any = {};
+        if (challenge_date !== undefined) updateData.challenge_date = challenge_date;
+        if (sport_filter !== undefined) updateData.sport_filter = sport_filter;
+        if (Object.keys(updateData).length > 0) {
+          const { error } = await supabase.from("daily_challenges").update(updateData).eq("id", challenge_id);
+          if (error) throw error;
+        }
+        // If event_ids provided, replace all linked events
+        if (event_ids) {
+          await supabase.from("daily_challenge_events").delete().eq("challenge_id", challenge_id);
+          const challengeEvents = event_ids.map((event_id: string, index: number) => ({
+            challenge_id,
+            event_id,
+            position: index + 1,
+          }));
+          const { error: eventsError } = await supabase.from("daily_challenge_events").insert(challengeEvents);
+          if (eventsError) throw eventsError;
+        }
+        return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+
       if (action === "delete-challenge") {
         const { challenge_id } = body;
         // Delete linked events first
