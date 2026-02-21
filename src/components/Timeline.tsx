@@ -228,16 +228,23 @@ export function Timeline({
   // render the pending card inside it instead of "Drop here" text.
   const renderDropZone = (position: number, marginClass?: string) => {
     const isActive = activeDropZone === position;
-    const isFrozen = isActive && !isDragging && pendingItem;
+    // Keep the frozen container in the DOM even when dragging a pending card
+    // to avoid touchcancel from DOM mutation. We hide it with CSS instead.
+    const isFrozen = isActive && pendingItem;
 
     if (isFrozen) {
       // Render the pending card living inside the drop zone area.
       // No CSS transitions on this container — prevents any height animation on drop.
       // min-h-28 matches the active drop zone height so the layout stays pixel-perfect static.
+      // When isDragging, hide visually but keep in DOM to prevent touchcancel.
       return (
         <div
           key={`drop-${position}`}
           className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 min-h-28 flex flex-col justify-center p-2 ${marginClass ?? ''}`}
+          style={{
+            opacity: isDragging ? 0 : 1,
+            pointerEvents: isDragging ? 'none' : undefined,
+          }}
         >
           <div
             ref={(el) => {
