@@ -243,6 +243,7 @@ export function Timeline({
           className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 min-h-28 flex flex-col justify-center p-2 ${marginClass ?? ''}`}
           style={{
             opacity: isDragging ? 0 : 1,
+            pointerEvents: isDragging ? 'none' : undefined,
           }}
         >
           <div
