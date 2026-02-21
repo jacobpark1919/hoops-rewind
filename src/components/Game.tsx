@@ -288,9 +288,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               <Home className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-muted-foreground hover:text-foreground" />
             </button>
             <div className="flex items-center gap-0.5 sm:gap-2 flex-shrink-0">
-              <span className="text-xs text-muted-foreground uppercase tracking-wider hidden sm:inline">Round</span>
               <span className="font-display text-sm sm:text-lg font-bold text-foreground whitespace-nowrap">
-                <span className="sm:hidden">R</span>{currentEventIndex}/{TOTAL_ROUNDS}
+                Round {currentEventIndex}/{TOTAL_ROUNDS}
               </span>
             </div>
             <div className="flex items-center gap-0.5 sm:gap-1.5 min-w-0">
@@ -299,7 +298,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               </span>
               <span className="text-muted-foreground text-[11px] sm:text-sm flex-shrink-0">·</span>
               <span className="text-[11px] sm:text-sm font-bold text-foreground whitespace-nowrap flex-shrink-0">
-                #{(() => {
+                Puzzle #{(() => {
                   const origin = new Date('2026-02-12');
                   const today = new Date();
                   const todayLocal = new Date(today.getFullYear(), today.getMonth(), today.getDate());

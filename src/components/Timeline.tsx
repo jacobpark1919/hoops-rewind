@@ -256,8 +256,16 @@ export function Timeline({
           >
             <EventCard event={pendingItem.event} showYear={false} status={pendingItem.status} />
             {onConfirm && (
-              <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 z-20">
-                <Button onClick={onConfirm} size="sm" className="rounded-full shadow-lg px-5 py-3 text-sm font-medium min-h-[44px]">
+              <div
+                className="absolute -bottom-5 left-1/2 -translate-x-1/2 z-20"
+                onMouseDown={(e) => e.stopPropagation()}
+                onTouchStart={(e) => e.stopPropagation()}
+              >
+                <Button
+                  onPointerUp={(e) => { e.stopPropagation(); onConfirm(); }}
+                  size="sm"
+                  className="rounded-full shadow-lg px-5 py-3 text-sm font-medium min-h-[44px]"
+                >
                   Tap to place
                 </Button>
               </div>
