@@ -27,7 +27,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
       onClick={handleClose}
     >
       <div 
-        className={`relative bg-card border border-border rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-[340px] sm:max-w-sm w-full shadow-2xl transition-all duration-200 max-h-[90vh] overflow-y-auto ${
+        className={`relative bg-card border border-border rounded-xl sm:rounded-2xl p-4 sm:p-8 max-w-[340px] sm:max-w-md w-full shadow-2xl transition-all duration-200 max-h-[90vh] overflow-y-auto ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -47,7 +47,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
           </h2>
           
           {/* Drag illustration */}
-          <div className="my-2 sm:my-6 flex justify-center">
+          <div className="my-3 sm:my-8 flex justify-center">
             <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30">
               <video
                 src={dragHintVideo}
@@ -55,13 +55,13 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 loop
                 muted
                 playsInline
-                className="w-full block max-h-48 sm:max-h-none object-cover"
+                className="w-full block max-h-48 sm:max-h-[400px] object-cover"
               />
             </div>
           </div>
 
           {/* Instructions */}
-          <div className="space-y-2 sm:space-y-3 text-left mb-4 sm:mb-6">
+          <div className="space-y-2 sm:space-y-4 text-left mb-4 sm:mb-8">
             <div className="flex items-start gap-2 sm:gap-3">
               <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">1</span>
               <p className="text-foreground text-xs sm:text-sm">Drag each event card into the timeline</p>

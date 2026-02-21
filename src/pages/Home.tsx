@@ -30,9 +30,9 @@ export default function Home() {
   const puzzleNum = getPuzzleNumber();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col relative overflow-hidden">
-      <div className="absolute top-4 right-4 z-20 flex items-center gap-1">
-        <div className="pointer-events-none select-none flex items-center gap-1">
+    <div className="min-h-screen sm:min-h-screen bg-background flex flex-col relative overflow-hidden" style={{ minHeight: 'calc(var(--vh, 1vh) * 80)' }}>
+      <div className="absolute top-2 sm:top-4 right-2 sm:right-4 z-20 flex items-center gap-1">
+        <div className="pointer-events-none select-none flex items-center gap-1 hidden sm:flex">
           <span
             className="text-muted-foreground/70 text-sm md:text-base whitespace-nowrap"
             style={{
@@ -58,25 +58,25 @@ export default function Home() {
         <ThemeToggle size="lg" />
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
+      <div className="flex-1 flex flex-col items-center justify-center px-3 sm:px-4 py-3 sm:py-8">
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-2">
-          <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-primary fill-primary/20" />
-          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground uppercase">
+        <div className="flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-2">
+          <Shield className="w-6 h-6 sm:w-10 sm:h-10 text-primary fill-primary/20" />
+          <h1 className="font-display text-xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground uppercase">
             Sports Rewind
           </h1>
         </div>
 
-        <p className="text-muted-foreground text-sm sm:text-base mb-6">
+        <p className="text-muted-foreground text-[11px] sm:text-base mb-2 sm:mb-6">
           {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
         </p>
 
-        <p className="text-muted-foreground text-sm sm:text-base mb-6">
+        <p className="text-muted-foreground text-[11px] sm:text-base mb-2 sm:mb-6">
           Select a mode to play today's puzzle:
         </p>
 
         {/* Timeline decoration */}
-        <div className="relative w-full max-w-2xl mb-8 hidden sm:flex items-center">
+        <div className="relative w-full max-w-2xl mb-3 sm:mb-8 hidden sm:flex items-center">
           <div className="flex-1 h-0.5 bg-primary/60" />
           <div className="w-3 h-3 rounded-full bg-primary mx-1" />
           <div className="flex-1 h-0.5 bg-primary/60" />
@@ -87,23 +87,23 @@ export default function Home() {
         </div>
 
         {/* Mode cards */}
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-2xl mb-10">
+        <div className="flex flex-row gap-2 sm:gap-6 w-full max-w-2xl mb-3 sm:mb-10">
           {SPORT_MODES.map((mode) => (
             <div
               key={mode.label}
-              className="flex-1 bg-card border border-border rounded-xl p-3 sm:p-5 flex flex-col items-center text-center shadow-md hover:shadow-lg transition-shadow"
+              className="flex-1 bg-card border border-border rounded-lg sm:rounded-xl p-2 sm:p-5 flex flex-col items-center text-center shadow-md hover:shadow-lg transition-shadow"
             >
-              <span className="text-2xl sm:text-3xl mb-1 sm:mb-2 block">{mode.icon}</span>
-              <h2 className="font-display text-sm sm:text-lg font-bold text-foreground mb-0.5 sm:mb-1">
+              <span className="text-lg sm:text-3xl mb-0.5 sm:mb-2 block">{mode.icon}</span>
+              <h2 className="font-display text-[11px] sm:text-lg font-bold text-foreground mb-0 sm:mb-1 leading-tight">
                 {mode.label}
               </h2>
-              <p className="text-muted-foreground text-xs sm:text-sm mb-2 sm:mb-4 flex-1">
+              <p className="text-muted-foreground text-[9px] sm:text-sm mb-1.5 sm:mb-4 flex-1 leading-tight">
                 {mode.description}
               </p>
               <Button
                 onClick={() => handlePlay(mode.value)}
                 size="sm"
-                className="rounded-full px-6 mt-auto"
+                className="rounded-full px-4 sm:px-6 mt-auto text-[10px] sm:text-sm h-7 sm:h-9"
               >
                 Play
               </Button>
@@ -111,12 +111,12 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="text-muted-foreground text-sm sm:text-base text-center">
+        <p className="text-muted-foreground text-[10px] sm:text-base text-center">
           Come back every day for a new sports history timeline puzzle.
         </p>
       </div>
 
-      <footer className="py-4 flex justify-center gap-4 text-xs text-muted-foreground/60">
+      <footer className="py-2 sm:py-4 flex justify-center gap-3 sm:gap-4 text-[9px] sm:text-xs text-muted-foreground/60">
         <Link to="/privacy" className="hover:text-muted-foreground transition-colors">Privacy Policy</Link>
         <span>·</span>
         <Link to="/terms" className="hover:text-muted-foreground transition-colors">Terms of Service</Link>
