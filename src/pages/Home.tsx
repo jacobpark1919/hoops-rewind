@@ -203,7 +203,7 @@ export default function Home() {
         {/* Mode cards with drop zones */}
         <div className="relative flex flex-col sm:flex-row w-full max-w-2xl mb-10">
           {/* Scribble hint for timeline reordering */}
-          <div className="absolute -left-4 sm:-left-28 top-1/2 -translate-y-1/2 z-10 pointer-events-none select-none hidden sm:flex items-center gap-1">
+          <div className="absolute -left-8 sm:-left-36 top-1/2 -translate-y-1/2 z-10 pointer-events-none select-none hidden sm:flex items-center gap-1">
             <span
               className="text-muted-foreground/70 text-sm md:text-base whitespace-nowrap"
               style={{
@@ -231,9 +231,6 @@ export default function Home() {
             const mode = SPORT_MODES[modeIdx];
             const isCardDragging = dragging && dragIdx === arrIdx;
 
-            // Determine if a drop zone should show before this card
-            const showDropBefore = dragging && dragIdx !== null && dragIdx !== arrIdx && dragIdx !== arrIdx - 1;
-            // Calculate drop target from offsetX
             const getDropTarget = () => {
               if (!dragging || dragIdx === null) return null;
               const cx = startXRef.current + offsetX;
@@ -251,17 +248,18 @@ export default function Home() {
             const showZone = dragging && dropTarget === arrIdx && dragIdx !== arrIdx && dragIdx !== arrIdx - 1;
 
             return (
-              <div key={mode.label} className="flex items-stretch flex-1" style={{ minWidth: 0 }}>
+              <div key={mode.label} className="flex items-stretch" style={{ flex: '1 1 0%', minWidth: 0 }}>
                 {/* Drop zone before card */}
                 <div
                   className={`transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center shrink-0 ${
                     showZone
-                      ? 'w-16 sm:w-20 border-primary bg-primary/20 shadow-lg mx-1'
+                      ? 'border-primary bg-primary/20 shadow-lg mx-1'
                       : 'w-0 border-transparent overflow-hidden'
                   }`}
+                  style={showZone ? { flex: '1 1 0%' } : undefined}
                 >
                   {showZone && (
-                    <span className="text-primary text-xs font-semibold rotate-90 whitespace-nowrap">Drop here</span>
+                    <span className="text-primary text-xs font-semibold whitespace-nowrap">Drop here</span>
                   )}
                 </div>
 
@@ -269,11 +267,12 @@ export default function Home() {
                   ref={(el) => { cardRefs.current[arrIdx] = el; }}
                   onMouseDown={(e) => { e.preventDefault(); startDrag(e.clientX, arrIdx); }}
                   onTouchStart={(e) => { startDrag(e.touches[0].clientX, arrIdx); }}
-                  className={`flex-1 bg-card border border-border rounded-xl p-5 flex flex-col items-center text-center select-none
+                  className={`bg-card border border-border rounded-xl p-5 flex flex-col items-center text-center select-none
                     ${isCardDragging ? 'z-50 shadow-xl' : 'shadow-md cursor-grab active:cursor-grabbing hover:shadow-lg'}
                     ${arrIdx > 0 && !showZone ? 'ml-4 sm:ml-6' : ''}`}
                   style={{
-                    transform: isCardDragging ? `translateX(${offsetX}px) scale(1.05) rotate(2deg)` : undefined,
+                    flex: '1 1 0%',
+                    transform: isCardDragging ? `translateX(${offsetX}px)` : undefined,
                     zIndex: isCardDragging ? 50 : undefined,
                     transition: isCardDragging ? 'box-shadow 0.2s' : 'transform 0.2s, box-shadow 0.2s',
                   }}
@@ -303,12 +302,13 @@ export default function Home() {
                     <div
                       className={`transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center shrink-0 ${
                         showEndZone
-                          ? 'w-16 sm:w-20 border-primary bg-primary/20 shadow-lg ml-1'
+                          ? 'border-primary bg-primary/20 shadow-lg ml-1'
                           : 'w-0 border-transparent overflow-hidden'
                       }`}
+                      style={showEndZone ? { flex: '1 1 0%' } : undefined}
                     >
                       {showEndZone && (
-                        <span className="text-primary text-xs font-semibold rotate-90 whitespace-nowrap">Drop here</span>
+                        <span className="text-primary text-xs font-semibold whitespace-nowrap">Drop here</span>
                       )}
                     </div>
                   );
