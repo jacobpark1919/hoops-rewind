@@ -45,15 +45,21 @@ export function useDrag(options: UseDragOptions = {}) {
     startDragAt(clientY, cardElement);
   }, [startDragAt]);
 
-  // Use a ref to track the latest currentY so the end handler can access it
+  // Use a ref to track the latest currentY so handlers can access it
   // without needing currentY in the effect's dependency array.
   const currentYRef = useRef(0);
   useEffect(() => {
     currentYRef.current = dragState.currentY;
   }, [dragState.currentY]);
 
+  // Track whether touch was canceled (DOM mutation on real phones)
+  const wasCanceledRef = useRef(false);
+
   useEffect(() => {
-    if (!dragState.isDragging) return;
+    if (!dragState.isDragging) {
+      wasCanceledRef.current = false;
+      return;
+    }
 
     const handleMove = (clientY: number) => {
       setDragState(prev => ({
@@ -65,6 +71,7 @@ export function useDrag(options: UseDragOptions = {}) {
     };
 
     const handleEnd = (clientY: number) => {
+      wasCanceledRef.current = false;
       optionsRef.current.onDragEnd?.(clientY);
       setDragState(prev => ({
         ...prev,
@@ -91,13 +98,34 @@ export function useDrag(options: UseDragOptions = {}) {
       const clientY = e.changedTouches[0]?.clientY ?? currentYRef.current;
       handleEnd(clientY);
     };
-    const handleTouchCancel = (e: TouchEvent) => {
-      const clientY = e.changedTouches[0]?.clientY ?? currentYRef.current;
-      handleEnd(clientY);
+
+    // On real phones, DOM mutations (drop zone expanding) can fire touchcancel.
+    // Instead of ending the drag, we keep it alive and wait for the user to
+    // re-touch the screen, seamlessly resuming the drag.
+    const handleTouchCancel = () => {
+      wasCanceledRef.current = true;
+      // Intentionally do NOT call handleEnd — drag stays active
+    };
+
+    // If the drag was interrupted by touchcancel, the next touchstart on the
+    // screen resumes the drag seamlessly from the new finger position.
+    const handleDocTouchStart = (e: TouchEvent) => {
+      if (wasCanceledRef.current && e.touches.length > 0) {
+        wasCanceledRef.current = false;
+        if (e.cancelable) e.preventDefault();
+        const newY = e.touches[0].clientY;
+        setDragState(prev => ({
+          ...prev,
+          startY: newY - prev.offsetY, // preserve visual offset
+          currentY: newY,
+          prevY: newY,
+        }));
+      }
     };
 
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("touchstart", handleDocTouchStart, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
     document.addEventListener("touchend", handleTouchEnd, { passive: false });
     document.addEventListener("touchcancel", handleTouchCancel);
@@ -105,6 +133,7 @@ export function useDrag(options: UseDragOptions = {}) {
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("touchstart", handleDocTouchStart);
       document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
       document.removeEventListener("touchcancel", handleTouchCancel);
