@@ -391,7 +391,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           </p>
           <Timeline
             placedEvents={placedEvents}
-            activeDropZone={isDragging && hasDragMoved ? activeDropZone : frozenDropZone}
+            activeDropZone={isDragging && hasDragMoved ? (activeDropZone ?? frozenDropZone) : frozenDropZone}
             isDragging={isDragging && hasDragMoved}
             incorrectEventIds={incorrectEventIds}
             dragY={isDragging && hasDragMoved && dragState.cardRect
