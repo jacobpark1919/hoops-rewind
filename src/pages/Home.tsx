@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Shield } from "lucide-react";
@@ -115,6 +115,14 @@ export default function Home() {
           Come back every day for a new sports history timeline puzzle.
         </p>
       </div>
+
+      <footer className="py-4 flex justify-center gap-4 text-xs text-muted-foreground/60">
+        <Link to="/privacy" className="hover:text-muted-foreground transition-colors">Privacy Policy</Link>
+        <span>·</span>
+        <Link to="/terms" className="hover:text-muted-foreground transition-colors">Terms of Service</Link>
+        <span>·</span>
+        <Link to="/cookies" className="hover:text-muted-foreground transition-colors">Cookie Policy</Link>
+      </footer>
     </div>
   );
 }
