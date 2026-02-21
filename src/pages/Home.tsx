@@ -35,7 +35,7 @@ export default function Home() {
           <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
             Sports
           </span>
-          <span className="text-foreground ml-1">Flashback</span>
+          <span className="text-foreground ml-1">Vault</span>
         </h1>
         <ThemeToggle />
       </header>
@@ -52,7 +52,7 @@ export default function Home() {
         <div className="relative z-10 bg-card border border-border rounded-xl shadow-2xl p-5 max-w-xs w-full mx-4 text-center" style={{ boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.2), 0 8px 16px -6px rgba(0, 0, 0, 0.12)' }}>
           {/* Title */}
           <h2 className="font-display text-2xl font-bold text-foreground mb-0.5">
-            Sports Flashback
+            Sports Vault
           </h2>
           
           {/* Date */}
