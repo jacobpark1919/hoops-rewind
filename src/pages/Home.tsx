@@ -117,7 +117,7 @@ function useHorizontalDrag(onReorder: (from: number, to: number) => void) {
     };
   }, [dragging, onReorder]);
 
-  return { dragging, dragIdx, offsetX, startDrag, cardRefs: cardRefsRef };
+  return { dragging, dragIdx, offsetX, startDrag, cardRefs: cardRefsRef, startXRef };
 }
 
 export default function Home() {
@@ -133,7 +133,7 @@ export default function Home() {
     });
   }, []);
 
-  const { dragging, dragIdx, offsetX, startDrag, cardRefs } = useHorizontalDrag(handleReorder);
+  const { dragging, dragIdx, offsetX, startDrag, cardRefs, startXRef } = useHorizontalDrag(handleReorder);
 
   const handlePlay = (sportValue: string | null) => {
     const params = sportValue ? `?sport=${encodeURIComponent(sportValue)}` : "";
@@ -145,7 +145,30 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col relative overflow-hidden">
-      <div className="absolute top-4 right-4 z-20">
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-1">
+        <div className="pointer-events-none select-none flex items-center gap-1">
+          <span
+            className="text-muted-foreground/70 text-sm md:text-base whitespace-nowrap"
+            style={{
+              fontFamily: "'Caveat', cursive",
+              transform: 'rotate(-6deg)',
+              display: 'inline-block',
+            }}
+          >
+            try dark mode!
+          </span>
+          <svg
+            className="w-6 h-6 text-muted-foreground/70 -mt-1"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M5 12h14M14 6l6 6-6 6" />
+          </svg>
+        </div>
         <ThemeToggle size="lg" />
       </div>
 
@@ -177,42 +200,119 @@ export default function Home() {
           <div className="flex-1 h-0.5 bg-primary/60" />
         </div>
 
-        {/* Mode cards */}
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-2xl mb-10">
+        {/* Mode cards with drop zones */}
+        <div className="relative flex flex-col sm:flex-row w-full max-w-2xl mb-10">
+          {/* Scribble hint for timeline reordering */}
+          <div className="absolute -left-4 sm:-left-28 top-1/2 -translate-y-1/2 z-10 pointer-events-none select-none hidden sm:flex items-center gap-1">
+            <span
+              className="text-muted-foreground/70 text-sm md:text-base whitespace-nowrap"
+              style={{
+                fontFamily: "'Caveat', cursive",
+                transform: 'rotate(-6deg)',
+                display: 'inline-block',
+              }}
+            >
+              try reordering!
+            </span>
+            <svg
+              className="w-6 h-6 text-muted-foreground/70 -mt-1"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M5 12h14M14 6l6 6-6 6" />
+            </svg>
+          </div>
+
           {order.map((modeIdx, arrIdx) => {
             const mode = SPORT_MODES[modeIdx];
-            const isDragging = dragging && dragIdx === arrIdx;
+            const isCardDragging = dragging && dragIdx === arrIdx;
+
+            // Determine if a drop zone should show before this card
+            const showDropBefore = dragging && dragIdx !== null && dragIdx !== arrIdx && dragIdx !== arrIdx - 1;
+            // Calculate drop target from offsetX
+            const getDropTarget = () => {
+              if (!dragging || dragIdx === null) return null;
+              const cx = startXRef.current + offsetX;
+              for (let i = 0; i < cardRefs.current.length; i++) {
+                const rect = cardRefs.current[i]?.getBoundingClientRect();
+                if (rect) {
+                  const center = rect.left + rect.width / 2;
+                  if (cx < center) return i;
+                }
+              }
+              return cardRefs.current.length;
+            };
+
+            const dropTarget = getDropTarget();
+            const showZone = dragging && dropTarget === arrIdx && dragIdx !== arrIdx && dragIdx !== arrIdx - 1;
 
             return (
-              <div
-                key={mode.label}
-                ref={(el) => { cardRefs.current[arrIdx] = el; }}
-                onMouseDown={(e) => { e.preventDefault(); startDrag(e.clientX, arrIdx); }}
-                onTouchStart={(e) => { startDrag(e.touches[0].clientX, arrIdx); }}
-                className={`flex-1 bg-card border border-border rounded-xl p-5 flex flex-col items-center text-center select-none
-                  ${isDragging ? 'z-50 shadow-xl' : 'shadow-md cursor-grab active:cursor-grabbing hover:shadow-lg'}`}
-                style={{
-                  transform: isDragging ? `translateX(${offsetX}px) scale(1.05) rotate(2deg)` : undefined,
-                  zIndex: isDragging ? 50 : undefined,
-                  transition: isDragging ? 'box-shadow 0.2s' : 'transform 0.2s, box-shadow 0.2s',
-                }}
-              >
-                <span className="text-3xl mb-2 block">{mode.icon}</span>
-                <h2 className="font-display text-base sm:text-lg font-bold text-foreground mb-1">
-                  {mode.label}
-                </h2>
-                <p className="text-muted-foreground text-sm mb-4 flex-1">
-                  {mode.description}
-                </p>
-                <Button
-                  onClick={() => handlePlay(mode.value)}
-                  size="sm"
-                  className="rounded-full px-6 mt-auto"
-                  onMouseDown={(e) => e.stopPropagation()}
-                  onTouchStart={(e) => e.stopPropagation()}
+              <div key={mode.label} className="flex items-stretch flex-1" style={{ minWidth: 0 }}>
+                {/* Drop zone before card */}
+                <div
+                  className={`transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center shrink-0 ${
+                    showZone
+                      ? 'w-16 sm:w-20 border-primary bg-primary/20 shadow-lg mx-1'
+                      : 'w-0 border-transparent overflow-hidden'
+                  }`}
                 >
-                  Play
-                </Button>
+                  {showZone && (
+                    <span className="text-primary text-xs font-semibold rotate-90 whitespace-nowrap">Drop here</span>
+                  )}
+                </div>
+
+                <div
+                  ref={(el) => { cardRefs.current[arrIdx] = el; }}
+                  onMouseDown={(e) => { e.preventDefault(); startDrag(e.clientX, arrIdx); }}
+                  onTouchStart={(e) => { startDrag(e.touches[0].clientX, arrIdx); }}
+                  className={`flex-1 bg-card border border-border rounded-xl p-5 flex flex-col items-center text-center select-none
+                    ${isCardDragging ? 'z-50 shadow-xl' : 'shadow-md cursor-grab active:cursor-grabbing hover:shadow-lg'}
+                    ${arrIdx > 0 && !showZone ? 'ml-4 sm:ml-6' : ''}`}
+                  style={{
+                    transform: isCardDragging ? `translateX(${offsetX}px) scale(1.05) rotate(2deg)` : undefined,
+                    zIndex: isCardDragging ? 50 : undefined,
+                    transition: isCardDragging ? 'box-shadow 0.2s' : 'transform 0.2s, box-shadow 0.2s',
+                  }}
+                >
+                  <span className="text-3xl mb-2 block">{mode.icon}</span>
+                  <h2 className="font-display text-base sm:text-lg font-bold text-foreground mb-1">
+                    {mode.label}
+                  </h2>
+                  <p className="text-muted-foreground text-sm mb-4 flex-1">
+                    {mode.description}
+                  </p>
+                  <Button
+                    onClick={() => handlePlay(mode.value)}
+                    size="sm"
+                    className="rounded-full px-6 mt-auto"
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onTouchStart={(e) => e.stopPropagation()}
+                  >
+                    Play
+                  </Button>
+                </div>
+
+                {/* Drop zone after last card */}
+                {arrIdx === order.length - 1 && (() => {
+                  const showEndZone = dragging && dropTarget === order.length && dragIdx !== arrIdx;
+                  return (
+                    <div
+                      className={`transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center shrink-0 ${
+                        showEndZone
+                          ? 'w-16 sm:w-20 border-primary bg-primary/20 shadow-lg ml-1'
+                          : 'w-0 border-transparent overflow-hidden'
+                      }`}
+                    >
+                      {showEndZone && (
+                        <span className="text-primary text-xs font-semibold rotate-90 whitespace-nowrap">Drop here</span>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
             );
           })}
