@@ -88,8 +88,10 @@ export function useDrag(options: UseDragOptions = {}) {
 
     // Touch handlers
     const handleTouchMove = (e: TouchEvent) => {
+      // Always prevent default to stop scrolling and ensure we keep receiving events
       if (e.cancelable) e.preventDefault();
       if (e.touches.length > 0) {
+        wasCanceledRef.current = false; // touch is alive again
         handleMove(e.touches[0].clientY);
       }
     };
@@ -100,15 +102,17 @@ export function useDrag(options: UseDragOptions = {}) {
     };
 
     // On real phones, DOM mutations (drop zone expanding) can fire touchcancel.
-    // Instead of ending the drag, we keep it alive and wait for the user to
-    // re-touch the screen, seamlessly resuming the drag.
+    // Instead of ending the drag, we keep it alive and seamlessly continue
+    // tracking via document-level touchmove/touchend. No user action needed.
     const handleTouchCancel = () => {
       wasCanceledRef.current = true;
-      // Intentionally do NOT call handleEnd — drag stays active
+      // Intentionally do NOT call handleEnd — drag stays active.
+      // The existing document-level touchmove/touchend listeners will
+      // continue to fire because the finger is still on the screen.
     };
 
-    // If the drag was interrupted by touchcancel, the next touchstart on the
-    // screen resumes the drag seamlessly from the new finger position.
+    // If the drag was interrupted by touchcancel AND somehow a new touchstart
+    // fires (e.g. user lifted and re-touched), resume from the new position.
     const handleDocTouchStart = (e: TouchEvent) => {
       if (wasCanceledRef.current && e.touches.length > 0) {
         wasCanceledRef.current = false;
