@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { Home, Plus, Trash2, Calendar, ChevronDown, ChevronUp, Lock, Pencil } from "lucide-react";
+import { Home, Plus, Trash2, Calendar, ChevronDown, ChevronUp, Lock, Pencil, ArrowUp, ArrowDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface SportEvent {
@@ -322,6 +322,63 @@ export default function Admin() {
                   </select>
                 </div>
 
+                {/* Ordered selected events */}
+                {selectedEventIds.length > 0 && (
+                  <div className="mb-4">
+                    <p className="text-sm font-semibold text-foreground mb-2">Event Order (this is the order players receive cards):</p>
+                    <div className="space-y-1">
+                      {selectedEventIds.map((eid, idx) => {
+                        const ev = events.find(e => e.id === eid);
+                        if (!ev) return null;
+                        return (
+                          <div key={eid} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/30 text-sm">
+                            <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-bold flex-shrink-0">
+                              {idx + 1}
+                            </span>
+                            <span>{ev.icon}</span>
+                            <span className="flex-1 truncate">{ev.title}</span>
+                            <span className="text-muted-foreground text-xs">{ev.year}</span>
+                            <button
+                              onClick={() => {
+                                if (idx === 0) return;
+                                setSelectedEventIds(prev => {
+                                  const next = [...prev];
+                                  [next[idx - 1], next[idx]] = [next[idx], next[idx - 1]];
+                                  return next;
+                                });
+                              }}
+                              disabled={idx === 0}
+                              className="p-1 rounded hover:bg-primary/20 disabled:opacity-30"
+                            >
+                              <ArrowUp className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => {
+                                if (idx === selectedEventIds.length - 1) return;
+                                setSelectedEventIds(prev => {
+                                  const next = [...prev];
+                                  [next[idx], next[idx + 1]] = [next[idx + 1], next[idx]];
+                                  return next;
+                                });
+                              }}
+                              disabled={idx === selectedEventIds.length - 1}
+                              className="p-1 rounded hover:bg-primary/20 disabled:opacity-30"
+                            >
+                              <ArrowDown className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => setSelectedEventIds(prev => prev.filter(id => id !== eid))}
+                              className="p-1 rounded hover:bg-destructive/20 text-destructive"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 <div>
                   <p className="text-sm text-muted-foreground mb-2">
                     Select 8 events ({selectedEventIds.length}/8) — Filter:
@@ -335,24 +392,19 @@ export default function Admin() {
                     </select>
                   </p>
                   <div className="max-h-64 overflow-y-auto space-y-1">
-                    {filteredEvents.map((event, idx) => {
+                    {filteredEvents.map((event) => {
                       const isSelected = selectedEventIds.includes(event.id);
-                      const selectionIndex = selectedEventIds.indexOf(event.id);
                       return (
                         <button
                           key={event.id}
                           onClick={() => toggleEventSelection(event.id)}
                           className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 ${
                             isSelected
-                              ? "bg-primary/20 border border-primary"
+                              ? "bg-primary/20 border border-primary opacity-50"
                               : "bg-muted/30 hover:bg-muted/60 border border-transparent"
                           }`}
+                          disabled={isSelected}
                         >
-                          {isSelected && (
-                            <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-bold flex-shrink-0">
-                              {selectionIndex + 1}
-                            </span>
-                          )}
                           <span>{event.icon}</span>
                           <span className="flex-1 truncate">{event.title}</span>
                           <span className="text-muted-foreground text-xs">{event.year}</span>
