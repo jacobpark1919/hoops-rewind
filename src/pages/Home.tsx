@@ -116,12 +116,15 @@ export default function Home() {
         </p>
       </div>
 
-      <footer className="py-4 flex justify-center gap-4 text-xs text-muted-foreground/60">
-        <Link to="/privacy" className="hover:text-muted-foreground transition-colors">Privacy Policy</Link>
-        <span>·</span>
-        <Link to="/terms" className="hover:text-muted-foreground transition-colors">Terms of Service</Link>
-        <span>·</span>
-        <Link to="/cookies" className="hover:text-muted-foreground transition-colors">Cookie Policy</Link>
+      <footer className="py-4 flex flex-col items-center gap-2 text-xs text-muted-foreground/60">
+        <div className="flex justify-center gap-4">
+          <Link to="/privacy" className="hover:text-muted-foreground transition-colors">Privacy Policy</Link>
+          <span>·</span>
+          <Link to="/terms" className="hover:text-muted-foreground transition-colors">Terms of Service</Link>
+          <span>·</span>
+          <Link to="/cookies" className="hover:text-muted-foreground transition-colors">Cookie Policy</Link>
+        </div>
+        <p>© {new Date().getFullYear()} Sports Rewind. All rights reserved.</p>
       </footer>
     </div>
   );
