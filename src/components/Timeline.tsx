@@ -263,7 +263,7 @@ export function Timeline({
       return (
         <div
           key={`drop-${position}`}
-          className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 min-h-28 flex flex-col justify-center p-2 ${marginClass ?? ''}`}
+          className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 min-h-20 sm:min-h-32 flex flex-col justify-center p-2 ${marginClass ?? ''}`}
         >
           <div
             ref={(el) => {
@@ -307,7 +307,7 @@ export function Timeline({
         key={`drop-${position}`}
         className={`relative transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
           isActive
-            ? `h-28 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
+            ? `h-20 sm:h-32 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
             : 'h-0 border-transparent overflow-hidden'
         }`}
       >
