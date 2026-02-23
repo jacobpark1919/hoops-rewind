@@ -26,7 +26,7 @@ interface TimelineProps {
 }
 
 const NORMAL_GAP = 8;
-const MIN_VISIBLE_HEIGHT = 28;
+const MIN_VISIBLE_HEIGHT = 20;
 const PENDING_EXTRA_SPACE = 36;
 const BOTTOM_PADDING = 20;
 
@@ -380,23 +380,23 @@ export function Timeline({
                 boxShadow: '0 4px 12px -2px rgba(0, 0, 0, 0.15), 0 2px 6px -2px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <div className="flex flex-col items-center gap-2.5 py-1">
-                <p className="font-display text-xs sm:text-sm font-semibold text-foreground text-center">
+              <div className="flex flex-col items-center gap-1.5 py-0.5">
+                <p className="font-display text-xs sm:text-sm font-semibold text-foreground text-center leading-tight">
                   Come again tomorrow for a new puzzle!
                 </p>
                 <button
                   onClick={onRetry}
-                  className="px-5 py-2 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm hover:bg-primary/80 transition-colors"
+                  className="px-4 py-1 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm hover:bg-primary/80 transition-colors"
                 >
                   Try Again
                 </button>
-                <p className="font-display text-xs sm:text-sm font-semibold text-foreground text-center">Try a new game mode</p>
-                <div className="flex gap-2 flex-wrap justify-center">
+                <p className="font-display text-xs sm:text-sm font-semibold text-foreground text-center leading-tight">Try a new game mode</p>
+                <div className="flex gap-1.5 flex-wrap justify-center">
                   {otherModes.map((sport) => (
                     <button
                       key={sport.label}
                       onClick={() => navigate(sport.path)}
-                      className="px-4 py-2 rounded-full border border-border bg-muted/50 text-foreground font-display font-semibold text-xs sm:text-sm hover:bg-accent/20 hover:border-primary/50 transition-colors"
+                      className="px-3 py-1 rounded-full border border-border bg-muted/50 text-foreground font-display font-semibold text-xs sm:text-sm hover:bg-accent/20 hover:border-primary/50 transition-colors"
                     >
                       {sport.icon} {sport.label}
                     </button>
