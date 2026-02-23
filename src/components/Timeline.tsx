@@ -58,7 +58,7 @@ export function Timeline({
 }: TimelineProps) {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const bottomPadding = isMobile ? BOTTOM_PADDING : Math.round(window.innerHeight / 10);
+  const bottomPadding = isMobile ? BOTTOM_PADDING : Math.round(window.innerHeight / 12);
   const timelineRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
