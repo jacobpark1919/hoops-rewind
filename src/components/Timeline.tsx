@@ -147,11 +147,21 @@ export function Timeline({
   const activeGap = lockedGap !== null ? lockedGap : dynamicGap;
   const isOverlapping = activeGap < 0;
 
+  // Build the effective events list — append CTA card when viewing timeline
+  const CTA_EVENT_ID = "__cta__";
+  const ctaEvent: { event: SportsEvent; status: "correct" | "incorrect" | "pending" | "corrected" | null } = {
+    event: { id: CTA_EVENT_ID, title: "", year: 9999, sport: "", icon: "" } as SportsEvent,
+    status: null,
+  };
+  const effectivePlacedEvents = isViewingTimeline
+    ? [...placedEvents, ctaEvent]
+    : placedEvents;
+
   // Pending card (if any)
-  const pendingItem = placedEvents.find(item => item.status === "pending");
+  const pendingItem = effectivePlacedEvents.find(item => item.status === "pending");
 
   // Filter out pending items for drop position calculation
-  const nonPendingEvents = placedEvents.filter((item) => item.status !== "pending");
+  const nonPendingEvents = effectivePlacedEvents.filter((item) => item.status !== "pending");
 
   // Snapshot card centers at the moment drag begins (before any zone expansion).
   const snapshotCenters = useRef<number[]>([]);
@@ -331,6 +341,8 @@ export function Timeline({
 
     const isHovered = hoveredCardId === item.event.id && isOverlapping && !isDragging;
     const baseZIndex = nonPendingIndex + 1;
+    const isCta = item.event.id === CTA_EVENT_ID;
+    const otherModes = SPORT_MODE_OPTIONS.filter(s => s.value !== (sportFilter ?? null));
 
     items.push(
       <div
@@ -349,21 +361,57 @@ export function Timeline({
         onMouseEnter={() => !isDragging && setHoveredCardId(item.event.id)}
         onMouseLeave={() => setHoveredCardId(null)}
       >
-        {/* Year badge */}
+        {/* Year badge or dot for CTA */}
         <div className="absolute -left-6 sm:-left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
-          <span className={`year-badge ${incorrectEventIds?.has(item.event.id) ? 'year-badge-incorrect' : ''}`}>
-            {item.event.year}
-          </span>
+          {isCta ? (
+            <span className="w-3 h-3 rounded-full bg-primary block" />
+          ) : (
+            <span className={`year-badge ${incorrectEventIds?.has(item.event.id) ? 'year-badge-incorrect' : ''}`}>
+              {item.event.year}
+            </span>
+          )}
         </div>
 
         <div className="flex-1">
-          <EventCard event={item.event} showYear={false} status={item.status} />
+          {isCta ? (
+            <div
+              className="timeline-card bg-card select-none"
+              style={{
+                boxShadow: '0 4px 12px -2px rgba(0, 0, 0, 0.15), 0 2px 6px -2px rgba(0, 0, 0, 0.1)',
+              }}
+            >
+              <div className="flex flex-col items-center gap-2 py-1">
+                <p className="font-display text-xs sm:text-sm font-semibold text-foreground text-center">
+                  Come again tomorrow for a new puzzle!
+                </p>
+                <button
+                  onClick={onRetry}
+                  className="px-4 py-1.5 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm hover:bg-primary/80 transition-colors"
+                >
+                  Try Again
+                </button>
+                <div className="flex gap-2 flex-wrap justify-center">
+                  {otherModes.map((sport) => (
+                    <button
+                      key={sport.label}
+                      onClick={() => navigate(sport.path)}
+                      className="px-3 py-1 rounded-full border border-border bg-muted/50 text-foreground font-display font-medium text-xs hover:bg-muted transition-colors"
+                    >
+                      {sport.icon} {sport.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <EventCard event={item.event} showYear={false} status={item.status} />
+          )}
         </div>
       </div>
     );
 
-    // Drop zone AFTER this non-pending card
-    if (showDropZones) {
+    // Drop zone AFTER this non-pending card (skip for CTA)
+    if (showDropZones && !isCta) {
       const marginClass = activeDropZone === dropPositionAfter ? 'mt-3' : '';
       items.push(renderDropZone(dropPositionAfter, marginClass));
       prevWasActiveDropZone = activeDropZone === dropPositionAfter;
@@ -371,54 +419,6 @@ export function Timeline({
       prevWasActiveDropZone = false;
     }
   });
-
-  // CTA card at the end of the timeline when viewing
-  if (isViewingTimeline) {
-    const otherModes = SPORT_MODE_OPTIONS.filter(s => s.value !== (sportFilter ?? null));
-    items.push(
-      <div
-        key="cta-card"
-        className="relative flex items-center gap-3"
-        style={{ marginTop: activeGap < 0 ? activeGap : NORMAL_GAP }}
-      >
-        {/* Dot on the timeline line */}
-        <div className="absolute -left-6 sm:-left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
-          <span className="w-3 h-3 rounded-full bg-primary block" />
-        </div>
-        <div className="flex-1">
-          <div
-            className="timeline-card bg-card select-none"
-            style={{
-              boxShadow: '0 4px 12px -2px rgba(0, 0, 0, 0.15), 0 2px 6px -2px rgba(0, 0, 0, 0.1)',
-            }}
-          >
-            <div className="flex flex-col items-center gap-2 py-1">
-              <p className="font-display text-xs sm:text-sm font-semibold text-foreground text-center">
-                Come again tomorrow for a new puzzle!
-              </p>
-              <button
-                onClick={onRetry}
-                className="px-4 py-1.5 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm hover:bg-primary/80 transition-colors"
-              >
-                Try Again
-              </button>
-              <div className="flex gap-2 flex-wrap justify-center">
-                {otherModes.map((sport) => (
-                  <button
-                    key={sport.label}
-                    onClick={() => navigate(sport.path)}
-                    className="px-3 py-1 rounded-full border border-border bg-muted/50 text-foreground font-display font-medium text-xs hover:bg-muted transition-colors"
-                  >
-                    {sport.icon} {sport.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div
