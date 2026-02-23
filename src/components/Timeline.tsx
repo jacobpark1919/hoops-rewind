@@ -3,6 +3,7 @@ import { SportsEvent } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { DropZone } from "./DropZone";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface TimelineProps {
   placedEvents: Array<{ event: SportsEvent; status: "correct" | "incorrect" | "pending" | "corrected" | null }>;
@@ -18,12 +19,22 @@ interface TimelineProps {
   onCancel?: () => void;
   onPendingDragStart?: (e: React.MouseEvent | React.TouchEvent, element: HTMLElement) => void;
   onPendingDragEnd?: () => void;
+  isViewingTimeline?: boolean;
+  sportFilter?: string | null;
+  onRetry?: () => void;
+  onSportChange?: (sport: string | null) => void;
 }
 
 const NORMAL_GAP = 8;
 const MIN_VISIBLE_HEIGHT = 28;
 const PENDING_EXTRA_SPACE = 36;
 const BOTTOM_PADDING = 20;
+
+const SPORT_MODE_OPTIONS = [
+  { label: "Everything", value: null, icon: "🏆", path: "/play" },
+  { label: "Football", value: "American Football", icon: "🏈", path: "/play?sport=American+Football" },
+  { label: "Basketball", value: "Basketball", icon: "🏀", path: "/play?sport=Basketball" },
+];
 
 export function Timeline({
   placedEvents,
@@ -39,7 +50,12 @@ export function Timeline({
   onCancel,
   onPendingDragStart,
   onPendingDragEnd,
+  isViewingTimeline,
+  sportFilter,
+  onRetry,
+  onSportChange,
 }: TimelineProps) {
+  const navigate = useNavigate();
   const timelineRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
@@ -355,6 +371,54 @@ export function Timeline({
       prevWasActiveDropZone = false;
     }
   });
+
+  // CTA card at the end of the timeline when viewing
+  if (isViewingTimeline) {
+    const otherModes = SPORT_MODE_OPTIONS.filter(s => s.value !== (sportFilter ?? null));
+    items.push(
+      <div
+        key="cta-card"
+        className="relative flex items-center gap-3"
+        style={{ marginTop: activeGap < 0 ? activeGap : NORMAL_GAP }}
+      >
+        {/* Dot on the timeline line */}
+        <div className="absolute -left-6 sm:-left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
+          <span className="w-3 h-3 rounded-full bg-primary block" />
+        </div>
+        <div className="flex-1">
+          <div
+            className="timeline-card bg-card select-none"
+            style={{
+              boxShadow: '0 4px 12px -2px rgba(0, 0, 0, 0.15), 0 2px 6px -2px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            <div className="flex flex-col items-center gap-2 py-1">
+              <p className="font-display text-xs sm:text-sm font-semibold text-foreground text-center">
+                Come again tomorrow for a new puzzle!
+              </p>
+              <button
+                onClick={onRetry}
+                className="px-4 py-1.5 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm hover:bg-primary/80 transition-colors"
+              >
+                Try Again
+              </button>
+              <div className="flex gap-2 flex-wrap justify-center">
+                {otherModes.map((sport) => (
+                  <button
+                    key={sport.label}
+                    onClick={() => navigate(sport.path)}
+                    className="px-3 py-1 rounded-full border border-border bg-muted/50 text-foreground font-display font-medium text-xs hover:bg-muted transition-colors"
+                  >
+                    {sport.icon} {sport.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
