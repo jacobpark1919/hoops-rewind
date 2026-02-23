@@ -375,27 +375,28 @@ export function Timeline({
         <div className="flex-1">
           {isCta ? (
             <div
-              className="timeline-card bg-card select-none"
+              className="timeline-card bg-card hover:bg-card-hover select-none transition-colors"
               style={{
                 boxShadow: '0 4px 12px -2px rgba(0, 0, 0, 0.15), 0 2px 6px -2px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <div className="flex flex-col items-center gap-2 py-1">
+              <div className="flex flex-col items-center gap-2.5 py-1">
                 <p className="font-display text-xs sm:text-sm font-semibold text-foreground text-center">
                   Come again tomorrow for a new puzzle!
                 </p>
                 <button
                   onClick={onRetry}
-                  className="px-4 py-1.5 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm hover:bg-primary/80 transition-colors"
+                  className="px-5 py-2 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm hover:bg-primary/80 transition-colors"
                 >
                   Try Again
                 </button>
+                <p className="font-display text-[10px] sm:text-xs text-muted-foreground">Try a new game mode</p>
                 <div className="flex gap-2 flex-wrap justify-center">
                   {otherModes.map((sport) => (
                     <button
                       key={sport.label}
                       onClick={() => navigate(sport.path)}
-                      className="px-3 py-1 rounded-full border border-border bg-muted/50 text-foreground font-display font-medium text-xs hover:bg-muted transition-colors"
+                      className="px-4 py-2 rounded-full border border-border bg-muted/50 text-foreground font-display font-semibold text-xs sm:text-sm hover:bg-accent/20 hover:border-primary/50 transition-colors"
                     >
                       {sport.icon} {sport.label}
                     </button>
