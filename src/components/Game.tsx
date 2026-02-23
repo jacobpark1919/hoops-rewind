@@ -7,7 +7,7 @@ import { InstructionsModal } from "./InstructionsModal";
 import { DragOverlay } from "./DragOverlay";
 import { ThemeToggle } from "./ThemeToggle";
 import { useDrag } from "@/hooks/useDrag";
-import { ChevronDown, Home } from "lucide-react";
+import { ChevronDown, Home, HelpCircle } from "lucide-react";
 
 const TOTAL_ROUNDS = 8;
 
@@ -333,6 +333,15 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 </div>
               )}
             </div>
+
+            {/* How to play */}
+            <button
+              onClick={() => setShowInstructions(true)}
+              className="p-1 sm:p-1.5 rounded-full hover:bg-muted transition-colors"
+              aria-label="How to play"
+            >
+              <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground hover:text-foreground" />
+            </button>
 
             {/* Theme toggle */}
             <ThemeToggle />
