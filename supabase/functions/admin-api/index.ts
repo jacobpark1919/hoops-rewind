@@ -1,8 +1,13 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { timingSafeEqual } from "https://deno.land/std@0.224.0/crypto/timing_safe_equal.ts";
 
-// TODO: Implement rate limiting (e.g., using a Deno KV store or external service)
-// TODO: Implement IP allowlist for admin endpoints
-// TODO: Consider adding an auth provider (e.g., Supabase Auth) for admin users
+function safeCompare(a: string, b: string): boolean {
+  const encoder = new TextEncoder();
+  const aBytes = encoder.encode(a);
+  const bBytes = encoder.encode(b);
+  if (aBytes.byteLength !== bBytes.byteLength) return false;
+  return timingSafeEqual(aBytes, bBytes);
+}
 
 const ALLOWED_ORIGIN =
   Deno.env.get("ALLOWED_ORIGIN") ?? "https://yourdomain.example";
@@ -64,7 +69,7 @@ Deno.serve(async (req) => {
     if (req.method === "POST") {
       const adminPassword = Deno.env.get("ADMIN_PASSWORD");
       const providedPassword = req.headers.get("x-admin-password");
-      if (!adminPassword || providedPassword !== adminPassword) {
+      if (!adminPassword || !providedPassword || !safeCompare(providedPassword, adminPassword)) {
         auditLog(action, req, { authorized: false });
         return new Response(JSON.stringify({ error: "unauthorized" }), {
           status: 401,
