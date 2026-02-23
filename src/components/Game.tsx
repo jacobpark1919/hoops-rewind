@@ -337,10 +337,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             {/* How to play */}
             <button
               onClick={() => setShowInstructions(true)}
-              className="p-1 sm:p-1.5 rounded-full hover:bg-muted transition-colors"
+              className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
               aria-label="How to play"
             >
-              <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground hover:text-foreground" />
+              <HelpCircle className="w-5 h-5 text-foreground" />
             </button>
 
             {/* Theme toggle */}
