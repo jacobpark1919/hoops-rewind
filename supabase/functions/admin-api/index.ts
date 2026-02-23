@@ -1,9 +1,27 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+// TODO: Implement rate limiting (e.g., using a Deno KV store or external service)
+// TODO: Implement IP allowlist for admin endpoints
+// TODO: Consider adding an auth provider (e.g., Supabase Auth) for admin users
+
+const ALLOWED_ORIGIN =
+  Deno.env.get("ALLOWED_ORIGIN") ?? "https://yourdomain.example";
+
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-admin-password",
+  "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-admin-password, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
+
+function auditLog(action: string | null, req: Request, extra?: Record<string, unknown>) {
+  console.log("ADMIN ACTION", {
+    action,
+    time: new Date().toISOString(),
+    origin: req.headers.get("origin"),
+    method: req.method,
+    ...extra,
+  });
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -18,8 +36,10 @@ Deno.serve(async (req) => {
     const url = new URL(req.url);
     const action = url.searchParams.get("action");
 
-    // GET actions
+    // GET actions (read-only, no auth required)
     if (req.method === "GET") {
+      auditLog(action, req);
+
       if (action === "events") {
         const sport = url.searchParams.get("sport");
         let query = supabase.from("sports_events").select("*").order("year", { ascending: true });
@@ -40,16 +60,19 @@ Deno.serve(async (req) => {
       }
     }
 
-    // POST actions require password
+    // POST actions require admin password
     if (req.method === "POST") {
       const adminPassword = Deno.env.get("ADMIN_PASSWORD");
       const providedPassword = req.headers.get("x-admin-password");
       if (!adminPassword || providedPassword !== adminPassword) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        auditLog(action, req, { authorized: false });
+        return new Response(JSON.stringify({ error: "unauthorized" }), {
           status: 401,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
+
+      auditLog(action, req, { authorized: true });
 
       const body = await req.json();
 
@@ -76,8 +99,6 @@ Deno.serve(async (req) => {
 
       if (action === "create-challenge") {
         const { challenge_date, sport_filter, event_ids } = body;
-        
-        // Create the challenge
         const { data: challenge, error: challengeError } = await supabase
           .from("daily_challenges")
           .insert({ challenge_date, sport_filter })
@@ -85,7 +106,6 @@ Deno.serve(async (req) => {
           .single();
         if (challengeError) throw challengeError;
 
-        // Link events
         const challengeEvents = event_ids.map((event_id: string, index: number) => ({
           challenge_id: challenge.id,
           event_id,
@@ -101,15 +121,13 @@ Deno.serve(async (req) => {
 
       if (action === "update-challenge") {
         const { challenge_id, challenge_date, sport_filter, event_ids } = body;
-        // Update challenge metadata
-        const updateData: any = {};
+        const updateData: Record<string, unknown> = {};
         if (challenge_date !== undefined) updateData.challenge_date = challenge_date;
         if (sport_filter !== undefined) updateData.sport_filter = sport_filter;
         if (Object.keys(updateData).length > 0) {
           const { error } = await supabase.from("daily_challenges").update(updateData).eq("id", challenge_id);
           if (error) throw error;
         }
-        // If event_ids provided, replace all linked events
         if (event_ids) {
           await supabase.from("daily_challenge_events").delete().eq("challenge_id", challenge_id);
           const challengeEvents = event_ids.map((event_id: string, index: number) => ({
@@ -125,7 +143,6 @@ Deno.serve(async (req) => {
 
       if (action === "delete-challenge") {
         const { challenge_id } = body;
-        // Delete linked events first
         await supabase.from("daily_challenge_events").delete().eq("challenge_id", challenge_id);
         const { error } = await supabase.from("daily_challenges").delete().eq("id", challenge_id);
         if (error) throw error;
