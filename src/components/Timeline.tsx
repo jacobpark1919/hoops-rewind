@@ -4,6 +4,7 @@ import { EventCard } from "./EventCard";
 import { DropZone } from "./DropZone";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface TimelineProps {
   placedEvents: Array<{ event: SportsEvent; status: "correct" | "incorrect" | "pending" | "corrected" | null }>;
@@ -56,6 +57,8 @@ export function Timeline({
   onSportChange,
 }: TimelineProps) {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
+  const bottomPadding = isMobile ? BOTTOM_PADDING : 0;
   const timelineRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
@@ -70,7 +73,7 @@ export function Timeline({
         requestAnimationFrame(() => {
           if (timelineRef.current) {
             const rect = timelineRef.current.getBoundingClientRect();
-            const height = window.innerHeight - rect.top - BOTTOM_PADDING;
+            const height = window.innerHeight - rect.top - bottomPadding;
             setAvailableHeight(Math.max(200, height));
           }
         });
