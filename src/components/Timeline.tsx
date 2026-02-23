@@ -17,7 +17,7 @@ interface TimelineProps {
   onDropZoneChange: (position: number | null) => void;
   onConfirm?: () => void;
   onCancel?: () => void;
-  onPendingDragStart?: (e: React.MouseEvent | React.TouchEvent, element: HTMLElement) => void;
+  onPendingDragStart?: (e: React.PointerEvent, element: HTMLElement) => void;
   onPendingDragEnd?: () => void;
   isViewingTimeline?: boolean;
   sportFilter?: string | null;
@@ -270,11 +270,7 @@ export function Timeline({
               if (el) cardRefs.current.set(pendingItem.event.id, el);
               else cardRefs.current.delete(pendingItem.event.id);
             }}
-            onMouseDown={(e) => {
-              const target = e.currentTarget;
-              onPendingDragStart?.(e, target);
-            }}
-            onTouchStart={(e) => {
+            onPointerDown={(e) => {
               const target = e.currentTarget;
               onPendingDragStart?.(e, target);
             }}
@@ -284,8 +280,7 @@ export function Timeline({
             {onConfirm && (
               <div
                 className="absolute -bottom-5 left-1/2 -translate-x-1/2 z-20"
-                onMouseDown={(e) => e.stopPropagation()}
-                onTouchStart={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
               >
                 <Button
                   onPointerUp={(e) => { e.stopPropagation(); onConfirm(); }}
