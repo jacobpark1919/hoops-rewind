@@ -26,9 +26,9 @@ interface TimelineProps {
 }
 
 const NORMAL_GAP = 8;
-const MIN_VISIBLE_HEIGHT = 14;
+const MIN_VISIBLE_HEIGHT = 10;
 const PENDING_EXTRA_SPACE = 36;
-const BOTTOM_PADDING = 20;
+const BOTTOM_PADDING = 120;
 
 const SPORT_MODE_OPTIONS = [
   { label: "Everything", value: null, icon: "🏆", path: "/play" },
@@ -263,7 +263,7 @@ export function Timeline({
       return (
         <div
           key={`drop-${position}`}
-          className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 min-h-20 sm:min-h-32 flex flex-col justify-center p-2 ${marginClass ?? ''}`}
+          className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 min-h-28 sm:min-h-32 flex flex-col justify-center p-2 ${marginClass ?? ''}`}
         >
           <div
             ref={(el) => {
@@ -307,7 +307,7 @@ export function Timeline({
         key={`drop-${position}`}
         className={`relative transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
           isActive
-            ? `h-20 sm:h-32 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
+            ? `h-28 sm:h-32 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
             : 'h-0 border-transparent overflow-hidden'
         }`}
       >
@@ -380,30 +380,25 @@ export function Timeline({
                 boxShadow: '0 4px 12px -2px rgba(0, 0, 0, 0.15), 0 2px 6px -2px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <div className="flex flex-col items-center gap-1 py-0.5">
-                <div className="flex items-center gap-2 flex-wrap justify-center">
-                  <p className="font-display text-xs sm:text-sm font-semibold text-foreground leading-tight">
-                    Come again tomorrow!
-                  </p>
+              <div className="flex items-center gap-1.5 flex-wrap justify-center py-0.5">
+                <p className="font-display text-xs sm:text-sm font-semibold text-foreground leading-tight whitespace-nowrap">
+                  Back tomorrow!
+                </p>
+                <button
+                  onClick={onRetry}
+                  className="px-2.5 py-0.5 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm hover:bg-primary/80 transition-colors whitespace-nowrap"
+                >
+                  Retry
+                </button>
+                {otherModes.map((sport) => (
                   <button
-                    onClick={onRetry}
-                    className="px-3 py-0.5 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm hover:bg-primary/80 transition-colors"
+                    key={sport.label}
+                    onClick={() => navigate(sport.path)}
+                    className="px-2 py-0.5 rounded-full border border-border bg-muted/50 text-foreground font-display font-semibold text-xs sm:text-sm hover:bg-accent/20 hover:border-primary/50 transition-colors whitespace-nowrap"
                   >
-                    Try Again
+                    {sport.icon} {sport.label}
                   </button>
-                </div>
-                <div className="flex items-center gap-1.5 flex-wrap justify-center">
-                  <p className="font-display text-xs sm:text-sm font-semibold text-foreground leading-tight">New mode:</p>
-                  {otherModes.map((sport) => (
-                    <button
-                      key={sport.label}
-                      onClick={() => navigate(sport.path)}
-                      className="px-2.5 py-0.5 rounded-full border border-border bg-muted/50 text-foreground font-display font-semibold text-xs sm:text-sm hover:bg-accent/20 hover:border-primary/50 transition-colors"
-                    >
-                      {sport.icon} {sport.label}
-                    </button>
-                  ))}
-                </div>
+                ))}
               </div>
             </div>
           ) : (
