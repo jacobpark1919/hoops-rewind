@@ -390,7 +390,7 @@ export function Timeline({
                 >
                   Try Again
                 </button>
-                <p className="font-display text-[10px] sm:text-xs text-muted-foreground">Try a new game mode</p>
+                <p className="font-display text-xs sm:text-sm font-semibold text-foreground text-center">Try a new game mode</p>
                 <div className="flex gap-2 flex-wrap justify-center">
                   {otherModes.map((sport) => (
                     <button
