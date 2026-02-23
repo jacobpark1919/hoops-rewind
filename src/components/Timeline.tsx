@@ -28,7 +28,7 @@ interface TimelineProps {
 const NORMAL_GAP = 8;
 const MIN_VISIBLE_HEIGHT = 10;
 const PENDING_EXTRA_SPACE = 36;
-const BOTTOM_PADDING = 120;
+const BOTTOM_PADDING = 80;
 
 const SPORT_MODE_OPTIONS = [
   { label: "Everything", value: null, icon: "🏆", path: "/play" },
@@ -380,25 +380,32 @@ export function Timeline({
                 boxShadow: '0 4px 12px -2px rgba(0, 0, 0, 0.15), 0 2px 6px -2px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <div className="flex items-center gap-1.5 flex-wrap justify-center py-0.5">
-                <p className="font-display text-xs sm:text-sm font-semibold text-foreground leading-tight whitespace-nowrap">
-                  Back tomorrow!
-                </p>
-                <button
-                  onClick={onRetry}
-                  className="px-2.5 py-0.5 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm hover:bg-primary/80 transition-colors whitespace-nowrap"
-                >
-                  Retry
-                </button>
-                {otherModes.map((sport) => (
+              <div className="flex flex-col items-center gap-1 py-0.5">
+                <div className="flex items-center gap-1.5 flex-wrap justify-center">
+                  <p className="font-display text-xs sm:text-sm font-semibold text-foreground leading-tight">
+                    Come back tomorrow for a new puzzle!
+                  </p>
                   <button
-                    key={sport.label}
-                    onClick={() => navigate(sport.path)}
-                    className="px-2 py-0.5 rounded-full border border-border bg-muted/50 text-foreground font-display font-semibold text-xs sm:text-sm hover:bg-accent/20 hover:border-primary/50 transition-colors whitespace-nowrap"
+                    onClick={onRetry}
+                    className="px-2.5 py-0.5 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm hover:bg-primary/80 transition-colors whitespace-nowrap"
                   >
-                    {sport.icon} {sport.label}
+                    Retry
                   </button>
-                ))}
+                </div>
+                <div className="flex items-center gap-1.5 flex-wrap justify-center">
+                  <p className="font-display text-xs sm:text-sm font-semibold text-foreground leading-tight">
+                    Try a new game mode
+                  </p>
+                  {otherModes.map((sport) => (
+                    <button
+                      key={sport.label}
+                      onClick={() => navigate(sport.path)}
+                      className="px-2 py-0.5 rounded-full border border-border bg-muted/50 text-foreground font-display font-semibold text-xs sm:text-sm hover:bg-accent/20 hover:border-primary/50 transition-colors whitespace-nowrap"
+                    >
+                      {sport.icon} {sport.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           ) : (
