@@ -124,11 +124,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setIsLoadingEvents(true);
     
     const events = await getDailyChallengeEvents(sportFilter);
-    // Shuffle events so they're served in random order
-    for (let i = events.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [events[i], events[j]] = [events[j], events[i]];
-    }
     
     setGameEvents(events);
     setIsLoadingEvents(false);
