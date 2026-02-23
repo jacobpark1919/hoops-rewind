@@ -26,9 +26,24 @@ export function useDrag(options: UseDragOptions = {}) {
   const optionsRef = useRef(options);
   optionsRef.current = options;
 
-  // Helper to start a drag from either a mouse or touch clientY
-  const startDragAt = useCallback((clientY: number, cardElement: HTMLElement) => {
+  // Track the active pointer id so we only respond to the pointer that started the drag
+  const pointerIdRef = useRef<number | null>(null);
+  const currentYRef = useRef(0);
+
+  useEffect(() => {
+    currentYRef.current = dragState.currentY;
+  }, [dragState.currentY]);
+
+  const startDragAt = useCallback((clientY: number, cardElement: HTMLElement, pointerId: number) => {
     const rect = cardElement.getBoundingClientRect();
+    // Capture the pointer so all future events route to this element,
+    // surviving DOM mutations that would otherwise fire pointercancel.
+    try {
+      cardElement.setPointerCapture(pointerId);
+    } catch {
+      // setPointerCapture can throw if the pointer is already released
+    }
+    pointerIdRef.current = pointerId;
     setDragState({
       isDragging: true,
       startY: clientY,
@@ -40,38 +55,48 @@ export function useDrag(options: UseDragOptions = {}) {
   }, []);
 
   const startDrag = useCallback((e: React.MouseEvent | React.TouchEvent, cardElement: HTMLElement) => {
-    e.preventDefault();
-    const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
-    startDragAt(clientY, cardElement);
-  }, [startDragAt]);
+    // We need to handle this as a pointer event at the native level.
+    // React synthetic events wrap the native event — extract pointerId from it.
+    const nativeEvent = e.nativeEvent as PointerEvent;
+    const clientY = nativeEvent.clientY;
+    const pointerId = nativeEvent.pointerId;
 
-  // Use a ref to track the latest currentY so handlers can access it
-  // without needing currentY in the effect's dependency array.
-  const currentYRef = useRef(0);
-  useEffect(() => {
-    currentYRef.current = dragState.currentY;
-  }, [dragState.currentY]);
-
-  // Track whether touch was canceled (DOM mutation on real phones)
-  const wasCanceledRef = useRef(false);
-
-  useEffect(() => {
-    if (!dragState.isDragging) {
-      wasCanceledRef.current = false;
+    if (pointerId == null) {
+      // Fallback for non-pointer environments (shouldn't happen on modern browsers)
       return;
     }
 
-    const handleMove = (clientY: number) => {
+    e.preventDefault();
+    startDragAt(clientY, cardElement, pointerId);
+  }, [startDragAt]);
+
+  useEffect(() => {
+    if (!dragState.isDragging) {
+      pointerIdRef.current = null;
+      return;
+    }
+
+    const handlePointerMove = (e: PointerEvent) => {
+      if (e.pointerId !== pointerIdRef.current) return;
+      e.preventDefault();
       setDragState(prev => ({
         ...prev,
         prevY: prev.currentY,
-        currentY: clientY,
-        offsetY: clientY - prev.startY,
+        currentY: e.clientY,
+        offsetY: e.clientY - prev.startY,
       }));
     };
 
-    const handleEnd = (clientY: number) => {
-      wasCanceledRef.current = false;
+    const handlePointerUp = (e: PointerEvent) => {
+      if (e.pointerId !== pointerIdRef.current) return;
+      e.preventDefault();
+      const clientY = e.clientY;
+      try {
+        (e.target as Element)?.releasePointerCapture(e.pointerId);
+      } catch {
+        // already released
+      }
+      pointerIdRef.current = null;
       optionsRef.current.onDragEnd?.(clientY);
       setDragState(prev => ({
         ...prev,
@@ -82,63 +107,23 @@ export function useDrag(options: UseDragOptions = {}) {
       }));
     };
 
-    // Mouse handlers
-    const handleMouseMove = (e: MouseEvent) => handleMove(e.clientY);
-    const handleMouseUp = (e: MouseEvent) => handleEnd(e.clientY);
-
-    // Touch handlers
-    const handleTouchMove = (e: TouchEvent) => {
-      if (e.cancelable) e.preventDefault();
-      if (e.touches.length > 0) {
-        handleMove(e.touches[0].clientY);
-      }
-    };
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (e.cancelable) e.preventDefault();
-      const clientY = e.changedTouches[0]?.clientY ?? currentYRef.current;
-      handleEnd(clientY);
+    const handlePointerCancel = (e: PointerEvent) => {
+      if (e.pointerId !== pointerIdRef.current) return;
+      // DO NOT end the drag — pointer capture may have been lost due to DOM
+      // mutations but the user's finger is still on screen.
+      // We simply wait for pointerup to arrive instead.
     };
 
-    // On real phones, DOM mutations (drop zone expanding) can fire touchcancel.
-    // Instead of ending the drag, we keep it alive and wait for the user to
-    // re-touch the screen, seamlessly resuming the drag.
-    const handleTouchCancel = () => {
-      wasCanceledRef.current = true;
-      // Intentionally do NOT call handleEnd — drag stays active
-    };
-
-    // If the drag was interrupted by touchcancel, the next touchstart on the
-    // screen resumes the drag seamlessly from the new finger position.
-    const handleDocTouchStart = (e: TouchEvent) => {
-      if (wasCanceledRef.current && e.touches.length > 0) {
-        wasCanceledRef.current = false;
-        if (e.cancelable) e.preventDefault();
-        const newY = e.touches[0].clientY;
-        setDragState(prev => ({
-          ...prev,
-          startY: newY - prev.offsetY, // preserve visual offset
-          currentY: newY,
-          prevY: newY,
-        }));
-      }
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-    document.addEventListener("touchstart", handleDocTouchStart, { passive: false });
-    document.addEventListener("touchmove", handleTouchMove, { passive: false });
-    document.addEventListener("touchend", handleTouchEnd, { passive: false });
-    document.addEventListener("touchcancel", handleTouchCancel);
+    document.addEventListener("pointermove", handlePointerMove, { passive: false });
+    document.addEventListener("pointerup", handlePointerUp, { passive: false });
+    document.addEventListener("pointercancel", handlePointerCancel);
 
     return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-      document.removeEventListener("touchstart", handleDocTouchStart);
-      document.removeEventListener("touchmove", handleTouchMove);
-      document.removeEventListener("touchend", handleTouchEnd);
-      document.removeEventListener("touchcancel", handleTouchCancel);
+      document.removeEventListener("pointermove", handlePointerMove);
+      document.removeEventListener("pointerup", handlePointerUp);
+      document.removeEventListener("pointercancel", handlePointerCancel);
     };
-  }, [dragState.isDragging]); // Only re-attach listeners when drag starts/stops
+  }, [dragState.isDragging]);
 
   return { dragState, startDrag };
 }
