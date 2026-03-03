@@ -269,10 +269,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container max-w-2xl mx-auto py-2 sm:py-4 px-3 sm:px-4">
+    <div className="h-screen bg-background flex flex-col overflow-hidden">
+      <div className="container max-w-2xl mx-auto px-3 sm:px-4 flex flex-col h-full">
         {/* Compact header row with everything */}
-        <header className="flex items-center justify-between mb-1 sm:mb-2 gap-1">
+        <header className="flex items-center justify-between py-2 sm:py-4 gap-1 flex-shrink-0">
           {/* Left: Home button + Round counter + date/puzzle */}
           <div className="flex items-center gap-1 sm:gap-3 min-w-0">
             <button
@@ -348,6 +348,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           </div>
         </header>
 
+        {/* Vertically centered content area */}
+        <div className="flex-1 flex flex-col justify-center min-h-0">
+
         {/* Current card to place */}
         <div className="mb-2 sm:mb-3">
         {currentEvent && !gameComplete ? (
@@ -420,8 +423,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             onSportChange={onSportChange}
           />
         </div>
+        </div>{/* end vertically centered content area */}
 
-        {/* Drag overlay - the floating card that follows cursor */}
         {currentEvent && isDragging && (
           <DragOverlay event={currentEvent} dragState={dragState} />
         )}
