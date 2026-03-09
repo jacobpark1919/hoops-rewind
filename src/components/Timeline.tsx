@@ -431,26 +431,29 @@ export function Timeline({
       className="relative flex-1 flex flex-col"
       style={{ minHeight: 100 }}
     >
-      {/* Earliest label */}
-      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2 pl-10 sm:pl-14">
+      {/* Earliest label - centered above timeline */}
+      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2 text-center">
         Earliest
       </p>
 
-      {/* Timeline line - extends full height */}
-      <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
+      {/* Timeline content wrapper */}
+      <div className="relative flex-1 flex flex-col">
+        {/* Timeline line - starts below Earliest, ends above Latest */}
+        <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
 
-      {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
-      <div 
-        className="relative pl-10 sm:pl-14 flex flex-col flex-1"
-        style={{ paddingTop: naturalPaddingTop }}
-      >
-        <div className="flex flex-col" ref={innerWrapperRef}>
-          {items}
+        {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
+        <div 
+          className="relative pl-10 sm:pl-14 flex flex-col flex-1"
+          style={{ paddingTop: naturalPaddingTop }}
+        >
+          <div className="flex flex-col" ref={innerWrapperRef}>
+            {items}
+          </div>
         </div>
       </div>
 
-      {/* Latest label */}
-      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mt-2 pl-10 sm:pl-14">
+      {/* Latest label - centered below timeline */}
+      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mt-2 text-center">
         Latest
       </p>
     </div>
