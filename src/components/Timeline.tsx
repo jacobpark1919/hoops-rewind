@@ -303,23 +303,25 @@ export function Timeline({
       );
     }
 
-    // Normal drop zone (during drag, or collapsed)
+    // Normal drop zone (during drag, or collapsed) — absolutely positioned so it
+    // does NOT push cards below it. It floats above the next card.
     return (
       <div
         key={`drop-${position}`}
-        ref={(el) => {
-          if (el) dropZoneRefs.current.set(position, el);
-          else dropZoneRefs.current.delete(position);
-        }}
-        className={`relative transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
-          isActive
-            ? `h-28 sm:h-32 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
-            : 'h-0 border-transparent overflow-hidden'
-        }`}
+        className="relative"
+        style={{ height: 0 }}
       >
-        {isActive && (
-          <span className="text-primary text-sm font-semibold">Drop here</span>
-        )}
+        <div
+          className={`absolute left-0 right-0 bottom-0 transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
+            isActive
+              ? `h-28 sm:h-32 border-primary bg-primary/20 shadow-lg`
+              : 'h-0 border-transparent overflow-hidden'
+          }`}
+        >
+          {isActive && (
+            <span className="text-primary text-sm font-semibold">Drop here</span>
+          )}
+        </div>
       </div>
     );
   };
