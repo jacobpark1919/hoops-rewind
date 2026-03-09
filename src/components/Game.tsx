@@ -362,7 +362,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 }}
               >
                 <div key={currentEvent.id} className="animate-fade-in-up">
-                  <p className="text-[11px] sm:text-sm text-muted-foreground mb-1.5 sm:mb-3 font-medium uppercase tracking-wider">
+                  <p className="text-[11px] sm:text-sm text-muted-foreground mb-1.5 sm:mb-3 font-bold uppercase tracking-wider">
                     Place this event in the timeline
                   </p>
                   <div
