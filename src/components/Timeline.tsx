@@ -440,9 +440,15 @@ export function Timeline({
       {/* Timeline line - extends full height */}
       <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
 
-      {/* Timeline content - always vertically centered */}
-      <div className="relative pl-10 sm:pl-14 flex flex-col flex-1 justify-center">
-        <div className="flex flex-col">
+      {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
+      <div 
+        className="relative pl-10 sm:pl-14 flex flex-col flex-1"
+        style={{ 
+          paddingTop: naturalPaddingTop,
+          transition: 'padding-top 0.4s ease-out'
+        }}
+      >
+        <div className="flex flex-col" ref={innerWrapperRef}>
           {items}
         </div>
       </div>
