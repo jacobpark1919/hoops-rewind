@@ -431,16 +431,26 @@ export function Timeline({
   return (
     <div
       ref={timelineRef}
-      className="relative"
-      style={{ minHeight: 100, paddingTop: centerPadding, transition: 'padding-top 0.4s ease-out' }}
+      className="relative flex-1 flex flex-col"
+      style={{ minHeight: 100 }}
     >
-      {/* Timeline line */}
+      {/* Earliest label */}
+      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2 pl-10 sm:pl-14">
+        Earliest
+      </p>
+
+      {/* Timeline line - extends full height */}
       <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
 
       {/* Timeline content */}
-      <div className="relative pl-10 sm:pl-14 flex flex-col">
+      <div className="relative pl-10 sm:pl-14 flex flex-col flex-1" style={{ paddingTop: centerPadding, transition: 'padding-top 0.4s ease-out' }}>
         {items}
       </div>
+
+      {/* Latest label */}
+      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mt-2 pl-10 sm:pl-14">
+        Latest
+      </p>
     </div>
   );
 }

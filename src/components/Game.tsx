@@ -269,8 +269,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container max-w-2xl mx-auto py-2 sm:py-4 px-3 sm:px-4">
+    <div className="min-h-screen bg-background flex flex-col">
+      <div className="container max-w-2xl mx-auto py-2 sm:py-4 px-3 sm:px-4 flex flex-col flex-1">
         {/* Compact header row with everything */}
         <header className="flex items-center justify-between mb-1 sm:mb-2 gap-1">
           {/* Left: Home button + Round counter + date/puzzle */}
@@ -362,7 +362,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 }}
               >
                 <div key={currentEvent.id} className="animate-fade-in-up">
-                  <p className="text-[11px] sm:text-sm text-muted-foreground mb-1.5 sm:mb-3 font-medium uppercase tracking-wider">
+                  <p className="text-[11px] sm:text-sm text-muted-foreground mb-1.5 sm:mb-3 font-bold uppercase tracking-wider">
                     Place this event in the timeline
                   </p>
                   <div
@@ -382,16 +382,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         </div>
 
         {/* Timeline */}
-        <div className="mb-2 sm:mb-4 relative">
-          <p
-            className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider transition-all duration-300 ease-out"
-            style={{
-              marginBottom: (isDragging && hasDragMoved) || hasPendingPlacement ? 0 : 8,
-              transform: (isDragging && hasDragMoved) || hasPendingPlacement ? 'translateY(-8px)' : 'translateY(0)',
-            }}
-          >
-            Timeline (Earliest → Latest)
-          </p>
+        <div className="mb-2 sm:mb-4 relative flex-1 flex flex-col">
           <Timeline
             placedEvents={placedEvents}
             activeDropZone={isDragging && hasDragMoved ? activeDropZone : frozenDropZone}
