@@ -459,7 +459,7 @@ export function Timeline({
 
       {/* Latest label - centered below timeline */}
       <div className="relative mt-2">
-        <p className="absolute text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider left-4 sm:left-6 -translate-x-1/2 whitespace-nowrap">
+        <p className="absolute text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider left-4 sm:left-6 whitespace-nowrap">
           Latest
         </p>
         <div className="h-3" />
