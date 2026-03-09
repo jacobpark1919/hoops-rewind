@@ -51,27 +51,19 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="w-full border-b border-border px-4 sm:px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-foreground uppercase">
-            Sports Rewind
-          </h1>
-        </div>
-        <div className="flex items-center gap-3">
-          <span className="text-muted-foreground text-xs sm:text-sm hidden sm:inline">
-            {today}
-          </span>
-          <span className="text-muted-foreground text-xs">·</span>
-          <span className="text-muted-foreground text-xs sm:text-sm font-medium">
-            #{puzzleNum}
-          </span>
-          <ThemeToggle />
-        </div>
-      </header>
+      {/* Theme toggle */}
+      <div className="absolute top-4 right-4 z-20">
+        <ThemeToggle />
+      </div>
 
       {/* Main content */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-10 sm:py-16">
+        <h1 className="font-display text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground uppercase mb-3">
+          Sports Rewind
+        </h1>
+        <p className="text-foreground text-base sm:text-lg font-medium mb-1">
+          {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
+        </p>
         <p className="text-muted-foreground text-sm sm:text-base mb-8 sm:mb-10">
           Pick a mode to play today's puzzle
         </p>
@@ -111,6 +103,10 @@ export default function Home() {
             </div>
           ))}
         </div>
+
+        <p className="text-muted-foreground text-xs sm:text-sm mt-8">
+          A new puzzle every day — come back tomorrow!
+        </p>
       </main>
 
       {/* Footer */}
