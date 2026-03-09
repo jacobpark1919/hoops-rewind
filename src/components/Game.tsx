@@ -7,7 +7,7 @@ import { InstructionsModal } from "./InstructionsModal";
 import { DragOverlay } from "./DragOverlay";
 import { ThemeToggle } from "./ThemeToggle";
 import { useDrag } from "@/hooks/useDrag";
-import { ChevronDown, Home, HelpCircle } from "lucide-react";
+import { ChevronDown, Home, HelpCircle, ArrowDown } from "lucide-react";
 
 const TOTAL_ROUNDS = 8;
 
