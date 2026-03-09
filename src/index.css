@@ -116,9 +116,9 @@ html.admin-scroll, html.admin-scroll body {
 @layer components {
   .game-card {
     @apply border border-border rounded-lg sm:rounded-xl px-2.5 sm:px-4 py-1.5 sm:py-2.5 cursor-grab active:cursor-grabbing
-           transition-all duration-200 ease-out;
-    background-color: hsl(var(--card-new));
+           transition-all duration-200 ease-out
            hover:bg-card-hover hover:border-primary/50;
+    background-color: hsl(var(--card-new));
     box-shadow:
       0 4px 6px -1px hsl(var(--foreground) / 0.08),
       0 2px 4px -2px hsl(var(--foreground) / 0.06),
