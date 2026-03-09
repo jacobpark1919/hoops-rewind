@@ -160,9 +160,8 @@ export function Timeline({
     }
   }, [isDragging, hasPending]); // intentionally only depend on isDragging / hasPending
 
-  // Measure the active drop zone's height and apply a compensating negative offset
-  // so that existing timeline cards stay in place when a zone opens.
-  useEffect(() => {
+
+
 
   const activeGap = lockedGap !== null ? lockedGap : dynamicGap;
   const isOverlapping = activeGap < 0;
