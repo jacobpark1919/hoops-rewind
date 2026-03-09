@@ -269,8 +269,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container max-w-2xl mx-auto py-2 sm:py-4 px-3 sm:px-4">
+    <div className="min-h-screen bg-background flex flex-col">
+      <div className="container max-w-2xl mx-auto py-2 sm:py-4 px-3 sm:px-4 flex flex-col flex-1">
         {/* Compact header row with everything */}
         <header className="flex items-center justify-between mb-1 sm:mb-2 gap-1">
           {/* Left: Home button + Round counter + date/puzzle */}
