@@ -377,12 +377,13 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         {currentEvent && !gameComplete ? (
             <>
               <div
-                className="transition-all duration-300 ease-out"
+                className="transition-opacity duration-300 ease-out"
                 style={{
-                  minHeight: cardCollapsed || hasPendingPlacement ? 0 : undefined,
-                  height: cardCollapsed || hasPendingPlacement ? 0 : 'auto',
-                  overflow: cardCollapsed || hasPendingPlacement ? 'hidden' : 'visible',
                   opacity: cardCollapsed || hasPendingPlacement ? 0 : 1,
+                  pointerEvents: cardCollapsed || hasPendingPlacement ? 'none' : 'auto',
+                  visibility: hasPendingPlacement ? 'hidden' : 'visible',
+                  height: hasPendingPlacement ? 0 : 'auto',
+                  overflow: hasPendingPlacement ? 'hidden' : 'visible',
                 }}
               >
                 <div key={currentEvent.id} className="animate-fade-in-up">
