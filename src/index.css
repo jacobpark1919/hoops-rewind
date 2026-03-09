@@ -51,6 +51,7 @@ html.admin-scroll, html.admin-scroll body {
     --timeline-line: 35 15% 78%;
     --card-glow: 45 70% 45%;
     --drop-zone: 45 70% 45%;
+    --card-new: 45 50% 88%;
   }
 
   .dark {
