@@ -202,13 +202,6 @@ export function Timeline({
       return;
     }
 
-    const timelineRect = timelineRef.current.getBoundingClientRect();
-    const isOver = dragY >= timelineRect.top - 60 && dragY <= timelineRect.bottom + 60;
-    if (!isOver) {
-      onDropZoneChange(null);
-      return;
-    }
-
     if (isDraggingDown) {
       const liveCenters: number[] = [];
       nonPendingEvents.forEach((item) => {
