@@ -13,7 +13,7 @@ const SPORT_MODES = [
     label: "Football",
     value: "American Football",
     icon: "🏈",
-    color: "hsl(142, 55%, 42%)",
+    color: "hsl(25, 55%, 38%)",
     description: "Order the biggest football events in history.",
   },
   {
@@ -50,52 +50,52 @@ export default function Home() {
   const puzzleNum = getPuzzleNumber();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col overflow-auto">
       {/* Theme toggle */}
-      <div className="absolute top-4 right-4 z-20">
+      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
         <ThemeToggle />
       </div>
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-10 sm:py-16">
-        <h1 className="font-display text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground uppercase mb-3">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-6 sm:py-16">
+        <h1 className="font-display text-xl sm:text-4xl font-extrabold tracking-tight text-foreground uppercase mb-2 sm:mb-3">
           Sports Rewind
         </h1>
-        <p className="text-foreground text-base sm:text-lg font-medium mb-1">
+        <p className="text-foreground text-sm sm:text-lg font-medium mb-0.5 sm:mb-1">
           {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
         </p>
-        <p className="text-muted-foreground text-sm sm:text-base mb-8 sm:mb-10">
+        <p className="text-muted-foreground text-xs sm:text-base mb-5 sm:mb-10">
           Pick a mode to play today's puzzle
         </p>
 
-        {/* Card grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 w-full max-w-2xl">
+        {/* Card grid — horizontal row on mobile */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-5 w-full max-w-2xl">
           {SPORT_MODES.map((mode) => (
             <div
               key={mode.label}
-              className="group flex flex-col rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+              className="group flex flex-col rounded-lg sm:rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
               onClick={() => handlePlay(mode.value)}
             >
               {/* Colored banner */}
               <div
-                className="flex flex-col items-center justify-center py-6 sm:py-10"
+                className="flex flex-col items-center justify-center py-4 sm:py-10"
                 style={{ backgroundColor: mode.color }}
               >
-                <span className="text-4xl sm:text-5xl mb-2 drop-shadow-sm">
+                <span className="text-2xl sm:text-5xl mb-1 sm:mb-2 drop-shadow-sm">
                   {mode.icon}
                 </span>
-                <h2 className="font-display text-base sm:text-lg font-bold text-white drop-shadow-sm">
+                <h2 className="font-display text-xs sm:text-lg font-bold text-white drop-shadow-sm">
                   {mode.label}
                 </h2>
               </div>
 
               {/* Description + CTA */}
-              <div className="flex flex-col items-center px-4 py-4 sm:py-5 gap-3">
-                <p className="text-muted-foreground text-xs sm:text-sm text-center leading-relaxed">
+              <div className="flex flex-col items-center px-2 sm:px-4 py-2.5 sm:py-5 gap-2 sm:gap-3">
+                <p className="text-muted-foreground text-[10px] sm:text-sm text-center leading-snug sm:leading-relaxed hidden sm:block">
                   {mode.description}
                 </p>
                 <button
-                  className="w-full rounded-full border border-border bg-transparent text-foreground text-sm font-medium py-2 hover:bg-secondary transition-colors"
+                  className="w-full rounded-full border border-border bg-transparent text-foreground text-xs sm:text-sm font-medium py-1.5 sm:py-2 hover:bg-secondary transition-colors"
                 >
                   Play
                 </button>
@@ -104,14 +104,14 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="text-muted-foreground text-xs sm:text-sm mt-8">
+        <p className="text-muted-foreground text-[10px] sm:text-sm mt-5 sm:mt-8">
           A new puzzle every day — come back tomorrow!
         </p>
       </main>
 
-      {/* Footer */}
-      <footer className="py-4 flex flex-col items-center gap-2 text-xs text-muted-foreground/60">
-        <div className="flex justify-center gap-4">
+      {/* Footer — always visible */}
+      <footer className="shrink-0 py-3 sm:py-4 flex flex-col items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-muted-foreground/60 px-4">
+        <div className="flex justify-center gap-2 sm:gap-4 flex-wrap">
           <Link to="/privacy" className="hover:text-muted-foreground transition-colors">
             Privacy Policy
           </Link>
