@@ -139,7 +139,7 @@ ${correctCount}/${totalRounds} correct`;
             )}
           </Button>
 
-          <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider flex items-center justify-center gap-1 mt-0.5 sm:mt-1">
+          <p className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wider flex items-center justify-center gap-1 mt-0.5 sm:mt-1 font-semibold">
             Try a different game mode
           </p>
           <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
