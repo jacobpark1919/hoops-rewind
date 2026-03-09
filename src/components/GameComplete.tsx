@@ -166,6 +166,7 @@ ${correctCount}/${totalRounds} correct`;
             <Button
               onClick={onViewTimeline}
               size="lg"
+              variant="outline"
               className="w-full font-display text-xs sm:text-lg h-8 sm:h-11"
             >
               View Timeline
