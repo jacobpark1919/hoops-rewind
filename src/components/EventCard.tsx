@@ -40,7 +40,7 @@ export function EventCard({
         ${status ? statusClasses[status] : ""}
         ${isPending ? "cursor-grab active:cursor-grabbing" : ""}
         select-none
-        ${isPlaced || isPending ? "bg-card" : ""}
+        bg-card
       `}
       style={{
         boxShadow: '0 4px 12px -2px rgba(0, 0, 0, 0.15), 0 2px 6px -2px rgba(0, 0, 0, 0.1)',
