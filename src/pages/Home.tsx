@@ -59,21 +59,21 @@ export default function Home() {
       </div>
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-6 sm:py-16">
-        <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-          <svg className="w-7 h-7 sm:w-10 sm:h-10 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-6 sm:py-16 lg:py-20">
+        <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 mb-2 sm:mb-3 lg:mb-4">
+          <svg className="w-7 h-7 sm:w-10 sm:h-10 lg:w-14 lg:h-14 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="13,8 13,24 4,16" fill="currentColor" stroke="none" />
             <polygon points="24,8 24,24 15,16" fill="currentColor" stroke="none" />
           </svg>
-          <h1 className="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground uppercase">
+          <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground uppercase">
             Sports Rewind
           </h1>
         </div>
-        <p className="text-foreground text-sm sm:text-lg font-medium mb-0.5 sm:mb-1">
+        <p className="text-foreground text-sm sm:text-lg lg:text-xl font-medium mb-0.5 sm:mb-1">
           {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
         </p>
-        <p className="text-muted-foreground text-xs sm:text-base mb-5 sm:mb-10">
-          Pick a mode to play today's puzzle
+        <p className="text-muted-foreground text-xs sm:text-base lg:text-lg mb-5 sm:mb-10 lg:mb-12">
+          Choose your challenge
         </p>
 
         {/* Card grid — horizontal row on mobile */}
