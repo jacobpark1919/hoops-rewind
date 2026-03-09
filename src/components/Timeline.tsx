@@ -444,7 +444,10 @@ export function Timeline({
         {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
         <div 
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
-          style={{ paddingTop: naturalPaddingTop }}
+          style={{ 
+            paddingTop: Math.max(0, naturalPaddingTop - (isDragging && activeDropZone === 0 ? 128 : 0)),
+            transition: isDragging ? 'padding-top 0.3s ease-out' : 'none',
+          }}
         >
           <div className="flex flex-col" ref={innerWrapperRef}>
             {items}
