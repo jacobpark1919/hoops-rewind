@@ -432,9 +432,12 @@ export function Timeline({
       style={{ minHeight: 100 }}
     >
       {/* Earliest label - centered above timeline */}
-      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2 text-center">
-        Earliest
-      </p>
+      <div className="relative mb-2">
+        <p className="absolute text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider left-4 sm:left-6 -translate-x-1/2 whitespace-nowrap">
+          Earliest
+        </p>
+        <div className="h-3" />
+      </div>
 
       {/* Timeline content wrapper */}
       <div className="relative flex-1 flex flex-col">
@@ -453,9 +456,12 @@ export function Timeline({
       </div>
 
       {/* Latest label - centered below timeline */}
-      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mt-2 text-center">
-        Latest
-      </p>
+      <div className="relative mt-2">
+        <p className="absolute text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider left-4 sm:left-6 -translate-x-1/2 whitespace-nowrap">
+          Latest
+        </p>
+        <div className="h-3" />
+      </div>
     </div>
   );
 }
