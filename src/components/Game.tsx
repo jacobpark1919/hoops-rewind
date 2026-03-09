@@ -46,13 +46,11 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
   // Keeps the drop zone visible (frozen) after drop until "Tap to place" is confirmed/cancelled
   const [frozenDropZone, setFrozenDropZone] = useState<number | null>(null);
-  const [collapsedCardAreaHeight, setCollapsedCardAreaHeight] = useState(0);
   
   const [showIdleHint, setShowIdleHint] = useState(false);
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
   const cardRef = useRef<HTMLDivElement>(null);
-  const topSectionRef = useRef<HTMLDivElement>(null);
   const pendingDropZoneRef = useRef<number | null>(null);
   const gameEventsRef = useRef<SportsEvent[]>([]);
   const currentEventIndexRef = useRef(0);
@@ -169,9 +167,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   // Handle starting to drag the new card
   const handleNewCardDragStart = (e: React.PointerEvent) => {
     if (cardRef.current) {
-      if (topSectionRef.current) {
-        setCollapsedCardAreaHeight(topSectionRef.current.offsetHeight);
-      }
       setDragSource("new");
       setShowIdleHint(false);
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
@@ -382,13 +377,13 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         {currentEvent && !gameComplete ? (
             <>
               <div
-                ref={topSectionRef}
                 className="transition-opacity duration-300 ease-out"
                 style={{
-                  minHeight: cardCollapsed || hasPendingPlacement ? 0 : undefined,
-                  height: cardCollapsed || hasPendingPlacement ? 0 : 'auto',
-                  overflow: cardCollapsed || hasPendingPlacement ? 'hidden' : 'visible',
                   opacity: cardCollapsed || hasPendingPlacement ? 0 : 1,
+                  pointerEvents: cardCollapsed || hasPendingPlacement ? 'none' : 'auto',
+                  visibility: hasPendingPlacement ? 'hidden' : 'visible',
+                  height: hasPendingPlacement ? 0 : 'auto',
+                  overflow: hasPendingPlacement ? 'hidden' : 'visible',
                 }}
               >
                 <div key={currentEvent.id} className="animate-fade-in-up">
@@ -449,7 +444,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             sportFilter={sportFilter}
             onRetry={initializeGame}
             onSportChange={onSportChange}
-            collapsedCardAreaHeight={cardCollapsed ? collapsedCardAreaHeight : 0}
           />
         </div>
 
