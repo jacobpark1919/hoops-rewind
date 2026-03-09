@@ -7,7 +7,7 @@ import { InstructionsModal } from "./InstructionsModal";
 import { DragOverlay } from "./DragOverlay";
 import { ThemeToggle } from "./ThemeToggle";
 import { useDrag } from "@/hooks/useDrag";
-import { ChevronDown, Home, HelpCircle } from "lucide-react";
+import { ChevronDown, Home, HelpCircle, ArrowDown } from "lucide-react";
 
 const TOTAL_ROUNDS = 8;
 
@@ -46,6 +46,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
   // Keeps the drop zone visible (frozen) after drop until "Tap to place" is confirmed/cancelled
   const [frozenDropZone, setFrozenDropZone] = useState<number | null>(null);
+  
+  const [showIdleHint, setShowIdleHint] = useState(false);
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
   const cardRef = useRef<HTMLDivElement>(null);
   const pendingDropZoneRef = useRef<number | null>(null);
@@ -112,6 +115,22 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     }
   }, [dragState.isDragging, dragState.offsetY]);
 
+  // Start idle hint timer when a new card appears
+  useEffect(() => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    setShowIdleHint(false);
+    
+    if (currentEvent && !gameComplete && !pendingPlacement) {
+      idleTimerRef.current = setTimeout(() => {
+        setShowIdleHint(true);
+      }, 5000);
+    }
+    
+    return () => {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
+  }, [currentEventIndex, gameComplete, pendingPlacement]);
+
   const initializeGame = useCallback(async () => {
     // Reset all state first
     setCorrectCount(1);
@@ -149,6 +168,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const handleNewCardDragStart = (e: React.PointerEvent) => {
     if (cardRef.current) {
       setDragSource("new");
+      setShowIdleHint(false);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
       startDrag(e, cardRef.current);
     }
   };
@@ -371,13 +392,22 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   <div
                     ref={cardRef}
                     onPointerDown={handleNewCardDragStart}
-                    className="cursor-grab active:cursor-grabbing select-none touch-none"
+                    className={`cursor-grab active:cursor-grabbing select-none touch-none ${showIdleHint ? 'game-card-breathe' : ''}`}
                   >
                     <EventCard
                       event={currentEvent}
                       isDragging={false}
                     />
                   </div>
+                  {showIdleHint && (
+                    <div className="flex items-center gap-1.5 justify-center mt-2 drag-hint-arrow">
+                      <ArrowDown className="w-4 h-4 text-primary" />
+                      <span className="text-xs sm:text-sm font-semibold text-primary">
+                        Drag this card into the timeline
+                      </span>
+                      <ArrowDown className="w-4 h-4 text-primary" />
+                    </div>
+                  )}
                 </div>
               </div>
             </>
