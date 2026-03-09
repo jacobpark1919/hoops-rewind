@@ -55,14 +55,19 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
           
           {/* Drag illustration */}
           <div className="my-2 sm:my-6 flex justify-center">
-            <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30">
+            <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30 relative" style={{ aspectRatio: '16/9' }}>
+              {!videoReady && (
+                <div className="absolute inset-0 bg-muted animate-pulse rounded-lg sm:rounded-xl" />
+              )}
               <video
                 src={dragHintVideo}
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="w-full block max-h-72 sm:max-h-none object-cover"
+                preload="auto"
+                onCanPlay={() => setVideoReady(true)}
+                className={`w-full block object-cover transition-opacity duration-150 ${videoReady ? 'opacity-100' : 'opacity-0'}`}
               />
             </div>
           </div>
