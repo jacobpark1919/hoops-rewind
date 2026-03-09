@@ -45,6 +45,7 @@ export function Timeline({
   isDraggingDown,
   draggingCardHeight,
   incorrectEventIds,
+  correctEventIds,
   dragY,
   onDrop,
   onDropZoneChange,
