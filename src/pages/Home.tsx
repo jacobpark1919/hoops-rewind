@@ -7,7 +7,7 @@ const SPORT_MODES = [
     label: "Basketball",
     value: "Basketball",
     icon: "🏀",
-    color: "hsl(25, 90%, 55%)",
+    color: "hsl(25, 85%, 62%)",
     description: "Place iconic basketball moments on the timeline.",
   },
   {
