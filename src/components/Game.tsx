@@ -392,13 +392,22 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   <div
                     ref={cardRef}
                     onPointerDown={handleNewCardDragStart}
-                    className="cursor-grab active:cursor-grabbing select-none touch-none"
+                    className={`cursor-grab active:cursor-grabbing select-none touch-none ${showIdleHint ? 'game-card-breathe' : ''}`}
                   >
                     <EventCard
                       event={currentEvent}
                       isDragging={false}
                     />
                   </div>
+                  {showIdleHint && (
+                    <div className="flex items-center gap-1.5 justify-center mt-2 drag-hint-arrow">
+                      <ArrowDown className="w-4 h-4 text-primary" />
+                      <span className="text-xs sm:text-sm font-semibold text-primary">
+                        Drag this card into the timeline
+                      </span>
+                      <ArrowDown className="w-4 h-4 text-primary" />
+                    </div>
+                  )}
                 </div>
               </div>
             </>
