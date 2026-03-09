@@ -78,8 +78,6 @@ export default function Home() {
               }`}
               onClick={() => handlePlay(mode.value)}
             >
-              onClick={() => handlePlay(mode.value)}
-            >
               {/* Colored banner */}
               <div
                 className="flex flex-col items-center justify-center py-4 sm:py-10"
