@@ -381,6 +381,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 style={{
                   opacity: cardCollapsed || hasPendingPlacement ? 0 : 1,
                   pointerEvents: cardCollapsed || hasPendingPlacement ? 'none' : 'auto',
+                  // During drag (cardCollapsed): keep height reserved, just hide visually
+                  // After drop (hasPendingPlacement): fully collapse out of flow
                   visibility: hasPendingPlacement ? 'hidden' : 'visible',
                   height: hasPendingPlacement ? 0 : 'auto',
                   overflow: hasPendingPlacement ? 'hidden' : 'visible',

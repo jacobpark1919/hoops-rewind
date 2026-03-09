@@ -64,7 +64,6 @@ export function Timeline({
   const timelineRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const dropZoneRefs = useRef<Map<number, HTMLDivElement>>(new Map());
-  const [dropZoneOffset, setDropZoneOffset] = useState(0);
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [availableHeight, setAvailableHeight] = useState<number>(9999);
   const [dynamicGap, setDynamicGap] = useState<number>(NORMAL_GAP);
@@ -161,27 +160,8 @@ export function Timeline({
     }
   }, [isDragging, hasPending]); // intentionally only depend on isDragging / hasPending
 
-  // Measure the active drop zone's height and apply a compensating negative offset
-  // so that existing timeline cards stay in place when a zone opens.
-  useEffect(() => {
-    // Only compensate for the first drop zone (position 0) to prevent cards shifting down
-    if (!isDragging || activeDropZone !== 0) {
-      setDropZoneOffset(0);
-      return;
-    }
-    // Use rAF to measure after the drop zone has rendered at its full height
-    const frame = requestAnimationFrame(() => {
-      const el = dropZoneRefs.current.get(0);
-      if (el) {
-        const style = window.getComputedStyle(el);
-        const totalHeight = el.offsetHeight + parseFloat(style.marginTop || '0') + parseFloat(style.marginBottom || '0');
-        setDropZoneOffset(totalHeight);
-      } else {
-        setDropZoneOffset(0);
-      }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [isDragging, activeDropZone]);
+
+
 
   const activeGap = lockedGap !== null ? lockedGap : dynamicGap;
   const isOverlapping = activeGap < 0;
@@ -479,8 +459,6 @@ export function Timeline({
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
           style={{
             paddingTop: naturalPaddingTop,
-            transform: dropZoneOffset > 0 ? `translateY(-${dropZoneOffset}px)` : undefined,
-            transition: isDragging ? 'transform 0.3s ease-out' : undefined,
           }}
         >
           <div className="flex flex-col" ref={innerWrapperRef}>
