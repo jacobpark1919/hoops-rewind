@@ -382,7 +382,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         {currentEvent && !gameComplete ? (
             <>
               <div
-                className="transition-all duration-300 ease-out"
+                ref={topSectionRef}
+                className="transition-opacity duration-300 ease-out"
                 style={{
                   minHeight: cardCollapsed || hasPendingPlacement ? 0 : undefined,
                   height: cardCollapsed || hasPendingPlacement ? 0 : 'auto',
