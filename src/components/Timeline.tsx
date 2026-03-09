@@ -65,6 +65,8 @@ export function Timeline({
   const [availableHeight, setAvailableHeight] = useState<number>(9999);
   const [dynamicGap, setDynamicGap] = useState<number>(NORMAL_GAP);
   const [lockedGap, setLockedGap] = useState<number | null>(null);
+  const [naturalPaddingTop, setNaturalPaddingTop] = useState(0);
+  const innerWrapperRef = useRef<HTMLDivElement>(null);
 
   // Measure available space
   useEffect(() => {
@@ -133,6 +135,14 @@ export function Timeline({
   // This prevents any layout recalculation from shifting the timeline during the
   // drag → drop → confirm flow. Gap is only released after the placement is resolved.
   const hasPending = placedEvents.some(item => item.status === "pending");
+
+  useEffect(() => {
+    if (!isDragging && !hasPending && innerWrapperRef.current) {
+      const contentHeight = innerWrapperRef.current.offsetHeight;
+      setNaturalPaddingTop(Math.max(0, (availableHeight - contentHeight) / 2));
+    }
+  }, [placedEvents, availableHeight, isDragging, hasPending, dynamicGap]);
+
   const lockedRef = useRef<number | null>(null);
   useEffect(() => {
     if (isDragging || hasPending) {
@@ -188,13 +198,6 @@ export function Timeline({
 
   useEffect(() => {
     if (!isDragging || dragY === null || !timelineRef.current) {
-      onDropZoneChange(null);
-      return;
-    }
-
-    const timelineRect = timelineRef.current.getBoundingClientRect();
-    const isOver = dragY >= timelineRect.top - 60 && dragY <= timelineRect.bottom + 60;
-    if (!isOver) {
       onDropZoneChange(null);
       return;
     }
@@ -303,7 +306,7 @@ export function Timeline({
     return (
       <div
         key={`drop-${position}`}
-        className={`relative rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
+        className={`relative transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
           isActive
             ? `h-28 sm:h-32 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
             : 'h-0 border-transparent overflow-hidden'
@@ -437,9 +440,15 @@ export function Timeline({
       {/* Timeline line - extends full height */}
       <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
 
-      {/* Timeline content - always vertically centered */}
-      <div className="relative pl-10 sm:pl-14 flex flex-col flex-1 justify-center">
-        <div className="flex flex-col">
+      {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
+      <div 
+        className="relative pl-10 sm:pl-14 flex flex-col flex-1"
+        style={{ 
+          paddingTop: naturalPaddingTop,
+          transition: 'padding-top 0.4s ease-out'
+        }}
+      >
+        <div className="flex flex-col" ref={innerWrapperRef}>
           {items}
         </div>
       </div>
