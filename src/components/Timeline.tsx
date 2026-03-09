@@ -431,8 +431,8 @@ export function Timeline({
       className="relative flex-1 flex flex-col"
       style={{ minHeight: 100 }}
     >
-      {/* Earliest label - aligned with timeline line */}
-      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2 pl-[13px] sm:pl-[21px]">
+      {/* Earliest label - centered above timeline */}
+      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2 text-center">
         Earliest
       </p>
 
@@ -444,10 +444,7 @@ export function Timeline({
         {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
         <div 
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
-          style={{ 
-            paddingTop: Math.max(0, naturalPaddingTop - (isDragging && activeDropZone === 0 ? 128 : 0)),
-            transition: isDragging ? 'padding-top 0.3s ease-out' : 'none',
-          }}
+          style={{ paddingTop: naturalPaddingTop }}
         >
           <div className="flex flex-col" ref={innerWrapperRef}>
             {items}
@@ -455,8 +452,8 @@ export function Timeline({
         </div>
       </div>
 
-      {/* Latest label - aligned with timeline line */}
-      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mt-2 pl-[13px] sm:pl-[21px]">
+      {/* Latest label - centered below timeline */}
+      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mt-2 text-center">
         Latest
       </p>
     </div>
