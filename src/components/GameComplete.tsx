@@ -67,7 +67,7 @@ ${correctCount}/${totalRounds} correct`;
             <h2 className="font-display text-xl sm:text-4xl font-bold text-foreground mb-0.5 sm:mb-2">
               VICTORY!
             </h2>
-            <p className="text-muted-foreground text-xs sm:text-lg mb-2 sm:mb-6">
+            <p className="font-display text-base sm:text-2xl text-foreground mb-2 sm:mb-6">
               Come back tomorrow for a new puzzle!
             </p>
           </>
