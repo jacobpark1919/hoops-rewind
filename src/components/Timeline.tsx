@@ -143,21 +143,32 @@ export function Timeline({
     }
   }, [placedEvents, availableHeight, isDragging, hasPending, dynamicGap]);
 
-  const lockedRef = useRef<number | null>(null);
+  // Lock gap and padding when dragging OR when a pending placement exists
+  const lockedGapRef = useRef<number | null>(null);
+  const lockedPaddingRef = useRef<number | null>(null);
+  const [lockedPadding, setLockedPadding] = useState<number | null>(null);
+  
   useEffect(() => {
     if (isDragging || hasPending) {
       // Only capture once — don't overwrite once locked
-      if (lockedRef.current === null) {
-        lockedRef.current = dynamicGap;
+      if (lockedGapRef.current === null) {
+        lockedGapRef.current = dynamicGap;
         setLockedGap(dynamicGap);
       }
+      if (lockedPaddingRef.current === null) {
+        lockedPaddingRef.current = naturalPaddingTop;
+        setLockedPadding(naturalPaddingTop);
+      }
     } else {
-      lockedRef.current = null;
+      lockedGapRef.current = null;
+      lockedPaddingRef.current = null;
       setLockedGap(null);
+      setLockedPadding(null);
     }
   }, [isDragging, hasPending]); // intentionally only depend on isDragging / hasPending
 
   const activeGap = lockedGap !== null ? lockedGap : dynamicGap;
+  const activePadding = lockedPadding !== null ? lockedPadding : naturalPaddingTop;
   const isOverlapping = activeGap < 0;
 
   // Build the effective events list — append CTA card when viewing timeline
