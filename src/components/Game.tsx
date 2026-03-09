@@ -120,6 +120,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setIsViewingTimeline(false);
     setGameComplete(false);
     setIncorrectEventIds(new Set());
+    setCorrectEventIds(new Set());
     setDragSource(null);
     setActiveDropZone(null);
     setIsLoadingEvents(true);
