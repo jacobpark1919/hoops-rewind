@@ -163,24 +163,6 @@ export function Timeline({
   // Measure the active drop zone's height and apply a compensating negative offset
   // so that existing timeline cards stay in place when a zone opens.
   useEffect(() => {
-    // Only compensate for the first drop zone (position 0) to prevent cards shifting down
-    if (!isDragging || activeDropZone !== 0) {
-      setDropZoneOffset(0);
-      return;
-    }
-    // Use rAF to measure after the drop zone has rendered at its full height
-    const frame = requestAnimationFrame(() => {
-      const el = dropZoneRefs.current.get(0);
-      if (el) {
-        const style = window.getComputedStyle(el);
-        const totalHeight = el.offsetHeight + parseFloat(style.marginTop || '0') + parseFloat(style.marginBottom || '0');
-        setDropZoneOffset(totalHeight);
-      } else {
-        setDropZoneOffset(0);
-      }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [isDragging, activeDropZone]);
 
   const activeGap = lockedGap !== null ? lockedGap : dynamicGap;
   const isOverlapping = activeGap < 0;
