@@ -105,8 +105,7 @@ export default function Home() {
                   {mode.description}
                 </p>
                 <button
-                  className="w-full rounded-full text-white text-xs sm:text-sm font-medium py-1.5 sm:py-2 hover:opacity-90 transition-opacity"
-                  style={{ backgroundColor: mode.color }}
+                  className="w-full rounded-full border border-border bg-transparent text-foreground text-xs sm:text-sm font-medium py-1.5 sm:py-2 hover:bg-secondary transition-colors"
                 >
                   Play
                 </button>
