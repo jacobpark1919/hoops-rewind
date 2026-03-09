@@ -449,6 +449,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             sportFilter={sportFilter}
             onRetry={initializeGame}
             onSportChange={onSportChange}
+            collapsedCardAreaHeight={cardCollapsed ? collapsedCardAreaHeight : 0}
           />
         </div>
 
