@@ -168,6 +168,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const handleNewCardDragStart = (e: React.PointerEvent) => {
     if (cardRef.current) {
       setDragSource("new");
+      setShowIdleHint(false);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
       startDrag(e, cardRef.current);
     }
   };
