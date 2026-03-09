@@ -13,7 +13,7 @@ const SPORT_MODES = [
     label: "Football",
     value: "American Football",
     icon: "🏈",
-    color: "hsl(25, 55%, 38%)",
+    color: "hsl(150, 45%, 28%)",
     description: "Order the biggest football events in history.",
   },
   {
@@ -69,11 +69,13 @@ export default function Home() {
         </p>
 
         {/* Card grid — horizontal row on mobile */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-5 w-full max-w-2xl">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-5 w-full max-w-2xl">
           {SPORT_MODES.map((mode) => (
             <div
               key={mode.label}
-              className="group flex flex-col rounded-lg sm:rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+              className={`group flex flex-col rounded-lg sm:rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer ${
+                mode.value === null ? "col-span-2 sm:col-span-1" : ""
+              }`}
               onClick={() => handlePlay(mode.value)}
             >
               {/* Colored banner */}
