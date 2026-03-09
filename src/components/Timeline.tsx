@@ -63,6 +63,8 @@ export function Timeline({
   const bottomPadding = isMobile ? BOTTOM_PADDING : Math.round(window.innerHeight / 12);
   const timelineRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const dropZoneRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+  const [dropZoneOffset, setDropZoneOffset] = useState(0);
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [availableHeight, setAvailableHeight] = useState<number>(9999);
   const [dynamicGap, setDynamicGap] = useState<number>(NORMAL_GAP);
