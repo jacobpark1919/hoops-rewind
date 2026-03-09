@@ -1,5 +1,6 @@
 import { useNavigate, Link } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { DarkModeHint } from "@/components/DarkModeHint";
 
 const SPORT_MODES = [
   {
