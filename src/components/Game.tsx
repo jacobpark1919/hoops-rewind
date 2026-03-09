@@ -169,6 +169,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   // Handle starting to drag the new card
   const handleNewCardDragStart = (e: React.PointerEvent) => {
     if (cardRef.current) {
+      if (topSectionRef.current) {
+        setCollapsedCardAreaHeight(topSectionRef.current.offsetHeight);
+      }
       setDragSource("new");
       setShowIdleHint(false);
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
