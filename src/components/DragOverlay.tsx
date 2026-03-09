@@ -18,7 +18,7 @@ export function DragOverlay({ event, dragState }: DragOverlayProps) {
         width: dragState.cardRect.width,
       }}
     >
-      <div className="game-card shadow-2xl" style={{ backgroundColor: 'hsl(var(--card-new))' }}>
+      <div className="game-card shadow-2xl bg-card">
         <div className="flex items-start gap-1.5 sm:gap-3">
           <span className="text-base sm:text-2xl">{event.icon}</span>
           <div className="flex-1 min-w-0">
