@@ -214,7 +214,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             status: item.status === "correct" ? null : item.status,
           }))
         );
-      }, 800);
+      }, 1800);
     } else {
       setIncorrectEventIds(prev => new Set(prev).add(currentEvent.id));
       
