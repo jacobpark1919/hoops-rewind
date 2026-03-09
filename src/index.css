@@ -90,6 +90,7 @@ html.admin-scroll, html.admin-scroll body {
     --timeline-line: 220 8% 35%;
     --card-glow: 45 75% 55%;
     --drop-zone: 45 75% 55%;
+    --card-new: 220 12% 26%;
   }
 }
 
