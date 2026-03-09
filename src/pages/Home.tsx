@@ -58,7 +58,7 @@ export default function Home() {
 
       {/* Main content */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-6 sm:py-16">
-        <h1 className="font-display text-xl sm:text-4xl font-extrabold tracking-tight text-foreground uppercase mb-2 sm:mb-3">
+        <h1 className="font-display text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground uppercase mb-2 sm:mb-3">
           Sports Rewind
         </h1>
         <p className="text-foreground text-sm sm:text-lg font-medium mb-0.5 sm:mb-1">
@@ -106,7 +106,7 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="text-muted-foreground text-[10px] sm:text-sm mt-5 sm:mt-8">
+        <p className="text-muted-foreground text-sm sm:text-base mt-5 sm:mt-8">
           A new puzzle every day — come back tomorrow!
         </p>
       </main>
