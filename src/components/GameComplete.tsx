@@ -76,7 +76,7 @@ ${correctCount}/${totalRounds} correct`;
             <h2 className="font-display text-xl sm:text-4xl font-bold text-foreground mb-1 sm:mb-3">
               Next time!
             </h2>
-            <p className="font-display text-base sm:text-2xl font-semibold text-foreground mb-2 sm:mb-6">
+            <p className="font-display text-base sm:text-2xl text-foreground mb-2 sm:mb-6">
               Come back tomorrow for a new timeline!
             </p>
           </>
