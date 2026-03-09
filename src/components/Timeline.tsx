@@ -25,6 +25,7 @@ interface TimelineProps {
   sportFilter?: string | null;
   onRetry?: () => void;
   onSportChange?: (sport: string | null) => void;
+  collapsedCardAreaHeight?: number;
 }
 
 const NORMAL_GAP = 8;
@@ -57,6 +58,7 @@ export function Timeline({
   sportFilter,
   onRetry,
   onSportChange,
+  collapsedCardAreaHeight,
 }: TimelineProps) {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -303,19 +305,25 @@ export function Timeline({
       );
     }
 
-    // Normal drop zone (during drag, or collapsed)
+    // Normal drop zone (during drag) — absolutely positioned so cards don't shift
     return (
       <div
         key={`drop-${position}`}
-        className={`relative transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
-          isActive
-            ? `h-28 sm:h-32 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
-            : 'h-0 border-transparent overflow-hidden'
-        }`}
+        className="relative"
+        style={{ height: 0, overflow: 'visible', zIndex: 40 }}
       >
-        {isActive && (
-          <span className="text-primary text-sm font-semibold">Drop here</span>
-        )}
+        <div
+          className={`absolute left-0 right-0 transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center ${
+            isActive
+              ? 'h-28 sm:h-32 border-primary bg-primary/20 shadow-lg'
+              : 'h-0 border-transparent overflow-hidden'
+          }`}
+          style={{ bottom: 0 }}
+        >
+          {isActive && (
+            <span className="text-primary text-sm font-semibold">Drop here</span>
+          )}
+        </div>
       </div>
     );
   };
@@ -339,7 +347,7 @@ export function Timeline({
 
     const isPrevActiveZone = prevWasActiveDropZone;
     const gap = nonPendingIndex === 0 ? 0 : activeGap;
-    const marginTop = isPrevActiveZone ? Math.max(gap, NORMAL_GAP) : gap;
+    const marginTop = isDragging ? gap : (isPrevActiveZone ? Math.max(gap, NORMAL_GAP) : gap);
 
     const isHovered = hoveredCardId === item.event.id && isOverlapping && !isDragging;
     const baseZIndex = nonPendingIndex + 1;
@@ -449,7 +457,7 @@ export function Timeline({
         {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
         <div 
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
-          style={{ paddingTop: naturalPaddingTop }}
+          style={{ paddingTop: naturalPaddingTop + (collapsedCardAreaHeight ?? 0) }}
         >
           <div className="flex flex-col" ref={innerWrapperRef}>
             {items}
