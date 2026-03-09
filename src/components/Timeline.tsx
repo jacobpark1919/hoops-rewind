@@ -215,8 +215,7 @@ export function Timeline({
 
       if (liveCenters.length === 0) { onDropZoneChange(0); return; }
 
-      const zone0Threshold = liveCenters[0] + draggingCardHeight / 2;
-      if (dragY < zone0Threshold) { onDropZoneChange(0); return; }
+      if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
 
       for (let i = 0; i < liveCenters.length - 1; i++) {
         if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
