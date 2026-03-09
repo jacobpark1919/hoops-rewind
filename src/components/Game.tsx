@@ -40,6 +40,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [showInstructions, setShowInstructions] = useState(true);
   const [resultHistory, setResultHistory] = useState<boolean[]>([]);
   const [incorrectEventIds, setIncorrectEventIds] = useState<Set<string>>(new Set());
+  const [correctEventIds, setCorrectEventIds] = useState<Set<string>>(new Set());
   const [dragSource, setDragSource] = useState<"new" | "pending" | null>(null);
   const [hasDragMoved, setHasDragMoved] = useState(false);
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
