@@ -60,9 +60,16 @@ export default function Home() {
 
       {/* Main content */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-6 sm:py-16">
-        <h1 className="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground uppercase mb-2 sm:mb-3">
-          Sports Rewind
-        </h1>
+        <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+          <svg className="w-7 h-7 sm:w-10 sm:h-10 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="16" cy="16" r="13" />
+            <path d="M16 9v7l5 3" />
+            <path d="M7 5L4 2M25 5l3-3" />
+          </svg>
+          <h1 className="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground uppercase">
+            Sports Rewind
+          </h1>
+        </div>
         <p className="text-foreground text-sm sm:text-lg font-medium mb-0.5 sm:mb-1">
           {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
         </p>
