@@ -423,11 +423,16 @@ export function Timeline({
     }
   });
 
+  // Push first card toward vertical center when few cards are placed
+  const centerPadding = placedEvents.length <= 2 && !isDragging && !hasPending
+    ? `calc(35vh - ${placedEvents.length * 40}px)`
+    : '0px';
+
   return (
     <div
       ref={timelineRef}
       className="relative"
-      style={{ minHeight: 100 }}
+      style={{ minHeight: 100, paddingTop: centerPadding, transition: 'padding-top 0.4s ease-out' }}
     >
       {/* Timeline line */}
       <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
