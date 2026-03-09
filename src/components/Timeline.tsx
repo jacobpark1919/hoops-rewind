@@ -135,6 +135,14 @@ export function Timeline({
   // This prevents any layout recalculation from shifting the timeline during the
   // drag → drop → confirm flow. Gap is only released after the placement is resolved.
   const hasPending = placedEvents.some(item => item.status === "pending");
+
+  useEffect(() => {
+    if (!isDragging && !hasPending && innerWrapperRef.current) {
+      const contentHeight = innerWrapperRef.current.offsetHeight;
+      setNaturalPaddingTop(Math.max(0, (availableHeight - contentHeight) / 2));
+    }
+  }, [placedEvents, availableHeight, isDragging, hasPending, activeGap]);
+
   const lockedRef = useRef<number | null>(null);
   useEffect(() => {
     if (isDragging || hasPending) {
