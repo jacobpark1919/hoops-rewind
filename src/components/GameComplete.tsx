@@ -76,10 +76,10 @@ ${correctCount}/${totalRounds} correct`;
             <div className="w-10 h-10 sm:w-20 sm:h-20 mx-auto mb-1.5 sm:mb-6 rounded-full bg-destructive/20 flex items-center justify-center">
               <span className="text-xl sm:text-4xl">😢</span>
             </div>
-            <h2 className="font-display text-xl sm:text-4xl font-bold text-foreground mb-0.5 sm:mb-2">
-              GAME OVER
+            <h2 className="font-display text-xl sm:text-4xl font-bold text-foreground mb-1 sm:mb-3">
+              Next time!
             </h2>
-            <p className="text-muted-foreground text-xs sm:text-lg mb-2 sm:mb-6">
+            <p className="font-display text-base sm:text-2xl font-semibold text-foreground mb-2 sm:mb-6">
               Come back tomorrow for a new timeline!
             </p>
           </>
