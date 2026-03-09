@@ -354,7 +354,7 @@ export function Timeline({
           marginTop,
           zIndex: isHovered ? 50 : baseZIndex,
           transform: isHovered ? 'translateY(-20px) scale(1.02)' : 'none',
-          transition: 'transform 0.2s ease-out, z-index 0s',
+          transition: 'margin-top 0.3s ease-out, transform 0.2s ease-out, z-index 0s',
         }}
         onMouseEnter={() => !isDragging && setHoveredCardId(item.event.id)}
         onMouseLeave={() => setHoveredCardId(null)}
