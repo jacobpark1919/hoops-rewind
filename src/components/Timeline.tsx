@@ -143,32 +143,21 @@ export function Timeline({
     }
   }, [placedEvents, availableHeight, isDragging, hasPending, dynamicGap]);
 
-  // Lock gap and padding when dragging OR when a pending placement exists
-  const lockedGapRef = useRef<number | null>(null);
-  const lockedPaddingRef = useRef<number | null>(null);
-  const [lockedPadding, setLockedPadding] = useState<number | null>(null);
-  
+  const lockedRef = useRef<number | null>(null);
   useEffect(() => {
     if (isDragging || hasPending) {
       // Only capture once — don't overwrite once locked
-      if (lockedGapRef.current === null) {
-        lockedGapRef.current = dynamicGap;
+      if (lockedRef.current === null) {
+        lockedRef.current = dynamicGap;
         setLockedGap(dynamicGap);
       }
-      if (lockedPaddingRef.current === null) {
-        lockedPaddingRef.current = naturalPaddingTop;
-        setLockedPadding(naturalPaddingTop);
-      }
     } else {
-      lockedGapRef.current = null;
-      lockedPaddingRef.current = null;
+      lockedRef.current = null;
       setLockedGap(null);
-      setLockedPadding(null);
     }
   }, [isDragging, hasPending]); // intentionally only depend on isDragging / hasPending
 
   const activeGap = lockedGap !== null ? lockedGap : dynamicGap;
-  const activePadding = lockedPadding !== null ? lockedPadding : naturalPaddingTop;
   const isOverlapping = activeGap < 0;
 
   // Build the effective events list — append CTA card when viewing timeline
@@ -453,10 +442,10 @@ export function Timeline({
         <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
 
         {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
-          <div 
-            className="relative pl-10 sm:pl-14 flex flex-col flex-1"
-            style={{ paddingTop: activePadding }}
-          >
+        <div 
+          className="relative pl-10 sm:pl-14 flex flex-col flex-1"
+          style={{ paddingTop: naturalPaddingTop }}
+        >
           <div className="flex flex-col" ref={innerWrapperRef}>
             {items}
           </div>
