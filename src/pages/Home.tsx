@@ -106,7 +106,7 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="text-muted-foreground text-[10px] sm:text-sm mt-5 sm:mt-8">
+        <p className="text-muted-foreground text-sm sm:text-base mt-5 sm:mt-8">
           A new puzzle every day — come back tomorrow!
         </p>
       </main>
