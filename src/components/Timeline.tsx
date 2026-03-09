@@ -307,11 +307,15 @@ export function Timeline({
     return (
       <div
         key={`drop-${position}`}
-        className={`relative transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
+        className={`relative rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
           isActive
-            ? `h-28 sm:h-32 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
-            : 'h-0 border-transparent overflow-hidden'
+            ? `border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
+            : 'border-transparent overflow-hidden'
         }`}
+        style={{
+          height: isActive ? (window.innerWidth >= 640 ? 128 : 112) : 0,
+          transition: 'height 300ms ease-out',
+        }}
       >
         {isActive && (
           <span className="text-primary text-sm font-semibold">Drop here</span>
