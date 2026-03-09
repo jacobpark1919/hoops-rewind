@@ -73,7 +73,11 @@ export default function Home() {
           {SPORT_MODES.map((mode) => (
             <div
               key={mode.label}
-              className="group flex flex-col rounded-lg sm:rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+              className={`group flex flex-col rounded-lg sm:rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer ${
+                mode.value === null ? "col-span-2 sm:col-span-1" : ""
+              }`}
+              onClick={() => handlePlay(mode.value)}
+            >
               onClick={() => handlePlay(mode.value)}
             >
               {/* Colored banner */}
