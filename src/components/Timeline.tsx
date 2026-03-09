@@ -456,9 +456,12 @@ export function Timeline({
       </div>
 
       {/* Latest label - centered below timeline */}
-      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mt-2 pl-4 sm:pl-6 -translate-x-1/2" style={{ width: 'fit-content' }}>
-        Latest
-      </p>
+      <div className="relative mt-2">
+        <p className="absolute text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider left-4 sm:left-6 -translate-x-1/2 whitespace-nowrap">
+          Latest
+        </p>
+        <div className="h-3" />
+      </div>
     </div>
   );
 }
