@@ -423,11 +423,6 @@ export function Timeline({
     }
   });
 
-  // Push first card toward vertical center when few cards are placed
-  const centerPadding = placedEvents.length <= 2 && !isDragging && !hasPending
-    ? `calc(35vh - ${placedEvents.length * 40}px)`
-    : '0px';
-
   return (
     <div
       ref={timelineRef}
@@ -442,8 +437,8 @@ export function Timeline({
       {/* Timeline line - extends full height */}
       <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
 
-      {/* Timeline content */}
-      <div className="relative pl-10 sm:pl-14 flex flex-col flex-1" style={{ paddingTop: centerPadding, transition: 'padding-top 0.4s ease-out' }}>
+      {/* Timeline content - always vertically centered */}
+      <div className="relative pl-10 sm:pl-14 flex flex-col flex-1 justify-center">
         {items}
       </div>
 
