@@ -66,6 +66,7 @@ export function Timeline({
   const [dynamicGap, setDynamicGap] = useState<number>(NORMAL_GAP);
   const [lockedGap, setLockedGap] = useState<number | null>(null);
   const [naturalPaddingTop, setNaturalPaddingTop] = useState(0);
+  const [lockedPaddingTop, setLockedPaddingTop] = useState<number | null>(null);
   const innerWrapperRef = useRef<HTMLDivElement>(null);
 
   // Measure available space
