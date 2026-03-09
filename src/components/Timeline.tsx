@@ -354,7 +354,7 @@ export function Timeline({
           marginTop,
           zIndex: isHovered ? 50 : baseZIndex,
           transform: isHovered ? 'translateY(-20px) scale(1.02)' : 'none',
-          transition: 'transform 0.2s ease-out, z-index 0s',
+          transition: 'margin-top 0.3s ease-out, transform 0.2s ease-out, z-index 0s',
         }}
         onMouseEnter={() => !isDragging && setHoveredCardId(item.event.id)}
         onMouseLeave={() => setHoveredCardId(null)}
@@ -439,7 +439,9 @@ export function Timeline({
 
       {/* Timeline content - always vertically centered */}
       <div className="relative pl-10 sm:pl-14 flex flex-col flex-1 justify-center">
-        {items}
+        <div className="flex flex-col">
+          {items}
+        </div>
       </div>
 
       {/* Latest label */}
