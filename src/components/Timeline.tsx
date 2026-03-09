@@ -66,6 +66,7 @@ export function Timeline({
   const [dynamicGap, setDynamicGap] = useState<number>(NORMAL_GAP);
   const [lockedGap, setLockedGap] = useState<number | null>(null);
   const [naturalPaddingTop, setNaturalPaddingTop] = useState(0);
+  const [lockedPaddingTop, setLockedPaddingTop] = useState<number | null>(null);
   const innerWrapperRef = useRef<HTMLDivElement>(null);
 
   // Measure available space
@@ -144,16 +145,21 @@ export function Timeline({
   }, [placedEvents, availableHeight, isDragging, hasPending, dynamicGap]);
 
   const lockedRef = useRef<number | null>(null);
+  const lockedPaddingRef = useRef<number | null>(null);
   useEffect(() => {
     if (isDragging || hasPending) {
       // Only capture once — don't overwrite once locked
       if (lockedRef.current === null) {
         lockedRef.current = dynamicGap;
         setLockedGap(dynamicGap);
+        lockedPaddingRef.current = naturalPaddingTop;
+        setLockedPaddingTop(naturalPaddingTop);
       }
     } else {
       lockedRef.current = null;
+      lockedPaddingRef.current = null;
       setLockedGap(null);
+      setLockedPaddingTop(null);
     }
   }, [isDragging, hasPending]); // intentionally only depend on isDragging / hasPending
 
@@ -444,7 +450,20 @@ export function Timeline({
         {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
         <div 
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
-          style={{ paddingTop: naturalPaddingTop }}
+          style={{ 
+            paddingTop: (() => {
+              const basePadding = lockedPaddingTop !== null ? lockedPaddingTop : naturalPaddingTop;
+              // When zone 0 is active during drag, compensate for the drop zone height
+              // so existing cards don't shift down
+              if (isDragging && activeDropZone === 0) {
+                const dropZoneHeight = window.innerWidth >= 640 ? 128 : 112; // h-32 or h-28
+                const dropZoneMargin = 12; // mb-3
+                return Math.max(0, basePadding - dropZoneHeight - dropZoneMargin);
+              }
+              return basePadding;
+            })(),
+            transition: 'padding-top 0.3s ease-out',
+          }}
         >
           <div className="flex flex-col" ref={innerWrapperRef}>
             {items}
