@@ -15,9 +15,9 @@ interface InstructionsModalProps {
 
 export function InstructionsModal({ onClose }: InstructionsModalProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
-    // Animate in
     setTimeout(() => setIsVisible(true), 50);
   }, []);
 
