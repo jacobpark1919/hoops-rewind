@@ -59,25 +59,25 @@ export default function Home() {
       </div>
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-6 sm:py-16">
-        <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-          <svg className="w-7 h-7 sm:w-10 sm:h-10 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-6 sm:py-16 lg:py-20">
+        <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 mb-2 sm:mb-3 lg:mb-4">
+          <svg className="w-7 h-7 sm:w-10 sm:h-10 lg:w-14 lg:h-14 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="13,8 13,24 4,16" fill="currentColor" stroke="none" />
             <polygon points="24,8 24,24 15,16" fill="currentColor" stroke="none" />
           </svg>
-          <h1 className="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground uppercase">
+          <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground uppercase">
             Sports Rewind
           </h1>
         </div>
-        <p className="text-foreground text-sm sm:text-lg font-medium mb-0.5 sm:mb-1">
+        <p className="text-foreground text-sm sm:text-lg lg:text-xl font-medium mb-0.5 sm:mb-1">
           {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
         </p>
-        <p className="text-muted-foreground text-xs sm:text-base mb-5 sm:mb-10">
-          Pick a mode to play today's puzzle
+        <p className="text-muted-foreground text-xs sm:text-base lg:text-lg mb-5 sm:mb-10 lg:mb-12">
+          Choose your challenge
         </p>
 
         {/* Card grid — horizontal row on mobile */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-5 w-full max-w-2xl">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-5 lg:gap-7 w-full max-w-2xl lg:max-w-3xl">
           {SPORT_MODES.map((mode) => (
             <div
               key={mode.label}
@@ -88,24 +88,24 @@ export default function Home() {
             >
               {/* Colored banner */}
               <div
-                className="flex flex-col items-center justify-center py-4 sm:py-10"
+                className="flex flex-col items-center justify-center py-4 sm:py-10 lg:py-14"
                 style={{ backgroundColor: mode.color }}
               >
-                <span className="text-2xl sm:text-5xl mb-1 sm:mb-2 drop-shadow-sm">
+                <span className="text-2xl sm:text-5xl lg:text-6xl mb-1 sm:mb-2 drop-shadow-sm">
                   {mode.icon}
                 </span>
-                <h2 className="font-display text-xs sm:text-lg font-bold text-white drop-shadow-sm">
+                <h2 className="font-display text-xs sm:text-lg lg:text-xl font-bold text-white drop-shadow-sm">
                   {mode.label}
                 </h2>
               </div>
 
               {/* Description + CTA */}
-              <div className="flex flex-col items-center px-2 sm:px-4 py-2.5 sm:py-5 gap-2 sm:gap-3">
-                <p className="text-muted-foreground text-[10px] sm:text-sm text-center leading-snug sm:leading-relaxed hidden sm:block">
+              <div className="flex flex-col items-center px-2 sm:px-4 lg:px-6 py-2.5 sm:py-5 lg:py-6 gap-2 sm:gap-3">
+                <p className="text-muted-foreground text-[10px] sm:text-sm lg:text-base text-center leading-snug sm:leading-relaxed hidden sm:block">
                   {mode.description}
                 </p>
                 <button
-                  className="w-full rounded-full border border-border bg-transparent text-foreground text-xs sm:text-sm font-medium py-1.5 sm:py-2 hover:bg-secondary transition-colors"
+                  className="w-full rounded-full border border-border bg-transparent text-foreground text-xs sm:text-sm lg:text-base font-medium py-1.5 sm:py-2 lg:py-2.5 hover:bg-secondary transition-colors"
                 >
                   Play
                 </button>
@@ -114,7 +114,7 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="text-muted-foreground text-sm sm:text-base mt-5 sm:mt-8 font-bold">
+        <p className="text-muted-foreground text-sm sm:text-base lg:text-lg mt-5 sm:mt-8 lg:mt-10 font-bold">
           A new puzzle every day — come back tomorrow!
         </p>
       </main>
