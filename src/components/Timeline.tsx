@@ -13,6 +13,7 @@ interface TimelineProps {
   isDraggingDown: boolean;
   draggingCardHeight: number;
   incorrectEventIds?: Set<string>;
+  correctEventIds?: Set<string>;
   dragY: number | null;
   onDrop: (position: number) => void;
   onDropZoneChange: (position: number | null) => void;
@@ -44,6 +45,7 @@ export function Timeline({
   isDraggingDown,
   draggingCardHeight,
   incorrectEventIds,
+  correctEventIds,
   dragY,
   onDrop,
   onDropZoneChange,
@@ -366,7 +368,7 @@ export function Timeline({
           {isCta ? (
             <span className="w-3 h-3 rounded-full bg-primary block" />
           ) : (
-            <span className={`year-badge ${incorrectEventIds?.has(item.event.id) ? 'year-badge-incorrect' : (item.status === 'correct' || item.status === 'corrected') ? 'year-badge-correct' : ''}`}>
+            <span className={`year-badge ${incorrectEventIds?.has(item.event.id) ? 'year-badge-incorrect' : correctEventIds?.has(item.event.id) ? 'year-badge-correct' : ''}`}>
               {item.event.year}
             </span>
           )}

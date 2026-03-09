@@ -40,6 +40,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [showInstructions, setShowInstructions] = useState(true);
   const [resultHistory, setResultHistory] = useState<boolean[]>([]);
   const [incorrectEventIds, setIncorrectEventIds] = useState<Set<string>>(new Set());
+  const [correctEventIds, setCorrectEventIds] = useState<Set<string>>(new Set());
   const [dragSource, setDragSource] = useState<"new" | "pending" | null>(null);
   const [hasDragMoved, setHasDragMoved] = useState(false);
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
@@ -119,6 +120,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setIsViewingTimeline(false);
     setGameComplete(false);
     setIncorrectEventIds(new Set());
+    setCorrectEventIds(new Set());
     setDragSource(null);
     setActiveDropZone(null);
     setIsLoadingEvents(true);
@@ -182,6 +184,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
     if (isCorrect) {
       setCorrectCount((c) => c + 1);
+      setCorrectEventIds(prev => new Set(prev).add(currentEvent.id));
       // Clear the correct status after a brief moment
       setTimeout(() => {
         setPlacedEvents((prev) =>
@@ -388,6 +391,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             activeDropZone={isDragging && hasDragMoved ? activeDropZone : frozenDropZone}
             isDragging={isDragging && hasDragMoved}
             incorrectEventIds={incorrectEventIds}
+            correctEventIds={correctEventIds}
             dragY={isDragging && hasDragMoved && dragState.cardRect
               ? (() => {
                   const goingDown = dragState.currentY >= dragState.prevY;
