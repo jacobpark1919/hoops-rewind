@@ -439,7 +439,9 @@ export function Timeline({
 
       {/* Timeline content - always vertically centered */}
       <div className="relative pl-10 sm:pl-14 flex flex-col flex-1 justify-center">
-        {items}
+        <div className="flex flex-col">
+          {items}
+        </div>
       </div>
 
       {/* Latest label */}
