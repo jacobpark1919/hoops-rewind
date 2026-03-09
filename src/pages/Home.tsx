@@ -59,53 +59,53 @@ export default function Home() {
       </div>
 
       {/* Main content */}
-      <main className="flex-1 min-h-0 overflow-auto flex flex-col items-center justify-center px-4 py-4 sm:py-8 lg:py-16 xl:py-20">
-        <div className="flex items-center gap-2 sm:gap-2.5 lg:gap-3 xl:gap-4 mb-1.5 sm:mb-2 lg:mb-3 xl:mb-4">
-          <svg className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 xl:w-14 xl:h-14 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <main className="flex-1 min-h-0 overflow-auto flex flex-col items-center justify-center px-3 py-3 sm:py-6 lg:py-10 xl:py-14">
+        <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 xl:gap-3 mb-1 sm:mb-1.5 lg:mb-2 xl:mb-3">
+          <svg className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 xl:w-10 xl:h-10 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="13,8 13,24 4,16" fill="currentColor" stroke="none" />
             <polygon points="24,8 24,24 15,16" fill="currentColor" stroke="none" />
           </svg>
-          <h1 className="font-display text-2xl sm:text-3xl lg:text-5xl xl:text-6xl font-extrabold tracking-tight text-foreground uppercase">
+          <h1 className="font-display text-xl sm:text-2xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight text-foreground uppercase">
             Sports Rewind
           </h1>
         </div>
-        <p className="text-foreground text-xs sm:text-sm lg:text-lg xl:text-xl font-medium mb-0.5 sm:mb-1">
+        <p className="text-foreground text-[11px] sm:text-xs lg:text-sm xl:text-base font-medium mb-0.5 sm:mb-1">
           {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
         </p>
-        <p className="text-muted-foreground text-[11px] sm:text-xs lg:text-base xl:text-lg mb-3 sm:mb-5 lg:mb-10 xl:mb-12">
+        <p className="text-muted-foreground text-[10px] sm:text-[11px] lg:text-sm xl:text-base mb-2.5 sm:mb-4 lg:mb-7 xl:mb-9">
           Pick a mode to play today's puzzle
         </p>
 
         {/* Card grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 lg:gap-5 xl:gap-7 w-full max-w-md sm:max-w-lg lg:max-w-2xl xl:max-w-3xl">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2 lg:gap-4 xl:gap-5 w-full max-w-sm sm:max-w-md lg:max-w-xl xl:max-w-2xl">
           {SPORT_MODES.map((mode) => (
             <div
               key={mode.label}
-              className={`group flex flex-col rounded-lg sm:rounded-lg lg:rounded-xl xl:rounded-2xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer ${
+              className={`group flex flex-col rounded-md sm:rounded-lg lg:rounded-xl xl:rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer ${
                 mode.value === null ? "col-span-2 sm:col-span-1" : ""
               }`}
               onClick={() => handlePlay(mode.value)}
             >
               {/* Colored banner */}
               <div
-                className="flex flex-col items-center justify-center py-3 sm:py-5 lg:py-10 xl:py-14"
+                className="flex flex-col items-center justify-center py-2.5 sm:py-4 lg:py-7 xl:py-10"
                 style={{ backgroundColor: mode.color }}
               >
-                <span className="text-xl sm:text-3xl lg:text-5xl xl:text-6xl mb-0.5 sm:mb-1 lg:mb-2 xl:mb-3 drop-shadow-sm">
+                <span className="text-lg sm:text-2xl lg:text-4xl xl:text-5xl mb-0.5 sm:mb-1 lg:mb-1.5 xl:mb-2 drop-shadow-sm">
                   {mode.icon}
                 </span>
-                <h2 className="font-display text-[11px] sm:text-sm lg:text-lg xl:text-xl font-bold text-white drop-shadow-sm">
+                <h2 className="font-display text-[10px] sm:text-xs lg:text-base xl:text-lg font-bold text-white drop-shadow-sm">
                   {mode.label}
                 </h2>
               </div>
 
               {/* Description + CTA */}
-              <div className="flex flex-col items-center px-2 sm:px-3 lg:px-4 xl:px-6 py-2 sm:py-3 lg:py-5 xl:py-6 gap-1.5 sm:gap-2 lg:gap-3 xl:gap-4">
-                <p className="text-muted-foreground text-[10px] sm:text-xs lg:text-sm xl:text-base text-center leading-snug sm:leading-relaxed hidden sm:block">
+              <div className="flex flex-col items-center px-1.5 sm:px-2.5 lg:px-3 xl:px-5 py-1.5 sm:py-2 lg:py-3.5 xl:py-4 gap-1 sm:gap-1.5 lg:gap-2.5 xl:gap-3">
+                <p className="text-muted-foreground text-[9px] sm:text-[11px] lg:text-xs xl:text-sm text-center leading-snug sm:leading-relaxed hidden sm:block">
                   {mode.description}
                 </p>
                 <button
-                  className="w-full rounded-full border border-border bg-transparent text-foreground text-[11px] sm:text-xs lg:text-sm xl:text-base font-medium py-1 sm:py-1.5 lg:py-2 xl:py-2.5 hover:bg-secondary transition-colors"
+                  className="w-full rounded-full border border-border bg-transparent text-foreground text-[10px] sm:text-[11px] lg:text-xs xl:text-sm font-medium py-0.5 sm:py-1 lg:py-1.5 xl:py-2 hover:bg-secondary transition-colors"
                 >
                   Play
                 </button>
@@ -114,7 +114,7 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="text-muted-foreground text-xs sm:text-sm lg:text-base xl:text-lg mt-3 sm:mt-5 lg:mt-8 xl:mt-10 font-bold">
+        <p className="text-muted-foreground text-[11px] sm:text-xs lg:text-sm xl:text-base mt-2.5 sm:mt-4 lg:mt-6 xl:mt-8 font-bold">
           A new puzzle every day — come back tomorrow!
         </p>
       </main>
