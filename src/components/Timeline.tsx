@@ -25,6 +25,7 @@ interface TimelineProps {
   sportFilter?: string | null;
   onRetry?: () => void;
   onSportChange?: (sport: string | null) => void;
+  collapsedCardAreaHeight?: number;
 }
 
 const NORMAL_GAP = 8;
