@@ -13,7 +13,7 @@ const SPORT_MODES = [
     label: "Football",
     value: "American Football",
     icon: "🏈",
-    color: "hsl(25, 55%, 38%)",
+    color: "hsl(150, 45%, 28%)",
     description: "Order the biggest football events in history.",
   },
   {
