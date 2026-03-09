@@ -431,8 +431,8 @@ export function Timeline({
       className="relative flex-1 flex flex-col"
       style={{ minHeight: 100 }}
     >
-      {/* Earliest label - centered above timeline */}
-      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2 text-center">
+      {/* Earliest label - aligned with timeline line */}
+      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2 pl-[13px] sm:pl-[21px]">
         Earliest
       </p>
 
@@ -452,8 +452,8 @@ export function Timeline({
         </div>
       </div>
 
-      {/* Latest label - centered below timeline */}
-      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mt-2 text-center">
+      {/* Latest label - aligned with timeline line */}
+      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mt-2 pl-[13px] sm:pl-[21px]">
         Latest
       </p>
     </div>
