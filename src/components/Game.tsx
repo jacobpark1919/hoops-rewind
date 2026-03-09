@@ -120,7 +120,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     setShowIdleHint(false);
     
-    if (currentEvent && !gameComplete && !pendingPlacement) {
+    if (currentEventIndex === 1 && currentEvent && !gameComplete && !pendingPlacement) {
       idleTimerRef.current = setTimeout(() => {
         setShowIdleHint(true);
       }, 5000);
