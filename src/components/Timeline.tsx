@@ -198,11 +198,7 @@ export function Timeline({
 
   useEffect(() => {
     if (!isDragging || dragY === null || !timelineRef.current) {
-      // Don't clear the drop zone if there's a pending placement — the frozen
-      // drop zone keeps the layout stable until confirm/cancel.
-      if (!hasPending) {
-        onDropZoneChange(null);
-      }
+      onDropZoneChange(null);
       return;
     }
 
