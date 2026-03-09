@@ -68,7 +68,7 @@ ${correctCount}/${totalRounds} correct`;
               VICTORY!
             </h2>
             <p className="text-muted-foreground text-xs sm:text-lg mb-2 sm:mb-6">
-              You placed all events correctly!
+              Come back tomorrow for a new puzzle!
             </p>
           </>
         ) : (
