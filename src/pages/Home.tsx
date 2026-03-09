@@ -103,6 +103,10 @@ export default function Home() {
             </div>
           ))}
         </div>
+
+        <p className="text-muted-foreground text-xs sm:text-sm mt-8">
+          A new puzzle every day — come back tomorrow!
+        </p>
       </main>
 
       {/* Footer */}
