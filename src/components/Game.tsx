@@ -91,13 +91,19 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     const dropZone = pendingDropZoneRef.current;
 
     if (dropZone !== null) {
-      // Place in timeline at drop zone — freeze drop zone so it stays visible
+      // Place in timeline at drop zone — freeze drop zone so it stays visible.
+      // IMPORTANT: Do NOT clear activeDropZone here. Keep it set so the Timeline
+      // never loses its drop zone placeholder between the drag ending and the
+      // frozen state taking over. It will be cleared when the placement is
+      // confirmed or cancelled.
       setFrozenDropZone(dropZone);
       handleDropWithRefs(dropZone);
+    } else {
+      // No valid drop zone — clear drag state fully
+      setActiveDropZone(null);
     }
     
     setDragSource(null);
-    setActiveDropZone(null);
     setHasDragMoved(false);
   }, [handleDropWithRefs]);
 
@@ -168,6 +174,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
     // Collapse the frozen drop zone smoothly before resolving
     setFrozenDropZone(null);
+    setActiveDropZone(null);
 
     const finalPlaced = placedEvents.map((item) => {
       if (item.event.id === currentEvent.id) {
@@ -228,6 +235,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setPlacedEvents(filtered);
     setPendingPlacement(null);
     setFrozenDropZone(null);
+    setActiveDropZone(null);
   };
 
   // Show spinner while loading, or error state if no events found
