@@ -1,5 +1,6 @@
 import { useNavigate, Link } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { DarkModeHint } from "@/components/DarkModeHint";
 
 const SPORT_MODES = [
   {
@@ -52,6 +53,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background flex flex-col overflow-auto">
       {/* Theme toggle */}
+      <DarkModeHint />
       <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
         <ThemeToggle />
       </div>
