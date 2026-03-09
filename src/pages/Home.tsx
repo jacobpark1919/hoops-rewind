@@ -51,7 +51,7 @@ export default function Home() {
   const puzzleNum = getPuzzleNumber();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col overflow-auto">
+    <div className="h-screen bg-background flex flex-col overflow-auto">
       {/* Theme toggle */}
       <DarkModeHint />
       <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
