@@ -1,12 +1,28 @@
 import { useNavigate, Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Shield } from "lucide-react";
 
 const SPORT_MODES = [
-  { label: "Basketball Mode", value: "Basketball", icon: "🏀", description: "Guess the timeline for basketball events." },
-  { label: "Football Mode", value: "American Football", icon: "🏈", description: "Guess the timeline for football events." },
-  { label: "All Sports Mode", value: null, icon: "🏆", description: "Guess the timeline for all major sports." },
+  {
+    label: "Basketball",
+    value: "Basketball",
+    icon: "🏀",
+    color: "hsl(25, 90%, 55%)",
+    description: "Place iconic basketball moments on the timeline.",
+  },
+  {
+    label: "Football",
+    value: "American Football",
+    icon: "🏈",
+    color: "hsl(142, 55%, 42%)",
+    description: "Order the biggest football events in history.",
+  },
+  {
+    label: "All Sports",
+    value: null,
+    icon: "🏆",
+    color: "hsl(45, 75%, 55%)",
+    description: "The ultimate challenge across every sport.",
+  },
 ];
 
 const ORIGIN_DATE = new Date(2026, 1, 12);
@@ -26,103 +42,91 @@ export default function Home() {
     navigate(`/play${params}`);
   };
 
-  const today = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+  const today = new Date().toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
   const puzzleNum = getPuzzleNumber();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col relative overflow-hidden">
-      <div className="absolute top-4 right-4 z-20 flex items-center gap-1">
-        <div className="pointer-events-none select-none flex items-center gap-1">
-          <span
-            className="text-muted-foreground/70 text-sm md:text-base whitespace-nowrap"
-            style={{
-              fontFamily: "'Caveat', cursive",
-              transform: 'rotate(-6deg)',
-              display: 'inline-block',
-            }}
-          >
-            try dark mode!
-          </span>
-          <svg
-            className="w-6 h-6 text-muted-foreground/70 -mt-1"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M5 12h14M14 6l6 6-6 6" />
-          </svg>
-        </div>
-        <ThemeToggle size="lg" />
-      </div>
-
-      <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
-        {/* Logo */}
-        <div className="flex items-center gap-2 mb-2">
-          <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-primary fill-primary/20" />
-          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground uppercase">
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Header */}
+      <header className="w-full border-b border-border px-4 sm:px-6 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <h1 className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-foreground uppercase">
             Sports Rewind
           </h1>
         </div>
-
-        <p className="text-muted-foreground text-sm sm:text-base mb-6">
-          {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
-        </p>
-
-        <p className="text-muted-foreground text-sm sm:text-base mb-6">
-          Select a mode to play today's puzzle:
-        </p>
-
-        {/* Timeline decoration */}
-        <div className="relative w-full max-w-2xl mb-8 hidden sm:flex items-center">
-          <div className="flex-1 h-0.5 bg-primary/60" />
-          <div className="w-3 h-3 rounded-full bg-primary mx-1" />
-          <div className="flex-1 h-0.5 bg-primary/60" />
-          <div className="w-3 h-3 rounded-full bg-primary mx-1" />
-          <div className="flex-1 h-0.5 bg-primary/60" />
-          <div className="w-3 h-3 rounded-full bg-primary mx-1" />
-          <div className="flex-1 h-0.5 bg-primary/60" />
+        <div className="flex items-center gap-3">
+          <span className="text-muted-foreground text-xs sm:text-sm hidden sm:inline">
+            {today}
+          </span>
+          <span className="text-muted-foreground text-xs">·</span>
+          <span className="text-muted-foreground text-xs sm:text-sm font-medium">
+            #{puzzleNum}
+          </span>
+          <ThemeToggle />
         </div>
+      </header>
 
-        {/* Mode cards */}
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-2xl mb-10">
+      {/* Main content */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-10 sm:py-16">
+        <p className="text-muted-foreground text-sm sm:text-base mb-8 sm:mb-10">
+          Pick a mode to play today's puzzle
+        </p>
+
+        {/* Card grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 w-full max-w-2xl">
           {SPORT_MODES.map((mode) => (
             <div
               key={mode.label}
-              className="flex-1 bg-card border border-border rounded-xl p-2 sm:p-5 flex flex-col items-center text-center shadow-md hover:shadow-lg transition-shadow"
+              className="group flex flex-col rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+              onClick={() => handlePlay(mode.value)}
             >
-              <span className="text-lg sm:text-3xl mb-0.5 sm:mb-2 block">{mode.icon}</span>
-              <h2 className="font-display text-xs sm:text-lg font-bold text-foreground mb-0 sm:mb-1">
-                {mode.label}
-              </h2>
-              <p className="text-muted-foreground text-[10px] sm:text-sm mb-1 sm:mb-4 flex-1 leading-tight">
-                {mode.description}
-              </p>
-              <Button
-                onClick={() => handlePlay(mode.value)}
-                size="sm"
-                className="rounded-full px-6 mt-auto"
+              {/* Colored banner */}
+              <div
+                className="flex flex-col items-center justify-center py-6 sm:py-10"
+                style={{ backgroundColor: mode.color }}
               >
-                Play
-              </Button>
+                <span className="text-4xl sm:text-5xl mb-2 drop-shadow-sm">
+                  {mode.icon}
+                </span>
+                <h2 className="font-display text-base sm:text-lg font-bold text-white drop-shadow-sm">
+                  {mode.label}
+                </h2>
+              </div>
+
+              {/* Description + CTA */}
+              <div className="flex flex-col items-center px-4 py-4 sm:py-5 gap-3">
+                <p className="text-muted-foreground text-xs sm:text-sm text-center leading-relaxed">
+                  {mode.description}
+                </p>
+                <button
+                  className="w-full rounded-full border border-border bg-transparent text-foreground text-sm font-medium py-2 hover:bg-secondary transition-colors"
+                >
+                  Play
+                </button>
+              </div>
             </div>
           ))}
         </div>
+      </main>
 
-        <p className="text-muted-foreground text-sm sm:text-base text-center">
-          Come back every day for a new sports history timeline puzzle.
-        </p>
-      </div>
-
+      {/* Footer */}
       <footer className="py-4 flex flex-col items-center gap-2 text-xs text-muted-foreground/60">
         <div className="flex justify-center gap-4">
-          <Link to="/privacy" className="hover:text-muted-foreground transition-colors">Privacy Policy</Link>
+          <Link to="/privacy" className="hover:text-muted-foreground transition-colors">
+            Privacy Policy
+          </Link>
           <span>·</span>
-          <Link to="/terms" className="hover:text-muted-foreground transition-colors">Terms of Service</Link>
+          <Link to="/terms" className="hover:text-muted-foreground transition-colors">
+            Terms of Service
+          </Link>
           <span>·</span>
-          <Link to="/cookies" className="hover:text-muted-foreground transition-colors">Cookie Policy</Link>
+          <Link to="/cookies" className="hover:text-muted-foreground transition-colors">
+            Cookie Policy
+          </Link>
         </div>
         <p>© {new Date().getFullYear()} Sports Rewind. All rights reserved.</p>
       </footer>
