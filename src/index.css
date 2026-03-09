@@ -185,6 +185,10 @@ html.admin-scroll, html.admin-scroll body {
            rounded-full text-[10px] sm:text-sm;
   }
 
+  .year-badge-correct {
+    @apply bg-success text-success-foreground;
+  }
+
   .year-badge-incorrect {
     @apply bg-destructive text-destructive-foreground;
   }

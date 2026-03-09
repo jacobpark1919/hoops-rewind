@@ -366,7 +366,7 @@ export function Timeline({
           {isCta ? (
             <span className="w-3 h-3 rounded-full bg-primary block" />
           ) : (
-            <span className={`year-badge ${incorrectEventIds?.has(item.event.id) ? 'year-badge-incorrect' : ''}`}>
+            <span className={`year-badge ${incorrectEventIds?.has(item.event.id) ? 'year-badge-incorrect' : (item.status === 'correct' || item.status === 'corrected') ? 'year-badge-correct' : ''}`}>
               {item.event.year}
             </span>
           )}
