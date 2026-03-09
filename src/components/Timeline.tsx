@@ -309,12 +309,14 @@ export function Timeline({
         key={`drop-${position}`}
         className={`relative rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
           isActive
-            ? `border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
+            ? 'border-primary bg-primary/20 shadow-lg'
             : 'border-transparent overflow-hidden'
         }`}
         style={{
           height: isActive ? (window.innerWidth >= 640 ? 128 : 112) : 0,
-          transition: 'height 300ms ease-out',
+          marginTop: isActive && marginClass?.includes('mt-3') ? 12 : 0,
+          marginBottom: isActive && marginClass?.includes('mb-3') ? 12 : 0,
+          transition: 'height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), margin 350ms cubic-bezier(0.25, 0.1, 0.25, 1)',
         }}
       >
         {isActive && (
