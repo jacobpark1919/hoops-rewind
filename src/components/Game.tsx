@@ -52,6 +52,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
   const cardRef = useRef<HTMLDivElement>(null);
+  const topSectionRef = useRef<HTMLDivElement>(null);
   const pendingDropZoneRef = useRef<number | null>(null);
   const gameEventsRef = useRef<SportsEvent[]>([]);
   const currentEventIndexRef = useRef(0);
