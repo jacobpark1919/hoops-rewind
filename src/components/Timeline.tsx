@@ -306,7 +306,7 @@ export function Timeline({
     return (
       <div
         key={`drop-${position}`}
-        className={`relative rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
+        className={`relative transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
           isActive
             ? `h-28 sm:h-32 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
             : 'h-0 border-transparent overflow-hidden'
