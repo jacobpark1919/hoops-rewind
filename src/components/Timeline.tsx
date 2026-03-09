@@ -141,7 +141,7 @@ export function Timeline({
       const contentHeight = innerWrapperRef.current.offsetHeight;
       setNaturalPaddingTop(Math.max(0, (availableHeight - contentHeight) / 2));
     }
-  }, [placedEvents, availableHeight, isDragging, hasPending, activeGap]);
+  }, [placedEvents, availableHeight, isDragging, hasPending, dynamicGap]);
 
   const lockedRef = useRef<number | null>(null);
   useEffect(() => {
