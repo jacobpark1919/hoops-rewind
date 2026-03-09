@@ -391,6 +391,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             activeDropZone={isDragging && hasDragMoved ? activeDropZone : frozenDropZone}
             isDragging={isDragging && hasDragMoved}
             incorrectEventIds={incorrectEventIds}
+            correctEventIds={correctEventIds}
             dragY={isDragging && hasDragMoved && dragState.cardRect
               ? (() => {
                   const goingDown = dragState.currentY >= dragState.prevY;
