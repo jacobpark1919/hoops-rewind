@@ -69,7 +69,7 @@ export default function Home() {
         </p>
 
         {/* Card grid — horizontal row on mobile */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-5 w-full max-w-2xl">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-5 w-full max-w-2xl">
           {SPORT_MODES.map((mode) => (
             <div
               key={mode.label}
