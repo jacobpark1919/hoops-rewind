@@ -234,6 +234,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setPlacedEvents(filtered);
     setPendingPlacement(null);
     setFrozenDropZone(null);
+    setActiveDropZone(null);
   };
 
   // Show spinner while loading, or error state if no events found
