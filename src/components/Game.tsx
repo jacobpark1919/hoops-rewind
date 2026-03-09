@@ -174,6 +174,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
     // Collapse the frozen drop zone smoothly before resolving
     setFrozenDropZone(null);
+    setActiveDropZone(null);
 
     const finalPlaced = placedEvents.map((item) => {
       if (item.event.id === currentEvent.id) {
