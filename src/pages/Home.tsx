@@ -51,7 +51,7 @@ export default function Home() {
   const puzzleNum = getPuzzleNumber();
 
   return (
-    <div className="h-screen bg-background flex flex-col">
+    <div className="h-screen bg-background flex flex-col overflow-hidden">
       {/* Theme toggle */}
       <DarkModeHint />
       <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
@@ -59,7 +59,7 @@ export default function Home() {
       </div>
 
       {/* Main content */}
-      <main className="flex-1 min-h-0 overflow-auto flex flex-col items-center justify-center px-3 py-3 sm:py-6 lg:py-10 xl:py-14">
+      <main className="flex-1 min-h-0 overflow-hidden flex flex-col items-center justify-center px-3 py-3 sm:py-6 lg:py-10 xl:py-14 lg:pt-16 xl:pt-20">
         <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 xl:gap-3 mb-1 sm:mb-1.5 lg:mb-2 xl:mb-3">
           <svg className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 xl:w-10 xl:h-10 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="13,8 13,24 4,16" fill="currentColor" stroke="none" />
