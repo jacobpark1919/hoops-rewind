@@ -46,6 +46,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
   // Keeps the drop zone visible (frozen) after drop until "Tap to place" is confirmed/cancelled
   const [frozenDropZone, setFrozenDropZone] = useState<number | null>(null);
+  const [collapsedCardAreaHeight, setCollapsedCardAreaHeight] = useState(0);
   
   const [showIdleHint, setShowIdleHint] = useState(false);
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
