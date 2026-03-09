@@ -63,7 +63,6 @@ export function Timeline({
   const bottomPadding = isMobile ? BOTTOM_PADDING : Math.round(window.innerHeight / 12);
   const timelineRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
-  const dropZoneRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [availableHeight, setAvailableHeight] = useState<number>(9999);
   const [dynamicGap, setDynamicGap] = useState<number>(NORMAL_GAP);
@@ -159,9 +158,6 @@ export function Timeline({
       setLockedGap(null);
     }
   }, [isDragging, hasPending]); // intentionally only depend on isDragging / hasPending
-
-
-
 
   const activeGap = lockedGap !== null ? lockedGap : dynamicGap;
   const isOverlapping = activeGap < 0;
@@ -311,10 +307,6 @@ export function Timeline({
     return (
       <div
         key={`drop-${position}`}
-        ref={(el) => {
-          if (el) dropZoneRefs.current.set(position, el);
-          else dropZoneRefs.current.delete(position);
-        }}
         className={`relative transition-all duration-300 ease-out rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
           isActive
             ? `h-28 sm:h-32 border-primary bg-primary/20 shadow-lg ${marginClass ?? ''}`
@@ -457,9 +449,7 @@ export function Timeline({
         {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
         <div 
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
-          style={{
-            paddingTop: naturalPaddingTop,
-          }}
+          style={{ paddingTop: naturalPaddingTop }}
         >
           <div className="flex flex-col" ref={innerWrapperRef}>
             {items}

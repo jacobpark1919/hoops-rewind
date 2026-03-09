@@ -377,15 +377,12 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         {currentEvent && !gameComplete ? (
             <>
               <div
-                className="transition-opacity duration-300 ease-out"
+                className="transition-all duration-300 ease-out"
                 style={{
+                  minHeight: cardCollapsed || hasPendingPlacement ? 0 : undefined,
+                  height: cardCollapsed || hasPendingPlacement ? 0 : 'auto',
+                  overflow: cardCollapsed || hasPendingPlacement ? 'hidden' : 'visible',
                   opacity: cardCollapsed || hasPendingPlacement ? 0 : 1,
-                  pointerEvents: cardCollapsed || hasPendingPlacement ? 'none' : 'auto',
-                  // During drag (cardCollapsed): keep height reserved, just hide visually
-                  // After drop (hasPendingPlacement): fully collapse out of flow
-                  visibility: hasPendingPlacement ? 'hidden' : 'visible',
-                  height: hasPendingPlacement ? 0 : 'auto',
-                  overflow: hasPendingPlacement ? 'hidden' : 'visible',
                 }}
               >
                 <div key={currentEvent.id} className="animate-fade-in-up">
