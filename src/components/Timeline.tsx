@@ -432,7 +432,7 @@ export function Timeline({
       style={{ minHeight: 100 }}
     >
       {/* Earliest label - centered above timeline */}
-      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2 text-center">
+      <p className="text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2 pl-4 sm:pl-6 -translate-x-1/2" style={{ width: 'fit-content' }}>
         Earliest
       </p>
 
