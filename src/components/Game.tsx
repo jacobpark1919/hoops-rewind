@@ -115,6 +115,22 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     }
   }, [dragState.isDragging, dragState.offsetY]);
 
+  // Start idle hint timer when a new card appears
+  useEffect(() => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    setShowIdleHint(false);
+    
+    if (currentEvent && !gameComplete && !pendingPlacement) {
+      idleTimerRef.current = setTimeout(() => {
+        setShowIdleHint(true);
+      }, 5000);
+    }
+    
+    return () => {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
+  }, [currentEventIndex, gameComplete, pendingPlacement]);
+
   const initializeGame = useCallback(async () => {
     // Reset all state first
     setCorrectCount(1);
