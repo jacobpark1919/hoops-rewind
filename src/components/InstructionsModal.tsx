@@ -1,6 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import dragHintVideo from "@/assets/drag-hint.mp4";
+
+// Preload video globally so it's cached before modal opens
+const preloadLink = document.createElement("link");
+preloadLink.rel = "preload";
+preloadLink.as = "video";
+preloadLink.href = dragHintVideo;
+document.head.appendChild(preloadLink);
 
 interface InstructionsModalProps {
   onClose: () => void;
