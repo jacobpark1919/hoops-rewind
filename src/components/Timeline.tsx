@@ -58,6 +58,7 @@ export function Timeline({
   sportFilter,
   onRetry,
   onSportChange,
+  collapsedCardAreaHeight,
 }: TimelineProps) {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
