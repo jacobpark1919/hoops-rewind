@@ -451,7 +451,17 @@ export function Timeline({
         <div 
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
           style={{ 
-            paddingTop: lockedPaddingTop !== null ? lockedPaddingTop : naturalPaddingTop,
+            paddingTop: (() => {
+              const basePadding = lockedPaddingTop !== null ? lockedPaddingTop : naturalPaddingTop;
+              // When zone 0 is active during drag, compensate for the drop zone height
+              // so existing cards don't shift down
+              if (isDragging && activeDropZone === 0) {
+                const dropZoneHeight = window.innerWidth >= 640 ? 128 : 112; // h-32 or h-28
+                const dropZoneMargin = 12; // mb-3
+                return Math.max(0, basePadding - dropZoneHeight - dropZoneMargin);
+              }
+              return basePadding;
+            })(),
             transition: 'padding-top 0.3s ease-out',
           }}
         >
