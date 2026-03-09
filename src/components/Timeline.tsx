@@ -145,16 +145,21 @@ export function Timeline({
   }, [placedEvents, availableHeight, isDragging, hasPending, dynamicGap]);
 
   const lockedRef = useRef<number | null>(null);
+  const lockedPaddingRef = useRef<number | null>(null);
   useEffect(() => {
     if (isDragging || hasPending) {
       // Only capture once — don't overwrite once locked
       if (lockedRef.current === null) {
         lockedRef.current = dynamicGap;
         setLockedGap(dynamicGap);
+        lockedPaddingRef.current = naturalPaddingTop;
+        setLockedPaddingTop(naturalPaddingTop);
       }
     } else {
       lockedRef.current = null;
+      lockedPaddingRef.current = null;
       setLockedGap(null);
+      setLockedPaddingTop(null);
     }
   }, [isDragging, hasPending]); // intentionally only depend on isDragging / hasPending
 
