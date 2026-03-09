@@ -13,6 +13,7 @@ interface TimelineProps {
   isDraggingDown: boolean;
   draggingCardHeight: number;
   incorrectEventIds?: Set<string>;
+  correctEventIds?: Set<string>;
   dragY: number | null;
   onDrop: (position: number) => void;
   onDropZoneChange: (position: number | null) => void;
