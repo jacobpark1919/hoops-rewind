@@ -464,12 +464,14 @@ export function Timeline({
       </div>
 
       {/* Latest label - centered below timeline */}
-      <div className="relative mt-2 mb-16 sm:mb-2">
+      <div className="relative mt-2">
         <p className="absolute text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider left-4 sm:left-6 whitespace-nowrap">
           Latest
         </p>
         <div className="h-3" />
       </div>
+      {/* Spacer to keep Latest above mobile bottom search bar */}
+      <div className="h-16 sm:h-0 shrink-0" />
     </div>
   );
 }
