@@ -65,7 +65,7 @@ export default function Home() {
             <polygon points="13,8 13,24 4,16" fill="currentColor" stroke="none" />
             <polygon points="24,8 24,24 15,16" fill="currentColor" stroke="none" />
           </svg>
-          <h1 className="font-display text-[1.65rem] sm:text-4xl lg:text-6xl font-extrabold tracking-tight text-foreground uppercase">
+          <h1 className="font-display text-[1.85rem] sm:text-4xl lg:text-6xl font-extrabold tracking-tight text-foreground uppercase">
             Sports Rewind
           </h1>
         </div>
