@@ -470,8 +470,6 @@ export function Timeline({
         </p>
         <div className="h-3" />
       </div>
-      {/* Spacer to keep Latest above mobile bottom search bar */}
-      <div className="h-16 sm:h-0 shrink-0" />
     </div>
   );
 }
