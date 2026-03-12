@@ -72,7 +72,7 @@ export default function Home() {
         <p className="text-foreground text-base sm:text-xs lg:text-sm xl:text-base font-medium mb-0.5 sm:mb-1">
           {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
         </p>
-        <p className="text-muted-foreground text-sm sm:text-[11px] lg:text-sm xl:text-base mb-4 sm:mb-4 lg:mb-7 xl:mb-9">
+        <p className="text-muted-foreground text-sm sm:text-[11px] lg:text-sm xl:text-base mb-8 sm:mb-4 lg:mb-7 xl:mb-9">
           Pick a mode to play today's puzzle
         </p>
 
