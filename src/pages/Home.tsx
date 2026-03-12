@@ -69,10 +69,10 @@ export default function Home() {
             Sports Rewind
           </h1>
         </div>
-        <p className="text-foreground text-[11px] sm:text-xs lg:text-sm xl:text-base font-medium mb-0.5 sm:mb-1">
+        <p className="text-foreground text-sm sm:text-xs lg:text-sm xl:text-base font-medium mb-0.5 sm:mb-1">
           {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
         </p>
-        <p className="text-muted-foreground text-[10px] sm:text-[11px] lg:text-sm xl:text-base mb-2.5 sm:mb-4 lg:mb-7 xl:mb-9">
+        <p className="text-muted-foreground text-xs sm:text-[11px] lg:text-sm xl:text-base mb-2.5 sm:mb-4 lg:mb-7 xl:mb-9">
           Pick a mode to play today's puzzle
         </p>
 
@@ -88,24 +88,24 @@ export default function Home() {
             >
               {/* Colored banner */}
               <div
-                className="flex flex-col items-center justify-center py-2.5 sm:py-4 lg:py-7 xl:py-10"
+                className="flex flex-col items-center justify-center py-5 sm:py-4 lg:py-7 xl:py-10"
                 style={{ backgroundColor: mode.color }}
               >
-                <span className="text-lg sm:text-2xl lg:text-4xl xl:text-5xl mb-0.5 sm:mb-1 lg:mb-1.5 xl:mb-2 drop-shadow-sm">
+                <span className="text-2xl sm:text-2xl lg:text-4xl xl:text-5xl mb-0.5 sm:mb-1 lg:mb-1.5 xl:mb-2 drop-shadow-sm">
                   {mode.icon}
                 </span>
-                <h2 className="font-display text-[10px] sm:text-xs lg:text-base xl:text-lg font-bold text-white drop-shadow-sm">
+                <h2 className="font-display text-xs sm:text-xs lg:text-base xl:text-lg font-bold text-white drop-shadow-sm">
                   {mode.label}
                 </h2>
               </div>
 
               {/* Description + CTA */}
-              <div className="flex flex-col items-center px-1.5 sm:px-2.5 lg:px-3 xl:px-5 py-1.5 sm:py-2 lg:py-3.5 xl:py-4 gap-1 sm:gap-1.5 lg:gap-2.5 xl:gap-3">
+              <div className="flex flex-col items-center px-1.5 sm:px-2.5 lg:px-3 xl:px-5 py-2.5 sm:py-2 lg:py-3.5 xl:py-4 gap-1.5 sm:gap-1.5 lg:gap-2.5 xl:gap-3">
                 <p className="text-muted-foreground text-[9px] sm:text-[11px] lg:text-xs xl:text-sm text-center leading-snug sm:leading-relaxed hidden sm:block">
                   {mode.description}
                 </p>
                 <button
-                  className="w-full rounded-full border border-border bg-transparent text-foreground text-[10px] sm:text-[11px] lg:text-xs xl:text-sm font-medium py-0.5 sm:py-1 lg:py-1.5 xl:py-2 hover:bg-secondary transition-colors"
+                  className="w-full rounded-full border border-border bg-transparent text-foreground text-xs sm:text-[11px] lg:text-xs xl:text-sm font-medium py-1 sm:py-1 lg:py-1.5 xl:py-2 hover:bg-secondary transition-colors"
                 >
                   Play
                 </button>
@@ -114,7 +114,7 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="text-muted-foreground text-[11px] sm:text-xs lg:text-sm xl:text-base mt-2.5 sm:mt-4 lg:mt-6 xl:mt-8 font-bold">
+        <p className="text-muted-foreground text-sm sm:text-xs lg:text-sm xl:text-base mt-2.5 sm:mt-4 lg:mt-6 xl:mt-8 font-bold">
           A new puzzle every day — come back tomorrow!
         </p>
       </main>
