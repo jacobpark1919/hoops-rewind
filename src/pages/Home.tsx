@@ -61,11 +61,11 @@ export default function Home() {
       {/* Main content */}
       <main className="flex-1 min-h-0 overflow-auto flex flex-col items-center justify-center px-3 py-3 sm:py-6 lg:py-10 xl:py-14">
         <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 xl:gap-3 mb-1 sm:mb-1.5 lg:mb-2 xl:mb-3">
-          <svg className="w-10 h-10 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg className="w-7 h-7 sm:w-10 sm:h-10 lg:w-14 lg:h-14 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="13,8 13,24 4,16" fill="currentColor" stroke="none" />
             <polygon points="24,8 24,24 15,16" fill="currentColor" stroke="none" />
           </svg>
-          <h1 className="font-display text-4xl font-extrabold tracking-tight text-foreground uppercase">
+          <h1 className="font-display text-[1.65rem] sm:text-4xl lg:text-6xl font-extrabold tracking-tight text-foreground uppercase">
             Sports Rewind
           </h1>
         </div>
