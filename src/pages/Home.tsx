@@ -60,8 +60,8 @@ export default function Home() {
 
       {/* Main content */}
       <main className="flex-1 min-h-0 overflow-auto flex flex-col items-center justify-start px-5 pt-6 pb-3 sm:justify-center sm:py-6 lg:py-10 xl:py-14">
-        <div className="flex items-center gap-0.5 sm:gap-2 lg:gap-2.5 xl:gap-3 mb-1.5 sm:mb-1.5 lg:mb-2 xl:mb-3">
-          <svg className="w-11 h-11 sm:w-10 sm:h-10 lg:w-14 lg:h-14 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <div className="flex items-center gap-0.5 lg:gap-1 xl:gap-1 mb-1.5 sm:mb-1.5 lg:mb-2 xl:mb-3">
+          <svg className="w-11 h-11 sm:w-12 sm:h-12 lg:w-16 lg:h-16 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="13,8 13,24 4,16" fill="currentColor" stroke="none" />
             <polygon points="24,8 24,24 15,16" fill="currentColor" stroke="none" />
           </svg>
