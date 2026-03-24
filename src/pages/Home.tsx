@@ -76,29 +76,32 @@ export default function Home() {
           Pick a mode to play today's puzzle
         </p>
 
-        {/* Mobile: vertical list layout inspired by NYT Games */}
-        <div className="flex flex-col gap-3 w-full max-w-sm sm:hidden">
+        {/* Mobile: NYT-style stacked cards */}
+        <div className="flex flex-col gap-4 w-full px-1 sm:hidden">
           {SPORT_MODES.map((mode) => (
             <div
               key={mode.label}
-              className="group flex flex-row items-center gap-4 rounded-lg border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer pr-4"
+              className="group rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+              style={{ backgroundColor: mode.color }}
               onClick={() => handlePlay(mode.value)}
             >
-              {/* Icon square */}
-              <div
-                className="flex items-center justify-center w-24 h-24 shrink-0"
-                style={{ backgroundColor: mode.color }}
-              >
-                <span className="text-4xl drop-shadow-sm">{mode.icon}</span>
-              </div>
-              {/* Text content */}
-              <div className="flex flex-col gap-0.5 py-3">
-                <h2 className="font-display text-base font-bold text-foreground">
-                  {mode.label}
-                </h2>
-                <p className="text-muted-foreground text-sm leading-snug">
-                  {mode.description}
-                </p>
+              <div className="flex flex-col px-5 pt-5 pb-4">
+                <div className="flex items-start justify-between">
+                  <div className="flex flex-col gap-1">
+                    <h2 className="font-display text-2xl font-extrabold text-white drop-shadow-sm">
+                      {mode.label}
+                    </h2>
+                    <p className="text-white/80 text-sm leading-snug max-w-[220px]">
+                      {mode.description}
+                    </p>
+                  </div>
+                  <span className="text-5xl drop-shadow-md mt-1">{mode.icon}</span>
+                </div>
+                <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/20">
+                  <p className="text-white/70 text-xs font-medium">
+                    {today}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
