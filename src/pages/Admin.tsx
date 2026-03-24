@@ -400,10 +400,20 @@ export default function Admin() {
                       <option value="Everything">Everything</option>
                       {SPORTS.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
+                    <label className="inline-flex items-center gap-1.5 ml-2 text-xs text-muted-foreground cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={hideUsedEvents}
+                        onChange={e => setHideUsedEvents(e.target.checked)}
+                        className="rounded border-border"
+                      />
+                      Hide used events
+                    </label>
                   </p>
                   <div className="max-h-64 overflow-y-auto space-y-1">
                     {filteredEvents.map((event) => {
                       const isSelected = selectedEventIds.includes(event.id);
+                      const isUsed = usedEventIds.has(event.id);
                       return (
                         <button
                           key={event.id}
@@ -411,12 +421,15 @@ export default function Admin() {
                           className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 ${
                             isSelected
                               ? "bg-primary/20 border border-primary opacity-50"
-                              : "bg-muted/30 hover:bg-muted/60 border border-transparent"
+                              : isUsed
+                                ? "bg-destructive/10 border border-destructive/30 hover:bg-destructive/20"
+                                : "bg-muted/30 hover:bg-muted/60 border border-transparent"
                           }`}
                           disabled={isSelected}
                         >
                           <span>{event.icon}</span>
                           <span className="flex-1 truncate">{event.title}</span>
+                          {isUsed && !isSelected && <span className="text-destructive text-[10px] font-medium">USED</span>}
                           <span className="text-muted-foreground text-xs">{event.year}</span>
                         </button>
                       );
