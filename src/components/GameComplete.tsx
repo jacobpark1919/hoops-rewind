@@ -132,7 +132,7 @@ ${correctCount}/${totalRounds} correct`;
         </div>
 
         {/* Date & Puzzle number */}
-        <p className="text-muted-foreground text-[10px] sm:text-sm font-medium mb-2 sm:mb-4">
+        <p className="text-muted-foreground text-xs sm:text-lg font-medium mb-2 sm:mb-4">
           {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
         </p>
 
