@@ -210,7 +210,16 @@ export default function Admin() {
     setLoading(false);
   };
 
-  const filteredEvents = filterSport === "Everything" ? events : events.filter(e => e.sport === filterSport);
+  // Compute used event IDs from challenges on or after 2026-03-23
+  const USAGE_CUTOFF = "2026-03-23";
+  const usedEventIds = new Set(
+    challenges
+      .filter(ch => ch.challenge_date >= USAGE_CUTOFF)
+      .flatMap(ch => (ch.daily_challenge_events || []).map(ce => ce.event_id))
+  );
+
+  const baseFilteredEvents = filterSport === "Everything" ? events : events.filter(e => e.sport === filterSport);
+  const filteredEvents = hideUsedEvents ? baseFilteredEvents.filter(e => !usedEventIds.has(e.id)) : baseFilteredEvents;
 
   const handlePasswordSubmit = async () => {
     // Verify password server-side with a lightweight POST
