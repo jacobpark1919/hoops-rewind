@@ -9,6 +9,15 @@ const ALL_SPORT_OPTIONS = [
   { label: "Basketball", value: "Basketball", icon: "🏀", path: "/play?sport=Basketball" },
 ];
 
+const ORIGIN_DATE = new Date(2026, 1, 12);
+
+function getPuzzleNumber() {
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const diff = Math.floor((startOfToday.getTime() - ORIGIN_DATE.getTime()) / (1000 * 60 * 60 * 24));
+  return Math.max(1, diff + 1);
+}
+
 interface GameCompleteProps {
   won: boolean;
   correctCount: number;
