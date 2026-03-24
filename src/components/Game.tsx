@@ -46,8 +46,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
   // Keeps the drop zone visible (frozen) after drop until "Tap to place" is confirmed/cancelled
   const [frozenDropZone, setFrozenDropZone] = useState<number | null>(null);
-  // Lock to prevent interactions during confirmation animations
-  const isProcessingRef = useRef(false);
   
   const [showIdleHint, setShowIdleHint] = useState(false);
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -135,7 +133,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
   const initializeGame = useCallback(async () => {
     // Reset all state first
-    isProcessingRef.current = false;
     setCorrectCount(1);
     setPendingPlacement(null);
     setResultHistory([]);
@@ -169,7 +166,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
   // Handle starting to drag the new card
   const handleNewCardDragStart = (e: React.PointerEvent) => {
-    if (isProcessingRef.current) return; // Block drag during animation
     if (cardRef.current) {
       setDragSource("new");
       setShowIdleHint(false);
@@ -222,7 +218,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         );
       }, 1800);
     } else {
-      isProcessingRef.current = true; // Lock interactions during incorrect animation
       setIncorrectEventIds(prev => new Set(prev).add(confirmedEventId));
       
       setTimeout(() => {
@@ -244,7 +239,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               status: item.status === "corrected" ? null : item.status,
             }))
           );
-          isProcessingRef.current = false; // Unlock after animation completes
         }, 2000);
       }, 1000);
     }
