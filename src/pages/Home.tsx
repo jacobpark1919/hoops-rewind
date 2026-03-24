@@ -54,7 +54,7 @@ export default function Home() {
     <div className="h-[89vh] sm:h-screen bg-background flex flex-col overflow-hidden">
       {/* Theme toggle */}
       <DarkModeHint />
-      <div className="absolute top-2 left-2 sm:top-4 sm:right-4 sm:left-auto z-20">
+      <div className="absolute top-1 right-1 sm:top-4 sm:right-4 z-20">
         <ThemeToggle size="sm" />
       </div>
 
