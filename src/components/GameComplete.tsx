@@ -9,6 +9,15 @@ const ALL_SPORT_OPTIONS = [
   { label: "Basketball", value: "Basketball", icon: "🏀", path: "/play?sport=Basketball" },
 ];
 
+const ORIGIN_DATE = new Date(2026, 1, 12);
+
+function getPuzzleNumber() {
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const diff = Math.floor((startOfToday.getTime() - ORIGIN_DATE.getTime()) / (1000 * 60 * 60 * 24));
+  return Math.max(1, diff + 1);
+}
+
 interface GameCompleteProps {
   won: boolean;
   correctCount: number;
@@ -26,8 +35,14 @@ export function GameComplete({
   sportFilter,
   onViewTimeline,
 }: GameCompleteProps) {
-  const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
+  const today = new Date().toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+  const puzzleNum = getPuzzleNumber();
 
   // Generate the emoji grid — prepend a free 🟩 for the anchor event
   const emojiGrid = "🟩" + resultHistory.map((correct) => (correct ? "🟩" : "🟥")).join("");
@@ -116,6 +131,11 @@ ${correctCount}/${totalRounds} correct`;
           </p>
         </div>
 
+        {/* Date & Puzzle number */}
+        <p className="text-muted-foreground text-[10px] sm:text-sm font-medium mb-2 sm:mb-4">
+          {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
+        </p>
+
         <div className="flex flex-col gap-1.5 sm:gap-3">
           <Button
             onClick={handleCopy}
@@ -136,23 +156,6 @@ ${correctCount}/${totalRounds} correct`;
             )}
           </Button>
 
-          <p className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wider flex items-center justify-center gap-1 mt-0.5 sm:mt-1 font-semibold">
-            Try a different game mode
-          </p>
-          <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
-            {ALL_SPORT_OPTIONS.filter(s => s.value !== (sportFilter ?? null)).map((sport) => (
-              <Button
-                key={sport.label}
-                onClick={() => navigate(sport.path)}
-                size="lg"
-                variant="outline"
-                className="w-full font-display text-xs sm:text-base h-8 sm:h-11"
-              >
-                {sport.icon} {sport.label}
-              </Button>
-            ))}
-          </div>
-
           <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
             <Button
               onClick={() => navigate("/")}
@@ -171,6 +174,23 @@ ${correctCount}/${totalRounds} correct`;
             >
               View Timeline
             </Button>
+          </div>
+
+          <p className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wider flex items-center justify-center gap-1 mt-0.5 sm:mt-1 font-semibold">
+            Try a different game mode
+          </p>
+          <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
+            {ALL_SPORT_OPTIONS.filter(s => s.value !== (sportFilter ?? null)).map((sport) => (
+              <Button
+                key={sport.label}
+                onClick={() => navigate(sport.path)}
+                size="lg"
+                variant="outline"
+                className="w-full font-display text-xs sm:text-base h-8 sm:h-11"
+              >
+                {sport.icon} {sport.label}
+              </Button>
+            ))}
           </div>
         </div>
       </div>
