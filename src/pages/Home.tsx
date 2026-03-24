@@ -51,7 +51,7 @@ export default function Home() {
   const puzzleNum = getPuzzleNumber();
 
   return (
-    <div className="h-[90vh] sm:h-screen bg-background flex flex-col overflow-hidden">
+    <div className="h-[89vh] sm:h-screen bg-background flex flex-col overflow-hidden">
       {/* Theme toggle */}
       <DarkModeHint />
       <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
@@ -166,10 +166,11 @@ export default function Home() {
           <span>·</span>
           <span>© {new Date().getFullYear()} Sports Rewind. All rights reserved.</span>
         </div>
-        <div className="flex flex-col items-center gap-1 sm:hidden">
+        <div className="flex items-center gap-2 sm:hidden">
           <Link to="/contact" className="hover:text-muted-foreground transition-colors">
             Contact Us
           </Link>
+          <span>·</span>
           <p>© {new Date().getFullYear()} Sports Rewind. All rights reserved.</p>
         </div>
       </footer>
