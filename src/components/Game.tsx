@@ -123,7 +123,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     if (currentEventIndex === 1 && currentEvent && !gameComplete && !pendingPlacement) {
       idleTimerRef.current = setTimeout(() => {
         setShowIdleHint(true);
-      }, 10000);
+      }, 5000);
     }
     
     return () => {
