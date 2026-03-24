@@ -88,6 +88,7 @@ export default function Admin() {
   const [filterSport, setFilterSport] = useState<string>("Basketball");
   const [expandedChallenge, setExpandedChallenge] = useState<string | null>(null);
   const [editingChallengeId, setEditingChallengeId] = useState<string | null>(null);
+  const [hideUsedEvents, setHideUsedEvents] = useState(false);
 
   // Enable scrolling only on admin page
   useEffect(() => {
@@ -209,7 +210,16 @@ export default function Admin() {
     setLoading(false);
   };
 
-  const filteredEvents = filterSport === "Everything" ? events : events.filter(e => e.sport === filterSport);
+  // Compute used event IDs from challenges on or after 2026-03-23
+  const USAGE_CUTOFF = "2026-03-23";
+  const usedEventIds = new Set(
+    challenges
+      .filter(ch => ch.challenge_date >= USAGE_CUTOFF)
+      .flatMap(ch => (ch.daily_challenge_events || []).map(ce => ce.event_id))
+  );
+
+  const baseFilteredEvents = filterSport === "Everything" ? events : events.filter(e => e.sport === filterSport);
+  const filteredEvents = hideUsedEvents ? baseFilteredEvents.filter(e => !usedEventIds.has(e.id)) : baseFilteredEvents;
 
   const handlePasswordSubmit = async () => {
     // Verify password server-side with a lightweight POST
@@ -390,10 +400,20 @@ export default function Admin() {
                       <option value="Everything">Everything</option>
                       {SPORTS.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
+                    <label className="inline-flex items-center gap-1.5 ml-2 text-xs text-muted-foreground cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={hideUsedEvents}
+                        onChange={e => setHideUsedEvents(e.target.checked)}
+                        className="rounded border-border"
+                      />
+                      Hide used events
+                    </label>
                   </p>
                   <div className="max-h-64 overflow-y-auto space-y-1">
                     {filteredEvents.map((event) => {
                       const isSelected = selectedEventIds.includes(event.id);
+                      const isUsed = usedEventIds.has(event.id);
                       return (
                         <button
                           key={event.id}
@@ -401,12 +421,15 @@ export default function Admin() {
                           className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 ${
                             isSelected
                               ? "bg-primary/20 border border-primary opacity-50"
-                              : "bg-muted/30 hover:bg-muted/60 border border-transparent"
+                              : isUsed
+                                ? "bg-destructive/10 border border-destructive/30 hover:bg-destructive/20"
+                                : "bg-muted/30 hover:bg-muted/60 border border-transparent"
                           }`}
                           disabled={isSelected}
                         >
                           <span>{event.icon}</span>
                           <span className="flex-1 truncate">{event.title}</span>
+                          {isUsed && !isSelected && <span className="text-destructive text-[10px] font-medium">USED</span>}
                           <span className="text-muted-foreground text-xs">{event.year}</span>
                         </button>
                       );
@@ -527,7 +550,7 @@ export default function Admin() {
         {/* EVENTS TAB */}
         {tab === "events" && (
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <Button onClick={() => setShowAddEvent(!showAddEvent)} size="sm">
                 <Plus className="w-4 h-4 mr-1" /> Add Event
               </Button>
@@ -539,6 +562,15 @@ export default function Admin() {
                 <option value="Everything">Everything</option>
                 {SPORTS.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
+              <label className="inline-flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={hideUsedEvents}
+                  onChange={e => setHideUsedEvents(e.target.checked)}
+                  className="rounded border-border"
+                />
+                Hide used events
+              </label>
             </div>
 
             {showAddEvent && (
@@ -577,16 +609,27 @@ export default function Admin() {
             )}
 
             <div className="space-y-1">
-              {filteredEvents.map(event => (
-                <div key={event.id} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 text-sm">
-                  <span>{event.icon}</span>
-                  <span className="flex-1 truncate text-foreground">{event.title}</span>
-                  <span className="text-muted-foreground text-xs">{event.year}</span>
-                  <button onClick={() => handleDeleteEvent(event.id)} className="text-destructive hover:text-destructive/80 p-1">
-                    <Trash2 className="w-3 h-3" />
-                  </button>
-                </div>
-              ))}
+              {filteredEvents.map(event => {
+                const isUsed = usedEventIds.has(event.id);
+                return (
+                  <div
+                    key={event.id}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm ${
+                      isUsed
+                        ? "bg-destructive/10 border border-destructive/30"
+                        : "bg-muted/30"
+                    }`}
+                  >
+                    <span>{event.icon}</span>
+                    <span className="flex-1 truncate text-foreground">{event.title}</span>
+                    {isUsed && <span className="text-destructive text-[10px] font-medium">USED</span>}
+                    <span className="text-muted-foreground text-xs">{event.year}</span>
+                    <button onClick={() => handleDeleteEvent(event.id)} className="text-destructive hover:text-destructive/80 p-1">
+                      <Trash2 className="w-3 h-3" />
+                    </button>
+                  </div>
+                );
+              })}
               {filteredEvents.length === 0 && (
                 <p className="text-sm text-muted-foreground text-center py-8">No events for {filterSport}</p>
               )}
