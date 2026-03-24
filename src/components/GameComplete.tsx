@@ -35,6 +35,7 @@ export function GameComplete({
   sportFilter,
   onViewTimeline,
 }: GameCompleteProps) {
+  const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
   const today = new Date().toLocaleDateString("en-US", {
     month: "long",
