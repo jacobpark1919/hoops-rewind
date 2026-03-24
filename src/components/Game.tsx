@@ -46,6 +46,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
   // Keeps the drop zone visible (frozen) after drop until "Tap to place" is confirmed/cancelled
   const [frozenDropZone, setFrozenDropZone] = useState<number | null>(null);
+  // Lock to prevent interactions during confirmation animations
+  const isProcessingRef = useRef(false);
   
   const [showIdleHint, setShowIdleHint] = useState(false);
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -133,6 +135,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
   const initializeGame = useCallback(async () => {
     // Reset all state first
+    isProcessingRef.current = false;
     setCorrectCount(1);
     setPendingPlacement(null);
     setResultHistory([]);
@@ -166,6 +169,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
   // Handle starting to drag the new card
   const handleNewCardDragStart = (e: React.PointerEvent) => {
+    if (isProcessingRef.current) return; // Block drag during animation
     if (cardRef.current) {
       setDragSource("new");
       setShowIdleHint(false);
@@ -184,6 +188,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const handleConfirm = () => {
     if (!currentEvent || !pendingPlacement) return;
 
+    const confirmedEventId = currentEvent.id;
+
     const isCorrect = placedEvents.every((item, index) => {
       if (index === 0) return true;
       return item.event.year >= placedEvents[index - 1].event.year;
@@ -193,7 +199,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setFrozenDropZone(null);
 
     const finalPlaced = placedEvents.map((item) => {
-      if (item.event.id === currentEvent.id) {
+      if (item.event.id === confirmedEventId) {
         return { ...item, status: isCorrect ? "correct" as const : "incorrect" as const };
       }
       return item;
@@ -205,8 +211,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
     if (isCorrect) {
       setCorrectCount((c) => c + 1);
-      setCorrectEventIds(prev => new Set(prev).add(currentEvent.id));
-      // Clear the correct status after a brief moment
+      setCorrectEventIds(prev => new Set(prev).add(confirmedEventId));
+      // Clear the correct status after a brief moment — use functional update to preserve newer state
       setTimeout(() => {
         setPlacedEvents((prev) =>
           prev.map((item) => ({
@@ -216,15 +222,20 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         );
       }, 1800);
     } else {
-      setIncorrectEventIds(prev => new Set(prev).add(currentEvent.id));
+      isProcessingRef.current = true; // Lock interactions during incorrect animation
+      setIncorrectEventIds(prev => new Set(prev).add(confirmedEventId));
       
       setTimeout(() => {
-        const sorted = [...finalPlaced].sort((a, b) => a.event.year - b.event.year);
-        const corrected = sorted.map((item) => ({
-          ...item,
-          status: item.event.id === currentEvent.id ? "corrected" as const : null,
-        }));
-        setPlacedEvents(corrected);
+        // Use functional update so we don't clobber any new pending cards
+        setPlacedEvents((prev) => {
+          const sorted = [...prev].sort((a, b) => a.event.year - b.event.year);
+          return sorted.map((item) => ({
+            ...item,
+            status: item.event.id === confirmedEventId ? "corrected" as const
+              : item.status === "pending" ? "pending" as const  // preserve pending
+              : null,
+          }));
+        });
         
         setTimeout(() => {
           setPlacedEvents((prev) =>
@@ -233,6 +244,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               status: item.status === "corrected" ? null : item.status,
             }))
           );
+          isProcessingRef.current = false; // Unlock after animation completes
         }, 2000);
       }, 1000);
     }
