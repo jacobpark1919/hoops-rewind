@@ -85,16 +85,23 @@ export default function Home() {
               style={{ backgroundColor: mode.color }}
               onClick={() => handlePlay(mode.value)}
             >
-              <div className="flex items-center justify-between px-4 py-3">
-                <div className="flex flex-col gap-0.5">
-                  <h2 className="font-display text-xl font-extrabold text-white drop-shadow-sm">
-                    {mode.label}
-                  </h2>
-                  <p className="text-white/80 text-xs leading-snug max-w-[220px]">
-                    {mode.description}
+              <div className="flex flex-col px-4 py-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-col gap-0.5">
+                    <h2 className="font-display text-xl font-extrabold text-white drop-shadow-sm">
+                      {mode.label}
+                    </h2>
+                    <p className="text-white/80 text-xs leading-snug max-w-[220px]">
+                      {mode.description}
+                    </p>
+                  </div>
+                  <span className="text-4xl drop-shadow-md">{mode.icon}</span>
+                </div>
+                <div className="flex items-center gap-2 mt-2 pt-2 border-t border-white/20">
+                  <p className="text-white/70 text-[11px] font-medium">
+                    {today}
                   </p>
                 </div>
-                <span className="text-4xl drop-shadow-md">{mode.icon}</span>
               </div>
             </div>
           ))}
