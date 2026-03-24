@@ -393,18 +393,17 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               >
                 <div key={currentEvent.id} className="animate-fade-in-up">
                   <div className="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-3">
-                    <div className="flex items-center gap-1">
-                      <ArrowDown className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
+                    <div className="flex items-center gap-1 shrink-0">
                       <p className="text-[11px] sm:text-sm text-muted-foreground font-bold uppercase tracking-wider">
-                        Place this event
+                        Place this event in the timeline
                       </p>
+                      <ArrowDown className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
                     </div>
-                    <div className="flex items-center gap-1 sm:gap-1.5 ml-auto">
+                    <div className="flex items-center gap-1.5 sm:gap-2 ml-auto flex-1 justify-end">
                       {Array.from({ length: TOTAL_ROUNDS }, (_, i) => {
                         let bgColor = "bg-muted";
                         if (i === 0) {
-                          // Anchor event — always filled neutral
-                          bgColor = "bg-muted-foreground/40";
+                          bgColor = "bg-yellow-400";
                         } else if (i <= resultHistory.length) {
                           const isCorrect = resultHistory[i - 1];
                           bgColor = isCorrect ? "bg-success" : "bg-destructive";
@@ -412,7 +411,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                         return (
                           <div
                             key={i}
-                            className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-colors duration-500 ${bgColor}`}
+                            className={`h-2.5 sm:h-3 flex-1 max-w-8 sm:max-w-10 rounded-full transition-colors duration-500 ${bgColor}`}
                           />
                         );
                       })}
