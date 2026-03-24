@@ -88,6 +88,7 @@ export default function Admin() {
   const [filterSport, setFilterSport] = useState<string>("Basketball");
   const [expandedChallenge, setExpandedChallenge] = useState<string | null>(null);
   const [editingChallengeId, setEditingChallengeId] = useState<string | null>(null);
+  const [hideUsedEvents, setHideUsedEvents] = useState(false);
 
   // Enable scrolling only on admin page
   useEffect(() => {
