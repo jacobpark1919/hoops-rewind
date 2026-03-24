@@ -392,9 +392,32 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 }}
               >
                 <div key={currentEvent.id} className="animate-fade-in-up">
-                  <p className="text-[11px] sm:text-sm text-muted-foreground mb-1.5 sm:mb-3 font-bold uppercase tracking-wider">
-                    Place this event in the timeline
-                  </p>
+                  <div className="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-3">
+                    <div className="flex items-center gap-1">
+                      <ArrowDown className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
+                      <p className="text-[11px] sm:text-sm text-muted-foreground font-bold uppercase tracking-wider">
+                        Place this event
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1 sm:gap-1.5 ml-auto">
+                      {Array.from({ length: TOTAL_ROUNDS }, (_, i) => {
+                        let bgColor = "bg-muted";
+                        if (i === 0) {
+                          // Anchor event — always filled neutral
+                          bgColor = "bg-muted-foreground/40";
+                        } else if (i <= resultHistory.length) {
+                          const isCorrect = resultHistory[i - 1];
+                          bgColor = isCorrect ? "bg-success" : "bg-destructive";
+                        }
+                        return (
+                          <div
+                            key={i}
+                            className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-colors duration-500 ${bgColor}`}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
                   <div
                     ref={cardRef}
                     onPointerDown={handleNewCardDragStart}
