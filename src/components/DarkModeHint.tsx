@@ -1,6 +1,6 @@
 export function DarkModeHint() {
   return (
-    <div className="absolute top-3 right-14 md:top-4 md:right-16 z-10 pointer-events-none select-none animate-fade-in">
+    <div className="hidden sm:block absolute top-3 right-14 md:top-4 md:right-16 z-10 pointer-events-none select-none animate-fade-in">
       <div className="relative flex items-center gap-1">
         {/* Handwritten text */}
         <span 
