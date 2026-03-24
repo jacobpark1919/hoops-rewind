@@ -36,7 +36,12 @@ export function GameComplete({
   onViewTimeline,
 }: GameCompleteProps) {
   const [copied, setCopied] = useState(false);
-  const navigate = useNavigate();
+  const today = new Date().toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+  const puzzleNum = getPuzzleNumber();
 
   // Generate the emoji grid — prepend a free 🟩 for the anchor event
   const emojiGrid = "🟩" + resultHistory.map((correct) => (correct ? "🟩" : "🟥")).join("");
