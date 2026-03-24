@@ -18,8 +18,8 @@ export function ThemeToggle({ size = "default" }: { size?: "default" | "lg" | "s
     localStorage.setItem("theme", newValue ? "dark" : "light");
   };
 
-  const iconSize = size === "lg" ? "w-6 h-6" : size === "sm" ? "w-3.5 h-3.5" : "w-5 h-5";
-  const btnPad = size === "lg" ? "p-3" : size === "sm" ? "p-1.5" : "p-2";
+  const iconSize = size === "lg" ? "w-6 h-6" : size === "sm" ? "w-4.5 h-4.5" : "w-5 h-5";
+  const btnPad = size === "lg" ? "p-3" : size === "sm" ? "p-2" : "p-2";
 
   return (
     <button
