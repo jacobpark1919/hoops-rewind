@@ -65,7 +65,7 @@ export default function Home() {
             <polygon points="13,8 13,24 4,16" fill="currentColor" stroke="none" />
             <polygon points="24,8 24,24 15,16" fill="currentColor" stroke="none" />
           </svg>
-          <h1 className="font-display text-[2rem] sm:text-4xl lg:text-6xl font-extrabold tracking-tight text-foreground uppercase whitespace-nowrap">
+          <h1 className="text-[2rem] sm:text-4xl lg:text-6xl font-normal tracking-wide text-foreground uppercase whitespace-nowrap" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
             Sports Rewind
           </h1>
         </div>
@@ -88,7 +88,7 @@ export default function Home() {
               <div className="flex flex-col px-5 pt-5 pb-4">
                 <div className="flex items-start justify-between">
                   <div className="flex flex-col gap-1">
-                    <h2 className="font-display text-2xl font-extrabold text-white drop-shadow-sm">
+                    <h2 className="text-2xl font-normal text-white drop-shadow-sm" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                       {mode.label}
                     </h2>
                     <p className="text-white/80 text-sm leading-snug max-w-[220px]">
@@ -122,7 +122,7 @@ export default function Home() {
                 <span className="text-2xl lg:text-4xl xl:text-5xl mb-1 lg:mb-1.5 xl:mb-2 drop-shadow-sm">
                   {mode.icon}
                 </span>
-                <h2 className="font-display text-xs lg:text-base xl:text-lg font-bold text-white drop-shadow-sm">
+                <h2 className="text-xs lg:text-base xl:text-lg font-normal text-white drop-shadow-sm" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                   {mode.label}
                 </h2>
               </div>
