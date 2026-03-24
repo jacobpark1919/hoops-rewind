@@ -60,8 +60,8 @@ export default function Home() {
 
       {/* Main content */}
       <main className="flex-1 min-h-0 overflow-auto flex flex-col items-center justify-center px-5 py-3 sm:py-6 lg:py-10 xl:py-14">
-        <div className="flex items-center gap-2.5 sm:gap-2 lg:gap-2.5 xl:gap-3 mb-1.5 sm:mb-1.5 lg:mb-2 xl:mb-3">
-          <svg className="w-12 h-12 sm:w-10 sm:h-10 lg:w-14 lg:h-14 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <div className="flex items-center gap-1 sm:gap-2 lg:gap-2.5 xl:gap-3 mb-1.5 sm:mb-1.5 lg:mb-2 xl:mb-3">
+          <svg className="w-8 h-8 sm:w-10 sm:h-10 lg:w-14 lg:h-14 text-primary" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="13,8 13,24 4,16" fill="currentColor" stroke="none" />
             <polygon points="24,8 24,24 15,16" fill="currentColor" stroke="none" />
           </svg>
@@ -77,31 +77,24 @@ export default function Home() {
         </p>
 
         {/* Mobile: NYT-style stacked cards */}
-        <div className="flex flex-col gap-4 w-full px-1 sm:hidden">
+        <div className="flex flex-col gap-3 w-full px-1 sm:hidden">
           {SPORT_MODES.map((mode) => (
             <div
               key={mode.label}
-              className="group rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+              className="group rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
               style={{ backgroundColor: mode.color }}
               onClick={() => handlePlay(mode.value)}
             >
-              <div className="flex flex-col px-5 pt-5 pb-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex flex-col gap-1">
-                    <h2 className="font-display text-2xl font-extrabold text-white drop-shadow-sm">
-                      {mode.label}
-                    </h2>
-                    <p className="text-white/80 text-sm leading-snug max-w-[220px]">
-                      {mode.description}
-                    </p>
-                  </div>
-                  <span className="text-5xl drop-shadow-md mt-1">{mode.icon}</span>
-                </div>
-                <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/20">
-                  <p className="text-white/70 text-xs font-medium">
-                    {today}
+              <div className="flex items-center justify-between px-4 py-3">
+                <div className="flex flex-col gap-0.5">
+                  <h2 className="font-display text-xl font-extrabold text-white drop-shadow-sm">
+                    {mode.label}
+                  </h2>
+                  <p className="text-white/80 text-xs leading-snug max-w-[220px]">
+                    {mode.description}
                   </p>
                 </div>
+                <span className="text-4xl drop-shadow-md">{mode.icon}</span>
               </div>
             </div>
           ))}
