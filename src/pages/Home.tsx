@@ -148,6 +148,10 @@ export default function Home() {
       {/* Footer — always visible */}
       <footer className="shrink-0 py-1.5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-0 text-[10px] sm:text-xs text-muted-foreground/60 px-4">
         <div className="flex justify-center gap-2 sm:gap-4 flex-wrap">
+          <Link to="/contact" className="hover:text-muted-foreground transition-colors">
+            Contact Us
+          </Link>
+          <span>·</span>
           <Link to="/privacy" className="hover:text-muted-foreground transition-colors">
             Privacy Policy
           </Link>
