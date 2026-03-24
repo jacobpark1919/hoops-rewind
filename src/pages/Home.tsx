@@ -146,7 +146,7 @@ export default function Home() {
       </main>
 
       {/* Footer — always visible */}
-      <footer className="shrink-0 py-1.5 sm:py-3 flex flex-col items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-muted-foreground/60 px-4">
+      <footer className="shrink-0 py-1.5 sm:py-3 flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-0 text-[10px] sm:text-xs text-muted-foreground/60 px-4">
         <div className="flex justify-center gap-2 sm:gap-4 flex-wrap">
           <Link to="/privacy" className="hover:text-muted-foreground transition-colors">
             Privacy Policy
@@ -159,8 +159,10 @@ export default function Home() {
           <Link to="/cookies" className="hover:text-muted-foreground transition-colors">
             Cookie Policy
           </Link>
+          <span className="hidden sm:inline">·</span>
+          <span className="hidden sm:inline">© {new Date().getFullYear()} Sports Rewind. All rights reserved.</span>
         </div>
-        <p>© {new Date().getFullYear()} Sports Rewind. All rights reserved.</p>
+        <p className="sm:hidden">© {new Date().getFullYear()} Sports Rewind. All rights reserved.</p>
       </footer>
     </div>
   );
