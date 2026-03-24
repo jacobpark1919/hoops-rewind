@@ -135,6 +135,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
   const initializeGame = useCallback(async () => {
     // Reset all state first
+    isProcessingRef.current = false;
     setCorrectCount(1);
     setPendingPlacement(null);
     setResultHistory([]);
