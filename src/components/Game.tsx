@@ -384,6 +384,17 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               )}
             </div>
 
+            {/* Stats button (logged-in users only) */}
+            {user && (
+              <button
+                onClick={() => setShowStats(true)}
+                className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                aria-label="Your stats"
+              >
+                <BarChart3 className="w-5 h-5 text-foreground" />
+              </button>
+            )}
+
             {/* How to play */}
             <button
               onClick={() => setShowInstructions(true)}
