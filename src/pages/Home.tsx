@@ -38,6 +38,7 @@ function getPuzzleNumber() {
 }
 
 export default function Home() {
+  const navigate = useNavigate();
   const { user, signOut } = useAuth();
 
   const handlePlay = (sportValue: string | null) => {
