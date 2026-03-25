@@ -166,7 +166,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      to_date_immutable: { Args: { ts: string }; Returns: string }
     }
     Enums: {
       [_ in never]: never
