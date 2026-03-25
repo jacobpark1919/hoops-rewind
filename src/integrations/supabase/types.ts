@@ -74,6 +74,39 @@ export type Database = {
         }
         Relationships: []
       }
+      game_results: {
+        Row: {
+          correct_count: number
+          id: string
+          is_perfect: boolean
+          percentage: number
+          played_at: string
+          sport_filter: string | null
+          total_rounds: number
+          user_id: string
+        }
+        Insert: {
+          correct_count: number
+          id?: string
+          is_perfect?: boolean
+          percentage: number
+          played_at?: string
+          sport_filter?: string | null
+          total_rounds: number
+          user_id: string
+        }
+        Update: {
+          correct_count?: number
+          id?: string
+          is_perfect?: boolean
+          percentage?: number
+          played_at?: string
+          sport_filter?: string | null
+          total_rounds?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

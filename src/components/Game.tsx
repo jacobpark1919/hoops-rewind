@@ -6,8 +6,11 @@ import { GameComplete } from "./GameComplete";
 import { InstructionsModal } from "./InstructionsModal";
 import { DragOverlay } from "./DragOverlay";
 import { ThemeToggle } from "./ThemeToggle";
+import { StatsModal } from "./StatsModal";
 import { useDrag } from "@/hooks/useDrag";
-import { ChevronDown, Home, HelpCircle, ArrowDown } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { ChevronDown, Home, HelpCircle, ArrowDown, BarChart3 } from "lucide-react";
 
 const TOTAL_ROUNDS = 8;
 
@@ -28,6 +31,8 @@ interface GameProps {
 }
 
 export function Game({ sportFilter, onSportChange }: GameProps) {
+  const { user } = useAuth();
+  const [showStats, setShowStats] = useState(false);
   const [sportDropdownOpen, setSportDropdownOpen] = useState(false);
   const [gameEvents, setGameEvents] = useState<SportsEvent[]>([]);
   const [placedEvents, setPlacedEvents] = useState<PlacedEvent[]>([]);
@@ -248,6 +253,21 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
     if (nextIndex >= gameEvents.length) {
       const delay = isCorrect ? 500 : 2500;
+      const finalCorrect = isCorrect ? correctCount + 1 : correctCount;
+      // Save result for logged-in users
+      if (user) {
+        const pct = Math.round((finalCorrect / TOTAL_ROUNDS) * 100);
+        supabase.from("game_results").insert({
+          user_id: user.id,
+          sport_filter: sportFilter || null,
+          correct_count: finalCorrect,
+          total_rounds: TOTAL_ROUNDS,
+          percentage: pct,
+          is_perfect: pct === 100,
+        }).then(({ error }) => {
+          if (error) console.error("Failed to save result:", error);
+        });
+      }
       setTimeout(() => setGameComplete(true), delay);
     }
   };
@@ -363,6 +383,17 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 </div>
               )}
             </div>
+
+            {/* Stats button (logged-in users only) */}
+            {user && (
+              <button
+                onClick={() => setShowStats(true)}
+                className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                aria-label="Your stats"
+              >
+                <BarChart3 className="w-5 h-5 text-foreground" />
+              </button>
+            )}
 
             {/* How to play */}
             <button
@@ -497,6 +528,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         {showInstructions && (
           <InstructionsModal onClose={() => setShowInstructions(false)} />
         )}
+
+        {/* Stats Modal */}
+        <StatsModal open={showStats} onClose={() => setShowStats(false)} />
       </div>
     </div>
   );

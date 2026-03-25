@@ -1,7 +1,10 @@
-import { Trophy, Copy, Check, Home } from "lucide-react";
+import { Trophy, Copy, Check, Home, BarChart3, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { SignUpCTA } from "./SignUpCTA";
+import { StatsModal } from "./StatsModal";
 
 const ALL_SPORT_OPTIONS = [
   { label: "Everything", value: null, icon: "🏆", path: "/play" },
@@ -36,7 +39,9 @@ export function GameComplete({
   onViewTimeline,
 }: GameCompleteProps) {
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
   const [copied, setCopied] = useState(false);
+  const [showStats, setShowStats] = useState(false);
   const today = new Date().toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
@@ -59,7 +64,6 @@ ${correctCount}/${totalRounds} correct`;
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback for older browsers
       const textArea = document.createElement("textarea");
       textArea.value = shareText;
       document.body.appendChild(textArea);
@@ -137,6 +141,18 @@ ${correctCount}/${totalRounds} correct`;
         </p>
 
         <div className="flex flex-col gap-1.5 sm:gap-3">
+          {/* Stats button for logged-in users */}
+          {user && (
+            <Button
+              onClick={() => setShowStats(true)}
+              size="lg"
+              className="w-full font-display text-xs sm:text-lg h-8 sm:h-11"
+            >
+              <BarChart3 className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
+              View Your Stats
+            </Button>
+          )}
+
           <Button
             onClick={handleCopy}
             size="lg"
@@ -176,6 +192,29 @@ ${correctCount}/${totalRounds} correct`;
             </Button>
           </div>
 
+          {/* Sign up CTA for non-logged-in users */}
+          {!user && (
+            <div className="mt-1 sm:mt-2">
+              <SignUpCTA />
+            </div>
+          )}
+
+          {/* Signed-in user info */}
+          {user && (
+            <div className="flex items-center justify-center gap-2 mt-1">
+              <span className="text-xs text-muted-foreground">
+                Signed in as {user.user_metadata?.full_name || user.email}
+              </span>
+              <button
+                onClick={signOut}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+              >
+                <LogOut className="w-3 h-3" />
+                Sign out
+              </button>
+            </div>
+          )}
+
           <p className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wider flex items-center justify-center gap-1 mt-0.5 sm:mt-1 font-semibold">
             Try a different game mode
           </p>
@@ -194,6 +233,9 @@ ${correctCount}/${totalRounds} correct`;
           </div>
         </div>
       </div>
+
+      {/* Stats Modal */}
+      <StatsModal open={showStats} onClose={() => setShowStats(false)} />
     </div>
   );
 }
