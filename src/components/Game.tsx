@@ -6,8 +6,11 @@ import { GameComplete } from "./GameComplete";
 import { InstructionsModal } from "./InstructionsModal";
 import { DragOverlay } from "./DragOverlay";
 import { ThemeToggle } from "./ThemeToggle";
+import { StatsModal } from "./StatsModal";
 import { useDrag } from "@/hooks/useDrag";
-import { ChevronDown, Home, HelpCircle, ArrowDown } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { ChevronDown, Home, HelpCircle, ArrowDown, BarChart3 } from "lucide-react";
 
 const TOTAL_ROUNDS = 8;
 
