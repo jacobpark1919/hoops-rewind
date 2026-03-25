@@ -256,17 +256,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
       const finalCorrect = isCorrect ? correctCount + 1 : correctCount;
       // Save result for logged-in users
       if (user) {
-        const pct = Math.round((finalCorrect / TOTAL_ROUNDS) * 100);
-        supabase.from("game_results").insert({
-          user_id: user.id,
-          sport_filter: sportFilter || null,
-          correct_count: finalCorrect,
-          total_rounds: TOTAL_ROUNDS,
-          percentage: pct,
-          is_perfect: pct === 100,
-        }).then(({ error }) => {
-          if (error) console.error("Failed to save result:", error);
-        });
+        saveGameResult(user.id, sportFilter || null, finalCorrect);
+      } else {
+        // Store pending result so we can save it if user signs up on the game-over screen
+        pendingResultRef.current = { sportFilter: sportFilter || null, correctCount: finalCorrect };
       }
       setTimeout(() => setGameComplete(true), delay);
     }
