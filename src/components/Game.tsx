@@ -31,6 +31,8 @@ interface GameProps {
 }
 
 export function Game({ sportFilter, onSportChange }: GameProps) {
+  const { user } = useAuth();
+  const [showStats, setShowStats] = useState(false);
   const [sportDropdownOpen, setSportDropdownOpen] = useState(false);
   const [gameEvents, setGameEvents] = useState<SportsEvent[]>([]);
   const [placedEvents, setPlacedEvents] = useState<PlacedEvent[]>([]);
