@@ -1,6 +1,8 @@
 import { useNavigate, Link } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { DarkModeHint } from "@/components/DarkModeHint";
+import { useAuth } from "@/hooks/useAuth";
+import { LogIn, LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const SPORT_MODES = [
   {
@@ -52,10 +54,27 @@ export default function Home() {
 
   return (
     <div className="h-[89vh] sm:h-screen bg-background flex flex-col overflow-hidden">
-      {/* Theme toggle */}
-      <DarkModeHint />
-      <div className="absolute top-1 right-3 sm:top-4 sm:right-4 z-20">
-        <ThemeToggle size="sm" />
+      {/* Auth + Theme toggle */}
+      <div className="absolute top-1 right-3 sm:top-4 sm:right-4 z-20 flex items-center gap-2">
+        {user ? (
+          <button
+            onClick={signOut}
+            className="p-1.5 sm:p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+            aria-label="Sign out"
+          >
+            <LogOut className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
+          </button>
+        ) : (
+          <button
+            onClick={() => supabase.auth.signInWithOAuth({ provider: "google" })}
+            className="flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors text-foreground text-xs sm:text-sm font-medium"
+          >
+            <LogIn className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            Sign In
+          </button>
+        )}
+        <ThemeToggle size="sm" className="sm:hidden" />
+        <ThemeToggle className="hidden sm:block" />
       </div>
 
       {/* Main content */}
