@@ -75,6 +75,16 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const pendingDropZoneRef = useRef<number | null>(null);
   const gameEventsRef = useRef<SportsEvent[]>([]);
   const currentEventIndexRef = useRef(0);
+  const pendingResultRef = useRef<{ sportFilter: string | null; correctCount: number } | null>(null);
+
+  // When user signs up mid-session, save the pending result
+  useEffect(() => {
+    if (user && pendingResultRef.current) {
+      const { sportFilter: sf, correctCount: cc } = pendingResultRef.current;
+      pendingResultRef.current = null;
+      saveGameResult(user.id, sf, cc);
+    }
+  }, [user]);
 
   // Keep refs in sync
   useEffect(() => {
