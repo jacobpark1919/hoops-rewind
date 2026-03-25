@@ -253,6 +253,21 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
 
     if (nextIndex >= gameEvents.length) {
       const delay = isCorrect ? 500 : 2500;
+      const finalCorrect = isCorrect ? correctCount + 1 : correctCount;
+      // Save result for logged-in users
+      if (user) {
+        const pct = Math.round((finalCorrect / TOTAL_ROUNDS) * 100);
+        supabase.from("game_results").insert({
+          user_id: user.id,
+          sport_filter: sportFilter || null,
+          correct_count: finalCorrect,
+          total_rounds: TOTAL_ROUNDS,
+          percentage: pct,
+          is_perfect: pct === 100,
+        }).then(({ error }) => {
+          if (error) console.error("Failed to save result:", error);
+        });
+      }
       setTimeout(() => setGameComplete(true), delay);
     }
   };
