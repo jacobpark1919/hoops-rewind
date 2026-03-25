@@ -60,7 +60,7 @@ export default function Home() {
         {user ? (
           <button
             onClick={signOut}
-            className="p-1.5 sm:p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+            className="p-1.5 sm:p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors border border-border"
             aria-label="Sign out"
           >
             <LogOut className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
@@ -68,7 +68,7 @@ export default function Home() {
         ) : (
           <button
             onClick={() => supabase.auth.signInWithOAuth({ provider: "google" })}
-            className="flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors text-foreground text-xs sm:text-sm font-medium"
+            className="flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors text-foreground text-xs sm:text-sm font-medium border border-border"
           >
             <LogIn className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             Sign In
@@ -79,7 +79,7 @@ export default function Home() {
       </div>
 
       {/* Main content */}
-      <main className="flex-1 min-h-0 overflow-auto flex flex-col items-center justify-start px-5 pt-6 pb-3 sm:justify-center sm:py-6 lg:py-10 xl:py-14">
+      <main className="flex-1 min-h-0 overflow-auto flex flex-col items-center justify-start px-5 pt-16 pb-3 sm:justify-center sm:pt-6 sm:py-6 lg:py-10 xl:py-14">
         <div className="flex items-center gap-[-2px] sm:gap-0.5 lg:gap-1 xl:gap-1 mb-1.5 sm:mb-1.5 lg:mb-2 xl:mb-3">
           <svg className="w-14 h-14 sm:w-12 sm:h-12 lg:w-16 lg:h-16 text-primary -mr-1.5 sm:mr-0" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="13,8 13,24 4,16" fill="currentColor" stroke="none" />

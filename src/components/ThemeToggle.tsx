@@ -24,7 +24,7 @@ export function ThemeToggle({ size = "default", className = "" }: { size?: "defa
   return (
     <button
       onClick={toggle}
-      className={`${btnPad} rounded-lg bg-secondary/50 hover:bg-secondary transition-colors ${className}`}
+      className={`${btnPad} rounded-lg bg-secondary hover:bg-secondary/80 transition-colors border border-border ${className}`}
       aria-label="Toggle theme"
     >
       {isDark ? (
