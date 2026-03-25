@@ -355,8 +355,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           
           {/* Right: Sport selector + Theme toggle */}
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-            {/* Sport dropdown */}
-            <div className="relative">
+            {/* Sport dropdown - hidden on mobile */}
+            <div className="relative hidden sm:block">
               <button
                 onClick={() => setSportDropdownOpen(!sportDropdownOpen)}
                 className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-semibold text-foreground px-2 sm:px-2.5 py-1 bg-secondary/50 rounded-lg hover:bg-secondary transition-colors"
