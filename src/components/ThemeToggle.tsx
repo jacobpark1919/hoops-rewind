@@ -1,7 +1,7 @@
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export function ThemeToggle({ size = "default" }: { size?: "default" | "lg" | "sm" }) {
+export function ThemeToggle({ size = "default", className = "" }: { size?: "default" | "lg" | "sm"; className?: string }) {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export function ThemeToggle({ size = "default" }: { size?: "default" | "lg" | "s
   return (
     <button
       onClick={toggle}
-      className={`${btnPad} rounded-lg bg-secondary/50 hover:bg-secondary transition-colors`}
+      className={`${btnPad} rounded-lg bg-secondary/50 hover:bg-secondary transition-colors ${className}`}
       aria-label="Toggle theme"
     >
       {isDark ? (
