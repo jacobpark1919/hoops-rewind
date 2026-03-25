@@ -14,6 +14,22 @@ import { ChevronDown, Home, HelpCircle, ArrowDown, BarChart3 } from "lucide-reac
 
 const TOTAL_ROUNDS = 8;
 
+// Helper to save a game result (ignores duplicates via unique index)
+async function saveGameResult(userId: string, sportFilter: string | null, correctCount: number) {
+  const pct = Math.round((correctCount / TOTAL_ROUNDS) * 100);
+  const { error } = await supabase.from("game_results").insert({
+    user_id: userId,
+    sport_filter: sportFilter || null,
+    correct_count: correctCount,
+    total_rounds: TOTAL_ROUNDS,
+    percentage: pct,
+    is_perfect: pct === 100,
+  });
+  if (error && !error.message?.includes("duplicate")) {
+    console.error("Failed to save result:", error);
+  }
+}
+
 const SPORT_OPTIONS = [
   { label: "Everything", value: null, icon: "🏆" },
   { label: "Football", value: "American Football", icon: "🏈" },
@@ -59,6 +75,16 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const pendingDropZoneRef = useRef<number | null>(null);
   const gameEventsRef = useRef<SportsEvent[]>([]);
   const currentEventIndexRef = useRef(0);
+  const pendingResultRef = useRef<{ sportFilter: string | null; correctCount: number } | null>(null);
+
+  // When user signs up mid-session, save the pending result
+  useEffect(() => {
+    if (user && pendingResultRef.current) {
+      const { sportFilter: sf, correctCount: cc } = pendingResultRef.current;
+      pendingResultRef.current = null;
+      saveGameResult(user.id, sf, cc);
+    }
+  }, [user]);
 
   // Keep refs in sync
   useEffect(() => {
@@ -256,17 +282,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
       const finalCorrect = isCorrect ? correctCount + 1 : correctCount;
       // Save result for logged-in users
       if (user) {
-        const pct = Math.round((finalCorrect / TOTAL_ROUNDS) * 100);
-        supabase.from("game_results").insert({
-          user_id: user.id,
-          sport_filter: sportFilter || null,
-          correct_count: finalCorrect,
-          total_rounds: TOTAL_ROUNDS,
-          percentage: pct,
-          is_perfect: pct === 100,
-        }).then(({ error }) => {
-          if (error) console.error("Failed to save result:", error);
-        });
+        saveGameResult(user.id, sportFilter || null, finalCorrect);
+      } else {
+        // Store pending result so we can save it if user signs up on the game-over screen
+        pendingResultRef.current = { sportFilter: sportFilter || null, correctCount: finalCorrect };
       }
       setTimeout(() => setGameComplete(true), delay);
     }
@@ -355,8 +374,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           
           {/* Right: Sport selector + Theme toggle */}
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-            {/* Sport dropdown */}
-            <div className="relative">
+            {/* Sport dropdown - hidden on mobile */}
+            <div className="relative hidden sm:block">
               <button
                 onClick={() => setSportDropdownOpen(!sportDropdownOpen)}
                 className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-semibold text-foreground px-2 sm:px-2.5 py-1 bg-secondary/50 rounded-lg hover:bg-secondary transition-colors"
