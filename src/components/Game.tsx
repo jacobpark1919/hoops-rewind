@@ -528,6 +528,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         {showInstructions && (
           <InstructionsModal onClose={() => setShowInstructions(false)} />
         )}
+
+        {/* Stats Modal */}
+        <StatsModal open={showStats} onClose={() => setShowStats(false)} />
       </div>
     </div>
   );
