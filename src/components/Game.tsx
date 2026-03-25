@@ -14,6 +14,22 @@ import { ChevronDown, Home, HelpCircle, ArrowDown, BarChart3 } from "lucide-reac
 
 const TOTAL_ROUNDS = 8;
 
+// Helper to save a game result (ignores duplicates via unique index)
+async function saveGameResult(userId: string, sportFilter: string | null, correctCount: number) {
+  const pct = Math.round((correctCount / TOTAL_ROUNDS) * 100);
+  const { error } = await supabase.from("game_results").insert({
+    user_id: userId,
+    sport_filter: sportFilter || null,
+    correct_count: correctCount,
+    total_rounds: TOTAL_ROUNDS,
+    percentage: pct,
+    is_perfect: pct === 100,
+  });
+  if (error && !error.message?.includes("duplicate")) {
+    console.error("Failed to save result:", error);
+  }
+}
+
 const SPORT_OPTIONS = [
   { label: "Everything", value: null, icon: "🏆" },
   { label: "Football", value: "American Football", icon: "🏈" },
