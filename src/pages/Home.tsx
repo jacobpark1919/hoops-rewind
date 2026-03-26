@@ -2,7 +2,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAuth } from "@/hooks/useAuth";
 import { LogIn, LogOut } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 
 const SPORT_MODES = [
   {
@@ -67,7 +67,7 @@ export default function Home() {
           </button>
         ) : (
           <button
-            onClick={() => supabase.auth.signInWithOAuth({ provider: "google" })}
+            onClick={() => lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin })}
             className="flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors text-foreground text-xs sm:text-sm font-medium border border-border"
           >
             <LogIn className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
