@@ -173,24 +173,6 @@ ${correctCount}/${totalRounds} correct`;
             </Button>
           )}
 
-          <Button
-            onClick={handleCopy}
-            size="lg"
-            variant="outline"
-            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11"
-          >
-            {copied ? (
-              <>
-                <Check className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5 text-success" />
-                Copied!
-              </>
-            ) : (
-              <>
-                <Copy className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
-                Copy Results
-              </>
-            )}
-          </Button>
 
           <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
             <Button
