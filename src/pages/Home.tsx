@@ -207,7 +207,6 @@ export default function Home() {
           <p>© {new Date().getFullYear()} Sports Rewind. All rights reserved.</p>
         </div>
       </footer>
-    </div>
 
       {/* Stats Modal */}
       <StatsModal open={showStats} onClose={() => setShowStats(false)} />
