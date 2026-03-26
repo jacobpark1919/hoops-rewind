@@ -79,7 +79,7 @@ export default function Home() {
       </div>
 
       {/* Main content */}
-      <main className="flex-1 min-h-0 overflow-auto flex flex-col items-center justify-start px-5 pt-16 pb-3 sm:justify-center sm:pt-6 sm:py-6 lg:py-10 xl:py-14">
+      <main className="flex-1 min-h-0 overflow-auto flex flex-col items-center justify-start px-5 pt-12 pb-3 sm:justify-center sm:pt-6 sm:py-6 lg:py-10 xl:py-14">
         <div className="flex items-center gap-[-2px] sm:gap-0.5 lg:gap-1 xl:gap-1 mb-1.5 sm:mb-1.5 lg:mb-2 xl:mb-3">
           <svg className="w-14 h-14 sm:w-12 sm:h-12 lg:w-16 lg:h-16 text-primary -mr-1.5 sm:mr-0" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="13,8 13,24 4,16" fill="currentColor" stroke="none" />
