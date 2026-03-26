@@ -115,8 +115,13 @@ ${correctCount}/${totalRounds} correct`;
           </div>
         </div>
 
+        {/* Date & Puzzle number */}
+        <p className="text-foreground text-xs sm:text-lg font-medium mb-2 sm:mb-4">
+          {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
+        </p>
+
         {/* Emoji Result Grid */}
-        <div className="bg-card rounded-lg sm:rounded-xl p-2 sm:p-4 border border-border mb-2 sm:mb-6">
+        <div className="bg-card rounded-lg sm:rounded-xl p-2 sm:p-4 border border-border mb-2 sm:mb-3">
           <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider mb-1 sm:mb-3">Your Results</p>
           <div className="flex justify-center gap-0.5 sm:gap-1 flex-wrap mb-1 sm:mb-3">
             <span className="text-base sm:text-2xl animate-bounce-in" style={{ animationDelay: '0ms' }}>🟩</span>
@@ -135,10 +140,25 @@ ${correctCount}/${totalRounds} correct`;
           </p>
         </div>
 
-        {/* Date & Puzzle number */}
-        <p className="text-foreground text-xs sm:text-lg font-medium mb-2 sm:mb-4">
-          {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
-        </p>
+        {/* Copy Results button right after results box */}
+        <Button
+          onClick={handleCopy}
+          size="lg"
+          variant="outline"
+          className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-2 sm:mb-4"
+        >
+          {copied ? (
+            <>
+              <Check className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5 text-success" />
+              Copied!
+            </>
+          ) : (
+            <>
+              <Copy className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
+              Copy Results
+            </>
+          )}
+        </Button>
 
         <div className="flex flex-col gap-1.5 sm:gap-3">
           {/* Stats button for logged-in users */}
