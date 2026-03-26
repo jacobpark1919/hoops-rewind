@@ -77,12 +77,36 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const currentEventIndexRef = useRef(0);
   const pendingResultRef = useRef<{ sportFilter: string | null; correctCount: number } | null>(null);
 
-  // When user signs up mid-session, save the pending result
+  // When user signs up mid-session (same page, no redirect), save the pending result
   useEffect(() => {
     if (user && pendingResultRef.current) {
       const { sportFilter: sf, correctCount: cc } = pendingResultRef.current;
       pendingResultRef.current = null;
       saveGameResult(user.id, sf, cc);
+    }
+  }, [user]);
+
+  // After OAuth redirect: restore game-over state from localStorage
+  useEffect(() => {
+    if (!user) return;
+    const stored = localStorage.getItem("pending_game_signup");
+    if (!stored) return;
+    
+    try {
+      const data = JSON.parse(stored);
+      localStorage.removeItem("pending_game_signup");
+      
+      // Save the game result
+      saveGameResult(user.id, data.sportFilter, data.correctCount);
+      
+      // Restore game-over UI
+      setCorrectCount(data.correctCount);
+      setResultHistory(data.resultHistory || []);
+      setGameComplete(true);
+      setCurrentEventIndex(TOTAL_ROUNDS);
+      setIsLoadingEvents(false);
+    } catch {
+      localStorage.removeItem("pending_game_signup");
     }
   }, [user]);
 
