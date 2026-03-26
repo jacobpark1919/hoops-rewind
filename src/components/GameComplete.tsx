@@ -87,7 +87,7 @@ ${correctCount}/${totalRounds} correct`;
               VICTORY!
             </h2>
             <p className="text-muted-foreground text-xs sm:text-lg mb-2 sm:mb-6">
-              Come back tomorrow for a new puzzle!
+              Come back tomorrow for a new puzzle! Puzzles reset at midnight ET!
             </p>
           </>
         ) : (
@@ -96,7 +96,7 @@ ${correctCount}/${totalRounds} correct`;
               Next time!
             </h2>
             <p className="font-display text-base sm:text-2xl text-foreground mb-2 sm:mb-6">
-              Come back tomorrow for a new timeline!
+              Come back tomorrow for a new timeline! Puzzles reset at midnight ET!
             </p>
           </>
         )}
@@ -201,21 +201,6 @@ ${correctCount}/${totalRounds} correct`;
             </div>
           )}
 
-          {/* Signed-in user info */}
-          {user && (
-            <div className="flex items-center justify-center gap-2 mt-1">
-              <span className="text-xs text-muted-foreground">
-                Signed in as {user.user_metadata?.full_name || user.email}
-              </span>
-              <button
-                onClick={signOut}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
-              >
-                <LogOut className="w-3 h-3" />
-                Sign out
-              </button>
-            </div>
-          )}
 
           <p className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wider flex items-center justify-center gap-1 mt-0.5 sm:mt-1 font-semibold">
             Try a different game mode
