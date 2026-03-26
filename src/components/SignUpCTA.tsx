@@ -7,7 +7,7 @@ export function SignUpCTA() {
   const handleSignIn = async (provider: "google" | "apple") => {
     setLoading(provider);
     const { error } = await lovable.auth.signInWithOAuth(provider, {
-      redirect_uri: window.location.origin,
+      redirect_uri: window.location.origin + window.location.pathname + window.location.search,
     });
     if (error) {
       console.error("Sign in error:", error);

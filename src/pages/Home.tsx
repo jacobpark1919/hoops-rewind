@@ -208,5 +208,9 @@ export default function Home() {
         </div>
       </footer>
     </div>
+
+      {/* Stats Modal */}
+      <StatsModal open={showStats} onClose={() => setShowStats(false)} />
+    </div>
   );
 }
