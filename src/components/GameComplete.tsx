@@ -197,7 +197,13 @@ ${correctCount}/${totalRounds} correct`;
           {/* Sign up CTA for non-logged-in users */}
           {!user && (
             <div className="mt-1 sm:mt-2">
-              <SignUpCTA />
+              <SignUpCTA gameData={{
+                correctCount,
+                totalRounds,
+                resultHistory,
+                sportFilter: sportFilter || null,
+                won,
+              }} />
             </div>
           )}
 

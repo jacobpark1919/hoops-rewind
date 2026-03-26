@@ -1,13 +1,27 @@
 import { useState } from "react";
 import { lovable } from "@/integrations/lovable/index";
 
-export function SignUpCTA() {
+interface SignUpCTAProps {
+  gameData?: {
+    correctCount: number;
+    totalRounds: number;
+    resultHistory: boolean[];
+    sportFilter: string | null;
+    won: boolean;
+  };
+}
+
+export function SignUpCTA({ gameData }: SignUpCTAProps) {
   const [loading, setLoading] = useState<string | null>(null);
 
   const handleSignIn = async (provider: "google" | "apple") => {
     setLoading(provider);
+    // Save game data to localStorage so we can restore after OAuth redirect
+    if (gameData) {
+      localStorage.setItem("pending_game_signup", JSON.stringify(gameData));
+    }
     const { error } = await lovable.auth.signInWithOAuth(provider, {
-      redirect_uri: window.location.origin,
+      redirect_uri: window.location.origin + window.location.pathname + window.location.search,
     });
     if (error) {
       console.error("Sign in error:", error);

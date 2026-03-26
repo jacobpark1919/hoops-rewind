@@ -1,8 +1,10 @@
 import { useNavigate, Link } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { StatsModal } from "@/components/StatsModal";
 import { useAuth } from "@/hooks/useAuth";
-import { LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut, BarChart3 } from "lucide-react";
 import { lovable } from "@/integrations/lovable/index";
+import { useState } from "react";
 
 const SPORT_MODES = [
   {
@@ -40,6 +42,7 @@ function getPuzzleNumber() {
 export default function Home() {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const [showStats, setShowStats] = useState(false);
 
   const handlePlay = (sportValue: string | null) => {
     const params = sportValue ? `?sport=${encodeURIComponent(sportValue)}` : "";
@@ -58,13 +61,23 @@ export default function Home() {
       {/* Auth + Theme toggle */}
       <div className="absolute top-1 right-3 sm:top-4 sm:right-4 z-20 flex items-center gap-2">
         {user ? (
-          <button
-            onClick={signOut}
-            className="p-1.5 sm:p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors border border-border"
-            aria-label="Sign out"
-          >
-            <LogOut className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
-          </button>
+          <>
+            <button
+              onClick={() => setShowStats(true)}
+              className="p-1.5 sm:p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors border border-border"
+              aria-label="Your stats"
+            >
+              <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
+            </button>
+            <button
+              onClick={signOut}
+              className="p-1.5 sm:p-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors border border-border"
+              aria-label="Sign out"
+            >
+              <LogOut className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
+            </button>
+          </>
+        
         ) : (
           <button
             onClick={() => lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin })}
@@ -194,6 +207,9 @@ export default function Home() {
           <p>© {new Date().getFullYear()} Sports Rewind. All rights reserved.</p>
         </div>
       </footer>
+
+      {/* Stats Modal */}
+      <StatsModal open={showStats} onClose={() => setShowStats(false)} />
     </div>
   );
 }
