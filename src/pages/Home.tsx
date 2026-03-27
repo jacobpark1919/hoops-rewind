@@ -159,7 +159,7 @@ export default function Home() {
         </Link>
         <span className="text-[11px] text-muted-foreground/40">·</span>
         <span className="text-[11px] text-muted-foreground tracking-wide">
-          © {new Date().getFullYear()} Sports Rewind. All rights reserved.
+          © {new Date().getFullYear()} Hoops Rewind. All rights reserved.
         </span>
       </footer>
 
