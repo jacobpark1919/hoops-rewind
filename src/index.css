@@ -110,6 +110,7 @@ html.admin-scroll, html.admin-scroll body {
   h5,
   h6 {
     @apply font-display;
+    letter-spacing: -0.01em;
   }
 }
 
