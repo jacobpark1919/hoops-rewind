@@ -195,12 +195,12 @@ html.admin-scroll, html.admin-scroll body {
   }
 
   .drop-zone-expanded {
-    @apply border-accent bg-accent/10 h-16;
+    @apply border-primary bg-primary/10 h-16;
   }
 
   .year-badge {
     @apply inline-flex items-center justify-center px-1.5 sm:px-2.5 py-0.5 sm:py-1 
-           bg-success text-success-foreground font-display font-bold 
+           bg-primary text-primary-foreground font-display font-bold 
            rounded-full text-[10px] sm:text-sm;
   }
 

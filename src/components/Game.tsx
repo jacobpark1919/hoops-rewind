@@ -449,7 +449,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                       {Array.from({ length: TOTAL_ROUNDS }, (_, i) => {
                         let bgColor = "bg-muted";
                         if (i === 0) {
-                          bgColor = "bg-success";
+                          bgColor = "bg-primary";
                         } else if (i <= resultHistory.length) {
                           const isCorrect = resultHistory[i - 1];
                           bgColor = isCorrect ? "bg-success" : "bg-destructive";
