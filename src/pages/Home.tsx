@@ -102,7 +102,7 @@ export default function Home() {
 
           <button
             onClick={handlePlay}
-            className="bg-accent text-white border-none px-9 py-3.5 rounded-lg font-body text-[15px] font-semibold cursor-pointer mb-3 hover:opacity-90 transition-opacity tracking-wide"
+            className="bg-accent text-white border-none px-11 py-4 rounded-lg font-body text-base font-semibold cursor-pointer mb-3 hover:opacity-90 transition-opacity tracking-wide"
           >
             Play Today's Puzzle
           </button>
@@ -128,7 +128,7 @@ export default function Home() {
 
           <button
             onClick={handlePlay}
-            className="w-full bg-accent text-white border-none py-3.5 rounded-lg font-body text-sm font-semibold cursor-pointer mb-3.5 hover:opacity-90 transition-opacity"
+            className="w-full bg-accent text-white border-none py-4 rounded-lg font-body text-[15px] font-semibold cursor-pointer mb-3.5 hover:opacity-90 transition-opacity"
           >
             Play Today's Puzzle
           </button>
