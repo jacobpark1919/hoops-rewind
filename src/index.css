@@ -195,7 +195,7 @@ html.admin-scroll, html.admin-scroll body {
   }
 
   .drop-zone-expanded {
-    @apply border-primary bg-primary/10 h-16;
+    @apply border-accent bg-accent/10 h-16;
   }
 
   .year-badge {
