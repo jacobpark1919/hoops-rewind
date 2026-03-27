@@ -21,7 +21,7 @@ export default function Home() {
   const [showStats, setShowStats] = useState(false);
 
   const handlePlay = () => {
-    navigate("/play");
+    navigate("/play?sport=Basketball");
   };
 
   const today = new Date().toLocaleDateString("en-US", {
@@ -88,7 +88,7 @@ export default function Home() {
       <main className="flex-1 min-h-0 flex flex-col items-center px-6">
         {/* Desktop: centered */}
         <div className="hidden sm:flex flex-1 flex-col items-center justify-center text-center -mt-8">
-          <div className="flex items-center gap-2.5 mb-6">
+          <div className="flex items-center gap-2.5 mb-4">
             <span className="text-xs tracking-widest uppercase text-muted-foreground">
               Puzzle #{puzzleNum}
             </span>
@@ -96,13 +96,13 @@ export default function Home() {
             <span className="text-xs text-muted-foreground">{today}</span>
           </div>
 
-          <h1 className="font-display font-black text-[clamp(56px,7vw,96px)] leading-[0.88] tracking-tight text-foreground mb-9">
+          <h1 className="font-display font-black text-[clamp(56px,7vw,96px)] leading-[0.88] tracking-tight text-foreground mb-6">
             Test your<br />hoops <span className="text-accent">history.</span>
           </h1>
 
           <button
             onClick={handlePlay}
-            className="bg-accent text-white border-none px-9 py-3.5 rounded-lg font-body text-[15px] font-semibold cursor-pointer mb-[18px] hover:opacity-90 transition-opacity tracking-wide"
+            className="bg-accent text-white border-none px-9 py-3.5 rounded-lg font-body text-[15px] font-semibold cursor-pointer mb-3 hover:opacity-90 transition-opacity tracking-wide"
           >
             Play Today's Puzzle
           </button>
@@ -115,14 +115,14 @@ export default function Home() {
 
         {/* Mobile: top-aligned */}
         <div className="flex sm:hidden flex-col items-stretch flex-1 pt-10">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-5">
             <span className="text-[11px] tracking-widest uppercase text-muted-foreground">
               Puzzle #{puzzleNum}
             </span>
             <span className="text-[11px] text-muted-foreground">{todayShort}</span>
           </div>
 
-          <h1 className="font-display font-black text-[64px] leading-[0.86] tracking-tight text-foreground mb-9">
+          <h1 className="font-display font-black text-[64px] leading-[0.86] tracking-tight text-foreground mb-6">
             Test your<br />hoops <span className="text-accent">history.</span>
           </h1>
 
