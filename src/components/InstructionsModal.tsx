@@ -63,15 +63,15 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
           {/* Instructions */}
           <div className="space-y-2 sm:space-y-3 text-left mb-4 sm:mb-6">
             <div className="flex items-start gap-2 sm:gap-3">
-              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">1</span>
+              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent text-accent-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">1</span>
               <p className="text-foreground text-xs sm:text-sm">Drag each event card into the timeline</p>
             </div>
             <div className="flex items-start gap-2 sm:gap-3">
-              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">2</span>
+              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent text-accent-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">2</span>
               <p className="text-foreground text-xs sm:text-sm">Place it where you think it belongs chronologically</p>
             </div>
             <div className="flex items-start gap-2 sm:gap-3">
-              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-primary text-primary-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">3</span>
+              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent text-accent-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">3</span>
               <p className="text-foreground text-xs sm:text-sm">Daily game — come back tomorrow for a new puzzle!</p>
             </div>
           </div>
@@ -79,7 +79,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
           {/* Start button */}
           <button
             onClick={handleClose}
-            className="w-full py-2.5 sm:py-3 px-4 sm:px-6 bg-primary text-primary-foreground font-display font-bold text-sm sm:text-base rounded-lg sm:rounded-xl transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
+            className="w-full py-2.5 sm:py-3 px-4 sm:px-6 bg-accent text-accent-foreground font-display font-bold text-sm sm:text-base rounded-lg sm:rounded-xl transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
           >
             Let's Go!
           </button>

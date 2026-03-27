@@ -503,11 +503,11 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   </div>
                   {showIdleHint && (
                     <div className="flex items-center gap-1.5 justify-center mt-2 drag-hint-arrow">
-                      <ArrowDown className="w-4 h-4 text-primary" />
-                      <span className="text-xs sm:text-sm font-semibold text-primary">
+                      <ArrowDown className="w-4 h-4 text-accent" />
+                      <span className="text-xs sm:text-sm font-semibold text-accent">
                         Drag this card into the timeline
                       </span>
-                      <ArrowDown className="w-4 h-4 text-primary" />
+                      <ArrowDown className="w-4 h-4 text-accent" />
                     </div>
                   )}
                 </div>
