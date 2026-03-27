@@ -87,7 +87,7 @@ export default function Home() {
       {/* Main content */}
       <main className="flex-1 min-h-0 flex flex-col items-center px-6">
         {/* Desktop: centered */}
-        <div className="hidden sm:flex flex-1 flex-col items-center justify-center text-center mt-6">
+        <div className="hidden sm:flex flex-1 flex-col items-center justify-center text-center">
           <div className="flex items-center gap-2.5 mb-[clamp(16px,1.2vw,24px)]">
             <span className="text-[clamp(11px,0.85vw,14px)] tracking-widest uppercase text-muted-foreground">
               Puzzle #{puzzleNum}
