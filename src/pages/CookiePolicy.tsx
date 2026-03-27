@@ -15,7 +15,7 @@ export default function CookiePolicy() {
         <p>Cookies are small text files stored on your device when you visit a website. They help the site remember your preferences and improve your experience.</p>
 
         <h2 className="text-foreground font-semibold text-base">How We Use Cookies</h2>
-        <p>Sports Rewind uses cookies for:</p>
+        <p>Hoops Rewind uses cookies for:</p>
         <ul className="list-disc pl-5 space-y-1">
           <li><strong>Preferences:</strong> Remembering your theme selection (light/dark mode).</li>
           <li><strong>Functionality:</strong> Storing game state so your progress is maintained during a session.</li>

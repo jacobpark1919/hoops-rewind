@@ -11,7 +11,7 @@ export default function PrivacyPolicy() {
       <p className="text-muted-foreground text-sm mb-4">Last updated: February 21, 2026</p>
 
       <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
-        <p>Sports Rewind ("we", "us", or "our") operates the Sports Rewind website. This page informs you of our policies regarding the collection, use, and disclosure of personal information.</p>
+        <p>Hoops Rewind ("we", "us", or "our") operates the Hoops Rewind website. This page informs you of our policies regarding the collection, use, and disclosure of personal information.</p>
 
         <h2 className="text-foreground font-semibold text-base">Information We Collect</h2>
         <p>We may collect limited, non-personally identifiable information such as browser type, device type, and usage patterns to improve the experience. We do not require account creation or collect personal data unless you voluntarily provide it.</p>

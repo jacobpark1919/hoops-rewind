@@ -47,7 +47,7 @@ export default function Home() {
             <polygon points="0,8.5 12,0 12,17" fill="currentColor" />
           </svg>
           <span className="font-display font-black text-base tracking-wider text-foreground uppercase">
-            Sports Rewind
+            Hoops Rewind
           </span>
         </div>
 
@@ -97,7 +97,7 @@ export default function Home() {
           </div>
 
           <h1 className="font-display font-black text-[clamp(56px,7vw,96px)] leading-[0.88] tracking-tight text-foreground mb-9">
-            Test your<br />sports <span className="text-accent">history.</span>
+            Test your<br />hoops <span className="text-accent">history.</span>
           </h1>
 
           <button
@@ -123,7 +123,7 @@ export default function Home() {
           </div>
 
           <h1 className="font-display font-black text-[64px] leading-[0.86] tracking-tight text-foreground mb-9">
-            Test your<br />sports <span className="text-accent">history.</span>
+            Test your<br />hoops <span className="text-accent">history.</span>
           </h1>
 
           <button
@@ -170,7 +170,7 @@ export default function Home() {
         </Link>
         <span className="text-[10px] text-muted-foreground/40">·</span>
         <span className="text-[10px] text-muted-foreground tracking-wide">
-          © {new Date().getFullYear()} Sports Rewind. All rights reserved.
+          © {new Date().getFullYear()} Hoops Rewind. All rights reserved.
         </span>
       </footer>
 
