@@ -88,26 +88,26 @@ export default function Home() {
       <main className="flex-1 min-h-0 flex flex-col items-center px-6">
         {/* Desktop: centered */}
         <div className="hidden sm:flex flex-1 flex-col items-center justify-center text-center -mt-8">
-          <div className="flex items-center gap-2.5 mb-4">
-            <span className="text-xs tracking-widest uppercase text-muted-foreground">
+          <div className="flex items-center gap-2.5 mb-[clamp(16px,1.2vw,24px)]">
+            <span className="text-[clamp(11px,0.85vw,14px)] tracking-widest uppercase text-muted-foreground">
               Puzzle #{puzzleNum}
             </span>
             <div className="w-[3px] h-[3px] rounded-full bg-border" />
-            <span className="text-xs text-muted-foreground">{today}</span>
+            <span className="text-[clamp(11px,0.85vw,14px)] text-muted-foreground">{today}</span>
           </div>
 
-          <h1 className="font-display font-black text-[clamp(56px,7vw,96px)] leading-[0.88] tracking-tight text-foreground mb-6">
+          <h1 className="font-display font-black text-[clamp(56px,7vw,120px)] leading-[0.88] tracking-tight text-foreground mb-[clamp(24px,1.8vw,36px)]">
             Test your<br />hoops <span className="text-accent">history.</span>
           </h1>
 
           <button
             onClick={handlePlay}
-            className="bg-accent text-white border-none px-11 py-4 rounded-lg font-body text-base font-semibold cursor-pointer mb-3 hover:opacity-90 transition-opacity tracking-wide"
+            className="bg-accent text-white border-none px-[clamp(44px,3.5vw,64px)] py-[clamp(16px,1.2vw,22px)] rounded-lg font-body text-[clamp(16px,1.1vw,20px)] font-semibold cursor-pointer mb-3 hover:opacity-90 transition-opacity tracking-wide"
           >
             Play Today's Puzzle
           </button>
 
-          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+          <div className="flex items-center gap-1.5 text-[clamp(11px,0.8vw,14px)] text-muted-foreground">
             <div className="w-[5px] h-[5px] rounded-full bg-success animate-pulse" />
             New puzzle every day
           </div>
