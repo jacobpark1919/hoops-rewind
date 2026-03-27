@@ -292,7 +292,7 @@ export function Timeline({
                 <Button
                   onPointerUp={(e) => { e.stopPropagation(); onConfirm(); }}
                   size="sm"
-                  className="rounded-full shadow-lg px-5 py-3 text-sm font-medium min-h-[44px]"
+                  className="rounded-full shadow-lg px-5 py-3 text-sm font-medium min-h-[44px] bg-accent text-accent-foreground hover:bg-accent/90"
                 >
                   Tap to place
                 </Button>

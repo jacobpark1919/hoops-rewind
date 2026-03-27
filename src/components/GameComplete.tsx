@@ -104,7 +104,7 @@ ${correctCount}/${totalRounds} correct`;
         {/* Stats grid */}
         <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-6">
           <div className="bg-card rounded-lg sm:rounded-xl p-2 sm:p-4 border border-border">
-            <p className="text-lg sm:text-3xl font-display font-bold text-primary">{correctCount}</p>
+            <p className="text-lg sm:text-3xl font-display font-bold text-accent">{correctCount}</p>
             <p className="text-[10px] sm:text-xs text-muted-foreground">Correct</p>
           </div>
           <div className="bg-card rounded-lg sm:rounded-xl p-2 sm:p-4 border border-border">
@@ -166,7 +166,7 @@ ${correctCount}/${totalRounds} correct`;
             <Button
               onClick={() => setShowStats(true)}
               size="lg"
-              className="w-full font-display text-xs sm:text-lg h-8 sm:h-11"
+              className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 bg-accent text-accent-foreground hover:bg-accent/90"
             >
               <BarChart3 className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
               View Your Stats
