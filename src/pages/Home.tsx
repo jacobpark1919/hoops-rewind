@@ -114,7 +114,7 @@ export default function Home() {
         </div>
 
         {/* Mobile: top-aligned */}
-        <div className="flex sm:hidden flex-col items-stretch flex-1 pt-10">
+        <div className="flex sm:hidden flex-col items-stretch justify-center flex-1">
           <div className="flex items-center justify-between mb-5">
             <span className="text-[11px] tracking-widest uppercase text-muted-foreground">
               Puzzle #{puzzleNum}
