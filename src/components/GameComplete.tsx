@@ -54,7 +54,7 @@ export function GameComplete({
   
   // Create shareable text
   const sportLabel = sportFilter || "Everything";
-  const shareText = `Sports Rewind #${puzzleNum} ${sportLabel}
+  const shareText = `Hoops Rewind #${puzzleNum} ${sportLabel}
 ${emojiGrid}
 ${correctCount}/${totalRounds} correct`;
 
