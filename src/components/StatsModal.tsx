@@ -75,7 +75,7 @@ export function StatsModal({ open, onClose }: StatsModalProps) {
 
         {loading ? (
           <div className="flex justify-center py-8">
-            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin" />
           </div>
         ) : stats && stats.totalPlays === 0 ? (
           <p className="text-center text-muted-foreground py-6 text-sm">
