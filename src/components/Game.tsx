@@ -398,34 +398,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           
           {/* Right: Sport selector + Theme toggle */}
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-            {/* Sport dropdown - hidden on mobile */}
-            <div className="relative hidden sm:block">
-              <button
-                onClick={() => setSportDropdownOpen(!sportDropdownOpen)}
-                className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-semibold text-foreground px-2 sm:px-2.5 py-1 bg-secondary/50 rounded-lg hover:bg-secondary transition-colors"
-              >
-                <span>{currentSport.icon}</span>
-                <span className="hidden sm:inline">{currentSport.label}</span>
-                <ChevronDown className={`w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform ${sportDropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
-              
-              {sportDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
-                  {SPORT_OPTIONS.map((sport) => (
-                    <button
-                      key={sport.label}
-                      onClick={() => handleSportSelect(sport)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-muted/50 ${
-                        sport.value === sportFilter ? 'bg-primary/10' : ''
-                      }`}
-                    >
-                      <span className="text-lg">{sport.icon}</span>
-                      <span className="font-medium text-foreground">{sport.label}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
 
             {/* Stats button (logged-in users only) */}
             {user && (
@@ -477,7 +449,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                       {Array.from({ length: TOTAL_ROUNDS }, (_, i) => {
                         let bgColor = "bg-muted";
                         if (i === 0) {
-                          bgColor = "bg-yellow-400";
+                          bgColor = "bg-accent";
                         } else if (i <= resultHistory.length) {
                           const isCorrect = resultHistory[i - 1];
                           bgColor = isCorrect ? "bg-success" : "bg-destructive";
