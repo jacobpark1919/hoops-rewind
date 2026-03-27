@@ -65,7 +65,7 @@ export function StatsModal({ open, onClose }: StatsModalProps) {
       >
         <div className="flex items-center justify-between mb-5">
           <h2 className="font-display text-xl font-bold text-foreground flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-primary" />
+            <BarChart3 className="w-5 h-5 text-accent" />
             Your Stats
           </h2>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted transition-colors">
@@ -84,17 +84,17 @@ export function StatsModal({ open, onClose }: StatsModalProps) {
         ) : stats ? (
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-background rounded-xl p-4 text-center border border-border">
-              <Hash className="w-4 h-4 text-primary mx-auto mb-1.5" />
+              <Hash className="w-4 h-4 text-accent mx-auto mb-1.5" />
               <p className="text-2xl font-display font-bold text-foreground">{stats.totalPlays}</p>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Played</p>
             </div>
             <div className="bg-background rounded-xl p-4 text-center border border-border">
-              <Target className="w-4 h-4 text-primary mx-auto mb-1.5" />
+              <Target className="w-4 h-4 text-accent mx-auto mb-1.5" />
               <p className="text-2xl font-display font-bold text-foreground">{stats.averagePercentage}%</p>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">Average</p>
             </div>
             <div className="bg-background rounded-xl p-4 text-center border border-border">
-              <Flame className="w-4 h-4 text-primary mx-auto mb-1.5" />
+              <Flame className="w-4 h-4 text-accent mx-auto mb-1.5" />
               <p className="text-2xl font-display font-bold text-foreground">{stats.perfectStreak}</p>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">💯 Streak</p>
             </div>
