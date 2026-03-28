@@ -15,9 +15,10 @@ const ALL_SPORT_OPTIONS = [
 const ORIGIN_DATE = new Date(2026, 1, 12);
 
 function getPuzzleNumber() {
-  const now = new Date();
-  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const diff = Math.floor((startOfToday.getTime() - ORIGIN_DATE.getTime()) / (1000 * 60 * 60 * 24));
+  const easternStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+  const [y, m, d] = easternStr.split('-').map(Number);
+  const todayET = new Date(y, m - 1, d);
+  const diff = Math.floor((todayET.getTime() - ORIGIN_DATE.getTime()) / (1000 * 60 * 60 * 24));
   return Math.max(1, diff + 1);
 }
 
