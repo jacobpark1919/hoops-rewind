@@ -10,7 +10,8 @@ import { StatsModal } from "./StatsModal";
 import { useDrag } from "@/hooks/useDrag";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, Home, HelpCircle, ArrowDown, BarChart3 } from "lucide-react";
+import { ChevronDown, Home, HelpCircle, ArrowDown, BarChart3, LogIn } from "lucide-react";
+import { lovable } from "@/integrations/lovable/index";
 
 const TOTAL_ROUNDS = 8;
 
