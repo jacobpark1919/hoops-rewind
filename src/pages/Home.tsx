@@ -90,11 +90,11 @@ export default function Home() {
         {/* Desktop: centered */}
         <div className="hidden sm:flex flex-1 flex-col items-center justify-center text-center">
           <div className="flex items-center gap-2.5 mb-[clamp(16px,1.2vw,24px)]">
-            <span className="text-[clamp(11px,0.85vw,14px)] tracking-widest uppercase text-muted-foreground">
+            <span className="text-[clamp(11px,1vw,18px)] tracking-widest uppercase text-muted-foreground">
               Puzzle #{puzzleNum}
             </span>
-            <div className="w-[3px] h-[3px] rounded-full bg-border" />
-            <span className="text-[clamp(11px,0.85vw,14px)] text-muted-foreground">{today}</span>
+            <div className="w-[clamp(3px,0.3vw,5px)] h-[clamp(3px,0.3vw,5px)] rounded-full bg-border" />
+            <span className="text-[clamp(11px,1vw,18px)] text-muted-foreground">{today}</span>
           </div>
 
           <h1 className="font-display font-black text-[clamp(56px,7vw,120px)] leading-[0.88] tracking-tight text-foreground mb-[clamp(24px,1.8vw,36px)]">
@@ -108,8 +108,8 @@ export default function Home() {
             Play Today's Puzzle
           </button>
 
-          <div className="flex items-center gap-1.5 text-[clamp(11px,0.8vw,14px)] text-muted-foreground">
-            <div className="w-[5px] h-[5px] rounded-full bg-success animate-pulse" />
+          <div className="flex items-center gap-[clamp(6px,0.5vw,10px)] text-[clamp(11px,1vw,18px)] text-muted-foreground">
+            <div className="w-[clamp(5px,0.4vw,8px)] h-[clamp(5px,0.4vw,8px)] rounded-full bg-success animate-pulse" />
             New puzzle every day
           </div>
         </div>
@@ -142,7 +142,7 @@ export default function Home() {
       </main>
 
       {/* Desktop footer */}
-      <footer className="hidden sm:flex shrink-0 border-t border-border py-4 items-center justify-center gap-1.5 flex-wrap px-8">
+      <footer className="hidden sm:flex shrink-0 border-t border-border py-2.5 items-center justify-center gap-1.5 flex-wrap px-8">
         <Link to="/contact" className="text-[11px] text-muted-foreground hover:text-foreground transition-colors tracking-wide">
           Contact Us
         </Link>
