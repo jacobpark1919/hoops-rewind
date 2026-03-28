@@ -387,9 +387,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               <span className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap flex-shrink-0">
                 Puzzle #{(() => {
                   const origin = new Date('2026-02-12');
-                  const today = new Date();
-                  const todayLocal = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-                  const diff = Math.floor((todayLocal.getTime() - origin.getTime()) / (1000 * 60 * 60 * 24));
+                  const easternStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+                  const [y, m, d] = easternStr.split('-').map(Number);
+                  const todayET = new Date(y, m - 1, d);
+                  const diff = Math.floor((todayET.getTime() - origin.getTime()) / (1000 * 60 * 60 * 24));
                   return Math.max(1, diff + 1);
                 })()}
               </span>

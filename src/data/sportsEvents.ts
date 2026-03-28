@@ -9,8 +9,9 @@ export interface SportsEvent {
 }
 
 export async function getDailyChallengeEvents(sportFilter?: string | null): Promise<SportsEvent[]> {
-  const d = new Date();
-  const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  // Use Eastern Time (America/New_York) so challenges reset at midnight ET for everyone
+  const eastern = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+  const today = eastern; // already YYYY-MM-DD format
 
   let challengeQuery = supabase
     .from("daily_challenges")
