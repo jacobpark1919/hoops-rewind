@@ -412,6 +412,18 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               </button>
             )}
 
+            {/* Sign in (non-logged-in users only) */}
+            {!user && (
+              <button
+                onClick={() => lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.href })}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors text-foreground text-sm font-medium"
+                aria-label="Sign in"
+              >
+                <LogIn className="w-4 h-4" />
+                Sign In
+              </button>
+            )}
+
             {/* How to play */}
             <button
               onClick={() => setShowInstructions(true)}
