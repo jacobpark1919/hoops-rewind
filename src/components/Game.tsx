@@ -416,11 +416,11 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             {!user && (
               <button
                 onClick={() => lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.href })}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors text-foreground text-sm font-medium"
+                className="flex items-center gap-1.5 p-2 sm:px-3 sm:py-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors text-foreground text-sm font-medium"
                 aria-label="Sign in"
               >
                 <LogIn className="w-4 h-4" />
-                Sign In
+                <span className="hidden sm:inline">Sign In</span>
               </button>
             )}
 
