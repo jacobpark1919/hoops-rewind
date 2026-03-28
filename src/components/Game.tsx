@@ -10,7 +10,8 @@ import { StatsModal } from "./StatsModal";
 import { useDrag } from "@/hooks/useDrag";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, Home, HelpCircle, ArrowDown, BarChart3 } from "lucide-react";
+import { ChevronDown, Home, HelpCircle, ArrowDown, BarChart3, LogIn } from "lucide-react";
+import { lovable } from "@/integrations/lovable/index";
 
 const TOTAL_ROUNDS = 8;
 
@@ -408,6 +409,18 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 aria-label="Your stats"
               >
                 <BarChart3 className="w-5 h-5 text-foreground" />
+              </button>
+            )}
+
+            {/* Sign in (non-logged-in users only) */}
+            {!user && (
+              <button
+                onClick={() => lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.href })}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors text-foreground text-sm font-medium"
+                aria-label="Sign in"
+              >
+                <LogIn className="w-4 h-4" />
+                Sign In
               </button>
             )}
 
