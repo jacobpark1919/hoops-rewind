@@ -451,8 +451,8 @@ export default function Home() {
               aria-label="Sign in"
               style={{ gap: '6px' }}
             >
-              <LogIn className="w-[14px] h-[14px] text-muted-foreground" />
-              <span className="home-signin-label" style={{ fontSize: '12px', fontWeight: 600, color: 'hsl(var(--muted-foreground))' }}>Sign In</span>
+              <LogIn className="w-[14px] h-[14px] text-foreground" />
+              <span className="home-signin-label" style={{ fontSize: '12px', fontWeight: 600, color: 'hsl(var(--foreground))' }}>Sign In</span>
             </button>
           )}
           <ThemeToggle size="sm" className="sm:hidden" />
