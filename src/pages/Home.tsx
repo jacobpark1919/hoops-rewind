@@ -447,10 +447,10 @@ export default function Home() {
           ) : (
             <button
               onClick={() => lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin })}
-              className="home-nav-btn"
+              className="home-nav-icon-btn"
+              aria-label="Sign in"
             >
-              <LogIn className="w-[13px] h-[13px]" />
-              <span className="home-signin-label">Sign In</span>
+              <LogIn className="w-[14px] h-[14px] text-muted-foreground" />
             </button>
           )}
           <ThemeToggle size="sm" className="sm:hidden" />
