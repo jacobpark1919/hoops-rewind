@@ -113,7 +113,11 @@ Deno.serve(async (req) => {
       const body = await req.json();
 
       if (action === "add-event") {
-        const { title, year, sport, icon } = body;
+        const parsed = addEventSchema.safeParse(body);
+        if (!parsed.success) {
+          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        }
+        const { title, year, sport, icon } = parsed.data;
         const { data, error } = await supabase
           .from("sports_events")
           .insert({ title, year, sport, icon })
