@@ -511,39 +511,39 @@ export default function Home() {
                 <div className="home-timeline-label">EARLIEST</div>
 
                 <div className="home-event-card">
+                  <div className="home-year-badge home-y-green">1989</div>
                   <BballIcon />
                   <div className="home-event-text">
                     <div className="home-event-title">Pistons sweep Lakers 4-0 in the Finals</div>
                     <div className="home-event-cat">Basketball</div>
                   </div>
-                  <div className="home-year-badge home-y-green">1989</div>
                 </div>
 
                 <div className="home-event-card mystery">
+                  <div className="home-year-badge home-y-mystery">???</div>
                   <BballIcon />
                   <div className="home-event-text">
                     <div className="home-event-title mystery-text">LeBron James gets drafted #1 overall</div>
                     <div className="home-event-cat">Basketball</div>
                   </div>
-                  <div className="home-year-badge home-y-mystery">???</div>
                 </div>
 
                 <div className="home-event-card">
+                  <div className="home-year-badge home-y-green">2012</div>
                   <BballIcon />
                   <div className="home-event-text">
                     <div className="home-event-title">Jeremy Lin sparks Linsanity in New York</div>
                     <div className="home-event-cat">Basketball</div>
                   </div>
-                  <div className="home-year-badge home-y-green">2012</div>
                 </div>
 
                 <div className="home-event-card">
+                  <div className="home-year-badge home-y-green">2021</div>
                   <BballIcon />
                   <div className="home-event-text">
                     <div className="home-event-title">Steph Curry breaks the all-time three-point record</div>
                     <div className="home-event-cat">Basketball</div>
                   </div>
-                  <div className="home-year-badge home-y-green">2021</div>
                 </div>
 
                 <div className="home-timeline-label" style={{ marginTop: 8, marginBottom: 0 }}>LATEST</div>
