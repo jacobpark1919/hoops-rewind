@@ -9,11 +9,17 @@ import { useState } from "react";
 const ORIGIN_DATE = new Date(2026, 1, 12);
 
 function getPuzzleNumber() {
-  const easternStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
-  const [y, m, d] = easternStr.split('-').map(Number);
-  const todayET = new Date(y, m - 1, d);
-  const diff = Math.floor((todayET.getTime() - ORIGIN_DATE.getTime()) / (1000 * 60 * 60 * 24));
-  return Math.max(1, diff + 1);
+  const ORIGIN_UTC = Date.UTC(2026, 1, 12);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+  const y = +parts.find(p => p.type === "year")!.value;
+  const m = +parts.find(p => p.type === "month")!.value;
+  const d = +parts.find(p => p.type === "day")!.value;
+  return Math.max(1, Math.floor((Date.UTC(y, m - 1, d) - ORIGIN_UTC) / 86400000) + 1);
 }
 
 export default function Home() {
