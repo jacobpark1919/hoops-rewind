@@ -516,7 +516,7 @@ export default function Admin() {
                           <div key={ce.event_id} className="flex items-center gap-2 text-sm text-muted-foreground">
                             <span className="w-5 text-center font-mono text-xs">{ce.position}</span>
                             <span>{ce.sports_events?.icon}</span>
-                            <span className="truncate">{ce.sports_events?.title}</span>
+                            <span className="break-words">{ce.sports_events?.title}</span>
                             <span className="ml-auto text-xs">{ce.sports_events?.year}</span>
                           </div>
                         ))}
