@@ -372,6 +372,7 @@ export default function Home() {
           .home-signin-label { display: none; }
 
           .home-main {
+            flex: none;
             padding: 32px 20px 28px;
             align-items: flex-start;
           }
