@@ -367,6 +367,7 @@ export default function Home() {
 
         /* Mobile */
         @media (max-width: 640px) {
+          .home-page { min-height: auto; overflow: auto; }
           .home-nav { padding: 12px 20px; }
           .home-signin-label { display: none; }
 
