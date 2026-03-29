@@ -1,5 +1,39 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { timingSafeEqual } from "https://deno.land/std@0.224.0/crypto/timing_safe_equal.ts";
+import { z } from "https://esm.sh/zod@3.25.76";
+
+// Input schemas for POST actions
+const addEventSchema = z.object({
+  title: z.string().min(1).max(500),
+  year: z.number().int().min(1800).max(2100),
+  sport: z.string().min(1).max(100),
+  icon: z.string().min(1).max(10),
+});
+
+const addEventsBulkSchema = z.object({
+  events: z.array(addEventSchema).min(1).max(100),
+});
+
+const createChallengeSchema = z.object({
+  challenge_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  sport_filter: z.string().max(100).nullable().optional(),
+  event_ids: z.array(z.string().uuid()).min(1).max(20),
+});
+
+const updateChallengeSchema = z.object({
+  challenge_id: z.string().uuid(),
+  challenge_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  sport_filter: z.string().max(100).nullable().optional(),
+  event_ids: z.array(z.string().uuid()).min(1).max(20).optional(),
+});
+
+const deleteChallengeSchema = z.object({
+  challenge_id: z.string().uuid(),
+});
+
+const deleteEventSchema = z.object({
+  event_id: z.string().uuid(),
+});
 
 function safeCompare(a: string, b: string): boolean {
   const encoder = new TextEncoder();
