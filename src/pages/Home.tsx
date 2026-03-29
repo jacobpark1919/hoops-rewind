@@ -100,7 +100,7 @@ export default function Home() {
         .home-nav-btn:hover { background: hsl(var(--secondary)); }
 
         .home-nav-icon-btn {
-          background: transparent;
+          background: hsl(var(--secondary));
           border: 1px solid hsl(var(--border));
           border-radius: 8px;
           padding: 7px 10px;
