@@ -128,25 +128,32 @@ Deno.serve(async (req) => {
       }
 
       if (action === "add-events-bulk") {
-        const { events } = body;
+        const parsed = addEventsBulkSchema.safeParse(body);
+        if (!parsed.success) {
+          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        }
         const { data, error } = await supabase
           .from("sports_events")
-          .insert(events)
+          .insert(parsed.data.events)
           .select();
         if (error) throw error;
         return new Response(JSON.stringify(data), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
 
       if (action === "create-challenge") {
-        const { challenge_date, sport_filter, event_ids } = body;
+        const parsed = createChallengeSchema.safeParse(body);
+        if (!parsed.success) {
+          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        }
+        const { challenge_date, sport_filter, event_ids } = parsed.data;
         const { data: challenge, error: challengeError } = await supabase
           .from("daily_challenges")
-          .insert({ challenge_date, sport_filter })
+          .insert({ challenge_date, sport_filter: sport_filter ?? null })
           .select()
           .single();
         if (challengeError) throw challengeError;
 
-        const challengeEvents = event_ids.map((event_id: string, index: number) => ({
+        const challengeEvents = event_ids.map((event_id, index) => ({
           challenge_id: challenge.id,
           event_id,
           position: index + 1,
@@ -160,7 +167,11 @@ Deno.serve(async (req) => {
       }
 
       if (action === "update-challenge") {
-        const { challenge_id, challenge_date, sport_filter, event_ids } = body;
+        const parsed = updateChallengeSchema.safeParse(body);
+        if (!parsed.success) {
+          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        }
+        const { challenge_id, challenge_date, sport_filter, event_ids } = parsed.data;
         const updateData: Record<string, unknown> = {};
         if (challenge_date !== undefined) updateData.challenge_date = challenge_date;
         if (sport_filter !== undefined) updateData.sport_filter = sport_filter;
@@ -170,7 +181,7 @@ Deno.serve(async (req) => {
         }
         if (event_ids) {
           await supabase.from("daily_challenge_events").delete().eq("challenge_id", challenge_id);
-          const challengeEvents = event_ids.map((event_id: string, index: number) => ({
+          const challengeEvents = event_ids.map((event_id, index) => ({
             challenge_id,
             event_id,
             position: index + 1,
@@ -182,16 +193,22 @@ Deno.serve(async (req) => {
       }
 
       if (action === "delete-challenge") {
-        const { challenge_id } = body;
-        await supabase.from("daily_challenge_events").delete().eq("challenge_id", challenge_id);
-        const { error } = await supabase.from("daily_challenges").delete().eq("id", challenge_id);
+        const parsed = deleteChallengeSchema.safeParse(body);
+        if (!parsed.success) {
+          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        }
+        await supabase.from("daily_challenge_events").delete().eq("challenge_id", parsed.data.challenge_id);
+        const { error } = await supabase.from("daily_challenges").delete().eq("id", parsed.data.challenge_id);
         if (error) throw error;
         return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
 
       if (action === "delete-event") {
-        const { event_id } = body;
-        const { error } = await supabase.from("sports_events").delete().eq("id", event_id);
+        const parsed = deleteEventSchema.safeParse(body);
+        if (!parsed.success) {
+          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        }
+        const { error } = await supabase.from("sports_events").delete().eq("id", parsed.data.event_id);
         if (error) throw error;
         return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
