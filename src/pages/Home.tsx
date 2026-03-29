@@ -262,7 +262,7 @@ export default function Home() {
 
         .home-round-dots { display: flex; gap: 4px; }
         .home-rdot { width: 7px; height: 7px; border-radius: 50%; }
-        .home-rdot-on { background: hsl(var(--accent)); }
+        .home-rdot-on { background: hsl(var(--success)); }
         .home-rdot-off { background: hsl(var(--border)); }
 
         .home-timeline-label {
