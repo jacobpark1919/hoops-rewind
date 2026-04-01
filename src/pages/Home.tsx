@@ -53,7 +53,7 @@ export default function Home() {
     <div className="home-page">
       <Helmet>
         <title>NBA Trivia &amp; Basketball History Game | Hoops Rewind</title>
-        <meta name="description" content="The NBA timeline game. Drag NBA moments into chronological order. New puzzle drops every day." />
+        <meta name="description" content="Hoops Rewind is the daily NBA timeline game. Drag historic basketball moments into chronological order and prove you know ball. New puzzle every day — free to play." />
       </Helmet>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Georgia&display=swap');
