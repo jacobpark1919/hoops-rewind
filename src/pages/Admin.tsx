@@ -90,6 +90,66 @@ export default function Admin() {
   const [editingChallengeId, setEditingChallengeId] = useState<string | null>(null);
   const [hideUsedEvents, setHideUsedEvents] = useState(false);
 
+  // JSON import
+  const [showJsonImport, setShowJsonImport] = useState(false);
+  const [jsonInput, setJsonInput] = useState("");
+  const [jsonError, setJsonError] = useState<string | null>(null);
+  const [jsonLoading, setJsonLoading] = useState(false);
+
+  const handleJsonImport = async () => {
+    setJsonError(null);
+    try {
+      const parsed = JSON.parse(jsonInput);
+      if (!parsed.challenge_date || !Array.isArray(parsed.events) || parsed.events.length !== 8) {
+        setJsonError("JSON must have a 'challenge_date' (YYYY-MM-DD) and exactly 8 'events'.");
+        return;
+      }
+      for (const [i, ev] of parsed.events.entries()) {
+        if (!ev.title || !ev.year || !ev.sport || !ev.icon) {
+          setJsonError(`Event ${i + 1} missing required fields (title, year, sport, icon).`);
+          return;
+        }
+      }
+      setJsonLoading(true);
+
+      // 1. Bulk-create events
+      const eventsResult = await callAdmin("add-events-bulk", "POST", {
+        events: parsed.events.map((ev: any) => ({
+          title: ev.title,
+          year: Number(ev.year),
+          sport: ev.sport,
+          icon: ev.icon,
+        })),
+      }, undefined, passwordInput);
+
+      if (!Array.isArray(eventsResult) || eventsResult.length !== 8) {
+        setJsonError("Failed to create events: " + JSON.stringify(eventsResult));
+        setJsonLoading(false);
+        return;
+      }
+
+      // 2. Create challenge with those event IDs
+      const challengeResult = await callAdmin("create-challenge", "POST", {
+        challenge_date: parsed.challenge_date,
+        sport_filter: parsed.sport_filter ?? null,
+        event_ids: eventsResult.map((e: any) => e.id),
+      }, undefined, passwordInput);
+
+      if (challengeResult?.error) {
+        setJsonError("Challenge creation failed: " + JSON.stringify(challengeResult.error));
+        setJsonLoading(false);
+        return;
+      }
+
+      setJsonInput("");
+      setShowJsonImport(false);
+      await Promise.all([fetchEvents(), fetchChallenges()]);
+      setJsonLoading(false);
+    } catch (e: any) {
+      setJsonError("Invalid JSON: " + e.message);
+    }
+  };
+
   // Enable scrolling only on admin page
   useEffect(() => {
     document.documentElement.classList.add("admin-scroll");
@@ -292,21 +352,55 @@ export default function Admin() {
         {/* CHALLENGES TAB */}
         {tab === "challenges" && (
           <div className="space-y-4">
-            <Button onClick={() => {
-              if (showCreateChallenge) {
-                setShowCreateChallenge(false);
-                setEditingChallengeId(null);
-                setSelectedEventIds([]);
-              } else {
-                setEditingChallengeId(null);
-                setSelectedEventIds([]);
-                setChallengeDate("");
-                setChallengeSport(null);
-                setShowCreateChallenge(true);
-              }
-            }} size="sm">
-              <Plus className="w-4 h-4 mr-1" /> New Challenge
-            </Button>
+            <div className="flex gap-2 flex-wrap">
+              <Button onClick={() => {
+                if (showCreateChallenge) {
+                  setShowCreateChallenge(false);
+                  setEditingChallengeId(null);
+                  setSelectedEventIds([]);
+                } else {
+                  setEditingChallengeId(null);
+                  setSelectedEventIds([]);
+                  setChallengeDate("");
+                  setChallengeSport(null);
+                  setShowCreateChallenge(true);
+                  setShowJsonImport(false);
+                }
+              }} size="sm">
+                <Plus className="w-4 h-4 mr-1" /> New Challenge
+              </Button>
+              <Button
+                variant={showJsonImport ? "secondary" : "outline"}
+                size="sm"
+                onClick={() => { setShowJsonImport(!showJsonImport); setShowCreateChallenge(false); setJsonError(null); }}
+              >
+                Import JSON Puzzle
+              </Button>
+            </div>
+
+            {showJsonImport && (
+              <div className="border border-border rounded-xl p-4 space-y-3 bg-card">
+                <h3 className="font-semibold text-foreground text-sm">Import Puzzle from JSON</h3>
+                <p className="text-xs text-muted-foreground">
+                  Paste JSON with this format: {`{"challenge_date":"YYYY-MM-DD","sport_filter":"Basketball"|null,"events":[{"title":"...","year":2020,"sport":"Basketball","icon":"🏀"},...]}`} — exactly 8 events.
+                </p>
+                <textarea
+                  value={jsonInput}
+                  onChange={e => { setJsonInput(e.target.value); setJsonError(null); }}
+                  placeholder='{"challenge_date":"2026-04-02","sport_filter":null,"events":[...]}'
+                  className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm font-mono min-h-[160px]"
+                />
+                {jsonError && <p className="text-destructive text-xs">{jsonError}</p>}
+                <div className="flex gap-2">
+                  <Button onClick={handleJsonImport} disabled={!jsonInput.trim() || jsonLoading} size="sm">
+                    {jsonLoading ? "Importing..." : "Import & Create Puzzle"}
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => { setShowJsonImport(false); setJsonInput(""); setJsonError(null); }}>
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
 
             {showCreateChallenge && (
               <div className="border border-border rounded-xl p-4 space-y-4 bg-card">
