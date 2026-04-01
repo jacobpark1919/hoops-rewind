@@ -13,7 +13,7 @@ export default function PrivacyPolicy() {
     <div className="min-h-screen bg-background text-foreground px-4 py-8 max-w-2xl mx-auto">
       <Helmet>
         <title>Privacy Policy | Hoops Rewind</title>
-        <meta name="description" content="Privacy policy for Hoops Rewind." />
+        <meta name="description" content="Read the Hoops Rewind privacy policy. Learn how we collect, store, and protect your data on our daily NBA trivia and basketball history game." />
       </Helmet>
       <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
         <ArrowLeft className="w-4 h-4" /> Back

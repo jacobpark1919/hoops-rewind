@@ -13,7 +13,7 @@ export default function Contact() {
     <div className="min-h-screen bg-background text-foreground px-4 py-8 max-w-2xl mx-auto">
       <Helmet>
         <title>Contact Us | Hoops Rewind</title>
-        <meta name="description" content="Get in touch with the Hoops Rewind team." />
+        <meta name="description" content="Have a question or feedback about Hoops Rewind? Get in touch with the team behind the daily NBA trivia and basketball history game." />
       </Helmet>
       <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
         <ArrowLeft className="w-4 h-4" /> Back
