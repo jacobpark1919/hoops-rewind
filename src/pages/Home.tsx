@@ -40,7 +40,7 @@ export default function Home() {
   const puzzleNum = getPuzzleNumber();
 
   const BballIcon = () => (
-    <svg viewBox="0 0 24 24" className="shrink-0" style={{ width: 'clamp(22px, 2.5vh, 36px)', height: 'clamp(22px, 2.5vh, 36px)' }}>
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="shrink-0" style={{ width: 'clamp(22px, 2.5vh, 36px)', height: 'clamp(22px, 2.5vh, 36px)' }}>
       <circle cx="12" cy="12" r="11" fill="hsl(var(--accent))" />
       <path d="M12 1 Q12 12 12 23" stroke="rgba(0,0,0,0.25)" strokeWidth="1.2" fill="none" />
       <path d="M1 12 Q12 12 23 12" stroke="rgba(0,0,0,0.25)" strokeWidth="1.2" fill="none" />
