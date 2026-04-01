@@ -23,6 +23,7 @@ export default function Play() {
         <title>Play Today's Puzzle | Hoops Rewind</title>
         <meta name="description" content="Play today's Hoops Rewind puzzle. Sort iconic NBA events and basketball history moments into chronological order. A new sports trivia challenge drops every day." />
       </Helmet>
+      <h1 className="sr-only-seo">Play Today's NBA Basketball History Puzzle — Hoops Rewind</h1>
       <Game sportFilter={sportFilter} onSportChange={handleSportChange} />
     </>
   );
