@@ -567,6 +567,7 @@ export default function Home() {
       {/* FOOTER */}
       <footer className="home-footer">
         <div className="home-footer-links">
+          <Link to="/faq">FAQ</Link><span>·</span>
           <Link to="/contact">Contact Us</Link><span>·</span>
           <Link to="/privacy">Privacy Policy</Link><span>·</span>
           <Link to="/terms">Terms of Service</Link><span>·</span>
