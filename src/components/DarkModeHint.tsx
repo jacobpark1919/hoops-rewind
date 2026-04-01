@@ -16,6 +16,7 @@ export function DarkModeHint() {
         
         {/* Simple arrow pointing right */}
         <svg 
+          aria-hidden="true"
           className="w-6 h-6 text-muted-foreground/70 -mt-1"
           viewBox="0 0 24 24" 
           fill="none" 
