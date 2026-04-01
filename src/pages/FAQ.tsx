@@ -52,6 +52,20 @@ export default function FAQ() {
           name="description"
           content="Got questions about Hoops Rewind? Find answers about how to play, how scoring works, and more about the daily NBA basketball history and sports trivia game."
         />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((faq) => ({
+              "@type": "Question",
+              name: faq.q,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.a,
+              },
+            })),
+          })}
+        </script>
       </Helmet>
       <Link
         to="/"

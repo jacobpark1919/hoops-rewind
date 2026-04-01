@@ -431,7 +431,7 @@ export default function Home() {
       {/* NAV */}
       <nav className="home-nav">
         <span className="home-logo" style={{ cursor: 'default' }}>
-          <svg width="22" height="15" viewBox="0 0 20 14">
+          <svg width="22" height="15" viewBox="0 0 20 14" aria-hidden="true">
             <polygon points="10,0 0,7 10,14" fill="hsl(var(--accent))" />
             <polygon points="20,0 10,7 20,14" fill="hsl(var(--accent))" />
           </svg>
