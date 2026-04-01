@@ -209,23 +209,6 @@ hoopsrewind.app`;
             </div>
           )}
 
-
-          <p className="text-xs sm:text-sm text-muted-foreground uppercase tracking-wider flex items-center justify-center gap-1 mt-0.5 sm:mt-1 font-semibold">
-            Try a different game mode
-          </p>
-          <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
-            {ALL_SPORT_OPTIONS.filter(s => s.value !== (sportFilter ?? null)).map((sport) => (
-              <Button
-                key={sport.label}
-                onClick={() => navigate(sport.path)}
-                size="lg"
-                variant="outline"
-                className="w-full font-display text-xs sm:text-base h-8 sm:h-11"
-              >
-                {sport.icon} {sport.label}
-              </Button>
-            ))}
-          </div>
         </div>
       </div>
 
