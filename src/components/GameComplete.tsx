@@ -57,7 +57,8 @@ export function GameComplete({
   const sportLabel = sportFilter || "Everything";
   const shareText = `Hoops Rewind #${puzzleNum} ${sportLabel}
 ${emojiGrid}
-${correctCount}/${totalRounds} correct`;
+${correctCount}/${totalRounds} correct
+hoopsrewind.app`;
 
   const handleCopy = async () => {
     try {
