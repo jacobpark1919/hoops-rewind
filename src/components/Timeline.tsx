@@ -290,7 +290,14 @@ export function Timeline({
                 onPointerDown={(e) => e.stopPropagation()}
               >
                 <Button
-                  onPointerUp={(e) => { e.stopPropagation(); onConfirm(); }}
+                  onPointerUp={(e) => {
+                    e.stopPropagation();
+                    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                    const { clientX, clientY } = e;
+                    if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
+                      onConfirm();
+                    }
+                  }}
                   size="sm"
                   className="rounded-full shadow-lg px-5 py-3 text-sm font-medium min-h-[44px] bg-accent text-accent-foreground hover:bg-accent/90"
                 >
