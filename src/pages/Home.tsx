@@ -1,4 +1,5 @@
 import { useNavigate, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { StatsModal } from "@/components/StatsModal";
 import { useAuth } from "@/hooks/useAuth";
