@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { ArrowLeft } from "lucide-react";
 
 export default function TermsOfService() {
@@ -10,6 +11,10 @@ export default function TermsOfService() {
 
   return (
     <div className="min-h-screen bg-background text-foreground px-4 py-8 max-w-2xl mx-auto">
+      <Helmet>
+        <title>Terms of Service | Hoops Rewind</title>
+        <meta name="description" content="Terms of service for Hoops Rewind." />
+      </Helmet>
       <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
         <ArrowLeft className="w-4 h-4" /> Back
       </Link>

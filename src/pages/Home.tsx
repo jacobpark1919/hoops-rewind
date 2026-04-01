@@ -1,4 +1,5 @@
 import { useNavigate, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { StatsModal } from "@/components/StatsModal";
 import { useAuth } from "@/hooks/useAuth";
@@ -50,6 +51,10 @@ export default function Home() {
 
   return (
     <div className="home-page">
+      <Helmet>
+        <title>NBA Trivia &amp; Basketball History Game | Hoops Rewind</title>
+        <meta name="description" content="The NBA timeline game. Drag NBA moments into chronological order. New puzzle drops every day." />
+      </Helmet>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Georgia&display=swap');
 
