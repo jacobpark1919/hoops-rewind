@@ -162,19 +162,6 @@ hoopsrewind.app`;
           )}
         </Button>
 
-        <div className="flex flex-col gap-1.5 sm:gap-3">
-          {/* Stats button for logged-in users */}
-          {user && (
-            <Button
-              onClick={() => setShowStats(true)}
-              size="lg"
-              className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 bg-accent text-accent-foreground hover:bg-accent/90"
-            >
-              <BarChart3 className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
-              View Your Stats
-            </Button>
-          )}
-
         {/* Share Results button — only shown when Web Share API is available */}
         {typeof navigator !== 'undefined' && typeof navigator.share === 'function' && (
           <Button
@@ -187,6 +174,19 @@ hoopsrewind.app`;
             Share Results
           </Button>
         )}
+
+        <div className="flex flex-col gap-1.5 sm:gap-3">
+          {/* Stats button for logged-in users */}
+          {user && (
+            <Button
+              onClick={() => setShowStats(true)}
+              size="lg"
+              className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 bg-accent text-accent-foreground hover:bg-accent/90"
+            >
+              <BarChart3 className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
+              View Your Stats
+            </Button>
+          )}
 
           <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
             <Button
