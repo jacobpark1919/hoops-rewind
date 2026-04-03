@@ -175,6 +175,18 @@ hoopsrewind.app`;
             </Button>
           )}
 
+        {/* Share Results button — only shown when Web Share API is available */}
+        {typeof navigator !== 'undefined' && typeof navigator.share === 'function' && (
+          <Button
+            onClick={() => navigator.share({ text: shareText }).catch(() => {})}
+            size="lg"
+            variant="outline"
+            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-2 sm:mb-4"
+          >
+            <Share2 className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
+            Share Results
+          </Button>
+        )}
 
           <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
             <Button
