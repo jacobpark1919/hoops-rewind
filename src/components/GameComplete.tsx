@@ -1,4 +1,4 @@
-import { Trophy, Copy, Check, Home, BarChart3, LogOut } from "lucide-react";
+import { Trophy, Copy, Check, Home, BarChart3, LogOut, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
