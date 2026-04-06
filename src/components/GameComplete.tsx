@@ -60,6 +60,9 @@ ${emojiGrid}
 ${correctCount}/${totalRounds} correct
 hoopsrewind.app`;
 
+  const xShareText = `Hoops Rewind #${puzzleNum} ${sportLabel}\n${emojiGrid}\n${correctCount}/${totalRounds} correct\n@PlayHoopsRewind`;
+  const xShareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(xShareText)}`;
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(shareText);
