@@ -336,7 +336,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             <p className="font-display text-lg font-bold text-foreground mb-1">No challenge today</p>
             <p className="text-muted-foreground text-sm mb-4">Check back tomorrow or try a different sport.</p>
             <button
-              onClick={() => window.location.href = '/'}
+              onClick={() => window.location.href = '/home'}
               className="text-primary text-sm underline underline-offset-2"
             >
               ← Back to home
