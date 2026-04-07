@@ -15,7 +15,7 @@ export default function CookiePolicy() {
         <title>Cookie Policy | Hoops Rewind</title>
         <meta name="description" content="Learn how Hoops Rewind uses cookies to improve your experience on our daily NBA trivia game. Read our cookie policy for full details." />
       </Helmet>
-      <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+      <Link to="/home" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
         <ArrowLeft className="w-4 h-4" /> Back
       </Link>
       <h1 className="font-display text-2xl font-bold mb-4">Cookie Policy</h1>

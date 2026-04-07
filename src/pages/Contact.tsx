@@ -15,7 +15,7 @@ export default function Contact() {
         <title>Contact Us | Hoops Rewind</title>
         <meta name="description" content="Have a question or feedback about Hoops Rewind? Get in touch with the team behind the daily NBA trivia and basketball history game." />
       </Helmet>
-      <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+      <Link to="/home" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
         <ArrowLeft className="w-4 h-4" /> Back
       </Link>
       <h1 className="font-display text-2xl font-bold mb-4">Contact Us</h1>
