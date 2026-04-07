@@ -438,34 +438,6 @@ export default function Home() {
           HOOPS REWIND
         </span>
         <div className="home-nav-right">
-          {user ? (
-            <>
-              <button
-                onClick={() => setShowStats(true)}
-                className="home-nav-icon-btn"
-                aria-label="Your stats"
-              >
-                <BarChart3 className="w-[14px] h-[14px] text-muted-foreground" />
-              </button>
-              <button
-                onClick={signOut}
-                className="home-nav-icon-btn"
-                aria-label="Sign out"
-              >
-                <LogOut className="w-[14px] h-[14px] text-muted-foreground" />
-              </button>
-            </>
-          ) : (
-            <button
-              onClick={() => lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin })}
-              className="home-nav-icon-btn"
-              aria-label="Sign in"
-              style={{ gap: '6px' }}
-            >
-              <LogIn className="w-[14px] h-[14px] text-foreground" />
-              <span className="home-signin-label" style={{ fontSize: '12px', fontWeight: 600, color: 'hsl(var(--foreground))' }}>Sign In</span>
-            </button>
-          )}
           <ThemeToggle size="sm" className="sm:hidden" />
           <ThemeToggle className="hidden sm:block" />
         </div>

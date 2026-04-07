@@ -401,28 +401,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           {/* Right: Sport selector + Theme toggle */}
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
 
-            {/* Stats button (logged-in users only) */}
-            {user && (
-              <button
-                onClick={() => setShowStats(true)}
-                className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
-                aria-label="Your stats"
-              >
-                <BarChart3 className="w-5 h-5 text-foreground" />
-              </button>
-            )}
-
-            {/* Sign in (non-logged-in users only) */}
-            {!user && (
-              <button
-                onClick={() => lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.href })}
-                className="flex items-center gap-1.5 p-2 sm:px-3 sm:py-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors text-foreground text-sm font-medium"
-                aria-label="Sign in"
-              >
-                <LogIn className="w-4 h-4" />
-                <span className="hidden sm:inline">Sign In</span>
-              </button>
-            )}
+            {/* Auth UI hidden — keeping code for future use */}
 
             {/* How to play */}
             <button
