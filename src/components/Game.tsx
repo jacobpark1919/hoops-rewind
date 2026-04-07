@@ -177,9 +177,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setShowIdleHint(false);
     
     if (currentEventIndex === 1 && currentEvent && !gameComplete && !pendingPlacement) {
-      idleTimerRef.current = setTimeout(() => {
-        setShowIdleHint(true);
-      }, 5000);
+      setShowIdleHint(true);
     }
     
     return () => {
