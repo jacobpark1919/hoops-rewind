@@ -433,7 +433,7 @@ export function Timeline({
       {/* Earliest label - centered above timeline */}
       <div className="relative mb-2">
         <p className="absolute text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider left-4 sm:left-6 whitespace-nowrap">
-          Before ({placedEvents.length > 0 ? Math.min(...placedEvents.filter(p => p.status !== "pending").map(p => p.event.year)) : '?'})
+          Before ({placedEvents.length > 0 ? Math.min(...placedEvents.map(p => p.event.year)) : '?'})
         </p>
         <div className="h-3" />
       </div>
