@@ -33,9 +33,9 @@ const PENDING_EXTRA_SPACE = 36;
 const BOTTOM_PADDING = 80;
 
 const SPORT_MODE_OPTIONS = [
-  { label: "Everything", value: null, icon: "🏆", path: "/play" },
-  { label: "Football", value: "American Football", icon: "🏈", path: "/play?sport=American+Football" },
-  { label: "Basketball", value: "Basketball", icon: "🏀", path: "/play?sport=Basketball" },
+  { label: "Everything", value: null, icon: "🏆", path: "/" },
+  { label: "Football", value: "American Football", icon: "🏈", path: "/?sport=American+Football" },
+  { label: "Basketball", value: "Basketball", icon: "🏀", path: "/?sport=Basketball" },
 ];
 
 export function Timeline({
