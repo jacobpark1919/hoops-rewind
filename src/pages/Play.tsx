@@ -9,7 +9,7 @@ export default function Play() {
   const [sportFilter, setSportFilter] = useState<string | null>(initialSport);
 
   useEffect(() => {
-    const sport = searchParams.get("sport");
+    const sport = searchParams.get("sport") ?? "Basketball";
     setSportFilter(sport);
   }, [searchParams]);
 
