@@ -5,7 +5,7 @@ import { Game } from "@/components/Game";
 
 export default function Play() {
   const [searchParams] = useSearchParams();
-  const initialSport = searchParams.get("sport");
+  const initialSport = searchParams.get("sport") ?? "Basketball";
   const [sportFilter, setSportFilter] = useState<string | null>(initialSport);
 
   useEffect(() => {
