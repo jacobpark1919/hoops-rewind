@@ -370,7 +370,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           {/* Left: Home button + Round counter + date/puzzle */}
           <div className="flex items-center gap-1 sm:gap-3 min-w-0">
             <button
-              onClick={() => window.location.href = '/'}
+              onClick={() => window.location.href = '/home'}
               className="p-1 sm:p-1.5 rounded-full hover:bg-muted transition-colors flex-shrink-0"
               aria-label="Back to home"
             >

@@ -29,7 +29,7 @@ export default function Home() {
   const [showStats, setShowStats] = useState(false);
 
   const handlePlay = () => {
-    navigate("/play?sport=Basketball");
+    navigate("/?sport=Basketball");
   };
 
   const today = new Date().toLocaleDateString("en-US", {

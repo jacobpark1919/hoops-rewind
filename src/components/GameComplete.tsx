@@ -7,9 +7,9 @@ import { SignUpCTA } from "./SignUpCTA";
 import { StatsModal } from "./StatsModal";
 
 const ALL_SPORT_OPTIONS = [
-  { label: "Everything", value: null, icon: "🏆", path: "/play" },
-  { label: "Football", value: "American Football", icon: "🏈", path: "/play?sport=American+Football" },
-  { label: "Basketball", value: "Basketball", icon: "🏀", path: "/play?sport=Basketball" },
+  { label: "Everything", value: null, icon: "🏆", path: "/" },
+  { label: "Football", value: "American Football", icon: "🏈", path: "/?sport=American+Football" },
+  { label: "Basketball", value: "Basketball", icon: "🏀", path: "/?sport=Basketball" },
 ];
 
 const ORIGIN_DATE = new Date(2026, 1, 12);
@@ -206,7 +206,7 @@ hoopsrewind.app`;
 
           <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
             <Button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/home")}
               size="lg"
               variant="outline"
               className="w-full font-display text-xs sm:text-lg h-8 sm:h-11"
