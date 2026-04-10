@@ -64,7 +64,16 @@ hoopsrewind.app`;
   const xShareText = `Hoops Rewind #${puzzleNum} ${sportLabel}\n${emojiGrid}\n${correctCount}/${totalRounds} correct\n@PlayHoopsRewind`;
   const xShareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(xShareText)}`;
 
+  const trackShare = (shareType: string) => {
+    supabase.from("share_events").insert({
+      share_type: shareType,
+      sport_filter: sportFilter ?? null,
+      puzzle_number: puzzleNum,
+    }).then(() => {});
+  };
+
   const handleCopy = async () => {
+    trackShare("copy");
     try {
       await navigator.clipboard.writeText(shareText);
       setCopied(true);
