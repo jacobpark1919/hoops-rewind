@@ -178,7 +178,7 @@ hoopsrewind.app`;
         {/* Share Results button — only shown when Web Share API is available */}
         {typeof navigator !== 'undefined' && typeof navigator.share === 'function' && (
           <Button
-            onClick={() => navigator.share({ text: shareText }).catch(() => {})}
+            onClick={() => { trackShare("native_share"); navigator.share({ text: shareText }).catch(() => {}); }}
             size="lg"
             variant="outline"
             className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-2 sm:mb-4 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
@@ -190,7 +190,7 @@ hoopsrewind.app`;
 
         {/* Share to X button */}
         <Button
-          onClick={() => window.open(xShareUrl, '_blank')}
+          onClick={() => { trackShare("share_x"); window.open(xShareUrl, '_blank'); }}
           size="lg"
           variant="outline"
           className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-2 sm:mb-4 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
@@ -203,7 +203,7 @@ hoopsrewind.app`;
 
         {/* Follow us on X */}
         <Button
-          onClick={() => window.open('https://x.com/PlayHoopsRewind', '_blank')}
+          onClick={() => { trackShare("follow_x"); window.open('https://x.com/PlayHoopsRewind', '_blank'); }}
           size="lg"
           variant="outline"
           className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-2 sm:mb-4"
