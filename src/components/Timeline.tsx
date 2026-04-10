@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useLayoutEffect, useState, useCallback } from "react";
 import { SportsEvent } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { DropZone } from "./DropZone";
@@ -181,7 +181,7 @@ export function Timeline({
   // Snapshot card centers at the moment drag begins (before any zone expansion).
   const snapshotCenters = useRef<number[]>([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isDragging && snapshotCenters.current.length === 0) {
       const centers: number[] = [];
       nonPendingEvents.forEach((item) => {
