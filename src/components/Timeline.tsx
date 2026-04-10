@@ -1,4 +1,4 @@
-import { useRef, useEffect, useLayoutEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { SportsEvent } from "@/data/sportsEvents";
 import { EventCard } from "./EventCard";
 import { DropZone } from "./DropZone";
@@ -181,7 +181,7 @@ export function Timeline({
   // Snapshot card centers at the moment drag begins (before any zone expansion).
   const snapshotCenters = useRef<number[]>([]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isDragging && snapshotCenters.current.length === 0) {
       const centers: number[] = [];
       nonPendingEvents.forEach((item) => {
@@ -204,14 +204,35 @@ export function Timeline({
       return;
     }
 
-    const centers = snapshotCenters.current;
+    if (isDraggingDown) {
+      const liveCenters: number[] = [];
+      nonPendingEvents.forEach((item) => {
+        const el = cardRefs.current.get(item.event.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          liveCenters.push((rect.top + rect.bottom) / 2);
+        }
+      });
+      liveCenters.sort((a, b) => a - b);
 
-    if (centers.length === 0) { onDropZoneChange(0); return; }
-    if (dragY < centers[0]) { onDropZoneChange(0); return; }
-    for (let i = 0; i < centers.length - 1; i++) {
-      if (dragY < centers[i + 1]) { onDropZoneChange(i + 1); return; }
+      if (liveCenters.length === 0) { onDropZoneChange(0); return; }
+
+      if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
+
+      for (let i = 0; i < liveCenters.length - 1; i++) {
+        if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
+      }
+      onDropZoneChange(liveCenters.length);
+    } else {
+      const centers = snapshotCenters.current;
+
+      if (centers.length === 0) { onDropZoneChange(0); return; }
+      if (dragY < centers[0]) { onDropZoneChange(0); return; }
+      for (let i = 0; i < centers.length - 1; i++) {
+        if (dragY < centers[i + 1]) { onDropZoneChange(i + 1); return; }
+      }
+      onDropZoneChange(centers.length);
     }
-    onDropZoneChange(centers.length);
   }, [isDragging, isDraggingDown, dragY, onDropZoneChange, nonPendingEvents]);
 
 
