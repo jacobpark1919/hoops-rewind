@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { SignUpCTA } from "./SignUpCTA";
 import { StatsModal } from "./StatsModal";
+import { supabase } from "@/integrations/supabase/client";
 
 const ALL_SPORT_OPTIONS = [
   { label: "Everything", value: null, icon: "🏆", path: "/" },
