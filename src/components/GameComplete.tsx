@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { SignUpCTA } from "./SignUpCTA";
 import { StatsModal } from "./StatsModal";
+import { supabase } from "@/integrations/supabase/client";
 
 const ALL_SPORT_OPTIONS = [
   { label: "Everything", value: null, icon: "🏆", path: "/" },
@@ -63,7 +64,16 @@ hoopsrewind.app`;
   const xShareText = `Hoops Rewind #${puzzleNum} ${sportLabel}\n${emojiGrid}\n${correctCount}/${totalRounds} correct\n@PlayHoopsRewind`;
   const xShareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(xShareText)}`;
 
+  const trackShare = (shareType: string) => {
+    supabase.from("share_events").insert({
+      share_type: shareType,
+      sport_filter: sportFilter ?? null,
+      puzzle_number: puzzleNum,
+    }).then(() => {});
+  };
+
   const handleCopy = async () => {
+    trackShare("copy");
     try {
       await navigator.clipboard.writeText(shareText);
       setCopied(true);
@@ -168,7 +178,7 @@ hoopsrewind.app`;
         {/* Share Results button — only shown when Web Share API is available */}
         {typeof navigator !== 'undefined' && typeof navigator.share === 'function' && (
           <Button
-            onClick={() => navigator.share({ text: shareText }).catch(() => {})}
+            onClick={() => { trackShare("native_share"); navigator.share({ text: shareText }).catch(() => {}); }}
             size="lg"
             variant="outline"
             className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-2 sm:mb-4 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
@@ -180,7 +190,7 @@ hoopsrewind.app`;
 
         {/* Share to X button */}
         <Button
-          onClick={() => window.open(xShareUrl, '_blank')}
+          onClick={() => { trackShare("share_x"); window.open(xShareUrl, '_blank'); }}
           size="lg"
           variant="outline"
           className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-2 sm:mb-4 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
@@ -193,7 +203,7 @@ hoopsrewind.app`;
 
         {/* Follow us on X */}
         <Button
-          onClick={() => window.open('https://x.com/PlayHoopsRewind', '_blank')}
+          onClick={() => { trackShare("follow_x"); window.open('https://x.com/PlayHoopsRewind', '_blank'); }}
           size="lg"
           variant="outline"
           className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-2 sm:mb-4"

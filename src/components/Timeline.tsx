@@ -299,7 +299,7 @@ export function Timeline({
                     }
                   }}
                   size="sm"
-                  className="rounded-full shadow-lg px-5 py-3 text-sm font-medium min-h-[44px] bg-accent text-accent-foreground hover:bg-accent/90"
+                  className="rounded-full shadow-lg px-4 py-2 text-xs sm:text-sm font-medium min-h-[36px] sm:min-h-[44px] bg-accent text-accent-foreground hover:bg-accent/90"
                 >
                   Tap to place
                 </Button>
