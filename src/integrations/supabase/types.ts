@@ -134,6 +134,30 @@ export type Database = {
         }
         Relationships: []
       }
+      share_events: {
+        Row: {
+          created_at: string
+          id: string
+          puzzle_number: number | null
+          share_type: string
+          sport_filter: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          puzzle_number?: number | null
+          share_type: string
+          sport_filter?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          puzzle_number?: number | null
+          share_type?: string
+          sport_filter?: string | null
+        }
+        Relationships: []
+      }
       sports_events: {
         Row: {
           created_at: string
