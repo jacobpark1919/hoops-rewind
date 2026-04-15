@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ChevronDown, HelpCircle, ArrowDown, BarChart3, LogIn, CalendarDays } from "lucide-react";
 import { lovable } from "@/integrations/lovable/index";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { PastPuzzlePicker } from "./PastPuzzlePicker";
 
 const TOTAL_ROUNDS = 8;
 
