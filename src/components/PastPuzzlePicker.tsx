@@ -36,11 +36,8 @@ export function PastPuzzlePicker({ selectedDate, onSelect }: PastPuzzlePickerPro
 
   return (
     <div className="p-3 min-w-[260px]">
-      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
-        Past 7 Days
-      </p>
-      <p className="text-[10px] text-muted-foreground mb-2">
-        Play any puzzle from the last week
+      <p className="text-xs text-muted-foreground mb-2">
+        Try a puzzle from the past week
       </p>
       <div className="flex flex-col gap-1">
         {days.map((dateStr) => {
@@ -62,17 +59,17 @@ export function PastPuzzlePicker({ selectedDate, onSelect }: PastPuzzlePickerPro
                   : "hover:bg-secondary text-foreground"
               }`}
             >
+              <span>{dayName}, {monthDay}</span>
               <span className="flex items-center gap-2">
+                {isToday && (
+                  <span className={`text-xs font-medium ${isActive ? "text-primary-foreground/80" : "text-accent"}`}>
+                    Today
+                  </span>
+                )}
                 <span className={`text-[10px] font-mono ${isActive ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
                   #{puzzleNum}
                 </span>
-                <span>{dayName}, {monthDay}</span>
               </span>
-              {isToday && (
-                <span className={`text-xs font-medium ${isActive ? "text-primary-foreground/80" : "text-accent"}`}>
-                  Today
-                </span>
-              )}
             </button>
           );
         })}
