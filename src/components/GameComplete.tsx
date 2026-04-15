@@ -1,4 +1,4 @@
-import { Trophy, Copy, Check, BarChart3, Share2 } from "lucide-react";
+import { Trophy, Copy, Check, BarChart3, Share2, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
@@ -39,7 +39,7 @@ export function GameComplete({
   sportFilter,
   onViewTimeline,
 }: GameCompleteProps) {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const [copied, setCopied] = useState(false);
   const [showStats, setShowStats] = useState(false);
   const today = new Date().toLocaleDateString("en-US", {
@@ -241,6 +241,17 @@ hoopsrewind.app`;
               View Timeline
             </Button>
           </div>
+          {user && (
+            <Button
+              onClick={signOut}
+              size="sm"
+              variant="ghost"
+              className="w-full font-display text-[10px] sm:text-xs h-6 sm:h-8 text-muted-foreground hover:text-foreground"
+            >
+              <LogOut className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1" />
+              Sign Out
+            </Button>
+          )}
         </div>
       </div>
 
