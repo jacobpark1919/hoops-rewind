@@ -283,12 +283,12 @@ export function Timeline({
             }}
             className="cursor-grab active:cursor-grabbing relative touch-none"
           >
-            <EventCard event={pendingItem.event} showYear={false} status={pendingItem.status} />
             {placedEvents.filter(e => e.status !== "pending").length <= 1 && (
-              <p className="text-[10px] sm:text-xs text-muted-foreground text-center mt-1 font-medium animate-pulse">
+              <p className="text-[10px] sm:text-xs text-muted-foreground text-center mb-1 font-medium animate-pulse">
                 Drag card up or down to reposition
               </p>
             )}
+            <EventCard event={pendingItem.event} showYear={false} status={pendingItem.status} />
             {onConfirm && (
               <div
                 className="absolute -bottom-5 left-1/2 -translate-x-1/2 z-20"
