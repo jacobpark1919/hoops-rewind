@@ -1,7 +1,6 @@
-import { Trophy, Copy, Check, Home, BarChart3, LogOut, Share2 } from "lucide-react";
+import { Trophy, Copy, Check, BarChart3, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { SignUpCTA } from "./SignUpCTA";
 import { StatsModal } from "./StatsModal";
@@ -40,8 +39,7 @@ export function GameComplete({
   sportFilter,
   onViewTimeline,
 }: GameCompleteProps) {
-  const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const [copied, setCopied] = useState(false);
   const [showStats, setShowStats] = useState(false);
   const today = new Date().toLocaleDateString("en-US", {
@@ -222,16 +220,18 @@ hoopsrewind.app`;
         )}
 
         <div className="flex flex-col gap-1.5 sm:gap-3">
-          <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
-            <Button
-              onClick={() => navigate("/home")}
-              size="lg"
-              variant="outline"
-              className="w-full font-display text-xs sm:text-lg h-8 sm:h-11"
-            >
-              <Home className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
-              Home
-            </Button>
+          <div className={`grid ${user ? 'grid-cols-2' : ''} gap-1.5 sm:gap-3`}>
+            {user && (
+              <Button
+                onClick={() => setShowStats(true)}
+                size="lg"
+                variant="outline"
+                className="w-full font-display text-xs sm:text-lg h-8 sm:h-11"
+              >
+                <BarChart3 className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
+                Your Stats
+              </Button>
+            )}
             <Button
               onClick={onViewTimeline}
               size="lg"
