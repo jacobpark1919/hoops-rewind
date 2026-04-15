@@ -8,10 +8,10 @@ export interface SportsEvent {
   icon: string;
 }
 
-export async function getDailyChallengeEvents(sportFilter?: string | null): Promise<SportsEvent[]> {
+export async function getDailyChallengeEvents(sportFilter?: string | null, dateOverride?: string): Promise<SportsEvent[]> {
   // Use Eastern Time (America/New_York) so challenges reset at midnight ET for everyone
   const eastern = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
-  const today = eastern; // already YYYY-MM-DD format
+  const today = dateOverride || eastern; // allow overriding for past puzzles
 
   let challengeQuery = supabase
     .from("daily_challenges")
