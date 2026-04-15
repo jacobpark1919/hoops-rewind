@@ -67,6 +67,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [dragSource, setDragSource] = useState<"new" | "pending" | null>(null);
   const [hasDragMoved, setHasDragMoved] = useState(false);
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [calendarOpen, setCalendarOpen] = useState(false);
   // Keeps the drop zone visible (frozen) after drop until "Tap to place" is confirmed/cancelled
   const [frozenDropZone, setFrozenDropZone] = useState<number | null>(null);
   
