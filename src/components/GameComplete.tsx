@@ -1,10 +1,12 @@
-import { Trophy, Copy, Check, BarChart3, Share2, LogOut, Mail } from "lucide-react";
+import { Trophy, Copy, Check, BarChart3, Share2, LogOut, Mail, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { SignUpCTA } from "./SignUpCTA";
 import { StatsModal } from "./StatsModal";
+import { PastPuzzlePicker } from "./PastPuzzlePicker";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { supabase } from "@/integrations/supabase/client";
 
 const ALL_SPORT_OPTIONS = [
@@ -30,6 +32,7 @@ interface GameCompleteProps {
   resultHistory: boolean[];
   sportFilter?: string | null;
   onViewTimeline: () => void;
+  onPlayPastPuzzle?: () => void;
 }
 
 export function GameComplete({
@@ -39,6 +42,7 @@ export function GameComplete({
   resultHistory,
   sportFilter,
   onViewTimeline,
+  onPlayPastPuzzle,
 }: GameCompleteProps) {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
@@ -155,31 +159,12 @@ hoopsrewind.app`;
           </p>
         </div>
 
-        {/* Share Results — copies to clipboard + native share if available */}
+        {/* Copy Results */}
         <Button
-          onClick={async () => {
-            trackShare("share");
-            // Always copy to clipboard
-            try {
-              await navigator.clipboard.writeText(shareText);
-            } catch {
-              const textArea = document.createElement("textarea");
-              textArea.value = shareText;
-              document.body.appendChild(textArea);
-              textArea.select();
-              document.execCommand("copy");
-              document.body.removeChild(textArea);
-            }
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-            // Also trigger native share if available
-            if (typeof navigator.share === 'function') {
-              navigator.share({ text: shareText }).catch(() => {});
-            }
-          }}
+          onClick={handleCopy}
           size="lg"
           variant="outline"
-          className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-2 sm:mb-4 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+          className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3"
         >
           {copied ? (
             <>
@@ -188,11 +173,24 @@ hoopsrewind.app`;
             </>
           ) : (
             <>
-              <Share2 className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
-              Share Results
+              <Copy className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
+              Copy Results
             </>
           )}
         </Button>
+
+        {/* Share Results — native share if available */}
+        {typeof navigator !== 'undefined' && typeof navigator.share === 'function' && (
+          <Button
+            onClick={() => { trackShare("share"); navigator.share({ text: shareText }).catch(() => {}); }}
+            size="lg"
+            variant="outline"
+            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-2 sm:mb-4 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+          >
+            <Share2 className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
+            Share Results
+          </Button>
+        )}
 
         {/* Sign up CTA for guests */}
         {!user && (
@@ -219,46 +217,60 @@ hoopsrewind.app`;
           onClick={() => navigate("/contact")}
           size="lg"
           variant="outline"
-          className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-2 sm:mb-4"
+          className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3"
         >
           <Mail className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1" />
           Contact Us
         </Button>
 
-        <div className="flex flex-col gap-1.5 sm:gap-3">
-          <div className={`grid ${user ? 'grid-cols-2' : ''} gap-1.5 sm:gap-3`}>
-            {user && (
-              <Button
-                onClick={() => setShowStats(true)}
-                size="lg"
-                variant="outline"
-                className="w-full font-display text-xs sm:text-lg h-8 sm:h-11"
-              >
-                <BarChart3 className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
-                Your Stats
-              </Button>
-            )}
-            <Button
-              onClick={onViewTimeline}
-              size="lg"
-              variant="outline"
-              className="w-full font-display text-xs sm:text-lg h-8 sm:h-11"
-            >
-              View Timeline
-            </Button>
-          </div>
-          {user && (
-            <Button
-              onClick={signOut}
-              size="sm"
-              variant="ghost"
-              className="w-full font-display text-[10px] sm:text-xs h-6 sm:h-8 text-muted-foreground hover:text-foreground"
-            >
-              <LogOut className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1" />
-              Sign Out
-            </Button>
-          )}
-        </div>
+        {/* Your Stats (logged in only) */}
+        {user && (
+          <Button
+            onClick={() => setShowStats(true)}
+            size="lg"
+            variant="outline"
+            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3"
+          >
+            <BarChart3 className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
+            Your Stats
+          </Button>
+        )}
+
+        {/* View Timeline */}
+        <Button
+          onClick={onViewTimeline}
+          size="lg"
+          variant="outline"
+          className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3"
+        >
+          View Timeline
+        </Button>
+
+        {/* Play a Previous Puzzle (logged in only) */}
+        {user && onPlayPastPuzzle && (
+          <Button
+            onClick={onPlayPastPuzzle}
+            size="lg"
+            variant="outline"
+            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3"
+          >
+            <CalendarDays className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
+            Play a Previous Puzzle
+          </Button>
+        )}
+
+        {/* Sign Out (logged in only) */}
+        {user && (
+          <Button
+            onClick={signOut}
+            size="sm"
+            variant="ghost"
+            className="w-full font-display text-[10px] sm:text-xs h-6 sm:h-8 text-muted-foreground hover:text-foreground"
+          >
+            <LogOut className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1" />
+            Sign Out
+          </Button>
+        )}
       </div>
 
       {/* Stats Modal */}
