@@ -1,6 +1,7 @@
-import { Trophy, Copy, Check, BarChart3, Share2, LogOut } from "lucide-react";
+import { Trophy, Copy, Check, BarChart3, Share2, LogOut, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { SignUpCTA } from "./SignUpCTA";
 import { StatsModal } from "./StatsModal";
@@ -39,6 +40,7 @@ export function GameComplete({
   sportFilter,
   onViewTimeline,
 }: GameCompleteProps) {
+  const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const [copied, setCopied] = useState(false);
   const [showStats, setShowStats] = useState(false);
@@ -199,18 +201,29 @@ hoopsrewind.app`;
           Share to X
         </Button>
 
-        {/* Follow us on X */}
-        <Button
-          onClick={() => { trackShare("follow_x"); window.open('https://x.com/PlayHoopsRewind', '_blank'); }}
-          size="lg"
-          variant="outline"
-          className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-2 sm:mb-4"
-        >
-          <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-          </svg>
-          Follow us on X
-        </Button>
+        {/* Follow on X + Contact Us side by side */}
+        <div className="grid grid-cols-2 gap-1.5 sm:gap-3 mb-2 sm:mb-4">
+          <Button
+            onClick={() => { trackShare("follow_x"); window.open('https://x.com/PlayHoopsRewind', '_blank'); }}
+            size="lg"
+            variant="outline"
+            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11"
+          >
+            <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+            Follow on X
+          </Button>
+          <Button
+            onClick={() => navigate("/contact")}
+            size="lg"
+            variant="outline"
+            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11"
+          >
+            <Mail className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1" />
+            Contact Us
+          </Button>
+        </div>
 
         {/* Sign up CTA for guests */}
         {!user && (
