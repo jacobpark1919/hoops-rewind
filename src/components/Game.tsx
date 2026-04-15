@@ -307,10 +307,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     if (nextIndex >= gameEvents.length) {
       const delay = isCorrect ? 500 : 2500;
       const finalCorrect = isCorrect ? correctCount + 1 : correctCount;
-      // Save result for logged-in users
-      if (user) {
+      // Save result for logged-in users (only for today's puzzle)
+      if (user && !selectedDate) {
         saveGameResult(user.id, sportFilter || null, finalCorrect);
-      } else {
+      } else if (!user && !selectedDate) {
         // Store pending result so we can save it if user signs up on the game-over screen
         pendingResultRef.current = { sportFilter: sportFilter || null, correctCount: finalCorrect };
       }
