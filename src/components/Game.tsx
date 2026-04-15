@@ -201,7 +201,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     setActiveDropZone(null);
     setIsLoadingEvents(true);
     
-    const events = await getDailyChallengeEvents(sportFilter);
+    const events = await getDailyChallengeEvents(sportFilter, selectedDate ?? undefined);
     
     setGameEvents(events);
     setIsLoadingEvents(false);
@@ -213,7 +213,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
       setPlacedEvents([]);
       setCurrentEventIndex(0);
     }
-  }, [sportFilter]);
+  }, [sportFilter, selectedDate]);
 
   useEffect(() => {
     initializeGame();
