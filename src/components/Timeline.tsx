@@ -267,10 +267,12 @@ export function Timeline({
       // Render the pending card living inside the drop zone area.
       // No CSS transitions on this container — prevents any height animation on drop.
       // min-h-28 matches the active drop zone height so the layout stays pixel-perfect static.
+      const isFirstDrop = placedEvents.filter(e => e.status !== "pending").length <= 1;
       return (
         <div
           key={`drop-${position}`}
-          className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 min-h-28 sm:min-h-32 flex flex-col justify-center p-2 ${marginClass ?? ''}`}
+          className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 flex flex-col justify-center p-2 ${marginClass ?? ''}`}
+          style={{ minHeight: isFirstDrop ? undefined : (window.innerWidth >= 640 ? 128 : 112) }}
         >
           <div
             ref={(el) => {
@@ -283,9 +285,9 @@ export function Timeline({
             }}
             className="cursor-grab active:cursor-grabbing relative touch-none"
           >
-            {placedEvents.filter(e => e.status !== "pending").length <= 1 && (
-              <p className="text-[10px] sm:text-xs text-muted-foreground text-center mb-1 font-medium animate-pulse">
-                Drag card up or down to reposition
+            {isFirstDrop && (
+              <p className="text-xs sm:text-sm text-primary text-center mb-1.5 font-bold tracking-wide">
+                ↕ Drag card to reposition
               </p>
             )}
             <EventCard event={pendingItem.event} showYear={false} status={pendingItem.status} />
