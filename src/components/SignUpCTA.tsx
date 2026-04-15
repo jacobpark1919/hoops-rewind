@@ -32,10 +32,10 @@ export function SignUpCTA({ gameData }: SignUpCTAProps) {
   return (
     <div className="bg-card border-2 border-primary/30 rounded-xl p-4 sm:p-5">
       <h3 className="font-display text-base sm:text-lg font-bold text-foreground mb-1">
-        Track Your Progress
+        🔓 Play the Last 7 Days
       </h3>
       <p className="text-xs sm:text-sm text-muted-foreground mb-3">
-        Create a free account to save your stats, streaks, and averages.
+        Sign in to unlock the past week's puzzles, track your stats, and save your streaks.
       </p>
       <div className="flex flex-col gap-2">
         <button
