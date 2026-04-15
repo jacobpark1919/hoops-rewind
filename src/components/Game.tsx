@@ -368,41 +368,55 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
       <div className="container max-w-2xl mx-auto py-2 sm:py-4 px-3 sm:px-4 flex flex-col flex-1">
         {/* Compact header row with everything */}
         <header className="flex items-center justify-between mb-1 sm:mb-2 gap-1">
-          {/* Left: Home button + Round counter + date/puzzle */}
-          <div className="flex items-center gap-1 sm:gap-3 min-w-0">
-            <button
-              onClick={() => window.location.href = '/home'}
-              className="p-1 sm:p-1.5 rounded-full hover:bg-muted transition-colors flex-shrink-0"
-              aria-label="Back to home"
-            >
-              <Home className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-muted-foreground hover:text-foreground" />
-            </button>
-            <div className="flex items-center gap-0.5 sm:gap-1.5 min-w-0">
-              <span className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">
-                Round {currentEventIndex}/{TOTAL_ROUNDS}
-              </span>
-              <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0">·</span>
-              <span className="text-xs sm:text-sm font-semibold text-foreground truncate">
-                {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-              </span>
-              <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0">·</span>
-              <span className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap flex-shrink-0">
-                Puzzle #{(() => {
-                  const origin = new Date('2026-02-12');
-                  const easternStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
-                  const [y, m, d] = easternStr.split('-').map(Number);
-                  const todayET = new Date(y, m - 1, d);
-                  const diff = Math.floor((todayET.getTime() - origin.getTime()) / (1000 * 60 * 60 * 24));
-                  return Math.max(1, diff + 1);
-                })()}
-              </span>
-            </div>
+          {/* Left: Round counter + date/puzzle */}
+          <div className="flex items-center gap-0.5 sm:gap-1.5 min-w-0">
+            <span className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">
+              Round {currentEventIndex}/{TOTAL_ROUNDS}
+            </span>
+            <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0">·</span>
+            <span className="text-xs sm:text-sm font-semibold text-foreground truncate">
+              {selectedDate
+                ? new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                : new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+            </span>
+            <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0">·</span>
+            <span className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap flex-shrink-0">
+              Puzzle #{(() => {
+                const origin = new Date('2026-02-12');
+                const dateStr = selectedDate || new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+                const [y, m, d] = dateStr.split('-').map(Number);
+                const target = new Date(y, m - 1, d);
+                const diff = Math.floor((target.getTime() - origin.getTime()) / (1000 * 60 * 60 * 24));
+                return Math.max(1, diff + 1);
+              })()}
+            </span>
           </div>
           
-          {/* Right: Sport selector + Theme toggle */}
+          {/* Right: Calendar + X + Help + Theme */}
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
 
-            {/* Auth UI hidden — keeping code for future use */}
+            {/* Calendar - past puzzles (logged in only) */}
+            {user && (
+              <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+                <PopoverTrigger asChild>
+                  <button
+                    className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                    aria-label="Play past puzzles"
+                  >
+                    <CalendarDays className="w-5 h-5 text-foreground" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="end">
+                  <PastPuzzlePicker
+                    selectedDate={selectedDate}
+                    onSelect={(date) => {
+                      setSelectedDate(date);
+                      setCalendarOpen(false);
+                    }}
+                  />
+                </PopoverContent>
+              </Popover>
+            )}
 
             {/* Follow on X */}
             <a
