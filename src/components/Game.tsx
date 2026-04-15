@@ -419,6 +419,17 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               </Popover>
             )}
 
+            {/* Stats (logged in) or Follow on X (logged out) */}
+            {user ? (
+              <button
+                onClick={() => setShowStats(true)}
+                className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                aria-label="View your stats"
+              >
+                <BarChart3 className="w-5 h-5 text-foreground" />
+              </button>
+            ) : null}
+
             {/* Follow on X */}
             <a
               href="https://x.com/PlayHoopsRewind"
