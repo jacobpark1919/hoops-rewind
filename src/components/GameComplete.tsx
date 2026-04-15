@@ -185,7 +185,7 @@ hoopsrewind.app`;
             onClick={() => { trackShare("share"); navigator.share({ text: shareText }).catch(() => {}); }}
             size="lg"
             variant="outline"
-            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-2 sm:mb-4 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
           >
             <Share2 className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
             Share Results
@@ -199,29 +199,17 @@ hoopsrewind.app`;
           </div>
         )}
 
-        {/* Follow on X */}
-        <Button
-          onClick={() => { trackShare("follow_x"); window.open('https://x.com/PlayHoopsRewind', '_blank'); }}
-          size="lg"
-          variant="outline"
-          className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3"
-        >
-          <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-          </svg>
-          Follow on X
-        </Button>
-
-        {/* Contact Us */}
-        <Button
-          onClick={() => navigate("/contact")}
-          size="lg"
-          variant="outline"
-          className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3"
-        >
-          <Mail className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1" />
-          Contact Us
-        </Button>
+        {/* Play a Previous Puzzle (logged in only) — highlighted orange */}
+        {user && onPlayPastPuzzle && (
+          <Button
+            onClick={onPlayPastPuzzle}
+            size="lg"
+            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3 bg-accent text-accent-foreground hover:bg-accent/90"
+          >
+            <CalendarDays className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
+            Play a Previous Puzzle
+          </Button>
+        )}
 
         {/* Your Stats (logged in only) */}
         {user && (
@@ -246,18 +234,16 @@ hoopsrewind.app`;
           View Timeline
         </Button>
 
-        {/* Play a Previous Puzzle (logged in only) */}
-        {user && onPlayPastPuzzle && (
-          <Button
-            onClick={onPlayPastPuzzle}
-            size="lg"
-            variant="outline"
-            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3"
-          >
-            <CalendarDays className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
-            Play a Previous Puzzle
-          </Button>
-        )}
+        {/* Contact Us */}
+        <Button
+          onClick={() => navigate("/contact")}
+          size="lg"
+          variant="outline"
+          className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3"
+        >
+          <Mail className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1" />
+          Contact Us
+        </Button>
 
         {/* Sign Out (logged in only) */}
         {user && (
