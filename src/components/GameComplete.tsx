@@ -214,6 +214,13 @@ hoopsrewind.app`;
           Follow us on X
         </Button>
 
+        {/* Sign up CTA for guests */}
+        {!user && (
+          <div className="mb-2 sm:mb-4">
+            <SignUpCTA gameData={{ correctCount, totalRounds, resultHistory, sportFilter: sportFilter ?? null, won }} />
+          </div>
+        )}
+
         <div className="flex flex-col gap-1.5 sm:gap-3">
           <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
             <Button
