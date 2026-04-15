@@ -10,8 +10,9 @@ import { StatsModal } from "./StatsModal";
 import { useDrag } from "@/hooks/useDrag";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, Home, HelpCircle, ArrowDown, BarChart3, LogIn } from "lucide-react";
+import { ChevronDown, HelpCircle, ArrowDown, BarChart3, LogIn, CalendarDays } from "lucide-react";
 import { lovable } from "@/integrations/lovable/index";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const TOTAL_ROUNDS = 8;
 
