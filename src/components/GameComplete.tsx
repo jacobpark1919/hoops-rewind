@@ -1,10 +1,12 @@
-import { Trophy, Copy, Check, BarChart3, Share2, LogOut, Mail } from "lucide-react";
+import { Trophy, Copy, Check, BarChart3, Share2, LogOut, Mail, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { SignUpCTA } from "./SignUpCTA";
 import { StatsModal } from "./StatsModal";
+import { PastPuzzlePicker } from "./PastPuzzlePicker";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { supabase } from "@/integrations/supabase/client";
 
 const ALL_SPORT_OPTIONS = [
@@ -30,6 +32,7 @@ interface GameCompleteProps {
   resultHistory: boolean[];
   sportFilter?: string | null;
   onViewTimeline: () => void;
+  onPlayPastPuzzle?: () => void;
 }
 
 export function GameComplete({
@@ -39,6 +42,7 @@ export function GameComplete({
   resultHistory,
   sportFilter,
   onViewTimeline,
+  onPlayPastPuzzle,
 }: GameCompleteProps) {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
