@@ -566,6 +566,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             resultHistory={resultHistory}
             sportFilter={sportFilter}
             onViewTimeline={() => { setGameComplete(false); setIsViewingTimeline(true); }}
+            onPlayPastPuzzle={() => { setCalendarOpen(true); setGameComplete(false); }}
           />
         )}
 
