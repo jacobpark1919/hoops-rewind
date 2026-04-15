@@ -89,7 +89,7 @@ hoopsrewind.app`;
   };
 
   return (
-    <div className="fixed inset-0 bg-background/95 backdrop-blur-sm flex items-center justify-center z-50 animate-slide-up overflow-y-auto">
+    <div className="fixed inset-0 bg-background flex items-center justify-center z-50 animate-slide-up overflow-y-auto">
       <div className="text-center max-w-md mx-auto px-3 sm:px-4 py-3 sm:py-0 w-full max-h-[100dvh] overflow-y-auto">
         {won ? (
           <>
