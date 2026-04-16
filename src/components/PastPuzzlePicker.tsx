@@ -3,7 +3,7 @@ interface PastPuzzlePickerProps {
   onSelect: (date: string | null) => void;
 }
 
-const ORIGIN_DATE = new Date(2026, 1, 12);
+const ORIGIN_UTC = Date.UTC(2026, 1, 12);
 
 function getEasternToday(): string {
   return new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
@@ -11,9 +11,7 @@ function getEasternToday(): string {
 
 function getPuzzleNumberForDate(dateStr: string): number {
   const [y, m, d] = dateStr.split('-').map(Number);
-  const date = new Date(y, m - 1, d);
-  const diff = Math.floor((date.getTime() - ORIGIN_DATE.getTime()) / (1000 * 60 * 60 * 24));
-  return Math.max(1, diff + 1);
+  return Math.max(1, Math.floor((Date.UTC(y, m - 1, d) - ORIGIN_UTC) / 86400000) + 1);
 }
 
 function getPast7Days(): string[] {
