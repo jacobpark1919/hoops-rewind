@@ -3,7 +3,7 @@ interface PastPuzzlePickerProps {
   onSelect: (date: string | null) => void;
 }
 
-const ORIGIN_DATE = new Date(2026, 1, 12);
+const ORIGIN_UTC = Date.UTC(2026, 1, 12);
 
 function getEasternToday(): string {
   return new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
