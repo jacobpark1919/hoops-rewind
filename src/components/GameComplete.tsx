@@ -95,39 +95,39 @@ hoopsrewind.app`;
   };
 
   return (
-    <div className="fixed inset-0 bg-background flex items-start sm:items-center justify-center z-50 animate-slide-up overflow-y-auto sm:overflow-hidden overscroll-contain" onWheel={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()}>
-      <div className="text-center max-w-md mx-auto px-3 sm:px-4 py-3 sm:py-2 lg:py-6 w-full sm:max-h-[100dvh] sm:overflow-y-auto sm:overscroll-contain">
+    <div className="fixed inset-0 bg-background flex items-start sm:items-center justify-center z-50 animate-slide-up overflow-y-auto overscroll-contain" onWheel={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()}>
+      <div className="text-center max-w-md mx-auto px-3 sm:px-4 py-3 sm:py-6 w-full">
         {won ? (
           <>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-20 lg:h-20 mx-auto mb-1.5 sm:mb-2 lg:mb-6 rounded-full bg-success/20 flex items-center justify-center">
-              <Trophy className="w-5 h-5 sm:w-6 sm:h-6 lg:w-10 lg:h-10 text-success" />
+            <div className="w-10 h-10 sm:w-20 sm:h-20 mx-auto mb-1.5 sm:mb-6 rounded-full bg-success/20 flex items-center justify-center">
+              <Trophy className="w-5 h-5 sm:w-10 sm:h-10 text-success" />
             </div>
-            <h2 className="font-display text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-0.5 sm:mb-1 lg:mb-2">
+            <h2 className="font-display text-xl sm:text-4xl font-bold text-foreground mb-0.5 sm:mb-2">
               VICTORY!
             </h2>
-            <p className="text-muted-foreground text-xs sm:text-sm lg:text-lg mb-2 sm:mb-3 lg:mb-6">
+            <p className="text-muted-foreground text-xs sm:text-lg mb-2 sm:mb-6">
               Come back tomorrow for a new puzzle! Puzzles reset at midnight ET!
             </p>
           </>
         ) : (
           <>
-            <h2 className="font-display text-xl sm:text-2xl lg:text-4xl font-bold text-foreground mb-1 sm:mb-2 lg:mb-3">
+            <h2 className="font-display text-xl sm:text-4xl font-bold text-foreground mb-1 sm:mb-3">
               Next time!
             </h2>
-            <p className="font-display text-base sm:text-lg lg:text-2xl text-foreground mb-2 sm:mb-3 lg:mb-6">
+            <p className="font-display text-base sm:text-2xl text-foreground mb-2 sm:mb-6">
               Come back tomorrow for a new timeline! Puzzles reset at midnight ET!
             </p>
           </>
         )}
 
         {/* Stats grid */}
-        <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:gap-4 mb-2 sm:mb-2 lg:mb-6">
-          <div className="bg-card rounded-lg sm:rounded-xl p-2 sm:p-2.5 lg:p-4 border border-border">
-            <p className="text-lg sm:text-2xl lg:text-3xl font-display font-bold text-accent">{correctCount}</p>
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 mb-2 sm:mb-6">
+          <div className="bg-card rounded-lg sm:rounded-xl p-2 sm:p-4 border border-border">
+            <p className="text-lg sm:text-3xl font-display font-bold text-accent">{correctCount}</p>
             <p className="text-[10px] sm:text-xs text-muted-foreground">Correct</p>
           </div>
-          <div className="bg-card rounded-lg sm:rounded-xl p-2 sm:p-2.5 lg:p-4 border border-border">
-            <p className="text-lg sm:text-2xl lg:text-3xl font-display font-bold text-foreground">
+          <div className="bg-card rounded-lg sm:rounded-xl p-2 sm:p-4 border border-border">
+            <p className="text-lg sm:text-3xl font-display font-bold text-foreground">
               {Math.round((correctCount / totalRounds) * 100)}%
             </p>
             <p className="text-[10px] sm:text-xs text-muted-foreground">Accuracy</p>
@@ -135,19 +135,19 @@ hoopsrewind.app`;
         </div>
 
         {/* Date & Puzzle number */}
-        <p className="text-foreground text-xs sm:text-sm lg:text-lg font-medium mb-2 sm:mb-2 lg:mb-4">
+        <p className="text-foreground text-xs sm:text-lg font-medium mb-2 sm:mb-4">
           {today} &nbsp;·&nbsp; Puzzle #{puzzleNum}
         </p>
 
         {/* Emoji Result Grid */}
-        <div className="bg-card rounded-lg sm:rounded-xl p-2 sm:p-2.5 lg:p-4 border border-border mb-2 sm:mb-2 lg:mb-3">
-          <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider mb-1 sm:mb-1.5 lg:mb-3">Your Results</p>
-          <div className="flex justify-center gap-0.5 sm:gap-1 flex-wrap mb-1 sm:mb-1.5 lg:mb-3">
-            <span className="text-base sm:text-xl lg:text-2xl animate-bounce-in" style={{ animationDelay: '0ms' }}>🟩</span>
+        <div className="bg-card rounded-lg sm:rounded-xl p-2 sm:p-4 border border-border mb-2 sm:mb-3">
+          <p className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider mb-1 sm:mb-3">Your Results</p>
+          <div className="flex justify-center gap-0.5 sm:gap-1 flex-wrap mb-1 sm:mb-3">
+            <span className="text-base sm:text-2xl animate-bounce-in" style={{ animationDelay: '0ms' }}>🟩</span>
             {resultHistory.map((correct, index) => (
               <span 
                 key={index} 
-                className="text-base sm:text-xl lg:text-2xl animate-bounce-in"
+                className="text-base sm:text-2xl animate-bounce-in"
                 style={{ animationDelay: `${(index + 1) * 100}ms` }}
               >
                 {correct ? "🟩" : "🟥"}
@@ -164,16 +164,16 @@ hoopsrewind.app`;
           onClick={handleCopy}
           size="lg"
           variant="outline"
-          className="w-full font-display text-xs sm:text-sm lg:text-lg h-8 sm:h-9 lg:h-11 mb-1.5 sm:mb-1.5 lg:mb-3"
+          className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3"
         >
           {copied ? (
             <>
-              <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 mr-1.5 text-success" />
+              <Check className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5 text-success" />
               Copied!
             </>
           ) : (
             <>
-              <Copy className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 mr-1.5" />
+              <Copy className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
               Copy Results
             </>
           )}
@@ -185,16 +185,16 @@ hoopsrewind.app`;
             onClick={() => { trackShare("share"); navigator.share({ text: shareText }).catch(() => {}); }}
             size="lg"
             variant="outline"
-            className="w-full font-display text-xs sm:text-sm lg:text-lg h-8 sm:h-9 lg:h-11 mb-1.5 sm:mb-1.5 lg:mb-3 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
           >
-            <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 mr-1.5" />
+            <Share2 className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
             Share Results
           </Button>
         )}
 
         {/* Sign up CTA for guests */}
         {!user && (
-          <div className="mb-2 sm:mb-2 lg:mb-4">
+          <div className="mb-2 sm:mb-4">
             <SignUpCTA gameData={{ correctCount, totalRounds, resultHistory, sportFilter: sportFilter ?? null, won }} />
           </div>
         )}
@@ -204,9 +204,9 @@ hoopsrewind.app`;
           <Button
             onClick={onPlayPastPuzzle}
             size="lg"
-            className="w-full font-display text-xs sm:text-sm lg:text-lg h-8 sm:h-9 lg:h-11 mb-1.5 sm:mb-1.5 lg:mb-3 bg-accent text-accent-foreground hover:bg-accent/90"
+            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3 bg-accent text-accent-foreground hover:bg-accent/90"
           >
-            <CalendarDays className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 mr-1.5" />
+            <CalendarDays className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
             Play a Previous Puzzle
           </Button>
         )}
@@ -217,9 +217,9 @@ hoopsrewind.app`;
             onClick={() => setShowStats(true)}
             size="lg"
             variant="outline"
-            className="w-full font-display text-xs sm:text-sm lg:text-lg h-8 sm:h-9 lg:h-11 mb-1.5 sm:mb-1.5 lg:mb-3"
+            className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3"
           >
-            <BarChart3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 mr-1.5" />
+            <BarChart3 className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1.5" />
             Your Stats
           </Button>
         )}
@@ -229,7 +229,7 @@ hoopsrewind.app`;
           onClick={onViewTimeline}
           size="lg"
           variant="outline"
-          className="w-full font-display text-xs sm:text-sm lg:text-lg h-8 sm:h-9 lg:h-11 mb-1.5 sm:mb-1.5 lg:mb-3"
+          className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3"
         >
           View Timeline
         </Button>
@@ -239,9 +239,9 @@ hoopsrewind.app`;
           onClick={() => navigate("/contact")}
           size="lg"
           variant="outline"
-          className="w-full font-display text-xs sm:text-sm lg:text-lg h-8 sm:h-9 lg:h-11 mb-1.5 sm:mb-1.5 lg:mb-3"
+          className="w-full font-display text-xs sm:text-lg h-8 sm:h-11 mb-1.5 sm:mb-3"
         >
-          <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 mr-1" />
+          <Mail className="w-3.5 h-3.5 sm:w-5 sm:h-5 mr-1" />
           Contact Us
         </Button>
 
@@ -251,7 +251,7 @@ hoopsrewind.app`;
             onClick={signOut}
             size="sm"
             variant="ghost"
-            className="w-full font-display text-[10px] sm:text-xs h-6 sm:h-7 lg:h-8 text-muted-foreground hover:text-foreground"
+            className="w-full font-display text-[10px] sm:text-xs h-6 sm:h-8 text-muted-foreground hover:text-foreground"
           >
             <LogOut className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1" />
             Sign Out
