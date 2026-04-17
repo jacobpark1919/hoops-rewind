@@ -123,7 +123,7 @@ html.admin-scroll, html.admin-scroll body {
 
 @layer components {
   .game-card {
-    @apply border border-border rounded-lg sm:rounded-xl px-2.5 sm:px-4 py-1.5 sm:py-2.5 cursor-grab active:cursor-grabbing
+    @apply border border-border rounded-lg sm:rounded-xl px-2.5 sm:px-3.5 2xl:sm:px-4 py-1.5 sm:py-1.5 2xl:py-2.5 cursor-grab active:cursor-grabbing
            transition-all duration-200 ease-out
            hover:bg-card-hover hover:border-primary/50;
     background-color: hsl(var(--card-new));
