@@ -95,8 +95,8 @@ hoopsrewind.app`;
   };
 
   return (
-    <div className="fixed inset-0 bg-background flex items-center justify-center z-50 animate-slide-up overflow-hidden sm:overflow-hidden" onWheel={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()}>
-      <div className="text-center max-w-md mx-auto px-3 sm:px-4 py-3 sm:py-0 w-full max-h-[100dvh] overflow-y-auto sm:overflow-y-hidden overscroll-contain">
+    <div className="fixed inset-0 bg-background flex items-start sm:items-center justify-center z-50 animate-slide-up overflow-y-auto overscroll-contain" onWheel={(e) => e.stopPropagation()} onTouchMove={(e) => e.stopPropagation()}>
+      <div className="text-center max-w-md mx-auto px-3 sm:px-4 py-3 sm:py-6 w-full">
         {won ? (
           <>
             <div className="w-10 h-10 sm:w-20 sm:h-20 mx-auto mb-1.5 sm:mb-6 rounded-full bg-success/20 flex items-center justify-center">
