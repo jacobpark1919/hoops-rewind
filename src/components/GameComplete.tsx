@@ -258,7 +258,6 @@ hoopsrewind.app`;
           </Button>
         )}
       </div>
-      </div>
 
       {/* Stats Modal */}
       <StatsModal open={showStats} onClose={() => setShowStats(false)} />
