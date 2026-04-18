@@ -284,11 +284,11 @@ export default function Admin() {
   const handlePasswordSubmit = async () => {
     // Verify password server-side with a lightweight POST
     const result = await callAdmin("verify", "POST", {}, undefined, passwordInput);
-    if (result?.error === "Unauthorized") {
-      setPasswordError(true);
-    } else {
+    if (result?.success === true) {
       setAuthenticated(true);
       setPasswordError(false);
+    } else {
+      setPasswordError(true);
     }
   };
 
