@@ -91,11 +91,31 @@ export function useDrag(options: UseDragOptions = {}) {
     const handlePointerMove = (e: PointerEvent) => {
       if (e.pointerId !== pointerIdRef.current) return;
       e.preventDefault();
+      const dy = e.clientY - currentYRef.current;
+      const currentDir = directionRef.current;
+      let nextDir = currentDir;
+      const movingDown = dy > 0;
+      const movingUp = dy < 0;
+      const sameDirection =
+        dy === 0 ||
+        (movingDown && currentDir === 'down') ||
+        (movingUp && currentDir === 'up');
+      if (sameDirection) {
+        dirAccumulatorRef.current = 0;
+      } else {
+        dirAccumulatorRef.current += Math.abs(dy);
+        if (dirAccumulatorRef.current > DIRECTION_FLIP_THRESHOLD_PX) {
+          nextDir = currentDir === 'down' ? 'up' : 'down';
+          directionRef.current = nextDir;
+          dirAccumulatorRef.current = 0;
+        }
+      }
       setDragState(prev => ({
         ...prev,
         prevY: prev.currentY,
         currentY: e.clientY,
         offsetY: e.clientY - prev.startY,
+        direction: nextDir,
       }));
     };
 
