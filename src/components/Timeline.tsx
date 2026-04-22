@@ -204,36 +204,15 @@ export function Timeline({
       return;
     }
 
-    if (isDraggingDown) {
-      const liveCenters: number[] = [];
-      nonPendingEvents.forEach((item) => {
-        const el = cardRefs.current.get(item.event.id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          liveCenters.push((rect.top + rect.bottom) / 2);
-        }
-      });
-      liveCenters.sort((a, b) => a - b);
+    const centers = snapshotCenters.current;
 
-      if (liveCenters.length === 0) { onDropZoneChange(0); return; }
-
-      if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
-
-      for (let i = 0; i < liveCenters.length - 1; i++) {
-        if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
-      }
-      onDropZoneChange(liveCenters.length);
-    } else {
-      const centers = snapshotCenters.current;
-
-      if (centers.length === 0) { onDropZoneChange(0); return; }
-      if (dragY < centers[0]) { onDropZoneChange(0); return; }
-      for (let i = 0; i < centers.length - 1; i++) {
-        if (dragY < centers[i + 1]) { onDropZoneChange(i + 1); return; }
-      }
-      onDropZoneChange(centers.length);
+    if (centers.length === 0) { onDropZoneChange(0); return; }
+    if (dragY < centers[0]) { onDropZoneChange(0); return; }
+    for (let i = 0; i < centers.length - 1; i++) {
+      if (dragY < centers[i + 1]) { onDropZoneChange(i + 1); return; }
     }
-  }, [isDragging, isDraggingDown, dragY, onDropZoneChange, nonPendingEvents]);
+    onDropZoneChange(centers.length);
+  }, [isDragging, dragY, onDropZoneChange, nonPendingEvents]);
 
 
   // Card style for z-index and hover effects
