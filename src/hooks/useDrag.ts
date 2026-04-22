@@ -1,7 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 
-const DIRECTION_FLIP_THRESHOLD_PX = 6;
-
 export interface DragState {
   isDragging: boolean;
   startY: number;
@@ -9,7 +7,6 @@ export interface DragState {
   prevY: number;
   offsetY: number;
   cardRect: DOMRect | null;
-  direction: 'up' | 'down';
 }
 
 interface UseDragOptions {
@@ -24,7 +21,6 @@ export function useDrag(options: UseDragOptions = {}) {
     prevY: 0,
     offsetY: 0,
     cardRect: null,
-    direction: 'down',
   });
 
   const optionsRef = useRef(options);
@@ -33,16 +29,10 @@ export function useDrag(options: UseDragOptions = {}) {
   // Track the active pointer id so we only respond to the pointer that started the drag
   const pointerIdRef = useRef<number | null>(null);
   const currentYRef = useRef(0);
-  const directionRef = useRef<'up' | 'down'>('down');
-  const dirAccumulatorRef = useRef(0);
 
   useEffect(() => {
     currentYRef.current = dragState.currentY;
   }, [dragState.currentY]);
-
-  useEffect(() => {
-    directionRef.current = dragState.direction;
-  }, [dragState.direction]);
 
   const startDragAt = useCallback((clientY: number, cardElement: HTMLElement, pointerId: number) => {
     const rect = cardElement.getBoundingClientRect();
@@ -54,7 +44,6 @@ export function useDrag(options: UseDragOptions = {}) {
       // setPointerCapture can throw if the pointer is already released
     }
     pointerIdRef.current = pointerId;
-    dirAccumulatorRef.current = 0;
     setDragState({
       isDragging: true,
       startY: clientY,
@@ -62,7 +51,6 @@ export function useDrag(options: UseDragOptions = {}) {
       prevY: clientY,
       offsetY: 0,
       cardRect: rect,
-      direction: 'down',
     });
   }, []);
 
@@ -91,31 +79,11 @@ export function useDrag(options: UseDragOptions = {}) {
     const handlePointerMove = (e: PointerEvent) => {
       if (e.pointerId !== pointerIdRef.current) return;
       e.preventDefault();
-      const dy = e.clientY - currentYRef.current;
-      const currentDir = directionRef.current;
-      let nextDir = currentDir;
-      const movingDown = dy > 0;
-      const movingUp = dy < 0;
-      const sameDirection =
-        dy === 0 ||
-        (movingDown && currentDir === 'down') ||
-        (movingUp && currentDir === 'up');
-      if (sameDirection) {
-        dirAccumulatorRef.current = 0;
-      } else {
-        dirAccumulatorRef.current += Math.abs(dy);
-        if (dirAccumulatorRef.current > DIRECTION_FLIP_THRESHOLD_PX) {
-          nextDir = currentDir === 'down' ? 'up' : 'down';
-          directionRef.current = nextDir;
-          dirAccumulatorRef.current = 0;
-        }
-      }
       setDragState(prev => ({
         ...prev,
         prevY: prev.currentY,
         currentY: e.clientY,
         offsetY: e.clientY - prev.startY,
-        direction: nextDir,
       }));
     };
 
