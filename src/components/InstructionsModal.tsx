@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import dragHintGif from "@/assets/drag-hint.gif";
+import dragHintVideo from "@/assets/drag-hint.mp4";
 
 interface InstructionsModalProps {
   onClose: () => void;
@@ -49,9 +49,14 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
           {/* Drag illustration */}
           <div className="my-2 sm:my-6 flex justify-center">
             <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30">
-              <img
-                src={dragHintGif}
-                alt="Drag a card into the timeline"
+              <video
+                src={dragHintVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+                aria-label="Drag a card into the timeline"
                 className="w-full block max-h-72 sm:max-h-none object-contain"
               />
             </div>
