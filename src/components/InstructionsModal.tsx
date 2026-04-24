@@ -55,9 +55,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 loop
                 muted
                 playsInline
-                preload="auto"
-                aria-label="Drag a card into the timeline"
-                className="w-full block max-h-72 sm:max-h-none object-contain"
+                className="w-full block max-h-72 sm:max-h-none object-cover"
               />
             </div>
           </div>
