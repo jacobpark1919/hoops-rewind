@@ -78,6 +78,11 @@ export function Timeline({
   // label and timeline line shift up to fill the source card's vacated space.
   const cardsAnchorRef = useRef<number | null>(null);
 
+  // Stable anchor for the timeline's top viewport position, captured at the
+  // start of each drag. Used as the zero-point when comparing dragY against
+  // card centers so detection isn't thrown off by layout shifts mid-drag.
+  const timelineAnchorRef = useRef<number | null>(null);
+
   // Tracks whether the user has ever activated a non-zero drop zone during the
   // current drag. Once they have, the first drop zone (position 0) reverts to
   // the standard transition physics instead of the instant-appear behavior.
@@ -86,6 +91,7 @@ export function Timeline({
     if (!isDragging) {
       hasLeftFirstZoneRef.current = false;
       cardsAnchorRef.current = null;
+      timelineAnchorRef.current = null;
       if (innerWrapperRef.current) {
         innerWrapperRef.current.style.transform = '';
       }
