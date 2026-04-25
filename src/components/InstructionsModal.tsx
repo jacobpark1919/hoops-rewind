@@ -142,7 +142,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   }
                 `}</style>
 
-                <rect x="0" y="0" width="280" height="360" fill="hsl(35,30%,86%)"/>
+                <rect x="0" y="0" width="280" height="360" fill="hsl(35,30%,88%)"/>
                 <g transform="translate(0, 88)">
                   <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
@@ -193,9 +193,9 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   x="34" y="30" width="240" height="28" rx="5"
                   fill="none"
                   stroke="hsl(20,82%,53%)"
-                  strokeWidth="1.25"
+                  strokeWidth="1.75"
                   strokeDasharray="3 2.5"
-                  opacity="0.35"
+                  opacity="0.6"
                 />
                 <g className="dhl-card-anim">
                   <rect className="dhl-card" x="34" y="30" width="240" height="28" rx="5" />
@@ -317,7 +317,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   }
                 `}</style>
 
-                <rect x="0" y="0" width="280" height="360" fill="hsl(220,12%,14%)"/>
+                <rect x="0" y="0" width="280" height="360" fill="hsl(220,12%,16%)"/>
                 <g transform="translate(0, 88)">
                   <rect className="dhd-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhd-year" x="6" y="5" width="24" height="18" rx="3" />
@@ -368,9 +368,9 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   x="34" y="30" width="240" height="28" rx="5"
                   fill="none"
                   stroke="hsl(20,82%,55%)"
-                  strokeWidth="1.25"
+                  strokeWidth="1.75"
                   strokeDasharray="3 2.5"
-                  opacity="0.3"
+                  opacity="0.55"
                 />
                 <g className="dhd-card-anim">
                   <rect className="dhd-card" x="34" y="30" width="240" height="28" rx="5" />
