@@ -19,15 +19,15 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
   };
 
   return (
-    <div 
+    <div
       className={`fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 pt-[6vh] sm:pt-4 transition-all duration-200 ${
-        isVisible ? 'bg-black/50' : 'bg-black/0'
+        isVisible ? "bg-black/50" : "bg-black/0"
       }`}
       onClick={handleClose}
     >
-      <div 
+      <div
         className={`relative bg-card border border-border rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-[92vw] sm:max-w-sm w-full shadow-2xl transition-all duration-200 max-h-[95vh] overflow-y-auto ${
-          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
         onClick={(e) => e.stopPropagation()}
       >
@@ -41,12 +41,10 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
 
         {/* Content */}
         <div className="text-center">
-          <h2 className="font-display text-lg sm:text-2xl font-bold text-foreground mb-1.5 sm:mb-2">
-            How to Play
-          </h2>
+          <h2 className="font-display text-lg sm:text-2xl font-bold text-foreground mb-1.5 sm:mb-2">How to Play</h2>
           {/* Drag illustration — light + dark variants */}
           <div className="my-2 sm:my-6 flex justify-center">
-            <div className="w-full rounded-lg sm:rounded-xl overflow-hidden aspect-[280/306] sm:aspect-auto">
+            <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30 aspect-[280/306] sm:aspect-auto">
               {/* LIGHT MODE SVG */}
               <svg
                 viewBox="0 0 280 360"
@@ -57,7 +55,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 aria-label="Drag a card into the timeline and tap to place"
               >
                 <style>{`
-                  .dhl-rowbg { fill: hsl(38, 55%, 99%); stroke: hsl(35, 20%, 82%); stroke-width: 0.75; }
+                  .dhl-rowbg { fill: hsl(220, 14%, 96%); stroke: hsl(220, 13%, 88%); stroke-width: 0.75; }
                   .dhl-rowtext { fill: hsl(220, 9%, 75%); }
                   .dhl-ball { fill: hsl(20, 82%, 53%); }
                   .dhl-year { fill: hsl(45, 90%, 55%); }
@@ -65,7 +63,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .dhl-zone { fill: hsl(20, 82%, 53%, 0.10); stroke: hsl(20, 82%, 53%); stroke-width: 1.25; stroke-dasharray: 3 2.5; }
                   .dhl-droptext { fill: hsl(20, 82%, 45%); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 8px; font-weight: 700; text-anchor: middle; }
                   .dhl-cardline { fill: hsl(220, 9%, 70%); }
-                  .dhl-card { fill: hsl(38, 55%, 99%); stroke: hsl(20, 82%, 53%); stroke-width: 1.5; }
+                  .dhl-card { fill: hsl(0, 0%, 100%); stroke: hsl(20, 82%, 53%); stroke-width: 1.5; }
                   .dhl-cursor { fill: hsl(220, 30%, 16%); stroke: hsl(0, 0%, 100%); stroke-width: 0.6; }
                   .dhl-pulse-orange { fill: none; stroke: hsl(20, 82%, 53%); stroke-width: 1.5; }
                   .dhl-pulse-green { fill: none; stroke: hsl(142, 71%, 45%); stroke-width: 2; }
@@ -82,71 +80,72 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .dhl-year-anim { animation: dhl-year 5.5s ease-out infinite; transform-box: fill-box; transform-origin: center; }
                   @keyframes dhl-card {
                     0%   { transform: translate(0px, 0px); opacity: 0; }
-                    5%   { transform: translate(0px, 0px); opacity: 1; }
-                    18%  { transform: translate(0px, 0px); opacity: 1; }
-                    48%  { transform: translate(0px, 130px); opacity: 1; }
-                    92%  { transform: translate(0px, 130px); opacity: 1; }
-                    97%  { transform: translate(0px, 130px); opacity: 0; }
+                    4%   { transform: translate(0px, 0px); opacity: 1; }
+                    32%  { transform: translate(0px, 0px); opacity: 1; }
+                    55%  { transform: translate(0px, 130px); opacity: 1; }
+                    94%  { transform: translate(0px, 130px); opacity: 1; }
+                    98%  { transform: translate(0px, 130px); opacity: 0; }
                     100% { transform: translate(0px, 0px); opacity: 0; }
                   }
                   @keyframes dhl-cur {
                     0%   { transform: translate(290px, 44px); opacity: 1; }
                     14%  { transform: translate(212px, 44px); opacity: 1; }
-                    18%  { transform: translate(212px, 44px); opacity: 1; }
-                    48%  { transform: translate(212px, 174px); opacity: 1; }
-                    56%  { transform: translate(212px, 174px); opacity: 1; }
-                    63%  { transform: translate(150px, 169px); opacity: 1; }
-                    88%  { transform: translate(150px, 169px); opacity: 1; }
-                    93%  { transform: translate(150px, 169px); opacity: 0; }
+                    30%  { transform: translate(212px, 44px); opacity: 1; }
+                    55%  { transform: translate(212px, 174px); opacity: 1; }
+                    63%  { transform: translate(212px, 174px); opacity: 1; }
+                    70%  { transform: translate(150px, 169px); opacity: 1; }
+                    90%  { transform: translate(150px, 169px); opacity: 1; }
+                    95%  { transform: translate(150px, 169px); opacity: 0; }
                     100% { transform: translate(290px, 44px); opacity: 0; }
                   }
                   @keyframes dhl-zone {
-                    0%, 28%   { opacity: 0; }
-                    40%       { opacity: 1; }
+                    0%, 35%   { opacity: 0; }
                     48%       { opacity: 1; }
-                    55%, 100% { opacity: 0; }
+                    55%       { opacity: 1; }
+                    62%, 100% { opacity: 0; }
                   }
                   @keyframes dhl-tap {
-                    0%, 56%   { transform: scale(0); opacity: 0; }
-                    62%       { transform: scale(1); opacity: 1; }
-                    72%       { transform: scale(1); opacity: 1; }
-                    75%       { transform: scale(0.9); opacity: 1; }
-                    78%       { transform: scale(1); opacity: 1; }
-                    86%       { transform: scale(1); opacity: 1; }
-                    90%, 100% { transform: scale(1); opacity: 0; }
+                    0%, 58%   { transform: scale(0); opacity: 0; }
+                    64%       { transform: scale(1); opacity: 1; }
+                    74%       { transform: scale(1); opacity: 1; }
+                    77%       { transform: scale(0.9); opacity: 1; }
+                    80%       { transform: scale(1); opacity: 1; }
+                    84%       { transform: scale(1); opacity: 1; }
+                    88%, 100% { transform: scale(1); opacity: 0; }
                   }
                   @keyframes dhl-pulse1 {
                     0%, 12%   { transform: scale(0); opacity: 0; }
                     15%       { transform: scale(0.3); opacity: 0.85; }
-                    22%       { transform: scale(7); opacity: 0; }
-                    23%, 100% { transform: scale(0); opacity: 0; }
+                    24%       { transform: scale(7); opacity: 0; }
+                    25%, 100% { transform: scale(0); opacity: 0; }
                   }
                   @keyframes dhl-pulse2 {
-                    0%, 45%   { transform: scale(0); opacity: 0; }
-                    48%       { transform: scale(0.3); opacity: 0.9; }
-                    56%       { transform: scale(9); opacity: 0; }
-                    57%, 100% { transform: scale(0); opacity: 0; }
+                    0%, 74%   { transform: scale(0); opacity: 0; }
+                    77%       { transform: scale(0.3); opacity: 0.9; }
+                    85%       { transform: scale(9); opacity: 0; }
+                    86%, 100% { transform: scale(0); opacity: 0; }
                   }
                   @keyframes dhl-confirm {
-                    0%, 73%   { transform: scale(0.96); opacity: 0; }
-                    77%       { transform: scale(1); opacity: 1; }
-                    85%       { transform: scale(1.08); opacity: 0; }
-                    86%, 100% { transform: scale(0.96); opacity: 0; }
+                    0%, 76%   { transform: scale(0.96); opacity: 0; }
+                    80%       { transform: scale(1); opacity: 1; }
+                    88%       { transform: scale(1.08); opacity: 0; }
+                    89%, 100% { transform: scale(0.96); opacity: 0; }
                   }
                   @keyframes dhl-year {
-                    0%, 82%  { transform: scale(0); opacity: 0; }
-                    86%      { transform: scale(1.25); opacity: 1; }
-                    90%      { transform: scale(1); opacity: 1; }
-                    95%      { transform: scale(1); opacity: 1; }
-                    100%     { transform: scale(1); opacity: 0; }
+                    0%, 84%   { transform: scale(0); opacity: 0; }
+                    88%       { transform: scale(1.25); opacity: 1; }
+                    92%       { transform: scale(1); opacity: 1; }
+                    94%       { transform: scale(1); opacity: 1; }
+                    100%      { transform: scale(1); opacity: 0; }
                   }
                 `}</style>
 
-                <rect x="0" y="0" width="280" height="360" fill="hsl(35,30%,88%)"/>
                 <g transform="translate(0, 88)">
                   <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhl-yeartext" x="18" y="17">1991</text>
+                  <text className="dhl-yeartext" x="18" y="17">
+                    1991
+                  </text>
                   <circle className="dhl-ball" cx="49" cy="14" r="5" />
                   <rect className="dhl-rowtext" x="62" y="9" width="200" height="3" rx="1" />
                   <rect className="dhl-rowtext" x="62" y="16" width="160" height="3" rx="1" />
@@ -154,19 +153,25 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 <g transform="translate(0, 124)">
                   <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhl-yeartext" x="18" y="17">1992</text>
+                  <text className="dhl-yeartext" x="18" y="17">
+                    1992
+                  </text>
                   <circle className="dhl-ball" cx="49" cy="14" r="5" />
                   <rect className="dhl-rowtext" x="62" y="9" width="180" height="3" rx="1" />
                   <rect className="dhl-rowtext" x="62" y="16" width="140" height="3" rx="1" />
                 </g>
                 <g className="dhl-zone-anim" transform="translate(0, 160)">
                   <rect className="dhl-zone" x="34" y="0" width="240" height="28" rx="5" />
-                  <text className="dhl-droptext" x="154" y="18">Drop here</text>
+                  <text className="dhl-droptext" x="154" y="18">
+                    Drop here
+                  </text>
                 </g>
                 <g transform="translate(0, 196)">
                   <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhl-yeartext" x="18" y="17">2000</text>
+                  <text className="dhl-yeartext" x="18" y="17">
+                    2000
+                  </text>
                   <circle className="dhl-ball" cx="49" cy="14" r="5" />
                   <rect className="dhl-rowtext" x="62" y="9" width="190" height="3" rx="1" />
                   <rect className="dhl-rowtext" x="62" y="16" width="170" height="3" rx="1" />
@@ -174,28 +179,88 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 <g transform="translate(0, 232)">
                   <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhl-yeartext" x="18" y="17">2002</text>
+                  <text className="dhl-yeartext" x="18" y="17">
+                    2002
+                  </text>
                   <circle className="dhl-ball" cx="49" cy="14" r="5" />
                   <rect className="dhl-rowtext" x="62" y="9" width="170" height="3" rx="1" />
                   <rect className="dhl-rowtext" x="62" y="16" width="120" height="3" rx="1" />
                 </g>
                 <text
-                  style={{ fill: 'hsl(35, 18%, 58%)', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontSize: '7.5px', fontWeight: 700, textAnchor: 'middle', letterSpacing: '0.08em' }}
-                  x="154" y="80">BEFORE</text>
+                  style={{
+                    fill: "hsl(35, 18%, 58%)",
+                    fontFamily: "ui-sans-serif, system-ui, sans-serif",
+                    fontSize: "7.5px",
+                    fontWeight: 700,
+                    textAnchor: "middle",
+                    letterSpacing: "0.08em",
+                  }}
+                  x="154"
+                  y="80"
+                >
+                  BEFORE
+                </text>
                 <text
-                  style={{ fill: 'hsl(35, 18%, 58%)', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontSize: '7.5px', fontWeight: 700, textAnchor: 'middle', letterSpacing: '0.08em' }}
-                  x="154" y="276">AFTER</text>
-                <line x1="44" y1="77" x2="114" y2="77" stroke="hsl(35,18%,68%)" strokeWidth="0.75" strokeDasharray="2 2" />
-                <line x1="194" y1="77" x2="264" y2="77" stroke="hsl(35,18%,68%)" strokeWidth="0.75" strokeDasharray="2 2" />
-                <line x1="44" y1="273" x2="114" y2="273" stroke="hsl(35,18%,68%)" strokeWidth="0.75" strokeDasharray="2 2" />
-                <line x1="194" y1="273" x2="264" y2="273" stroke="hsl(35,18%,68%)" strokeWidth="0.75" strokeDasharray="2 2" />
+                  style={{
+                    fill: "hsl(35, 18%, 58%)",
+                    fontFamily: "ui-sans-serif, system-ui, sans-serif",
+                    fontSize: "7.5px",
+                    fontWeight: 700,
+                    textAnchor: "middle",
+                    letterSpacing: "0.08em",
+                  }}
+                  x="154"
+                  y="276"
+                >
+                  AFTER
+                </text>
+                <line
+                  x1="44"
+                  y1="77"
+                  x2="114"
+                  y2="77"
+                  stroke="hsl(35,18%,68%)"
+                  strokeWidth="0.75"
+                  strokeDasharray="2 2"
+                />
+                <line
+                  x1="194"
+                  y1="77"
+                  x2="264"
+                  y2="77"
+                  stroke="hsl(35,18%,68%)"
+                  strokeWidth="0.75"
+                  strokeDasharray="2 2"
+                />
+                <line
+                  x1="44"
+                  y1="273"
+                  x2="114"
+                  y2="273"
+                  stroke="hsl(35,18%,68%)"
+                  strokeWidth="0.75"
+                  strokeDasharray="2 2"
+                />
+                <line
+                  x1="194"
+                  y1="273"
+                  x2="264"
+                  y2="273"
+                  stroke="hsl(35,18%,68%)"
+                  strokeWidth="0.75"
+                  strokeDasharray="2 2"
+                />
                 <rect
-                  x="34" y="30" width="240" height="28" rx="5"
+                  x="34"
+                  y="30"
+                  width="240"
+                  height="28"
+                  rx="5"
                   fill="none"
                   stroke="hsl(20,82%,53%)"
-                  strokeWidth="1.75"
+                  strokeWidth="1.25"
                   strokeDasharray="3 2.5"
-                  opacity="0.6"
+                  opacity="0.35"
                 />
                 <g className="dhl-card-anim">
                   <rect className="dhl-card" x="34" y="30" width="240" height="28" rx="5" />
@@ -205,14 +270,26 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   <rect className="dhl-cardline" x="62" y="53" width="80" height="2.5" rx="1" opacity="0.7" />
                   <g className="dhl-year-anim">
                     <rect className="dhl-year" x="6" y="35" width="24" height="18" rx="3" />
-                    <text className="dhl-yeartext" x="18" y="47">1996</text>
+                    <text className="dhl-yeartext" x="18" y="47">
+                      1996
+                    </text>
                   </g>
                 </g>
-                <rect className="dhl-confirm dhl-confirm-anim" x="34" y="160" width="240" height="28" rx="5" vectorEffect="non-scaling-stroke" />
+                <rect
+                  className="dhl-confirm dhl-confirm-anim"
+                  x="34"
+                  y="160"
+                  width="240"
+                  height="28"
+                  rx="5"
+                  vectorEffect="non-scaling-stroke"
+                />
                 <g transform="translate(114, 165)">
                   <g className="dhl-tap-anim">
                     <rect className="dhl-tap-pill" x="0" y="0" width="80" height="18" rx="9" />
-                    <text className="dhl-tap-text" x="40" y="12.5">Tap to place</text>
+                    <text className="dhl-tap-text" x="40" y="12.5">
+                      Tap to place
+                    </text>
                   </g>
                 </g>
                 <g className="dhl-cur-anim">
@@ -232,7 +309,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 aria-label="Drag a card into the timeline and tap to place"
               >
                 <style>{`
-                  .dhd-rowbg { fill: hsl(220, 12%, 28%); stroke: hsl(220, 8%, 35%); stroke-width: 0.75; }
+                  .dhd-rowbg { fill: hsl(220, 10%, 20%); stroke: hsl(220, 8%, 30%); stroke-width: 0.75; }
                   .dhd-rowtext { fill: hsl(220, 8%, 40%); }
                   .dhd-ball { fill: hsl(20, 82%, 55%); }
                   .dhd-year { fill: hsl(45, 75%, 55%); }
@@ -240,7 +317,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .dhd-zone { fill: hsl(20, 82%, 55%, 0.12); stroke: hsl(20, 82%, 55%); stroke-width: 1.25; stroke-dasharray: 3 2.5; }
                   .dhd-droptext { fill: hsl(20, 82%, 60%); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 8px; font-weight: 700; text-anchor: middle; }
                   .dhd-cardline { fill: hsl(220, 8%, 50%); }
-                  .dhd-card { fill: hsl(220, 12%, 28%); stroke: hsl(20, 82%, 55%); stroke-width: 1.5; }
+                  .dhd-card { fill: hsl(220, 10%, 24%); stroke: hsl(20, 82%, 55%); stroke-width: 1.5; }
                   .dhd-cursor { fill: hsl(220, 10%, 95%); stroke: hsl(220, 10%, 16%); stroke-width: 0.6; }
                   .dhd-pulse-orange { fill: none; stroke: hsl(20, 82%, 55%); stroke-width: 1.5; }
                   .dhd-pulse-green { fill: none; stroke: hsl(142, 76%, 50%); stroke-width: 2; }
@@ -257,71 +334,72 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .dhd-year-anim { animation: dhd-year 5.5s ease-out infinite; transform-box: fill-box; transform-origin: center; }
                   @keyframes dhd-card {
                     0%   { transform: translate(0px, 0px); opacity: 0; }
-                    5%   { transform: translate(0px, 0px); opacity: 1; }
-                    18%  { transform: translate(0px, 0px); opacity: 1; }
-                    48%  { transform: translate(0px, 130px); opacity: 1; }
-                    92%  { transform: translate(0px, 130px); opacity: 1; }
-                    97%  { transform: translate(0px, 130px); opacity: 0; }
+                    4%   { transform: translate(0px, 0px); opacity: 1; }
+                    32%  { transform: translate(0px, 0px); opacity: 1; }
+                    55%  { transform: translate(0px, 130px); opacity: 1; }
+                    94%  { transform: translate(0px, 130px); opacity: 1; }
+                    98%  { transform: translate(0px, 130px); opacity: 0; }
                     100% { transform: translate(0px, 0px); opacity: 0; }
                   }
                   @keyframes dhd-cur {
                     0%   { transform: translate(290px, 44px); opacity: 1; }
                     14%  { transform: translate(212px, 44px); opacity: 1; }
-                    18%  { transform: translate(212px, 44px); opacity: 1; }
-                    48%  { transform: translate(212px, 174px); opacity: 1; }
-                    56%  { transform: translate(212px, 174px); opacity: 1; }
-                    63%  { transform: translate(150px, 169px); opacity: 1; }
-                    88%  { transform: translate(150px, 169px); opacity: 1; }
-                    93%  { transform: translate(150px, 169px); opacity: 0; }
+                    30%  { transform: translate(212px, 44px); opacity: 1; }
+                    55%  { transform: translate(212px, 174px); opacity: 1; }
+                    63%  { transform: translate(212px, 174px); opacity: 1; }
+                    70%  { transform: translate(150px, 169px); opacity: 1; }
+                    90%  { transform: translate(150px, 169px); opacity: 1; }
+                    95%  { transform: translate(150px, 169px); opacity: 0; }
                     100% { transform: translate(290px, 44px); opacity: 0; }
                   }
                   @keyframes dhd-zone {
-                    0%, 28%   { opacity: 0; }
-                    40%       { opacity: 1; }
+                    0%, 35%   { opacity: 0; }
                     48%       { opacity: 1; }
-                    55%, 100% { opacity: 0; }
+                    55%       { opacity: 1; }
+                    62%, 100% { opacity: 0; }
                   }
                   @keyframes dhd-tap {
-                    0%, 56%   { transform: scale(0); opacity: 0; }
-                    62%       { transform: scale(1); opacity: 1; }
-                    72%       { transform: scale(1); opacity: 1; }
-                    75%       { transform: scale(0.9); opacity: 1; }
-                    78%       { transform: scale(1); opacity: 1; }
-                    86%       { transform: scale(1); opacity: 1; }
-                    90%, 100% { transform: scale(1); opacity: 0; }
+                    0%, 58%   { transform: scale(0); opacity: 0; }
+                    64%       { transform: scale(1); opacity: 1; }
+                    74%       { transform: scale(1); opacity: 1; }
+                    77%       { transform: scale(0.9); opacity: 1; }
+                    80%       { transform: scale(1); opacity: 1; }
+                    84%       { transform: scale(1); opacity: 1; }
+                    88%, 100% { transform: scale(1); opacity: 0; }
                   }
                   @keyframes dhd-pulse1 {
                     0%, 12%   { transform: scale(0); opacity: 0; }
                     15%       { transform: scale(0.3); opacity: 0.85; }
-                    22%       { transform: scale(7); opacity: 0; }
-                    23%, 100% { transform: scale(0); opacity: 0; }
+                    24%       { transform: scale(7); opacity: 0; }
+                    25%, 100% { transform: scale(0); opacity: 0; }
                   }
                   @keyframes dhd-pulse2 {
-                    0%, 45%   { transform: scale(0); opacity: 0; }
-                    48%       { transform: scale(0.3); opacity: 0.9; }
-                    56%       { transform: scale(9); opacity: 0; }
-                    57%, 100% { transform: scale(0); opacity: 0; }
+                    0%, 74%   { transform: scale(0); opacity: 0; }
+                    77%       { transform: scale(0.3); opacity: 0.9; }
+                    85%       { transform: scale(9); opacity: 0; }
+                    86%, 100% { transform: scale(0); opacity: 0; }
                   }
                   @keyframes dhd-confirm {
-                    0%, 73%   { transform: scale(0.96); opacity: 0; }
-                    77%       { transform: scale(1); opacity: 1; }
-                    85%       { transform: scale(1.08); opacity: 0; }
-                    86%, 100% { transform: scale(0.96); opacity: 0; }
+                    0%, 76%   { transform: scale(0.96); opacity: 0; }
+                    80%       { transform: scale(1); opacity: 1; }
+                    88%       { transform: scale(1.08); opacity: 0; }
+                    89%, 100% { transform: scale(0.96); opacity: 0; }
                   }
                   @keyframes dhd-year {
-                    0%, 82%  { transform: scale(0); opacity: 0; }
-                    86%      { transform: scale(1.25); opacity: 1; }
-                    90%      { transform: scale(1); opacity: 1; }
-                    95%      { transform: scale(1); opacity: 1; }
-                    100%     { transform: scale(1); opacity: 0; }
+                    0%, 84%   { transform: scale(0); opacity: 0; }
+                    88%       { transform: scale(1.25); opacity: 1; }
+                    92%       { transform: scale(1); opacity: 1; }
+                    94%       { transform: scale(1); opacity: 1; }
+                    100%      { transform: scale(1); opacity: 0; }
                   }
                 `}</style>
 
-                <rect x="0" y="0" width="280" height="360" fill="hsl(220,12%,16%)"/>
                 <g transform="translate(0, 88)">
                   <rect className="dhd-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhd-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhd-yeartext" x="18" y="17">1991</text>
+                  <text className="dhd-yeartext" x="18" y="17">
+                    1991
+                  </text>
                   <circle className="dhd-ball" cx="49" cy="14" r="5" />
                   <rect className="dhd-rowtext" x="62" y="9" width="200" height="3" rx="1" />
                   <rect className="dhd-rowtext" x="62" y="16" width="160" height="3" rx="1" />
@@ -329,19 +407,25 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 <g transform="translate(0, 124)">
                   <rect className="dhd-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhd-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhd-yeartext" x="18" y="17">1992</text>
+                  <text className="dhd-yeartext" x="18" y="17">
+                    1992
+                  </text>
                   <circle className="dhd-ball" cx="49" cy="14" r="5" />
                   <rect className="dhd-rowtext" x="62" y="9" width="180" height="3" rx="1" />
                   <rect className="dhd-rowtext" x="62" y="16" width="140" height="3" rx="1" />
                 </g>
                 <g className="dhd-zone-anim" transform="translate(0, 160)">
                   <rect className="dhd-zone" x="34" y="0" width="240" height="28" rx="5" />
-                  <text className="dhd-droptext" x="154" y="18">Drop here</text>
+                  <text className="dhd-droptext" x="154" y="18">
+                    Drop here
+                  </text>
                 </g>
                 <g transform="translate(0, 196)">
                   <rect className="dhd-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhd-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhd-yeartext" x="18" y="17">2000</text>
+                  <text className="dhd-yeartext" x="18" y="17">
+                    2000
+                  </text>
                   <circle className="dhd-ball" cx="49" cy="14" r="5" />
                   <rect className="dhd-rowtext" x="62" y="9" width="190" height="3" rx="1" />
                   <rect className="dhd-rowtext" x="62" y="16" width="170" height="3" rx="1" />
@@ -349,28 +433,88 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 <g transform="translate(0, 232)">
                   <rect className="dhd-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhd-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhd-yeartext" x="18" y="17">2002</text>
+                  <text className="dhd-yeartext" x="18" y="17">
+                    2002
+                  </text>
                   <circle className="dhd-ball" cx="49" cy="14" r="5" />
                   <rect className="dhd-rowtext" x="62" y="9" width="170" height="3" rx="1" />
                   <rect className="dhd-rowtext" x="62" y="16" width="120" height="3" rx="1" />
                 </g>
                 <text
-                  style={{ fill: 'hsl(220, 8%, 50%)', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontSize: '7.5px', fontWeight: 700, textAnchor: 'middle', letterSpacing: '0.08em' }}
-                  x="154" y="80">BEFORE</text>
+                  style={{
+                    fill: "hsl(220, 8%, 50%)",
+                    fontFamily: "ui-sans-serif, system-ui, sans-serif",
+                    fontSize: "7.5px",
+                    fontWeight: 700,
+                    textAnchor: "middle",
+                    letterSpacing: "0.08em",
+                  }}
+                  x="154"
+                  y="80"
+                >
+                  BEFORE
+                </text>
                 <text
-                  style={{ fill: 'hsl(220, 8%, 50%)', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontSize: '7.5px', fontWeight: 700, textAnchor: 'middle', letterSpacing: '0.08em' }}
-                  x="154" y="276">AFTER</text>
-                <line x1="44" y1="77" x2="114" y2="77" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2" />
-                <line x1="194" y1="77" x2="264" y2="77" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2" />
-                <line x1="44" y1="273" x2="114" y2="273" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2" />
-                <line x1="194" y1="273" x2="264" y2="273" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2" />
+                  style={{
+                    fill: "hsl(220, 8%, 50%)",
+                    fontFamily: "ui-sans-serif, system-ui, sans-serif",
+                    fontSize: "7.5px",
+                    fontWeight: 700,
+                    textAnchor: "middle",
+                    letterSpacing: "0.08em",
+                  }}
+                  x="154"
+                  y="276"
+                >
+                  AFTER
+                </text>
+                <line
+                  x1="44"
+                  y1="77"
+                  x2="114"
+                  y2="77"
+                  stroke="hsl(220,8%,38%)"
+                  strokeWidth="0.75"
+                  strokeDasharray="2 2"
+                />
+                <line
+                  x1="194"
+                  y1="77"
+                  x2="264"
+                  y2="77"
+                  stroke="hsl(220,8%,38%)"
+                  strokeWidth="0.75"
+                  strokeDasharray="2 2"
+                />
+                <line
+                  x1="44"
+                  y1="273"
+                  x2="114"
+                  y2="273"
+                  stroke="hsl(220,8%,38%)"
+                  strokeWidth="0.75"
+                  strokeDasharray="2 2"
+                />
+                <line
+                  x1="194"
+                  y1="273"
+                  x2="264"
+                  y2="273"
+                  stroke="hsl(220,8%,38%)"
+                  strokeWidth="0.75"
+                  strokeDasharray="2 2"
+                />
                 <rect
-                  x="34" y="30" width="240" height="28" rx="5"
+                  x="34"
+                  y="30"
+                  width="240"
+                  height="28"
+                  rx="5"
                   fill="none"
                   stroke="hsl(20,82%,55%)"
-                  strokeWidth="1.75"
+                  strokeWidth="1.25"
                   strokeDasharray="3 2.5"
-                  opacity="0.55"
+                  opacity="0.3"
                 />
                 <g className="dhd-card-anim">
                   <rect className="dhd-card" x="34" y="30" width="240" height="28" rx="5" />
@@ -380,14 +524,26 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   <rect className="dhd-cardline" x="62" y="53" width="80" height="2.5" rx="1" opacity="0.7" />
                   <g className="dhd-year-anim">
                     <rect className="dhd-year" x="6" y="35" width="24" height="18" rx="3" />
-                    <text className="dhd-yeartext" x="18" y="47">1996</text>
+                    <text className="dhd-yeartext" x="18" y="47">
+                      1996
+                    </text>
                   </g>
                 </g>
-                <rect className="dhd-confirm dhd-confirm-anim" x="34" y="160" width="240" height="28" rx="5" vectorEffect="non-scaling-stroke" />
+                <rect
+                  className="dhd-confirm dhd-confirm-anim"
+                  x="34"
+                  y="160"
+                  width="240"
+                  height="28"
+                  rx="5"
+                  vectorEffect="non-scaling-stroke"
+                />
                 <g transform="translate(114, 165)">
                   <g className="dhd-tap-anim">
                     <rect className="dhd-tap-pill" x="0" y="0" width="80" height="18" rx="9" />
-                    <text className="dhd-tap-text" x="40" y="12.5">Tap to place</text>
+                    <text className="dhd-tap-text" x="40" y="12.5">
+                      Tap to place
+                    </text>
                   </g>
                 </g>
                 <g className="dhd-cur-anim">
@@ -402,15 +558,23 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
           {/* Instructions */}
           <div className="space-y-2 sm:space-y-3 text-left mb-4 sm:mb-6">
             <div className="flex items-start gap-2 sm:gap-3">
-              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent text-accent-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">1</span>
-              <p className="text-foreground text-xs sm:text-sm">Drag each event card into the timeline</p>
+              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent text-accent-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">
+                1
+              </span>
+              <p className="text-foreground text-xs sm:text-sm">Grab an event card from the top of the screen</p>
             </div>
             <div className="flex items-start gap-2 sm:gap-3">
-              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent text-accent-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">2</span>
-              <p className="text-foreground text-xs sm:text-sm">Place it where you think it belongs chronologically</p>
+              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent text-accent-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">
+                2
+              </span>
+              <p className="text-foreground text-xs sm:text-sm">
+                Place it into the timeline where you think it belongs chronologically.
+              </p>
             </div>
             <div className="flex items-start gap-2 sm:gap-3">
-              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent text-accent-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">3</span>
+              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent text-accent-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">
+                3
+              </span>
               <p className="text-foreground text-xs sm:text-sm">Daily game — come back tomorrow for a new puzzle!</p>
             </div>
           </div>
