@@ -235,6 +235,12 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   // Handle starting to drag the pending card
   const handlePendingDragStart = (e: React.PointerEvent, element: HTMLElement) => {
     setDragSource("pending");
+    // Seed activeDropZone with the current frozen position so there's no
+    // null-flash when hasDragMoved flips and the Timeline switches from
+    // reading frozenDropZone to reading activeDropZone.
+    if (frozenDropZone !== null) {
+      setActiveDropZone(frozenDropZone);
+    }
     startDrag(e, element);
   };
 
