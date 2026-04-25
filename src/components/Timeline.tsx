@@ -241,18 +241,6 @@ export function Timeline({
 
   // Snapshot card centers at the moment drag begins (before any zone expansion).
   const snapshotCenters = useRef<number[]>([]);
-  // Captures timelineRef's viewport top at drag start, so that when in
-  // normal (post-instant-first) mode we can convert dragY (computed from a
-  // pre-collapse rect) into the same coordinate frame as the live, settled
-  // card centers.
-  const timelineAnchorRef = useRef<number | null>(null);
-  useEffect(() => {
-    if (!isDragging) {
-      timelineAnchorRef.current = null;
-    } else if (timelineAnchorRef.current === null && timelineRef.current) {
-      timelineAnchorRef.current = timelineRef.current.getBoundingClientRect().top;
-    }
-  }, [isDragging]);
 
   useLayoutEffect(() => {
     if (isDragging && snapshotCenters.current.length === 0) {
@@ -276,6 +264,10 @@ export function Timeline({
       onDropZoneChange(null);
       return;
     }
+
+    // Use live card centers for both directions — mirrors the downward
+    // mechanics for upward dragging, which the user has confirmed feels
+    // correct on first drag.
     const liveCenters: number[] = [];
     nonPendingEvents.forEach((item) => {
       const el = cardRefs.current.get(item.event.id);
@@ -285,39 +277,13 @@ export function Timeline({
       }
     });
     liveCenters.sort((a, b) => a - b);
-    if (!hasLeftFirstZoneRef.current) {
-      // INSTANT-FIRST MODE: the RAF counter-translate loop is keeping all
-      // timeline card elements visually pinned at their pre-drag viewport
-      // positions. Both dragY and liveCenters are therefore already in the
-      // same coordinate frame (raw viewport coords), so compare them
-      // directly. Do NOT apply the currentTimelineTop adjustment here —
-      // currentTimelineTop has shifted upward by D px (Card A's slot
-      // collapsing), but liveCenters haven't moved (the RAF compensates),
-      // so subtracting currentTimelineTop would shift every zone boundary
-      // D px too far down, causing zone 1 to be skipped entirely on
-      // Card A's first drag.
-      if (liveCenters.length === 0) { onDropZoneChange(0); return; }
-      if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
-      for (let i = 0; i < liveCenters.length - 1; i++) {
-        if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
-      }
-      onDropZoneChange(liveCenters.length);
-    } else {
-      // NORMAL MODE: the RAF has stopped and cards have settled at their
-      // natural post-collapse positions. dragY is computed from the card's
-      // pre-collapse rect, so it and liveCenters are in different frames.
-      // The timeline-relative adjustment is needed to reconcile them.
-      const currentTimelineTop = timelineRef.current.getBoundingClientRect().top;
-      const anchorTop = timelineAnchorRef.current ?? currentTimelineTop;
-      const adjustedDragY = dragY - anchorTop;
-      const adjustedCenters = liveCenters.map((c) => c - currentTimelineTop);
-      if (adjustedCenters.length === 0) { onDropZoneChange(0); return; }
-      if (adjustedDragY < adjustedCenters[0]) { onDropZoneChange(0); return; }
-      for (let i = 0; i < adjustedCenters.length - 1; i++) {
-        if (adjustedDragY < adjustedCenters[i + 1]) { onDropZoneChange(i + 1); return; }
-      }
-      onDropZoneChange(adjustedCenters.length);
+
+    if (liveCenters.length === 0) { onDropZoneChange(0); return; }
+    if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
+    for (let i = 0; i < liveCenters.length - 1; i++) {
+      if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
     }
+    onDropZoneChange(liveCenters.length);
   }, [isDragging, isDraggingDown, dragY, onDropZoneChange, nonPendingEvents]);
 
 
