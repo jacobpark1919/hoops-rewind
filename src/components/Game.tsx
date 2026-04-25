@@ -476,9 +476,11 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               <div
                 className="transition-all duration-300 ease-out"
                 style={{
-                  minHeight: cardCollapsed || hasPendingPlacement ? 0 : undefined,
-                  height: cardCollapsed || hasPendingPlacement ? 0 : 'auto',
-                  overflow: cardCollapsed || hasPendingPlacement ? 'hidden' : 'visible',
+                  // Use max-height (animatable) instead of height: auto/0 (not animatable),
+                  // otherwise the source slot snaps shut instantly on drag-start, causing
+                  // the timeline below to visibly jump.
+                  maxHeight: cardCollapsed || hasPendingPlacement ? 0 : 500,
+                  overflow: 'hidden',
                   opacity: cardCollapsed || hasPendingPlacement ? 0 : 1,
                 }}
               >
