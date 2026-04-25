@@ -369,10 +369,10 @@ export function Timeline({
     }
 
     // Normal drop zone (during drag, or collapsed)
-    // The first drop zone (position 0) appears instantly — but only on the
-    // initial pickup. Once the user has hovered any other drop zone, it
-    // reverts to the standard transition physics on the way back up.
-    const useInstantFirst = position === 0 && !hasLeftFirstZoneRef.current;
+    // The first drop zone (position 0) is always rendered as an
+    // absolutely-positioned overlay above the timeline content (handled
+    // separately below) so it never pushes existing cards downward.
+    const useInstantFirst = position === 0;
     const expandedHeight = window.innerWidth >= 640 ? 128 : 112;
     // When in instant-first mode, this returns null — the overlay is rendered
     // separately below as an absolutely-positioned sibling so it doesn't push
@@ -410,7 +410,7 @@ export function Timeline({
   // absolutely-positioned overlay above the timeline content so it doesn't
   // push existing cards downward.
   const firstZoneInstantMode =
-    showDropZones && !hasLeftFirstZoneRef.current && !(activeDropZone === 0 && !isDragging && pendingItem);
+    showDropZones && !(activeDropZone === 0 && !isDragging && pendingItem);
   const firstZoneActive = activeDropZone === 0;
   const expandedHeightFirst = window.innerWidth >= 640 ? 128 : 112;
 
