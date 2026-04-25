@@ -91,15 +91,12 @@ export function Timeline({
       }
       return;
     }
-    if (activeDropZone !== null && activeDropZone !== 0) {
-      hasLeftFirstZoneRef.current = true;
-      // Once we leave instant-first mode, release the pin so cards can flow
-      // normally with the rest of the layout again.
-      cardsAnchorRef.current = null;
-      if (innerWrapperRef.current) {
-        innerWrapperRef.current.style.transform = '';
-      }
-    }
+    // NOTE: We intentionally do NOT release the pin or flip
+    // hasLeftFirstZoneRef when the user enters a non-zero drop zone during the
+    // initial drag. Releasing mid-drag causes the cards to snap to a new flow
+    // position, which shifts the measured card centers and makes the active
+    // drop zone oscillate (e.g. position 1 ↔ position 0). The pin and
+    // instant-first overlay are released when the drag ends.
   }, [isDragging, activeDropZone]);
 
   // Capture the cards' flow-position viewport Y when drag begins (in instant-
