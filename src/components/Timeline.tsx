@@ -265,7 +265,13 @@ export function Timeline({
       return;
     }
 
-    if (isDraggingDown) {
+    // When in instant-first-zone mode the cards are visually pinned via the
+    // counter-translate rAF loop, so live centers reflect their actual visual
+    // position and are more reliable than the early-captured snapshot (which
+    // can be off-by-a-frame on the very first drag of a new card).
+    const useLive = isDraggingDown || (!hasLeftFirstZoneRef.current);
+
+    if (useLive) {
       const liveCenters: number[] = [];
       nonPendingEvents.forEach((item) => {
         const el = cardRefs.current.get(item.event.id);
