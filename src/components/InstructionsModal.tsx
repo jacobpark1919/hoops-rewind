@@ -210,7 +210,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
               <svg
                 viewBox="0 0 280 340"
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-full hidden dark:block"
+                className="w-full h-full hidden dark:block"
+                preserveAspectRatio="xMidYMin slice"
                 role="img"
                 aria-label="Drag a card into the timeline and tap to place"
               >
