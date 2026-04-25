@@ -265,25 +265,39 @@ export function Timeline({
       return;
     }
 
-    // Use live card centers for both directions — mirrors the downward
-    // mechanics for upward dragging, which the user has confirmed feels
-    // correct on first drag.
-    const liveCenters: number[] = [];
-    nonPendingEvents.forEach((item) => {
-      const el = cardRefs.current.get(item.event.id);
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        liveCenters.push((rect.top + rect.bottom) / 2);
-      }
-    });
-    liveCenters.sort((a, b) => a - b);
-
-    if (liveCenters.length === 0) { onDropZoneChange(0); return; }
-    if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
-    for (let i = 0; i < liveCenters.length - 1; i++) {
-      if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
+    // Choose card-center source:
+    // - During the initial "pinned" phase (instant-first mode), the source card
+    //   is mid-collapse and the inner wrapper is being counter-translated by a
+    //   RAF loop. Live `getBoundingClientRect()` measurements can be transiently
+    //   out of sync with the RAF transform, which makes the threshold for the
+    //   second drop zone effectively unreachable on the initial downward drag.
+    //   Snapshot centers (captured at drag start, before any layout shift) are
+    //   the true original positions and exactly match what the user sees while
+    //   the cards are visually pinned.
+    // - Once the user has left the first drop zone, pinning is released and the
+    //   timeline flows normally; live centers are correct for both directions.
+    let centers: number[];
+    if (!hasLeftFirstZoneRef.current && snapshotCenters.current.length === nonPendingEvents.length) {
+      centers = [...snapshotCenters.current].sort((a, b) => a - b);
+    } else {
+      const live: number[] = [];
+      nonPendingEvents.forEach((item) => {
+        const el = cardRefs.current.get(item.event.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          live.push((rect.top + rect.bottom) / 2);
+        }
+      });
+      live.sort((a, b) => a - b);
+      centers = live;
     }
-    onDropZoneChange(liveCenters.length);
+
+    if (centers.length === 0) { onDropZoneChange(0); return; }
+    if (dragY < centers[0]) { onDropZoneChange(0); return; }
+    for (let i = 0; i < centers.length - 1; i++) {
+      if (dragY < centers[i + 1]) { onDropZoneChange(i + 1); return; }
+    }
+    onDropZoneChange(centers.length);
   }, [isDragging, isDraggingDown, dragY, onDropZoneChange, nonPendingEvents]);
 
 
