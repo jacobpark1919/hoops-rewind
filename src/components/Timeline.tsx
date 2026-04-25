@@ -91,13 +91,13 @@ export function Timeline({
       }
       return;
     }
-    // As soon as ANY drop zone activates for the first time, exit
-    // instant-first mode so all subsequent drop-zone interactions
-    // (including hovering back over the first zone) use the standard
-    // expanding-in-flow physics. The visual pin (tracking the first
-    // card's position) keeps the cards from jumping during the
-    // transition itself.
-    if (activeDropZone !== null) {
+    // Exit instant-first mode the first time the user activates a
+    // NON-ZERO drop zone. Hovering position 0 on initial pickup must
+    // remain in absolute-overlay mode so it doesn't push the cards
+    // downward. Once the user has visited any other zone, position 0
+    // reverts to the standard in-flow expanding physics for the rest
+    // of the drag.
+    if (activeDropZone !== null && activeDropZone !== 0) {
       hasLeftFirstZoneRef.current = true;
     }
   }, [isDragging, activeDropZone]);
