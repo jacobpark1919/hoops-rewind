@@ -337,35 +337,10 @@ export function Timeline({
     // reverts to the standard transition physics on the way back up.
     const useInstantFirst = position === 0 && !hasLeftFirstZoneRef.current;
     const expandedHeight = window.innerWidth >= 640 ? 128 : 112;
-
-    // When in instant-first mode, the zone is absolutely positioned above the
-    // first card so it does NOT push the timeline downward — it simply appears
-    // overlaid on the existing layout.
-    if (useInstantFirst) {
-      return (
-        <div
-          key={`drop-${position}`}
-          className={`absolute left-0 right-0 rounded-xl border-2 border-dashed flex items-center justify-center z-40 pointer-events-none ${
-            isActive
-              ? 'border-primary bg-primary/20 shadow-lg'
-              : 'border-transparent'
-          }`}
-          style={{
-            // Sits directly above the first card's top edge.
-            bottom: '100%',
-            marginBottom: 8,
-            height: expandedHeight,
-            opacity: isActive ? 1 : 0,
-            transition: 'opacity 150ms ease-out',
-          }}
-        >
-          {isActive && (
-            <span className="text-primary text-sm font-semibold">Drop here</span>
-          )}
-        </div>
-      );
-    }
-
+    // When in instant-first mode, this returns null — the overlay is rendered
+    // separately below as an absolutely-positioned sibling so it doesn't push
+    // the timeline downward.
+    if (useInstantFirst) return null;
     return (
       <div
         key={`drop-${position}`}
