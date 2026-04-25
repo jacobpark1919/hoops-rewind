@@ -68,7 +68,6 @@ export function Timeline({
   const [dynamicGap, setDynamicGap] = useState<number>(NORMAL_GAP);
   const [lockedGap, setLockedGap] = useState<number | null>(null);
   const [naturalPaddingTop, setNaturalPaddingTop] = useState(0);
-  const [stabilizationOffset, setStabilizationOffset] = useState(0);
   const innerWrapperRef = useRef<HTMLDivElement>(null);
 
   // Measure available space
@@ -162,40 +161,6 @@ export function Timeline({
 
   const activeGap = lockedGap !== null ? lockedGap : dynamicGap;
   const isOverlapping = activeGap < 0;
-
-  // Stabilize the cards' viewport position during drag/pending.
-  // When Card A is dragged, its container collapses and the Timeline shifts up.
-  // BEFORE / line / AFTER live inside the Timeline and shift with it (intended),
-  // but the placed cards should stay visually anchored. We snapshot the inner
-  // wrapper's viewport Y at drag-start and continuously add a compensating
-  // padding so it stays put until the drag/pending phase ends.
-  const stableTopRef = useRef<number | null>(null);
-  useLayoutEffect(() => {
-    if (!isDragging && !hasPending) {
-      stableTopRef.current = null;
-      setStabilizationOffset(0);
-      return;
-    }
-
-    if (stableTopRef.current === null && innerWrapperRef.current) {
-      stableTopRef.current = innerWrapperRef.current.getBoundingClientRect().top;
-    }
-
-    let rafId = 0;
-    const tick = () => {
-      if (innerWrapperRef.current && stableTopRef.current !== null) {
-        const currentTop = innerWrapperRef.current.getBoundingClientRect().top;
-        const delta = stableTopRef.current - currentTop;
-        // Only correct upward shifts (when container moved up). Allow tiny tolerance.
-        if (Math.abs(delta) > 0.5) {
-          setStabilizationOffset((prev) => Math.max(0, prev + delta));
-        }
-      }
-      rafId = requestAnimationFrame(tick);
-    };
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
-  }, [isDragging, hasPending]);
 
   // Build the effective events list — append CTA card when viewing timeline
   const CTA_EVENT_ID = "__cta__";
@@ -488,7 +453,7 @@ export function Timeline({
         {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
         <div 
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
-          style={{ paddingTop: naturalPaddingTop + stabilizationOffset }}
+          style={{ paddingTop: naturalPaddingTop }}
         >
           <div className="flex flex-col" ref={innerWrapperRef}>
             {items}
