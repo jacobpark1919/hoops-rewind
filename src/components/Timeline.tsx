@@ -431,22 +431,6 @@ export function Timeline({
     const isCta = item.event.id === CTA_EVENT_ID;
     const otherModes = SPORT_MODE_OPTIONS.filter(s => s.value !== (sportFilter ?? null));
 
-    // When the drop zone DIRECTLY ABOVE this card is active (i.e. the zone
-    // at position `nonPendingIndex`), this card should "swap spots" with the
-    // zone: it translates upward by the zone's expanded height + gap, while
-    // we cancel the zone's downward push on the rest of the timeline by
-    // applying a negative marginTop here. Net effect: only this card moves
-    // (upward); everything below stays put.
-    const expandedZoneHeight = window.innerWidth >= 640 ? 128 : 112;
-    const zoneAboveActive = isPrevActiveZone && nonPendingIndex > 0;
-    const swapOffset = expandedZoneHeight + 12; // expanded height + mt-3 margin
-    const computedMarginTop = zoneAboveActive ? -swapOffset + marginTop : marginTop;
-    const computedTransform = isHovered
-      ? 'translateY(-20px) scale(1.02)'
-      : zoneAboveActive
-        ? `translateY(-${swapOffset}px)`
-        : 'none';
-
     items.push(
       <div
         key={item.event.id}
@@ -456,10 +440,10 @@ export function Timeline({
         }}
         className="relative flex items-center gap-3"
         style={{
-          marginTop: computedMarginTop,
+          marginTop,
           zIndex: isHovered ? 50 : baseZIndex,
-          transform: computedTransform,
-          transition: 'margin-top 350ms cubic-bezier(0.25, 0.1, 0.25, 1), transform 350ms cubic-bezier(0.25, 0.1, 0.25, 1), z-index 0s',
+          transform: isHovered ? 'translateY(-20px) scale(1.02)' : 'none',
+          transition: 'margin-top 0.3s ease-out, transform 0.2s ease-out, z-index 0s',
         }}
         onMouseEnter={() => !isDragging && setHoveredCardId(item.event.id)}
         onMouseLeave={() => setHoveredCardId(null)}
