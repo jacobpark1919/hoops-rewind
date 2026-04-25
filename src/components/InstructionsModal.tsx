@@ -20,7 +20,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
 
   return (
     <div 
-      className={`fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 transition-all duration-200 ${
+      className={`fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 pt-[18vh] sm:pt-4 transition-all duration-200 ${
         isVisible ? 'bg-black/50' : 'bg-black/0'
       }`}
       onClick={handleClose}
