@@ -72,18 +72,18 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vl-tt{fill:#fff;font-family:ui-sans-serif,sans-serif;font-size:8.5px;font-weight:700;text-anchor:middle;}
                   .vl-cf{fill:none;stroke:hsl(142,71%,45%);stroke-width:2;}
                   .vl-lb{fill:hsl(35,18%,58%);font-family:ui-sans-serif,sans-serif;font-size:7.5px;font-weight:700;text-anchor:middle;letter-spacing:0.08em;}
-                  .vl-ac{animation:vl-card 8s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vl-au{animation:vl-cur 8s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vl-ad1{animation:vl-dz1 8s ease-in-out infinite;}
-                  .vl-ad2{animation:vl-dz2 8s ease-in-out infinite;}
-                  .vl-r92{animation:vl-r1992 8s ease-in-out infinite;}
-                  .vl-r2k{animation:vl-r2000 8s ease-in-out infinite;}
-                  .vl-at{animation:vl-tap 8s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-a1{animation:vl-p1 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-a2{animation:vl-p2 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-a3{animation:vl-p3 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-af{animation:vl-cf 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-ay{animation:vl-yr 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-ac{animation:vl-card 10s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vl-au{animation:vl-cur 10s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vl-ad1{animation:vl-dz1 10s ease-in-out infinite;}
+                  .vl-ad2{animation:vl-dz2 10s ease-in-out infinite;}
+                  .vl-r92{animation:vl-r1992 10s ease-in-out infinite;}
+                  .vl-r2k{animation:vl-r2000 10s ease-in-out infinite;}
+                  .vl-at{animation:vl-tap 10s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a1{animation:vl-p1 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a2{animation:vl-p2 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a3{animation:vl-p3 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-af{animation:vl-cf 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-ay{animation:vl-yr 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
                   @keyframes vl-card{
                     0%  {transform:translate(0,0);opacity:0;}
                     5%  {transform:translate(0,0);opacity:1;}
@@ -167,11 +167,11 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 <rect className="vl-gh" x="34" y="30" width="240" height="28" rx="5"/>
 
                 <g className="vl-ad1">
-                  <rect className="vl-dz" x="34" y="120" width="240" height="28" rx="4"/>
+                  <rect className="vl-dz" x="34" y="115" width="240" height="38" rx="4"/>
                   <text className="vl-dztext" x="154" y="138">Drop here</text>
                 </g>
                 <g className="vl-ad2">
-                  <rect className="vl-dz" x="34" y="152" width="240" height="28" rx="4"/>
+                  <rect className="vl-dz" x="34" y="147" width="240" height="38" rx="4"/>
                   <text className="vl-dztext" x="154" y="170">Drop here</text>
                 </g>
 
@@ -225,7 +225,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   </g>
                 </g>
 
-                <rect className="vl-cf vl-af" x="34" y="152" width="240" height="28" rx="4" vectorEffect="non-scaling-stroke"/>
+                <rect className="vl-cf vl-af" x="34" y="147" width="240" height="38" rx="4" vectorEffect="non-scaling-stroke"/>
 
                 <g className="vl-ac">
                   <rect className="vl-ca" x="34" y="30" width="240" height="28" rx="5"/>
@@ -281,18 +281,18 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vd-tt{fill:#fff;font-family:ui-sans-serif,sans-serif;font-size:8.5px;font-weight:700;text-anchor:middle;}
                   .vd-cf{fill:none;stroke:hsl(142,76%,50%);stroke-width:2;}
                   .vd-lb{fill:hsl(220,8%,50%);font-family:ui-sans-serif,sans-serif;font-size:7.5px;font-weight:700;text-anchor:middle;letter-spacing:0.08em;}
-                  .vd-ac{animation:vd-card 8s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vd-au{animation:vd-cur 8s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vd-ad1{animation:vd-dz1 8s ease-in-out infinite;}
-                  .vd-ad2{animation:vd-dz2 8s ease-in-out infinite;}
-                  .vd-r92{animation:vd-r1992 8s ease-in-out infinite;}
-                  .vd-r2k{animation:vd-r2000 8s ease-in-out infinite;}
-                  .vd-at{animation:vd-tap 8s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-a1{animation:vd-p1 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-a2{animation:vd-p2 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-a3{animation:vd-p3 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-af{animation:vd-cf 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-ay{animation:vd-yr 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-ac{animation:vd-card 10s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vd-au{animation:vd-cur 10s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vd-ad1{animation:vd-dz1 10s ease-in-out infinite;}
+                  .vd-ad2{animation:vd-dz2 10s ease-in-out infinite;}
+                  .vd-r92{animation:vd-r1992 10s ease-in-out infinite;}
+                  .vd-r2k{animation:vd-r2000 10s ease-in-out infinite;}
+                  .vd-at{animation:vd-tap 10s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a1{animation:vd-p1 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a2{animation:vd-p2 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a3{animation:vd-p3 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-af{animation:vd-cf 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-ay{animation:vd-yr 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
                   @keyframes vd-card{
                     0%  {transform:translate(0,0);opacity:0;}
                     5%  {transform:translate(0,0);opacity:1;}
@@ -376,11 +376,11 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 <rect className="vd-gh" x="34" y="30" width="240" height="28" rx="5"/>
 
                 <g className="vd-ad1">
-                  <rect className="vd-dz" x="34" y="120" width="240" height="28" rx="4"/>
+                  <rect className="vd-dz" x="34" y="115" width="240" height="38" rx="4"/>
                   <text className="vd-dztext" x="154" y="138">Drop here</text>
                 </g>
                 <g className="vd-ad2">
-                  <rect className="vd-dz" x="34" y="152" width="240" height="28" rx="4"/>
+                  <rect className="vd-dz" x="34" y="147" width="240" height="38" rx="4"/>
                   <text className="vd-dztext" x="154" y="170">Drop here</text>
                 </g>
 
@@ -434,7 +434,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   </g>
                 </g>
 
-                <rect className="vd-cf vd-af" x="34" y="152" width="240" height="28" rx="4" vectorEffect="non-scaling-stroke"/>
+                <rect className="vd-cf vd-af" x="34" y="147" width="240" height="38" rx="4" vectorEffect="non-scaling-stroke"/>
 
                 <g className="vd-ac">
                   <rect className="vd-ca" x="34" y="30" width="240" height="28" rx="5"/>
