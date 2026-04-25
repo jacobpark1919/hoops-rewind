@@ -364,10 +364,18 @@ export function Timeline({
   };
 
   // Build items
-  const items: JSX.Element[] = [];
+  const items: (JSX.Element | null)[] = [];
 
   // Whether to show drop zones (during drag OR frozen/pending state)
   const showDropZones = isDragging || activeDropZone !== null;
+
+  // The first drop zone, when in instant-first mode, is rendered as an
+  // absolutely-positioned overlay above the timeline content so it doesn't
+  // push existing cards downward.
+  const firstZoneInstantMode =
+    showDropZones && !hasLeftFirstZoneRef.current && !(activeDropZone === 0 && !isDragging && pendingItem);
+  const firstZoneActive = activeDropZone === 0;
+  const expandedHeightFirst = window.innerWidth >= 640 ? 128 : 112;
 
   // Drop zone BEFORE first card
   if (showDropZones) {
@@ -478,7 +486,27 @@ export function Timeline({
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
           style={{ paddingTop: naturalPaddingTop }}
         >
-          <div className="flex flex-col" ref={innerWrapperRef}>
+          <div className="relative flex flex-col" ref={innerWrapperRef}>
+            {firstZoneInstantMode && (
+              <div
+                className={`absolute left-0 right-0 rounded-xl border-2 border-dashed flex items-center justify-center z-40 pointer-events-none ${
+                  firstZoneActive
+                    ? 'border-primary bg-primary/20 shadow-lg'
+                    : 'border-transparent'
+                }`}
+                style={{
+                  bottom: '100%',
+                  marginBottom: 8,
+                  height: expandedHeightFirst,
+                  opacity: firstZoneActive ? 1 : 0,
+                  transition: 'opacity 150ms ease-out',
+                }}
+              >
+                {firstZoneActive && (
+                  <span className="text-primary text-sm font-semibold">Drop here</span>
+                )}
+              </div>
+            )}
             {items}
           </div>
         </div>
