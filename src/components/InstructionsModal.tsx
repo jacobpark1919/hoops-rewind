@@ -46,7 +46,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
           </h2>
           {/* Drag illustration — light + dark variants */}
           <div className="my-2 sm:my-6 flex justify-center">
-            <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30 aspect-[280/306] sm:aspect-auto">
+            <div className="w-full rounded-lg sm:rounded-xl overflow-hidden aspect-[280/306] sm:aspect-auto">
               {/* LIGHT MODE SVG */}
               <svg
                 viewBox="0 0 280 360"
@@ -57,7 +57,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 aria-label="Drag a card into the timeline and tap to place"
               >
                 <style>{`
-                  .dhl-rowbg { fill: hsl(220, 14%, 96%); stroke: hsl(220, 13%, 88%); stroke-width: 0.75; }
+                  .dhl-rowbg { fill: hsl(38, 55%, 99%); stroke: hsl(35, 20%, 82%); stroke-width: 0.75; }
                   .dhl-rowtext { fill: hsl(220, 9%, 75%); }
                   .dhl-ball { fill: hsl(20, 82%, 53%); }
                   .dhl-year { fill: hsl(45, 90%, 55%); }
@@ -65,7 +65,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .dhl-zone { fill: hsl(20, 82%, 53%, 0.10); stroke: hsl(20, 82%, 53%); stroke-width: 1.25; stroke-dasharray: 3 2.5; }
                   .dhl-droptext { fill: hsl(20, 82%, 45%); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 8px; font-weight: 700; text-anchor: middle; }
                   .dhl-cardline { fill: hsl(220, 9%, 70%); }
-                  .dhl-card { fill: hsl(0, 0%, 100%); stroke: hsl(20, 82%, 53%); stroke-width: 1.5; }
+                  .dhl-card { fill: hsl(38, 55%, 99%); stroke: hsl(20, 82%, 53%); stroke-width: 1.5; }
                   .dhl-cursor { fill: hsl(220, 30%, 16%); stroke: hsl(0, 0%, 100%); stroke-width: 0.6; }
                   .dhl-pulse-orange { fill: none; stroke: hsl(20, 82%, 53%); stroke-width: 1.5; }
                   .dhl-pulse-green { fill: none; stroke: hsl(142, 71%, 45%); stroke-width: 2; }
@@ -142,6 +142,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   }
                 `}</style>
 
+                <rect x="0" y="0" width="280" height="360" fill="hsl(35,28%,82%)"/>
                 <g transform="translate(0, 88)">
                   <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
@@ -231,7 +232,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 aria-label="Drag a card into the timeline and tap to place"
               >
                 <style>{`
-                  .dhd-rowbg { fill: hsl(220, 10%, 20%); stroke: hsl(220, 8%, 30%); stroke-width: 0.75; }
+                  .dhd-rowbg { fill: hsl(220, 12%, 28%); stroke: hsl(220, 8%, 35%); stroke-width: 0.75; }
                   .dhd-rowtext { fill: hsl(220, 8%, 40%); }
                   .dhd-ball { fill: hsl(20, 82%, 55%); }
                   .dhd-year { fill: hsl(45, 75%, 55%); }
@@ -239,7 +240,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .dhd-zone { fill: hsl(20, 82%, 55%, 0.12); stroke: hsl(20, 82%, 55%); stroke-width: 1.25; stroke-dasharray: 3 2.5; }
                   .dhd-droptext { fill: hsl(20, 82%, 60%); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 8px; font-weight: 700; text-anchor: middle; }
                   .dhd-cardline { fill: hsl(220, 8%, 50%); }
-                  .dhd-card { fill: hsl(220, 10%, 24%); stroke: hsl(20, 82%, 55%); stroke-width: 1.5; }
+                  .dhd-card { fill: hsl(220, 12%, 28%); stroke: hsl(20, 82%, 55%); stroke-width: 1.5; }
                   .dhd-cursor { fill: hsl(220, 10%, 95%); stroke: hsl(220, 10%, 16%); stroke-width: 0.6; }
                   .dhd-pulse-orange { fill: none; stroke: hsl(20, 82%, 55%); stroke-width: 1.5; }
                   .dhd-pulse-green { fill: none; stroke: hsl(142, 76%, 50%); stroke-width: 2; }
@@ -316,6 +317,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   }
                 `}</style>
 
+                <rect x="0" y="0" width="280" height="360" fill="hsl(220,12%,11%)"/>
                 <g transform="translate(0, 88)">
                   <rect className="dhd-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhd-year" x="6" y="5" width="24" height="18" rx="3" />
