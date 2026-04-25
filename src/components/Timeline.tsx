@@ -278,6 +278,10 @@ export function Timeline({
     });
     liveCenters.sort((a, b) => a - b);
 
+    if (typeof window !== 'undefined') {
+      console.log('[DROPZONE]', { dragY, liveCenters, hasLeftFirst: hasLeftFirstZoneRef.current, activeDropZone });
+    }
+
     if (liveCenters.length === 0) { onDropZoneChange(0); return; }
     if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
     for (let i = 0; i < liveCenters.length - 1; i++) {
