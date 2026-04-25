@@ -91,42 +91,49 @@ export function Timeline({
       }
       return;
     }
-    // Instant-first mode (overlay rendering + pin) stays active for the
-    // entire drag so the timeline cards never reflow downward when the
-    // first drop zone appears. Detection logic uses live centers, which
-    // remain accurate because both the cards and `dragY` are in viewport
-    // coordinates — so dragging mechanics still behave correctly even
-    // while the visual pin is in effect.
+    // As soon as ANY drop zone activates for the first time, exit
+    // instant-first mode so all subsequent drop-zone interactions
+    // (including hovering back over the first zone) use the standard
+    // expanding-in-flow physics. The visual pin (tracking the first
+    // card's position) keeps the cards from jumping during the
+    // transition itself.
+    if (activeDropZone !== null) {
+      hasLeftFirstZoneRef.current = true;
+    }
   }, [isDragging, activeDropZone]);
 
-  // Capture the cards' flow-position viewport Y when drag begins (in instant-
-  // first mode), then on every frame compute how far the flow has shifted and
-  // counter-translate the inner wrapper to keep cards visually pinned.
+  // Pin the FIRST CARD's viewport position throughout the drag. This way,
+  // when the standard in-flow first drop zone expands (after the initial
+  // appearance), it would normally push the first card down — but the pin
+  // counter-translates the inner wrapper to keep it visually still.
+  // Net result: the first appearance feels like a non-pushing overlay,
+  // and subsequent expand/collapse cycles also keep cards still.
   useEffect(() => {
-    if (!isDragging || hasLeftFirstZoneRef.current) return;
-    if (!cardsFlowRef.current) return;
-
-    if (cardsAnchorRef.current === null) {
-      cardsAnchorRef.current = cardsFlowRef.current.getBoundingClientRect().top;
-    }
+    if (!isDragging) return;
 
     let rafId: number;
     const tick = () => {
-      if (!cardsFlowRef.current || cardsAnchorRef.current === null) return;
-      const currentTop = cardsFlowRef.current.getBoundingClientRect().top;
-      // Compensate by the delta: if the flow-position has moved up by N px,
-      // push the inner wrapper back down by N px via translateY.
-      // Apply directly to the DOM (no React state) to avoid a re-render lag
-      // that would cause visible jitter.
-      const delta = cardsAnchorRef.current - currentTop;
-      if (innerWrapperRef.current) {
+      // Find the first non-pending card element.
+      const firstCardItem = nonPendingEvents[0];
+      const firstCardEl = firstCardItem ? cardRefs.current.get(firstCardItem.event.id) : null;
+      if (firstCardEl && innerWrapperRef.current) {
+        // Temporarily remove our transform to measure the untransformed position.
+        const prevTransform = innerWrapperRef.current.style.transform;
+        innerWrapperRef.current.style.transform = '';
+        const naturalTop = firstCardEl.getBoundingClientRect().top;
+        innerWrapperRef.current.style.transform = prevTransform;
+
+        if (cardsAnchorRef.current === null) {
+          cardsAnchorRef.current = naturalTop;
+        }
+        const delta = cardsAnchorRef.current - naturalTop;
         innerWrapperRef.current.style.transform = delta ? `translateY(${delta}px)` : '';
       }
       rafId = requestAnimationFrame(tick);
     };
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, [isDragging]);
+  }, [isDragging, nonPendingEvents]);
 
   // Measure available space
   useEffect(() => {
