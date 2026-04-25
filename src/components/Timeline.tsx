@@ -301,8 +301,7 @@ export function Timeline({
     const currentTimelineTop = timelineRef.current.getBoundingClientRect().top;
     const anchorTop = timelineAnchorRef.current ?? currentTimelineTop;
     const adjustedDragY = dragY - anchorTop;
-    const effectiveTop = !hasLeftFirstZoneRef.current ? anchorTop : currentTimelineTop;
-    const adjustedCenters = liveCenters.map((c) => c - effectiveTop);
+    const adjustedCenters = liveCenters.map((c) => c - currentTimelineTop);
 
     if (adjustedCenters.length === 0) {
       onDropZoneChange(0);
