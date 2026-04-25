@@ -318,6 +318,7 @@ export function Timeline({
     }
 
     // Normal drop zone (during drag, or collapsed)
+    const isFirst = position === 0;
     return (
       <div
         key={`drop-${position}`}
@@ -330,7 +331,9 @@ export function Timeline({
           height: isActive ? (window.innerWidth >= 640 ? 128 : 112) : 0,
           marginTop: isActive && marginClass?.includes('mt-3') ? 12 : 0,
           marginBottom: isActive && marginClass?.includes('mb-3') ? 12 : 0,
-          transition: 'height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), margin 350ms cubic-bezier(0.25, 0.1, 0.25, 1)',
+          transition: isFirst
+            ? 'none'
+            : 'height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), margin 350ms cubic-bezier(0.25, 0.1, 0.25, 1)',
         }}
       >
         {isActive && (
