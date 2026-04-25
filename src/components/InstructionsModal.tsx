@@ -44,512 +44,422 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
           <h2 className="font-display text-lg sm:text-2xl font-bold text-foreground mb-1.5 sm:mb-2">How to Play</h2>
           {/* Drag illustration — light + dark variants */}
           <div className="my-2 sm:my-6 flex justify-center">
-            <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30 aspect-[280/306] sm:aspect-auto">
-              {/* LIGHT MODE SVG */}
+            <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30">
+              {/* LIGHT MODE */}
               <svg
-                viewBox="0 0 280 360"
+                viewBox="0 0 280 285"
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-full h-full block dark:hidden"
-                preserveAspectRatio="xMidYMin slice"
+                className="w-full block dark:hidden"
                 role="img"
                 aria-label="Drag a card into the timeline and tap to place"
               >
                 <style>{`
-                  .dhl-rowbg { fill: hsl(220, 14%, 96%); stroke: hsl(220, 13%, 88%); stroke-width: 0.75; }
-                  .dhl-rowtext { fill: hsl(220, 9%, 75%); }
-                  .dhl-ball { fill: hsl(20, 82%, 53%); }
-                  .dhl-year { fill: hsl(45, 90%, 55%); }
-                  .dhl-yeartext { fill: hsl(220, 30%, 12%); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 700; text-anchor: middle; }
-                  .dhl-zone { fill: hsl(20, 82%, 53%, 0.10); stroke: hsl(20, 82%, 53%); stroke-width: 1.25; stroke-dasharray: 3 2.5; }
-                  .dhl-droptext { fill: hsl(20, 82%, 45%); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 8px; font-weight: 700; text-anchor: middle; }
-                  .dhl-cardline { fill: hsl(220, 9%, 70%); }
-                  .dhl-card { fill: hsl(0, 0%, 100%); stroke: hsl(20, 82%, 53%); stroke-width: 1.5; }
-                  .dhl-cursor { fill: hsl(220, 30%, 16%); stroke: hsl(0, 0%, 100%); stroke-width: 0.6; }
-                  .dhl-pulse-orange { fill: none; stroke: hsl(20, 82%, 53%); stroke-width: 1.5; }
-                  .dhl-pulse-green { fill: none; stroke: hsl(142, 71%, 45%); stroke-width: 2; }
-                  .dhl-tap-pill { fill: hsl(20, 82%, 53%); }
-                  .dhl-tap-text { fill: hsl(0, 0%, 100%); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 8.5px; font-weight: 700; text-anchor: middle; }
-                  .dhl-confirm { fill: none; stroke: hsl(142, 71%, 45%); stroke-width: 2; }
-                  .dhl-confirm-anim { animation: dhl-confirm 5.5s ease-out infinite; transform-box: fill-box; transform-origin: center; }
-                  .dhl-card-anim { animation: dhl-card 5.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-                  .dhl-cur-anim { animation: dhl-cur 5.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-                  .dhl-zone-anim { animation: dhl-zone 5.5s ease-in-out infinite; }
-                  .dhl-tap-anim { animation: dhl-tap 5.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-                  .dhl-pulse1-anim { animation: dhl-pulse1 5.5s ease-out infinite; transform-box: fill-box; transform-origin: center; }
-                  .dhl-pulse2-anim { animation: dhl-pulse2 5.5s ease-out infinite; transform-box: fill-box; transform-origin: center; }
-                  .dhl-year-anim { animation: dhl-year 5.5s ease-out infinite; transform-box: fill-box; transform-origin: center; }
-                  @keyframes dhl-card {
-                    0%   { transform: translate(0px, 0px); opacity: 0; }
-                    4%   { transform: translate(0px, 0px); opacity: 1; }
-                    32%  { transform: translate(0px, 0px); opacity: 1; }
-                    55%  { transform: translate(0px, 130px); opacity: 1; }
-                    94%  { transform: translate(0px, 130px); opacity: 1; }
-                    98%  { transform: translate(0px, 130px); opacity: 0; }
-                    100% { transform: translate(0px, 0px); opacity: 0; }
+                  .vl-bg{fill:hsl(35,30%,90%);}
+                  .vl-rb{fill:hsl(220,14%,96%);stroke:hsl(220,13%,88%);stroke-width:0.75;}
+                  .vl-rt{fill:hsl(220,9%,75%);}
+                  .vl-bl{fill:hsl(20,82%,53%);}
+                  .vl-yr{fill:hsl(45,90%,55%);}
+                  .vl-yt{fill:hsl(220,30%,12%);font-family:ui-monospace,monospace;font-size:8px;font-weight:700;text-anchor:middle;}
+                  .vl-gh{fill:none;stroke:hsl(20,82%,53%);stroke-width:1.25;stroke-dasharray:3 2.5;opacity:0.35;}
+                  .vl-dz{fill:hsl(20,82%,53%,0.10);stroke:hsl(20,82%,53%);stroke-width:1.25;stroke-dasharray:3 2.5;}
+                  .vl-dztext{fill:hsl(20,82%,45%);font-family:ui-sans-serif,sans-serif;font-size:8px;font-weight:700;text-anchor:middle;}
+                  .vl-cl{fill:hsl(220,9%,70%);}
+                  .vl-ca{fill:hsl(0,0%,100%);stroke:hsl(20,82%,53%);stroke-width:1.5;}
+                  .vl-cu{fill:hsl(220,30%,16%);stroke:hsl(0,0%,100%);stroke-width:0.6;}
+                  .vl-po{fill:none;stroke:hsl(20,82%,53%);stroke-width:1.5;}
+                  .vl-pg{fill:none;stroke:hsl(142,71%,45%);stroke-width:2;}
+                  .vl-tp{fill:hsl(20,82%,53%);}
+                  .vl-tt{fill:#fff;font-family:ui-sans-serif,sans-serif;font-size:8.5px;font-weight:700;text-anchor:middle;}
+                  .vl-cf{fill:none;stroke:hsl(142,71%,45%);stroke-width:2;}
+                  .vl-lb{fill:hsl(35,18%,58%);font-family:ui-sans-serif,sans-serif;font-size:7.5px;font-weight:700;text-anchor:middle;letter-spacing:0.08em;}
+                  .vl-ac{animation:vl-card 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vl-au{animation:vl-cur 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vl-ad1{animation:vl-dz1 6.5s ease-in-out infinite;}
+                  .vl-ad2{animation:vl-dz2 6.5s ease-in-out infinite;}
+                  .vl-r92{animation:vl-r1992 6.5s ease-in-out infinite;}
+                  .vl-r2k{animation:vl-r2000 6.5s ease-in-out infinite;}
+                  .vl-at{animation:vl-tap 6.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a1{animation:vl-p1 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a2{animation:vl-p2 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a3{animation:vl-p3 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-af{animation:vl-cf 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-ay{animation:vl-yr 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  @keyframes vl-card{
+                    0%  {transform:translate(0,0);opacity:0;}
+                    5%  {transform:translate(0,0);opacity:1;}
+                    17% {transform:translate(0,0);opacity:1;}
+                    38% {transform:translate(0,90px);opacity:1;}
+                    46% {transform:translate(0,90px);opacity:1;}
+                    58% {transform:translate(0,122px);opacity:1;}
+                    90% {transform:translate(0,122px);opacity:1;}
+                    96% {transform:translate(0,122px);opacity:0;}
+                    100%{transform:translate(0,0);opacity:0;}
                   }
-                  @keyframes dhl-cur {
-                    0%   { transform: translate(290px, 44px); opacity: 1; }
-                    14%  { transform: translate(212px, 44px); opacity: 1; }
-                    30%  { transform: translate(212px, 44px); opacity: 1; }
-                    55%  { transform: translate(212px, 174px); opacity: 1; }
-                    63%  { transform: translate(212px, 174px); opacity: 1; }
-                    70%  { transform: translate(150px, 169px); opacity: 1; }
-                    90%  { transform: translate(150px, 169px); opacity: 1; }
-                    95%  { transform: translate(150px, 169px); opacity: 0; }
-                    100% { transform: translate(290px, 44px); opacity: 0; }
+                  @keyframes vl-cur{
+                    0%  {transform:translate(290px,44px);opacity:1;}
+                    13% {transform:translate(212px,44px);opacity:1;}
+                    17% {transform:translate(212px,44px);opacity:1;}
+                    38% {transform:translate(212px,134px);opacity:1;}
+                    46% {transform:translate(212px,134px);opacity:1;}
+                    58% {transform:translate(212px,166px);opacity:1;}
+                    65% {transform:translate(212px,166px);opacity:1;}
+                    71% {transform:translate(150px,160px);opacity:1;}
+                    89% {transform:translate(150px,160px);opacity:1;}
+                    94% {transform:translate(150px,160px);opacity:0;}
+                    100%{transform:translate(290px,44px);opacity:0;}
                   }
-                  @keyframes dhl-zone {
-                    0%, 35%   { opacity: 0; }
-                    48%       { opacity: 1; }
-                    55%       { opacity: 1; }
-                    62%, 100% { opacity: 0; }
+                  @keyframes vl-dz1{
+                    0%,26%{opacity:0;}33%{opacity:1;}45%{opacity:1;}52%,100%{opacity:0;}
                   }
-                  @keyframes dhl-tap {
-                    0%, 58%   { transform: scale(0); opacity: 0; }
-                    64%       { transform: scale(1); opacity: 1; }
-                    74%       { transform: scale(1); opacity: 1; }
-                    77%       { transform: scale(0.9); opacity: 1; }
-                    80%       { transform: scale(1); opacity: 1; }
-                    84%       { transform: scale(1); opacity: 1; }
-                    88%, 100% { transform: scale(1); opacity: 0; }
+                  @keyframes vl-dz2{
+                    0%,49%{opacity:0;}55%{opacity:1;}58%{opacity:1;}66%,100%{opacity:0;}
                   }
-                  @keyframes dhl-pulse1 {
-                    0%, 12%   { transform: scale(0); opacity: 0; }
-                    15%       { transform: scale(0.3); opacity: 0.85; }
-                    24%       { transform: scale(7); opacity: 0; }
-                    25%, 100% { transform: scale(0); opacity: 0; }
+                  @keyframes vl-r1992{
+                    0%,23%{transform:translate(0,0);}
+                    36%{transform:translate(0,32px);}
+                    46%{transform:translate(0,32px);}
+                    54%{transform:translate(0,0);}
+                    96%,100%{transform:translate(0,0);}
                   }
-                  @keyframes dhl-pulse2 {
-                    0%, 74%   { transform: scale(0); opacity: 0; }
-                    77%       { transform: scale(0.3); opacity: 0.9; }
-                    85%       { transform: scale(9); opacity: 0; }
-                    86%, 100% { transform: scale(0); opacity: 0; }
+                  @keyframes vl-r2000{
+                    0%,23%{transform:translate(0,0);}
+                    36%,95%{transform:translate(0,32px);}
+                    100%{transform:translate(0,0);}
                   }
-                  @keyframes dhl-confirm {
-                    0%, 76%   { transform: scale(0.96); opacity: 0; }
-                    80%       { transform: scale(1); opacity: 1; }
-                    88%       { transform: scale(1.08); opacity: 0; }
-                    89%, 100% { transform: scale(0.96); opacity: 0; }
+                  @keyframes vl-tap{
+                    0%,67%{transform:scale(0);opacity:0;}
+                    71%{transform:scale(1);opacity:1;}
+                    76%{transform:scale(1);opacity:1;}
+                    79%{transform:scale(0.9);opacity:1;}
+                    82%{transform:scale(1);opacity:1;}
+                    89%{transform:scale(1);opacity:1;}
+                    93%,100%{transform:scale(1);opacity:0;}
                   }
-                  @keyframes dhl-year {
-                    0%, 84%   { transform: scale(0); opacity: 0; }
-                    88%       { transform: scale(1.25); opacity: 1; }
-                    92%       { transform: scale(1); opacity: 1; }
-                    94%       { transform: scale(1); opacity: 1; }
-                    100%      { transform: scale(1); opacity: 0; }
+                  @keyframes vl-p1{
+                    0%,11%{transform:scale(0);opacity:0;}14%{transform:scale(0.3);opacity:0.85;}
+                    21%{transform:scale(7);opacity:0;}22%,100%{transform:scale(0);opacity:0;}
+                  }
+                  @keyframes vl-p2{
+                    0%,55%{transform:scale(0);opacity:0;}58%{transform:scale(0.3);opacity:0.9;}
+                    66%{transform:scale(9);opacity:0;}67%,100%{transform:scale(0);opacity:0;}
+                  }
+                  @keyframes vl-p3{
+                    0%,76%{transform:scale(0);opacity:0;}79%{transform:scale(0.3);opacity:0.9;}
+                    87%{transform:scale(9);opacity:0;}88%,100%{transform:scale(0);opacity:0;}
+                  }
+                  @keyframes vl-cf{
+                    0%,77%{transform:scale(0.96);opacity:0;}81%{transform:scale(1);opacity:1;}
+                    89%{transform:scale(1.08);opacity:0;}90%,100%{transform:scale(0.96);opacity:0;}
+                  }
+                  @keyframes vl-yr{
+                    0%,85%{transform:scale(0);opacity:0;}89%{transform:scale(1.25);opacity:1;}
+                    93%{transform:scale(1);opacity:1;}96%{transform:scale(1);opacity:0;}
+                    100%{transform:scale(0);opacity:0;}
                   }
                 `}</style>
 
-                <g transform="translate(0, 88)">
-                  <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
-                  <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhl-yeartext" x="18" y="17">
-                    1991
-                  </text>
-                  <circle className="dhl-ball" cx="49" cy="14" r="5" />
-                  <rect className="dhl-rowtext" x="62" y="9" width="200" height="3" rx="1" />
-                  <rect className="dhl-rowtext" x="62" y="16" width="160" height="3" rx="1" />
+                <rect className="vl-bg" x="0" y="0" width="280" height="285"/>
+
+                <text className="vl-lb" x="154" y="80">BEFORE</text>
+                <line x1="44" y1="77" x2="114" y2="77" stroke="hsl(35,18%,62%)" strokeWidth="0.75" strokeDasharray="2 2"/>
+                <line x1="194" y1="77" x2="264" y2="77" stroke="hsl(35,18%,62%)" strokeWidth="0.75" strokeDasharray="2 2"/>
+
+                <rect className="vl-gh" x="34" y="30" width="240" height="28" rx="5"/>
+
+                <g className="vl-ad1">
+                  <rect className="vl-dz" x="34" y="120" width="240" height="28" rx="4"/>
+                  <text className="vl-dztext" x="154" y="138">Drop here</text>
                 </g>
-                <g transform="translate(0, 124)">
-                  <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
-                  <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhl-yeartext" x="18" y="17">
-                    1992
-                  </text>
-                  <circle className="dhl-ball" cx="49" cy="14" r="5" />
-                  <rect className="dhl-rowtext" x="62" y="9" width="180" height="3" rx="1" />
-                  <rect className="dhl-rowtext" x="62" y="16" width="140" height="3" rx="1" />
+                <g className="vl-ad2">
+                  <rect className="vl-dz" x="34" y="152" width="240" height="28" rx="4"/>
+                  <text className="vl-dztext" x="154" y="170">Drop here</text>
                 </g>
-                <g className="dhl-zone-anim" transform="translate(0, 160)">
-                  <rect className="dhl-zone" x="34" y="0" width="240" height="28" rx="5" />
-                  <text className="dhl-droptext" x="154" y="18">
-                    Drop here
-                  </text>
+
+                <g transform="translate(0,88)">
+                  <rect className="vl-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                  <rect className="vl-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                  <text className="vl-yt" x="18" y="17">1991</text>
+                  <circle className="vl-bl" cx="49" cy="14" r="5"/>
+                  <rect className="vl-rt" x="62" y="9" width="190" height="3" rx="1"/>
+                  <rect className="vl-rt" x="62" y="16" width="150" height="3" rx="1"/>
                 </g>
-                <g transform="translate(0, 196)">
-                  <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
-                  <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhl-yeartext" x="18" y="17">
-                    2000
-                  </text>
-                  <circle className="dhl-ball" cx="49" cy="14" r="5" />
-                  <rect className="dhl-rowtext" x="62" y="9" width="190" height="3" rx="1" />
-                  <rect className="dhl-rowtext" x="62" y="16" width="170" height="3" rx="1" />
-                </g>
-                <g transform="translate(0, 232)">
-                  <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
-                  <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhl-yeartext" x="18" y="17">
-                    2002
-                  </text>
-                  <circle className="dhl-ball" cx="49" cy="14" r="5" />
-                  <rect className="dhl-rowtext" x="62" y="9" width="170" height="3" rx="1" />
-                  <rect className="dhl-rowtext" x="62" y="16" width="120" height="3" rx="1" />
-                </g>
-                <text
-                  style={{
-                    fill: "hsl(35, 18%, 58%)",
-                    fontFamily: "ui-sans-serif, system-ui, sans-serif",
-                    fontSize: "7.5px",
-                    fontWeight: 700,
-                    textAnchor: "middle",
-                    letterSpacing: "0.08em",
-                  }}
-                  x="154"
-                  y="80"
-                >
-                  BEFORE
-                </text>
-                <text
-                  style={{
-                    fill: "hsl(35, 18%, 58%)",
-                    fontFamily: "ui-sans-serif, system-ui, sans-serif",
-                    fontSize: "7.5px",
-                    fontWeight: 700,
-                    textAnchor: "middle",
-                    letterSpacing: "0.08em",
-                  }}
-                  x="154"
-                  y="276"
-                >
-                  AFTER
-                </text>
-                <line
-                  x1="44"
-                  y1="77"
-                  x2="114"
-                  y2="77"
-                  stroke="hsl(35,18%,68%)"
-                  strokeWidth="0.75"
-                  strokeDasharray="2 2"
-                />
-                <line
-                  x1="194"
-                  y1="77"
-                  x2="264"
-                  y2="77"
-                  stroke="hsl(35,18%,68%)"
-                  strokeWidth="0.75"
-                  strokeDasharray="2 2"
-                />
-                <line
-                  x1="44"
-                  y1="273"
-                  x2="114"
-                  y2="273"
-                  stroke="hsl(35,18%,68%)"
-                  strokeWidth="0.75"
-                  strokeDasharray="2 2"
-                />
-                <line
-                  x1="194"
-                  y1="273"
-                  x2="264"
-                  y2="273"
-                  stroke="hsl(35,18%,68%)"
-                  strokeWidth="0.75"
-                  strokeDasharray="2 2"
-                />
-                <rect
-                  x="34"
-                  y="30"
-                  width="240"
-                  height="28"
-                  rx="5"
-                  fill="none"
-                  stroke="hsl(20,82%,53%)"
-                  strokeWidth="1.25"
-                  strokeDasharray="3 2.5"
-                  opacity="0.35"
-                />
-                <g className="dhl-card-anim">
-                  <rect className="dhl-card" x="34" y="30" width="240" height="28" rx="5" />
-                  <circle className="dhl-ball" cx="49" cy="44" r="5" />
-                  <rect className="dhl-cardline" x="62" y="39" width="190" height="3" rx="1" />
-                  <rect className="dhl-cardline" x="62" y="46" width="160" height="3" rx="1" />
-                  <rect className="dhl-cardline" x="62" y="53" width="80" height="2.5" rx="1" opacity="0.7" />
-                  <g className="dhl-year-anim">
-                    <rect className="dhl-year" x="6" y="35" width="24" height="18" rx="3" />
-                    <text className="dhl-yeartext" x="18" y="47">
-                      1996
-                    </text>
+
+                <g transform="translate(0,120)">
+                  <g className="vl-r92">
+                    <rect className="vl-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                    <rect className="vl-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                    <text className="vl-yt" x="18" y="17">1992</text>
+                    <circle className="vl-bl" cx="49" cy="14" r="5"/>
+                    <rect className="vl-rt" x="62" y="9" width="170" height="3" rx="1"/>
+                    <rect className="vl-rt" x="62" y="16" width="130" height="3" rx="1"/>
                   </g>
                 </g>
-                <rect
-                  className="dhl-confirm dhl-confirm-anim"
-                  x="34"
-                  y="160"
-                  width="240"
-                  height="28"
-                  rx="5"
-                  vectorEffect="non-scaling-stroke"
-                />
-                <g transform="translate(114, 165)">
-                  <g className="dhl-tap-anim">
-                    <rect className="dhl-tap-pill" x="0" y="0" width="80" height="18" rx="9" />
-                    <text className="dhl-tap-text" x="40" y="12.5">
-                      Tap to place
-                    </text>
+
+                <g transform="translate(0,152)">
+                  <g className="vl-r2k">
+                    <rect className="vl-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                    <rect className="vl-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                    <text className="vl-yt" x="18" y="17">2000</text>
+                    <circle className="vl-bl" cx="49" cy="14" r="5"/>
+                    <rect className="vl-rt" x="62" y="9" width="180" height="3" rx="1"/>
+                    <rect className="vl-rt" x="62" y="16" width="160" height="3" rx="1"/>
                   </g>
                 </g>
-                <g className="dhl-cur-anim">
-                  <circle className="dhl-pulse-orange dhl-pulse1-anim" cx="0" cy="0" r="2" />
-                  <circle className="dhl-pulse-green dhl-pulse2-anim" cx="0" cy="0" r="2" />
-                  <path className="dhl-cursor" d="M0,0 L0,12 L3.2,9 L5.4,13.6 L7.4,12.7 L5.2,8.2 L8.6,8.2 Z" />
+
+                <g transform="translate(0,184)">
+                  <g className="vl-r2k">
+                    <rect className="vl-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                    <rect className="vl-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                    <text className="vl-yt" x="18" y="17">2002</text>
+                    <circle className="vl-bl" cx="49" cy="14" r="5"/>
+                    <rect className="vl-rt" x="62" y="9" width="160" height="3" rx="1"/>
+                    <rect className="vl-rt" x="62" y="16" width="120" height="3" rx="1"/>
+                  </g>
+                </g>
+
+                <g transform="translate(0,226)">
+                  <g className="vl-r2k">
+                    <line x1="44" y1="8" x2="114" y2="8" stroke="hsl(35,18%,62%)" strokeWidth="0.75" strokeDasharray="2 2"/>
+                    <line x1="194" y1="8" x2="264" y2="8" stroke="hsl(35,18%,62%)" strokeWidth="0.75" strokeDasharray="2 2"/>
+                    <text className="vl-lb" x="154" y="11">AFTER</text>
+                  </g>
+                </g>
+
+                <rect className="vl-cf vl-af" x="34" y="152" width="240" height="28" rx="4" vectorEffect="non-scaling-stroke"/>
+
+                <g className="vl-ac">
+                  <rect className="vl-ca" x="34" y="30" width="240" height="28" rx="5"/>
+                  <circle className="vl-bl" cx="49" cy="44" r="5"/>
+                  <rect className="vl-cl" x="62" y="39" width="190" height="3" rx="1"/>
+                  <rect className="vl-cl" x="62" y="46" width="160" height="3" rx="1"/>
+                  <rect className="vl-cl" x="62" y="52" width="80" height="2.5" rx="1" opacity="0.7"/>
+                  <g className="vl-ay">
+                    <rect className="vl-yr" x="6" y="35" width="24" height="18" rx="3"/>
+                    <text className="vl-yt" x="18" y="47">1996</text>
+                  </g>
+                </g>
+
+                <g transform="translate(114,155)">
+                  <g className="vl-at">
+                    <rect className="vl-tp" x="0" y="0" width="80" height="18" rx="9"/>
+                    <text className="vl-tt" x="40" y="12.5">Tap to place</text>
+                  </g>
+                </g>
+
+                <g className="vl-au">
+                  <circle className="vl-po vl-a1" cx="0" cy="0" r="2"/>
+                  <circle className="vl-po vl-a2" cx="0" cy="0" r="2"/>
+                  <circle className="vl-pg vl-a3" cx="0" cy="0" r="2"/>
+                  <path className="vl-cu" d="M0,0 L0,12 L3.2,9 L5.4,13.6 L7.4,12.7 L5.2,8.2 L8.6,8.2 Z"/>
                 </g>
               </svg>
 
-              {/* DARK MODE SVG */}
+              {/* DARK MODE */}
               <svg
-                viewBox="0 0 280 360"
+                viewBox="0 0 280 285"
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-full h-full hidden dark:block"
-                preserveAspectRatio="xMidYMin slice"
+                className="w-full hidden dark:block"
                 role="img"
                 aria-label="Drag a card into the timeline and tap to place"
               >
                 <style>{`
-                  .dhd-rowbg { fill: hsl(220, 10%, 20%); stroke: hsl(220, 8%, 30%); stroke-width: 0.75; }
-                  .dhd-rowtext { fill: hsl(220, 8%, 40%); }
-                  .dhd-ball { fill: hsl(20, 82%, 55%); }
-                  .dhd-year { fill: hsl(45, 75%, 55%); }
-                  .dhd-yeartext { fill: hsl(45, 30%, 12%); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 700; text-anchor: middle; }
-                  .dhd-zone { fill: hsl(20, 82%, 55%, 0.12); stroke: hsl(20, 82%, 55%); stroke-width: 1.25; stroke-dasharray: 3 2.5; }
-                  .dhd-droptext { fill: hsl(20, 82%, 60%); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 8px; font-weight: 700; text-anchor: middle; }
-                  .dhd-cardline { fill: hsl(220, 8%, 50%); }
-                  .dhd-card { fill: hsl(220, 10%, 24%); stroke: hsl(20, 82%, 55%); stroke-width: 1.5; }
-                  .dhd-cursor { fill: hsl(220, 10%, 95%); stroke: hsl(220, 10%, 16%); stroke-width: 0.6; }
-                  .dhd-pulse-orange { fill: none; stroke: hsl(20, 82%, 55%); stroke-width: 1.5; }
-                  .dhd-pulse-green { fill: none; stroke: hsl(142, 76%, 50%); stroke-width: 2; }
-                  .dhd-tap-pill { fill: hsl(20, 82%, 55%); }
-                  .dhd-tap-text { fill: hsl(0, 0%, 100%); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 8.5px; font-weight: 700; text-anchor: middle; }
-                  .dhd-confirm { fill: none; stroke: hsl(142, 76%, 50%); stroke-width: 2; }
-                  .dhd-confirm-anim { animation: dhd-confirm 5.5s ease-out infinite; transform-box: fill-box; transform-origin: center; }
-                  .dhd-card-anim { animation: dhd-card 5.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-                  .dhd-cur-anim { animation: dhd-cur 5.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-                  .dhd-zone-anim { animation: dhd-zone 5.5s ease-in-out infinite; }
-                  .dhd-tap-anim { animation: dhd-tap 5.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-                  .dhd-pulse1-anim { animation: dhd-pulse1 5.5s ease-out infinite; transform-box: fill-box; transform-origin: center; }
-                  .dhd-pulse2-anim { animation: dhd-pulse2 5.5s ease-out infinite; transform-box: fill-box; transform-origin: center; }
-                  .dhd-year-anim { animation: dhd-year 5.5s ease-out infinite; transform-box: fill-box; transform-origin: center; }
-                  @keyframes dhd-card {
-                    0%   { transform: translate(0px, 0px); opacity: 0; }
-                    4%   { transform: translate(0px, 0px); opacity: 1; }
-                    32%  { transform: translate(0px, 0px); opacity: 1; }
-                    55%  { transform: translate(0px, 130px); opacity: 1; }
-                    94%  { transform: translate(0px, 130px); opacity: 1; }
-                    98%  { transform: translate(0px, 130px); opacity: 0; }
-                    100% { transform: translate(0px, 0px); opacity: 0; }
+                  .vd-bg{fill:hsl(220,12%,11%);}
+                  .vd-rb{fill:hsl(220,12%,28%);stroke:hsl(220,8%,35%);stroke-width:0.75;}
+                  .vd-rt{fill:hsl(220,8%,50%);}
+                  .vd-bl{fill:hsl(20,82%,55%);}
+                  .vd-yr{fill:hsl(45,75%,55%);}
+                  .vd-yt{fill:hsl(45,30%,12%);font-family:ui-monospace,monospace;font-size:8px;font-weight:700;text-anchor:middle;}
+                  .vd-gh{fill:none;stroke:hsl(20,82%,55%);stroke-width:1.25;stroke-dasharray:3 2.5;opacity:0.3;}
+                  .vd-dz{fill:hsl(20,82%,55%,0.12);stroke:hsl(20,82%,55%);stroke-width:1.25;stroke-dasharray:3 2.5;}
+                  .vd-dztext{fill:hsl(20,82%,60%);font-family:ui-sans-serif,sans-serif;font-size:8px;font-weight:700;text-anchor:middle;}
+                  .vd-cl{fill:hsl(220,8%,55%);}
+                  .vd-ca{fill:hsl(220,12%,28%);stroke:hsl(20,82%,55%);stroke-width:1.5;}
+                  .vd-cu{fill:hsl(220,10%,95%);stroke:hsl(220,12%,11%);stroke-width:0.6;}
+                  .vd-po{fill:none;stroke:hsl(20,82%,55%);stroke-width:1.5;}
+                  .vd-pg{fill:none;stroke:hsl(142,76%,50%);stroke-width:2;}
+                  .vd-tp{fill:hsl(20,82%,55%);}
+                  .vd-tt{fill:#fff;font-family:ui-sans-serif,sans-serif;font-size:8.5px;font-weight:700;text-anchor:middle;}
+                  .vd-cf{fill:none;stroke:hsl(142,76%,50%);stroke-width:2;}
+                  .vd-lb{fill:hsl(220,8%,50%);font-family:ui-sans-serif,sans-serif;font-size:7.5px;font-weight:700;text-anchor:middle;letter-spacing:0.08em;}
+                  .vd-ac{animation:vd-card 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vd-au{animation:vd-cur 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vd-ad1{animation:vd-dz1 6.5s ease-in-out infinite;}
+                  .vd-ad2{animation:vd-dz2 6.5s ease-in-out infinite;}
+                  .vd-r92{animation:vd-r1992 6.5s ease-in-out infinite;}
+                  .vd-r2k{animation:vd-r2000 6.5s ease-in-out infinite;}
+                  .vd-at{animation:vd-tap 6.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a1{animation:vd-p1 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a2{animation:vd-p2 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a3{animation:vd-p3 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-af{animation:vd-cf 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-ay{animation:vd-yr 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  @keyframes vd-card{
+                    0%  {transform:translate(0,0);opacity:0;}
+                    5%  {transform:translate(0,0);opacity:1;}
+                    17% {transform:translate(0,0);opacity:1;}
+                    38% {transform:translate(0,90px);opacity:1;}
+                    46% {transform:translate(0,90px);opacity:1;}
+                    58% {transform:translate(0,122px);opacity:1;}
+                    90% {transform:translate(0,122px);opacity:1;}
+                    96% {transform:translate(0,122px);opacity:0;}
+                    100%{transform:translate(0,0);opacity:0;}
                   }
-                  @keyframes dhd-cur {
-                    0%   { transform: translate(290px, 44px); opacity: 1; }
-                    14%  { transform: translate(212px, 44px); opacity: 1; }
-                    30%  { transform: translate(212px, 44px); opacity: 1; }
-                    55%  { transform: translate(212px, 174px); opacity: 1; }
-                    63%  { transform: translate(212px, 174px); opacity: 1; }
-                    70%  { transform: translate(150px, 169px); opacity: 1; }
-                    90%  { transform: translate(150px, 169px); opacity: 1; }
-                    95%  { transform: translate(150px, 169px); opacity: 0; }
-                    100% { transform: translate(290px, 44px); opacity: 0; }
+                  @keyframes vd-cur{
+                    0%  {transform:translate(290px,44px);opacity:1;}
+                    13% {transform:translate(212px,44px);opacity:1;}
+                    17% {transform:translate(212px,44px);opacity:1;}
+                    38% {transform:translate(212px,134px);opacity:1;}
+                    46% {transform:translate(212px,134px);opacity:1;}
+                    58% {transform:translate(212px,166px);opacity:1;}
+                    65% {transform:translate(212px,166px);opacity:1;}
+                    71% {transform:translate(150px,160px);opacity:1;}
+                    89% {transform:translate(150px,160px);opacity:1;}
+                    94% {transform:translate(150px,160px);opacity:0;}
+                    100%{transform:translate(290px,44px);opacity:0;}
                   }
-                  @keyframes dhd-zone {
-                    0%, 35%   { opacity: 0; }
-                    48%       { opacity: 1; }
-                    55%       { opacity: 1; }
-                    62%, 100% { opacity: 0; }
+                  @keyframes vd-dz1{
+                    0%,26%{opacity:0;}33%{opacity:1;}45%{opacity:1;}52%,100%{opacity:0;}
                   }
-                  @keyframes dhd-tap {
-                    0%, 58%   { transform: scale(0); opacity: 0; }
-                    64%       { transform: scale(1); opacity: 1; }
-                    74%       { transform: scale(1); opacity: 1; }
-                    77%       { transform: scale(0.9); opacity: 1; }
-                    80%       { transform: scale(1); opacity: 1; }
-                    84%       { transform: scale(1); opacity: 1; }
-                    88%, 100% { transform: scale(1); opacity: 0; }
+                  @keyframes vd-dz2{
+                    0%,49%{opacity:0;}55%{opacity:1;}58%{opacity:1;}66%,100%{opacity:0;}
                   }
-                  @keyframes dhd-pulse1 {
-                    0%, 12%   { transform: scale(0); opacity: 0; }
-                    15%       { transform: scale(0.3); opacity: 0.85; }
-                    24%       { transform: scale(7); opacity: 0; }
-                    25%, 100% { transform: scale(0); opacity: 0; }
+                  @keyframes vd-r1992{
+                    0%,23%{transform:translate(0,0);}
+                    36%{transform:translate(0,32px);}
+                    46%{transform:translate(0,32px);}
+                    54%{transform:translate(0,0);}
+                    96%,100%{transform:translate(0,0);}
                   }
-                  @keyframes dhd-pulse2 {
-                    0%, 74%   { transform: scale(0); opacity: 0; }
-                    77%       { transform: scale(0.3); opacity: 0.9; }
-                    85%       { transform: scale(9); opacity: 0; }
-                    86%, 100% { transform: scale(0); opacity: 0; }
+                  @keyframes vd-r2000{
+                    0%,23%{transform:translate(0,0);}
+                    36%,95%{transform:translate(0,32px);}
+                    100%{transform:translate(0,0);}
                   }
-                  @keyframes dhd-confirm {
-                    0%, 76%   { transform: scale(0.96); opacity: 0; }
-                    80%       { transform: scale(1); opacity: 1; }
-                    88%       { transform: scale(1.08); opacity: 0; }
-                    89%, 100% { transform: scale(0.96); opacity: 0; }
+                  @keyframes vd-tap{
+                    0%,67%{transform:scale(0);opacity:0;}
+                    71%{transform:scale(1);opacity:1;}
+                    76%{transform:scale(1);opacity:1;}
+                    79%{transform:scale(0.9);opacity:1;}
+                    82%{transform:scale(1);opacity:1;}
+                    89%{transform:scale(1);opacity:1;}
+                    93%,100%{transform:scale(1);opacity:0;}
                   }
-                  @keyframes dhd-year {
-                    0%, 84%   { transform: scale(0); opacity: 0; }
-                    88%       { transform: scale(1.25); opacity: 1; }
-                    92%       { transform: scale(1); opacity: 1; }
-                    94%       { transform: scale(1); opacity: 1; }
-                    100%      { transform: scale(1); opacity: 0; }
+                  @keyframes vd-p1{
+                    0%,11%{transform:scale(0);opacity:0;}14%{transform:scale(0.3);opacity:0.85;}
+                    21%{transform:scale(7);opacity:0;}22%,100%{transform:scale(0);opacity:0;}
+                  }
+                  @keyframes vd-p2{
+                    0%,55%{transform:scale(0);opacity:0;}58%{transform:scale(0.3);opacity:0.9;}
+                    66%{transform:scale(9);opacity:0;}67%,100%{transform:scale(0);opacity:0;}
+                  }
+                  @keyframes vd-p3{
+                    0%,76%{transform:scale(0);opacity:0;}79%{transform:scale(0.3);opacity:0.9;}
+                    87%{transform:scale(9);opacity:0;}88%,100%{transform:scale(0);opacity:0;}
+                  }
+                  @keyframes vd-cf{
+                    0%,77%{transform:scale(0.96);opacity:0;}81%{transform:scale(1);opacity:1;}
+                    89%{transform:scale(1.08);opacity:0;}90%,100%{transform:scale(0.96);opacity:0;}
+                  }
+                  @keyframes vd-yr{
+                    0%,85%{transform:scale(0);opacity:0;}89%{transform:scale(1.25);opacity:1;}
+                    93%{transform:scale(1);opacity:1;}96%{transform:scale(1);opacity:0;}
+                    100%{transform:scale(0);opacity:0;}
                   }
                 `}</style>
 
-                <g transform="translate(0, 88)">
-                  <rect className="dhd-rowbg" x="34" y="0" width="240" height="28" rx="5" />
-                  <rect className="dhd-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhd-yeartext" x="18" y="17">
-                    1991
-                  </text>
-                  <circle className="dhd-ball" cx="49" cy="14" r="5" />
-                  <rect className="dhd-rowtext" x="62" y="9" width="200" height="3" rx="1" />
-                  <rect className="dhd-rowtext" x="62" y="16" width="160" height="3" rx="1" />
+                <rect className="vd-bg" x="0" y="0" width="280" height="285"/>
+
+                <text className="vd-lb" x="154" y="80">BEFORE</text>
+                <line x1="44" y1="77" x2="114" y2="77" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2"/>
+                <line x1="194" y1="77" x2="264" y2="77" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2"/>
+
+                <rect className="vd-gh" x="34" y="30" width="240" height="28" rx="5"/>
+
+                <g className="vd-ad1">
+                  <rect className="vd-dz" x="34" y="120" width="240" height="28" rx="4"/>
+                  <text className="vd-dztext" x="154" y="138">Drop here</text>
                 </g>
-                <g transform="translate(0, 124)">
-                  <rect className="dhd-rowbg" x="34" y="0" width="240" height="28" rx="5" />
-                  <rect className="dhd-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhd-yeartext" x="18" y="17">
-                    1992
-                  </text>
-                  <circle className="dhd-ball" cx="49" cy="14" r="5" />
-                  <rect className="dhd-rowtext" x="62" y="9" width="180" height="3" rx="1" />
-                  <rect className="dhd-rowtext" x="62" y="16" width="140" height="3" rx="1" />
+                <g className="vd-ad2">
+                  <rect className="vd-dz" x="34" y="152" width="240" height="28" rx="4"/>
+                  <text className="vd-dztext" x="154" y="170">Drop here</text>
                 </g>
-                <g className="dhd-zone-anim" transform="translate(0, 160)">
-                  <rect className="dhd-zone" x="34" y="0" width="240" height="28" rx="5" />
-                  <text className="dhd-droptext" x="154" y="18">
-                    Drop here
-                  </text>
+
+                <g transform="translate(0,88)">
+                  <rect className="vd-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                  <rect className="vd-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                  <text className="vd-yt" x="18" y="17">1991</text>
+                  <circle className="vd-bl" cx="49" cy="14" r="5"/>
+                  <rect className="vd-rt" x="62" y="9" width="190" height="3" rx="1"/>
+                  <rect className="vd-rt" x="62" y="16" width="150" height="3" rx="1"/>
                 </g>
-                <g transform="translate(0, 196)">
-                  <rect className="dhd-rowbg" x="34" y="0" width="240" height="28" rx="5" />
-                  <rect className="dhd-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhd-yeartext" x="18" y="17">
-                    2000
-                  </text>
-                  <circle className="dhd-ball" cx="49" cy="14" r="5" />
-                  <rect className="dhd-rowtext" x="62" y="9" width="190" height="3" rx="1" />
-                  <rect className="dhd-rowtext" x="62" y="16" width="170" height="3" rx="1" />
-                </g>
-                <g transform="translate(0, 232)">
-                  <rect className="dhd-rowbg" x="34" y="0" width="240" height="28" rx="5" />
-                  <rect className="dhd-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhd-yeartext" x="18" y="17">
-                    2002
-                  </text>
-                  <circle className="dhd-ball" cx="49" cy="14" r="5" />
-                  <rect className="dhd-rowtext" x="62" y="9" width="170" height="3" rx="1" />
-                  <rect className="dhd-rowtext" x="62" y="16" width="120" height="3" rx="1" />
-                </g>
-                <text
-                  style={{
-                    fill: "hsl(220, 8%, 50%)",
-                    fontFamily: "ui-sans-serif, system-ui, sans-serif",
-                    fontSize: "7.5px",
-                    fontWeight: 700,
-                    textAnchor: "middle",
-                    letterSpacing: "0.08em",
-                  }}
-                  x="154"
-                  y="80"
-                >
-                  BEFORE
-                </text>
-                <text
-                  style={{
-                    fill: "hsl(220, 8%, 50%)",
-                    fontFamily: "ui-sans-serif, system-ui, sans-serif",
-                    fontSize: "7.5px",
-                    fontWeight: 700,
-                    textAnchor: "middle",
-                    letterSpacing: "0.08em",
-                  }}
-                  x="154"
-                  y="276"
-                >
-                  AFTER
-                </text>
-                <line
-                  x1="44"
-                  y1="77"
-                  x2="114"
-                  y2="77"
-                  stroke="hsl(220,8%,38%)"
-                  strokeWidth="0.75"
-                  strokeDasharray="2 2"
-                />
-                <line
-                  x1="194"
-                  y1="77"
-                  x2="264"
-                  y2="77"
-                  stroke="hsl(220,8%,38%)"
-                  strokeWidth="0.75"
-                  strokeDasharray="2 2"
-                />
-                <line
-                  x1="44"
-                  y1="273"
-                  x2="114"
-                  y2="273"
-                  stroke="hsl(220,8%,38%)"
-                  strokeWidth="0.75"
-                  strokeDasharray="2 2"
-                />
-                <line
-                  x1="194"
-                  y1="273"
-                  x2="264"
-                  y2="273"
-                  stroke="hsl(220,8%,38%)"
-                  strokeWidth="0.75"
-                  strokeDasharray="2 2"
-                />
-                <rect
-                  x="34"
-                  y="30"
-                  width="240"
-                  height="28"
-                  rx="5"
-                  fill="none"
-                  stroke="hsl(20,82%,55%)"
-                  strokeWidth="1.25"
-                  strokeDasharray="3 2.5"
-                  opacity="0.3"
-                />
-                <g className="dhd-card-anim">
-                  <rect className="dhd-card" x="34" y="30" width="240" height="28" rx="5" />
-                  <circle className="dhd-ball" cx="49" cy="44" r="5" />
-                  <rect className="dhd-cardline" x="62" y="39" width="190" height="3" rx="1" />
-                  <rect className="dhd-cardline" x="62" y="46" width="160" height="3" rx="1" />
-                  <rect className="dhd-cardline" x="62" y="53" width="80" height="2.5" rx="1" opacity="0.7" />
-                  <g className="dhd-year-anim">
-                    <rect className="dhd-year" x="6" y="35" width="24" height="18" rx="3" />
-                    <text className="dhd-yeartext" x="18" y="47">
-                      1996
-                    </text>
+
+                <g transform="translate(0,120)">
+                  <g className="vd-r92">
+                    <rect className="vd-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                    <rect className="vd-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                    <text className="vd-yt" x="18" y="17">1992</text>
+                    <circle className="vd-bl" cx="49" cy="14" r="5"/>
+                    <rect className="vd-rt" x="62" y="9" width="170" height="3" rx="1"/>
+                    <rect className="vd-rt" x="62" y="16" width="130" height="3" rx="1"/>
                   </g>
                 </g>
-                <rect
-                  className="dhd-confirm dhd-confirm-anim"
-                  x="34"
-                  y="160"
-                  width="240"
-                  height="28"
-                  rx="5"
-                  vectorEffect="non-scaling-stroke"
-                />
-                <g transform="translate(114, 165)">
-                  <g className="dhd-tap-anim">
-                    <rect className="dhd-tap-pill" x="0" y="0" width="80" height="18" rx="9" />
-                    <text className="dhd-tap-text" x="40" y="12.5">
-                      Tap to place
-                    </text>
+
+                <g transform="translate(0,152)">
+                  <g className="vd-r2k">
+                    <rect className="vd-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                    <rect className="vd-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                    <text className="vd-yt" x="18" y="17">2000</text>
+                    <circle className="vd-bl" cx="49" cy="14" r="5"/>
+                    <rect className="vd-rt" x="62" y="9" width="180" height="3" rx="1"/>
+                    <rect className="vd-rt" x="62" y="16" width="160" height="3" rx="1"/>
                   </g>
                 </g>
-                <g className="dhd-cur-anim">
-                  <circle className="dhd-pulse-orange dhd-pulse1-anim" cx="0" cy="0" r="2" />
-                  <circle className="dhd-pulse-green dhd-pulse2-anim" cx="0" cy="0" r="2" />
-                  <path className="dhd-cursor" d="M0,0 L0,12 L3.2,9 L5.4,13.6 L7.4,12.7 L5.2,8.2 L8.6,8.2 Z" />
+
+                <g transform="translate(0,184)">
+                  <g className="vd-r2k">
+                    <rect className="vd-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                    <rect className="vd-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                    <text className="vd-yt" x="18" y="17">2002</text>
+                    <circle className="vd-bl" cx="49" cy="14" r="5"/>
+                    <rect className="vd-rt" x="62" y="9" width="160" height="3" rx="1"/>
+                    <rect className="vd-rt" x="62" y="16" width="120" height="3" rx="1"/>
+                  </g>
+                </g>
+
+                <g transform="translate(0,226)">
+                  <g className="vd-r2k">
+                    <line x1="44" y1="8" x2="114" y2="8" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2"/>
+                    <line x1="194" y1="8" x2="264" y2="8" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2"/>
+                    <text className="vd-lb" x="154" y="11">AFTER</text>
+                  </g>
+                </g>
+
+                <rect className="vd-cf vd-af" x="34" y="152" width="240" height="28" rx="4" vectorEffect="non-scaling-stroke"/>
+
+                <g className="vd-ac">
+                  <rect className="vd-ca" x="34" y="30" width="240" height="28" rx="5"/>
+                  <circle className="vd-bl" cx="49" cy="44" r="5"/>
+                  <rect className="vd-cl" x="62" y="39" width="190" height="3" rx="1"/>
+                  <rect className="vd-cl" x="62" y="46" width="160" height="3" rx="1"/>
+                  <rect className="vd-cl" x="62" y="52" width="80" height="2.5" rx="1" opacity="0.7"/>
+                  <g className="vd-ay">
+                    <rect className="vd-yr" x="6" y="35" width="24" height="18" rx="3"/>
+                    <text className="vd-yt" x="18" y="47">1996</text>
+                  </g>
+                </g>
+
+                <g transform="translate(114,155)">
+                  <g className="vd-at">
+                    <rect className="vd-tp" x="0" y="0" width="80" height="18" rx="9"/>
+                    <text className="vd-tt" x="40" y="12.5">Tap to place</text>
+                  </g>
+                </g>
+
+                <g className="vd-au">
+                  <circle className="vd-po vd-a1" cx="0" cy="0" r="2"/>
+                  <circle className="vd-po vd-a2" cx="0" cy="0" r="2"/>
+                  <circle className="vd-pg vd-a3" cx="0" cy="0" r="2"/>
+                  <path className="vd-cu" d="M0,0 L0,12 L3.2,9 L5.4,13.6 L7.4,12.7 L5.2,8.2 L8.6,8.2 Z"/>
                 </g>
               </svg>
             </div>
