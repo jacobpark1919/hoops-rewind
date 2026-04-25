@@ -49,7 +49,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
             <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30 aspect-[280/306] sm:aspect-auto">
               {/* LIGHT MODE SVG */}
               <svg
-                viewBox="0 0 280 340"
+                viewBox="0 0 280 360"
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-full h-full block dark:hidden"
                 preserveAspectRatio="xMidYMin slice"
@@ -61,7 +61,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .dhl-rowtext { fill: hsl(220, 9%, 75%); }
                   .dhl-ball { fill: hsl(20, 82%, 53%); }
                   .dhl-year { fill: hsl(45, 90%, 55%); }
-                  .dhl-yeartext { fill: hsl(220, 30%, 12%); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 700; }
+                  .dhl-yeartext { fill: hsl(220, 30%, 12%); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 8px; font-weight: 700; text-anchor: middle; }
                   .dhl-zone { fill: hsl(20, 82%, 53%, 0.10); stroke: hsl(20, 82%, 53%); stroke-width: 1.25; stroke-dasharray: 3 2.5; }
                   .dhl-droptext { fill: hsl(20, 82%, 45%); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 8px; font-weight: 700; text-anchor: middle; }
                   .dhl-cardline { fill: hsl(220, 9%, 70%); }
@@ -90,15 +90,12 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     100% { transform: translate(0px, 0px); opacity: 0; }
                   }
                   @keyframes dhl-cur {
-                    0%   { transform: translate(290px, 44px); opacity: 0; }
-                    10%  { transform: translate(290px, 44px); opacity: 0; }
-                    18%  { transform: translate(290px, 44px); opacity: 1; }
-                    28%  { transform: translate(212px, 44px); opacity: 1; }
-                    33%  { transform: translate(212px, 44px); opacity: 1; }
+                    0%   { transform: translate(290px, 44px); opacity: 1; }
+                    14%  { transform: translate(212px, 44px); opacity: 1; }
+                    30%  { transform: translate(212px, 44px); opacity: 1; }
                     55%  { transform: translate(212px, 174px); opacity: 1; }
                     63%  { transform: translate(212px, 174px); opacity: 1; }
                     70%  { transform: translate(150px, 169px); opacity: 1; }
-                    77%  { transform: translate(150px, 169px); opacity: 1; }
                     90%  { transform: translate(150px, 169px); opacity: 1; }
                     95%  { transform: translate(150px, 169px); opacity: 0; }
                     100% { transform: translate(290px, 44px); opacity: 0; }
@@ -119,10 +116,10 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     88%, 100% { transform: scale(1); opacity: 0; }
                   }
                   @keyframes dhl-pulse1 {
-                    0%, 30%   { transform: scale(0); opacity: 0; }
-                    33%       { transform: scale(0.3); opacity: 0.85; }
-                    42%       { transform: scale(7); opacity: 0; }
-                    43%, 100% { transform: scale(0); opacity: 0; }
+                    0%, 12%   { transform: scale(0); opacity: 0; }
+                    15%       { transform: scale(0.3); opacity: 0.85; }
+                    24%       { transform: scale(7); opacity: 0; }
+                    25%, 100% { transform: scale(0); opacity: 0; }
                   }
                   @keyframes dhl-pulse2 {
                     0%, 74%   { transform: scale(0); opacity: 0; }
@@ -148,7 +145,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 <g transform="translate(0, 88)">
                   <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhl-yeartext" x="10" y="17">1991</text>
+                  <text className="dhl-yeartext" x="18" y="17">1991</text>
                   <circle className="dhl-ball" cx="49" cy="14" r="5" />
                   <rect className="dhl-rowtext" x="62" y="9" width="200" height="3" rx="1" />
                   <rect className="dhl-rowtext" x="62" y="16" width="160" height="3" rx="1" />
@@ -156,7 +153,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 <g transform="translate(0, 124)">
                   <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhl-yeartext" x="10" y="17">1992</text>
+                  <text className="dhl-yeartext" x="18" y="17">1992</text>
                   <circle className="dhl-ball" cx="49" cy="14" r="5" />
                   <rect className="dhl-rowtext" x="62" y="9" width="180" height="3" rx="1" />
                   <rect className="dhl-rowtext" x="62" y="16" width="140" height="3" rx="1" />
@@ -168,7 +165,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 <g transform="translate(0, 196)">
                   <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhl-yeartext" x="10" y="17">2000</text>
+                  <text className="dhl-yeartext" x="18" y="17">2000</text>
                   <circle className="dhl-ball" cx="49" cy="14" r="5" />
                   <rect className="dhl-rowtext" x="62" y="9" width="190" height="3" rx="1" />
                   <rect className="dhl-rowtext" x="62" y="16" width="170" height="3" rx="1" />
@@ -176,11 +173,29 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 <g transform="translate(0, 232)">
                   <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
-                  <text className="dhl-yeartext" x="10" y="17">2002</text>
+                  <text className="dhl-yeartext" x="18" y="17">2002</text>
                   <circle className="dhl-ball" cx="49" cy="14" r="5" />
                   <rect className="dhl-rowtext" x="62" y="9" width="170" height="3" rx="1" />
                   <rect className="dhl-rowtext" x="62" y="16" width="120" height="3" rx="1" />
                 </g>
+                <text
+                  style={{ fill: 'hsl(35, 18%, 58%)', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontSize: '7.5px', fontWeight: 700, textAnchor: 'middle', letterSpacing: '0.08em' }}
+                  x="154" y="80">BEFORE</text>
+                <text
+                  style={{ fill: 'hsl(35, 18%, 58%)', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontSize: '7.5px', fontWeight: 700, textAnchor: 'middle', letterSpacing: '0.08em' }}
+                  x="154" y="276">AFTER</text>
+                <line x1="44" y1="77" x2="114" y2="77" stroke="hsl(35,18%,68%)" strokeWidth="0.75" strokeDasharray="2 2" />
+                <line x1="194" y1="77" x2="264" y2="77" stroke="hsl(35,18%,68%)" strokeWidth="0.75" strokeDasharray="2 2" />
+                <line x1="44" y1="273" x2="114" y2="273" stroke="hsl(35,18%,68%)" strokeWidth="0.75" strokeDasharray="2 2" />
+                <line x1="194" y1="273" x2="264" y2="273" stroke="hsl(35,18%,68%)" strokeWidth="0.75" strokeDasharray="2 2" />
+                <rect
+                  x="34" y="30" width="240" height="28" rx="5"
+                  fill="none"
+                  stroke="hsl(20,82%,53%)"
+                  strokeWidth="1.25"
+                  strokeDasharray="3 2.5"
+                  opacity="0.35"
+                />
                 <g className="dhl-card-anim">
                   <rect className="dhl-card" x="34" y="30" width="240" height="28" rx="5" />
                   <circle className="dhl-ball" cx="49" cy="44" r="5" />
@@ -189,7 +204,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   <rect className="dhl-cardline" x="62" y="53" width="80" height="2.5" rx="1" opacity="0.7" />
                   <g className="dhl-year-anim">
                     <rect className="dhl-year" x="6" y="35" width="24" height="18" rx="3" />
-                    <text className="dhl-yeartext" x="10" y="47">1996</text>
+                    <text className="dhl-yeartext" x="18" y="47">1996</text>
                   </g>
                 </g>
                 <rect className="dhl-confirm dhl-confirm-anim" x="34" y="160" width="240" height="28" rx="5" vectorEffect="non-scaling-stroke" />
