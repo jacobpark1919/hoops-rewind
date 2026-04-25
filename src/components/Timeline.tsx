@@ -87,7 +87,7 @@ export function Timeline({
       hasLeftFirstZoneRef.current = false;
       cardsAnchorRef.current = null;
       if (innerWrapperRef.current) {
-        innerWrapperRef.current.style.transform = '';
+        innerWrapperRef.current.style.transform = "";
       }
       return;
     }
@@ -97,7 +97,7 @@ export function Timeline({
       // normally with the rest of the layout again.
       cardsAnchorRef.current = null;
       if (innerWrapperRef.current) {
-        innerWrapperRef.current.style.transform = '';
+        innerWrapperRef.current.style.transform = "";
       }
     }
   }, [isDragging, activeDropZone]);
@@ -123,7 +123,7 @@ export function Timeline({
       // that would cause visible jitter.
       const delta = cardsAnchorRef.current - currentTop;
       if (innerWrapperRef.current) {
-        innerWrapperRef.current.style.transform = delta ? `translateY(${delta}px)` : '';
+        innerWrapperRef.current.style.transform = delta ? `translateY(${delta}px)` : "";
       }
       rafId = requestAnimationFrame(tick);
     };
@@ -145,13 +145,13 @@ export function Timeline({
       }
     };
     measure();
-    window.addEventListener('resize', measure);
+    window.addEventListener("resize", measure);
     const observer = new ResizeObserver(measure);
     if (timelineRef.current?.parentElement) {
       observer.observe(timelineRef.current.parentElement);
     }
     return () => {
-      window.removeEventListener('resize', measure);
+      window.removeEventListener("resize", measure);
       observer.disconnect();
     };
   }, [placedEvents.length]);
@@ -165,7 +165,7 @@ export function Timeline({
 
     requestAnimationFrame(() => {
       const heights: number[] = [];
-      placedEvents.forEach(item => {
+      placedEvents.forEach((item) => {
         const el = cardRefs.current.get(item.event.id);
         if (el) heights.push(el.offsetHeight);
       });
@@ -175,7 +175,7 @@ export function Timeline({
         return;
       }
 
-      const hasPending = placedEvents.some(item => item.status === "pending");
+      const hasPending = placedEvents.some((item) => item.status === "pending");
       const extra = hasPending ? PENDING_EXTRA_SPACE : 0;
       const totalCardHeight = heights.reduce((a, b) => a + b, 0);
       const naturalTotal = totalCardHeight + (heights.length - 1) * NORMAL_GAP + extra;
@@ -197,7 +197,7 @@ export function Timeline({
   // Lock gap when dragging OR when a pending placement exists (card just dropped).
   // This prevents any layout recalculation from shifting the timeline during the
   // drag → drop → confirm flow. Gap is only released after the placement is resolved.
-  const hasPending = placedEvents.some(item => item.status === "pending");
+  const hasPending = placedEvents.some((item) => item.status === "pending");
 
   useEffect(() => {
     if (!isDragging && !hasPending && innerWrapperRef.current) {
@@ -229,18 +229,23 @@ export function Timeline({
     event: { id: CTA_EVENT_ID, title: "", year: 9999, sport: "", icon: "" } as SportsEvent,
     status: null,
   };
-  const effectivePlacedEvents = isViewingTimeline
-    ? [...placedEvents, ctaEvent]
-    : placedEvents;
+  const effectivePlacedEvents = isViewingTimeline ? [...placedEvents, ctaEvent] : placedEvents;
 
   // Pending card (if any)
-  const pendingItem = effectivePlacedEvents.find(item => item.status === "pending");
+  const pendingItem = effectivePlacedEvents.find((item) => item.status === "pending");
 
   // Filter out pending items for drop position calculation
   const nonPendingEvents = effectivePlacedEvents.filter((item) => item.status !== "pending");
 
   // Snapshot card centers at the moment drag begins (before any zone expansion).
   const snapshotCenters = useRef<number[]>([]);
+  // Snapshot the timeline container's viewport top at drag start. This lets us
+  // anchor `dragY` (finger screen position) to the timeline's pre-drag frame.
+  // Without this, if the source-card slot above the timeline collapses
+  // (animated 300ms), the timeline shifts upward in the viewport and the
+  // live card centers drop relative to the finger — causing drop zones
+  // farther down the timeline to falsely trigger before nearer ones.
+  const timelineAnchorRef = useRef<number | null>(null);
 
   useLayoutEffect(() => {
     if (isDragging && snapshotCenters.current.length === 0) {
@@ -256,6 +261,16 @@ export function Timeline({
     }
     if (!isDragging) {
       snapshotCenters.current = [];
+    }
+  }, [isDragging]);
+
+  // Capture / release the timeline-anchor for the source-slot-collapse fix.
+  useLayoutEffect(() => {
+    if (isDragging && timelineAnchorRef.current === null && timelineRef.current) {
+      timelineAnchorRef.current = timelineRef.current.getBoundingClientRect().top;
+    }
+    if (!isDragging) {
+      timelineAnchorRef.current = null;
     }
   }, [isDragging]);
 
@@ -278,14 +293,33 @@ export function Timeline({
     });
     liveCenters.sort((a, b) => a - b);
 
-    if (liveCenters.length === 0) { onDropZoneChange(0); return; }
-    if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
-    for (let i = 0; i < liveCenters.length - 1; i++) {
-      if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
-    }
-    onDropZoneChange(liveCenters.length);
-  }, [isDragging, isDraggingDown, dragY, onDropZoneChange, nonPendingEvents]);
+    // Compensate for any timeline shift since drag-start (e.g. source-slot
+    // collapse pulling the timeline upward). We compare the finger's position
+    // in the original timeline frame against each card's offset within the
+    // current timeline frame. Both quantities are stable under the collapse,
+    // so neighboring drop zones can no longer be skipped.
+    const currentTimelineTop = timelineRef.current.getBoundingClientRect().top;
+    const anchorTop = timelineAnchorRef.current ?? currentTimelineTop;
+    const adjustedDragY = dragY - anchorTop;
+    const effectiveTop = !hasLeftFirstZoneRef.current ? anchorTop : currentTimelineTop;
+    const adjustedCenters = liveCenters.map((c) => c - effectiveTop);
 
+    if (adjustedCenters.length === 0) {
+      onDropZoneChange(0);
+      return;
+    }
+    if (adjustedDragY < adjustedCenters[0]) {
+      onDropZoneChange(0);
+      return;
+    }
+    for (let i = 0; i < adjustedCenters.length - 1; i++) {
+      if (adjustedDragY < adjustedCenters[i + 1]) {
+        onDropZoneChange(i + 1);
+        return;
+      }
+    }
+    onDropZoneChange(adjustedCenters.length);
+  }, [isDragging, isDraggingDown, dragY, onDropZoneChange, nonPendingEvents]);
 
   // Card style for z-index and hover effects
   const getCardStyle = (index: number, isPending: boolean, eventId: string) => {
@@ -295,16 +329,16 @@ export function Timeline({
     if (isPending && !isDragging) {
       return {
         zIndex: 50,
-        transform: 'none',
-        transition: 'transform 0.2s ease-out, z-index 0s',
+        transform: "none",
+        transition: "transform 0.2s ease-out, z-index 0s",
         marginBottom: isOverlapping ? `${PENDING_EXTRA_SPACE}px` : undefined,
       };
     }
 
     return {
       zIndex: isHovered ? 50 : baseZIndex,
-      transform: isHovered ? 'translateY(-20px) scale(1.02)' : 'none',
-      transition: 'transform 0.2s ease-out, z-index 0s',
+      transform: isHovered ? "translateY(-20px) scale(1.02)" : "none",
+      transition: "transform 0.2s ease-out, z-index 0s",
     };
   };
 
@@ -318,12 +352,12 @@ export function Timeline({
       // Render the pending card living inside the drop zone area.
       // No CSS transitions on this container — prevents any height animation on drop.
       // min-h-28 matches the active drop zone height so the layout stays pixel-perfect static.
-      const isFirstDrop = placedEvents.filter(e => e.status !== "pending").length <= 1;
+      const isFirstDrop = placedEvents.filter((e) => e.status !== "pending").length <= 1;
       return (
         <div
           key={`drop-${position}`}
-          className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 flex flex-col justify-center p-2 ${marginClass ?? ''}`}
-          style={{ minHeight: isFirstDrop ? undefined : (window.innerWidth >= 640 ? 128 : 112) }}
+          className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 flex flex-col justify-center p-2 ${marginClass ?? ""}`}
+          style={{ minHeight: isFirstDrop ? undefined : window.innerWidth >= 640 ? 128 : 112 }}
         >
           <div
             ref={(el) => {
@@ -352,7 +386,12 @@ export function Timeline({
                     e.stopPropagation();
                     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
                     const { clientX, clientY } = e;
-                    if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
+                    if (
+                      clientX >= rect.left &&
+                      clientX <= rect.right &&
+                      clientY >= rect.top &&
+                      clientY <= rect.bottom
+                    ) {
                       onConfirm();
                     }
                   }}
@@ -382,20 +421,16 @@ export function Timeline({
       <div
         key={`drop-${position}`}
         className={`relative rounded-xl border-2 border-dashed flex items-center justify-center z-40 ${
-          isActive
-            ? 'border-primary bg-primary/20 shadow-lg'
-            : 'border-transparent overflow-hidden'
+          isActive ? "border-primary bg-primary/20 shadow-lg" : "border-transparent overflow-hidden"
         }`}
         style={{
           height: isActive ? expandedHeight : 0,
-          marginTop: isActive && marginClass?.includes('mt-3') ? 12 : 0,
-          marginBottom: isActive && marginClass?.includes('mb-3') ? 12 : 0,
-          transition: 'height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), margin 350ms cubic-bezier(0.25, 0.1, 0.25, 1)',
+          marginTop: isActive && marginClass?.includes("mt-3") ? 12 : 0,
+          marginBottom: isActive && marginClass?.includes("mb-3") ? 12 : 0,
+          transition: "height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), margin 350ms cubic-bezier(0.25, 0.1, 0.25, 1)",
         }}
       >
-        {isActive && (
-          <span className="text-primary text-sm font-semibold">Drop here</span>
-        )}
+        {isActive && <span className="text-primary text-sm font-semibold">Drop here</span>}
       </div>
     );
   };
@@ -416,13 +451,13 @@ export function Timeline({
 
   // Drop zone BEFORE first card
   if (showDropZones) {
-    items.push(renderDropZone(0, activeDropZone === 0 ? 'mb-3' : ''));
+    items.push(renderDropZone(0, activeDropZone === 0 ? "mb-3" : ""));
   }
 
   let prevWasActiveDropZone = activeDropZone === 0;
 
   nonPendingEvents.forEach((item, nonPendingIndex) => {
-    const index = placedEvents.findIndex(p => p.event.id === item.event.id);
+    const index = placedEvents.findIndex((p) => p.event.id === item.event.id);
     const dropPositionAfter = nonPendingIndex + 1;
 
     const isPrevActiveZone = prevWasActiveDropZone;
@@ -432,7 +467,7 @@ export function Timeline({
     const isHovered = hoveredCardId === item.event.id && isOverlapping && !isDragging;
     const baseZIndex = nonPendingIndex + 1;
     const isCta = item.event.id === CTA_EVENT_ID;
-    const otherModes = SPORT_MODE_OPTIONS.filter(s => s.value !== (sportFilter ?? null));
+    const otherModes = SPORT_MODE_OPTIONS.filter((s) => s.value !== (sportFilter ?? null));
 
     items.push(
       <div
@@ -445,8 +480,8 @@ export function Timeline({
         style={{
           marginTop,
           zIndex: isHovered ? 50 : baseZIndex,
-          transform: isHovered ? 'translateY(-20px) scale(1.02)' : 'none',
-          transition: 'margin-top 0.3s ease-out, transform 0.2s ease-out, z-index 0s',
+          transform: isHovered ? "translateY(-20px) scale(1.02)" : "none",
+          transition: "margin-top 0.3s ease-out, transform 0.2s ease-out, z-index 0s",
         }}
         onMouseEnter={() => !isDragging && setHoveredCardId(item.event.id)}
         onMouseLeave={() => setHoveredCardId(null)}
@@ -456,7 +491,9 @@ export function Timeline({
           {isCta ? (
             <span className="w-3 h-3 rounded-full bg-primary block" />
           ) : (
-            <span className={`year-badge ${incorrectEventIds?.has(item.event.id) ? 'year-badge-incorrect' : correctEventIds?.has(item.event.id) ? 'year-badge-correct' : ''}`}>
+            <span
+              className={`year-badge ${incorrectEventIds?.has(item.event.id) ? "year-badge-incorrect" : correctEventIds?.has(item.event.id) ? "year-badge-correct" : ""}`}
+            >
               {item.event.year}
             </span>
           )}
@@ -467,31 +504,31 @@ export function Timeline({
             <div
               className="timeline-card bg-card hover:bg-card-hover select-none transition-colors"
               style={{
-                boxShadow: '0 4px 12px -2px rgba(0, 0, 0, 0.15), 0 2px 6px -2px rgba(0, 0, 0, 0.1)',
+                boxShadow: "0 4px 12px -2px rgba(0, 0, 0, 0.15), 0 2px 6px -2px rgba(0, 0, 0, 0.1)",
               }}
             >
               <div className="flex items-center gap-1.5 flex-wrap justify-center py-0.5">
-                  <p className="font-display text-xs sm:text-sm font-semibold text-foreground leading-tight">
-                    Come back tomorrow for a new puzzle!
-                  </p>
-                  <button
-                    onClick={onRetry}
-                    className="px-2.5 py-0.5 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm hover:bg-primary/80 transition-colors whitespace-nowrap"
-                  >
-                    Retry
-                  </button>
+                <p className="font-display text-xs sm:text-sm font-semibold text-foreground leading-tight">
+                  Come back tomorrow for a new puzzle!
+                </p>
+                <button
+                  onClick={onRetry}
+                  className="px-2.5 py-0.5 rounded-full bg-primary text-primary-foreground font-display font-bold text-xs sm:text-sm hover:bg-primary/80 transition-colors whitespace-nowrap"
+                >
+                  Retry
+                </button>
               </div>
             </div>
           ) : (
             <EventCard event={item.event} showYear={false} status={item.status} />
           )}
         </div>
-      </div>
+      </div>,
     );
 
     // Drop zone AFTER this non-pending card (skip for CTA)
     if (showDropZones && !isCta) {
-      const marginClass = activeDropZone === dropPositionAfter ? 'mt-3' : '';
+      const marginClass = activeDropZone === dropPositionAfter ? "mt-3" : "";
       items.push(renderDropZone(dropPositionAfter, marginClass));
       prevWasActiveDropZone = activeDropZone === dropPositionAfter;
     } else {
@@ -500,11 +537,7 @@ export function Timeline({
   });
 
   return (
-    <div
-      ref={timelineRef}
-      className="relative flex-1 flex flex-col"
-      style={{ minHeight: 100 }}
-    >
+    <div ref={timelineRef} className="relative flex-1 flex flex-col" style={{ minHeight: 100 }}>
       {/* Earliest label - centered above timeline */}
       <div className="relative mb-2">
         <p className="absolute text-[12px] sm:text-sm text-muted-foreground font-bold uppercase tracking-wider left-4 sm:left-6 whitespace-nowrap">
@@ -524,28 +557,21 @@ export function Timeline({
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
           style={{ paddingTop: naturalPaddingTop }}
         >
-          <div
-            className="relative flex flex-col"
-            ref={innerWrapperRef}
-          >
+          <div className="relative flex flex-col" ref={innerWrapperRef}>
             {firstZoneInstantMode && (
               <div
                 className={`absolute left-0 right-0 rounded-xl border-2 border-dashed flex items-center justify-center z-40 pointer-events-none ${
-                  firstZoneActive
-                    ? 'border-primary bg-primary/20 shadow-lg'
-                    : 'border-transparent'
+                  firstZoneActive ? "border-primary bg-primary/20 shadow-lg" : "border-transparent"
                 }`}
                 style={{
-                  bottom: '100%',
+                  bottom: "100%",
                   marginBottom: 8,
                   height: expandedHeightFirst,
                   opacity: firstZoneActive ? 1 : 0,
-                  transition: 'opacity 150ms ease-out',
+                  transition: "opacity 150ms ease-out",
                 }}
               >
-                {firstZoneActive && (
-                  <span className="text-primary text-sm font-semibold">Drop here</span>
-                )}
+                {firstZoneActive && <span className="text-primary text-sm font-semibold">Drop here</span>}
               </div>
             )}
             {items}
