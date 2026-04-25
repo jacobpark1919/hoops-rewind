@@ -70,6 +70,12 @@ export function Timeline({
   const [naturalPaddingTop, setNaturalPaddingTop] = useState(0);
   const innerWrapperRef = useRef<HTMLDivElement>(null);
 
+  // When in instant-first-zone mode, pin the timeline cards to their pre-drag
+  // viewport position so they stay physically still while only the "Before"
+  // label and timeline line shift up to fill the source card's vacated space.
+  const cardsAnchorRef = useRef<number | null>(null);
+  const [cardsCompensateY, setCardsCompensateY] = useState(0);
+
   // Tracks whether the user has ever activated a non-zero drop zone during the
   // current drag. Once they have, the first drop zone (position 0) reverts to
   // the standard transition physics instead of the instant-appear behavior.
@@ -77,12 +83,43 @@ export function Timeline({
   useEffect(() => {
     if (!isDragging) {
       hasLeftFirstZoneRef.current = false;
+      cardsAnchorRef.current = null;
+      setCardsCompensateY(0);
       return;
     }
     if (activeDropZone !== null && activeDropZone !== 0) {
       hasLeftFirstZoneRef.current = true;
+      // Once we leave instant-first mode, release the pin so cards can flow
+      // normally with the rest of the layout again.
+      cardsAnchorRef.current = null;
+      setCardsCompensateY(0);
     }
   }, [isDragging, activeDropZone]);
+
+  // Capture the inner cards' viewport Y when drag begins (in instant-first
+  // mode), then on every frame compute how far it has shifted and counter-
+  // translate to keep it visually pinned.
+  useEffect(() => {
+    if (!isDragging || hasLeftFirstZoneRef.current) return;
+    if (!innerWrapperRef.current) return;
+
+    if (cardsAnchorRef.current === null) {
+      cardsAnchorRef.current = innerWrapperRef.current.getBoundingClientRect().top;
+    }
+
+    let rafId: number;
+    const tick = () => {
+      if (!innerWrapperRef.current || cardsAnchorRef.current === null) return;
+      const currentTop = innerWrapperRef.current.getBoundingClientRect().top;
+      // Compensate by the delta: if the wrapper has moved up by N px, push it
+      // back down by N px via translateY.
+      const delta = cardsAnchorRef.current - currentTop;
+      setCardsCompensateY(delta);
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [isDragging]);
 
   // Measure available space
   useEffect(() => {
