@@ -78,13 +78,11 @@ export function Timeline({
   // label and timeline line shift up to fill the source card's vacated space.
   const cardsAnchorRef = useRef<number | null>(null);
 
-  // Tracks whether the user has ever activated a non-zero drop zone during the
-  // current drag. Once they have, the first drop zone (position 0) reverts to
-  // the standard transition physics instead of the instant-appear behavior.
-  const hasLeftFirstZoneRef = useRef(false);
+  // Manage the cards-pin lifecycle: release the pin when the drag ends or
+  // when the user moves the cursor into a non-first drop zone (so cards can
+  // resume normal flow alongside the expanding inline zone).
   useEffect(() => {
     if (!isDragging) {
-      hasLeftFirstZoneRef.current = false;
       cardsAnchorRef.current = null;
       if (innerWrapperRef.current) {
         innerWrapperRef.current.style.transform = '';
@@ -92,8 +90,6 @@ export function Timeline({
       return;
     }
     if (activeDropZone !== null && activeDropZone !== 0) {
-      // Once we leave instant-first mode, release the pin so cards can flow
-      // normally with the rest of the layout again.
       cardsAnchorRef.current = null;
       if (innerWrapperRef.current) {
         innerWrapperRef.current.style.transform = '';
