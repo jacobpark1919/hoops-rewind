@@ -45,11 +45,11 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
             How to Play
           </h2>
           {/* Drag illustration — light + dark variants */}
-          <div className="my-1.5 sm:my-6 flex justify-center">
+          <div className="my-2 sm:my-6 flex justify-center">
             <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30">
               {/* LIGHT MODE SVG */}
               <svg
-                viewBox="0 0 280 268"
+                viewBox="0 0 280 340"
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-full block dark:hidden"
                 role="img"
@@ -207,7 +207,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
 
               {/* DARK MODE SVG */}
               <svg
-                viewBox="0 0 280 268"
+                viewBox="0 0 280 340"
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-full hidden dark:block"
                 role="img"
