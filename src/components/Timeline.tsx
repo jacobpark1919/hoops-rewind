@@ -265,41 +265,25 @@ export function Timeline({
       return;
     }
 
-    // When in instant-first-zone mode the cards are visually pinned via the
-    // counter-translate rAF loop, so live centers reflect their actual visual
-    // position and are more reliable than the early-captured snapshot (which
-    // can be off-by-a-frame on the very first drag of a new card).
-    const useLive = isDraggingDown || (!hasLeftFirstZoneRef.current);
-
-    if (useLive) {
-      const liveCenters: number[] = [];
-      nonPendingEvents.forEach((item) => {
-        const el = cardRefs.current.get(item.event.id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          liveCenters.push((rect.top + rect.bottom) / 2);
-        }
-      });
-      liveCenters.sort((a, b) => a - b);
-
-      if (liveCenters.length === 0) { onDropZoneChange(0); return; }
-
-      if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
-
-      for (let i = 0; i < liveCenters.length - 1; i++) {
-        if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
+    // Use live card centers for both directions — mirrors the downward
+    // mechanics for upward dragging, which the user has confirmed feels
+    // correct on first drag.
+    const liveCenters: number[] = [];
+    nonPendingEvents.forEach((item) => {
+      const el = cardRefs.current.get(item.event.id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        liveCenters.push((rect.top + rect.bottom) / 2);
       }
-      onDropZoneChange(liveCenters.length);
-    } else {
-      const centers = snapshotCenters.current;
+    });
+    liveCenters.sort((a, b) => a - b);
 
-      if (centers.length === 0) { onDropZoneChange(0); return; }
-      if (dragY < centers[0]) { onDropZoneChange(0); return; }
-      for (let i = 0; i < centers.length - 1; i++) {
-        if (dragY < centers[i + 1]) { onDropZoneChange(i + 1); return; }
-      }
-      onDropZoneChange(centers.length);
+    if (liveCenters.length === 0) { onDropZoneChange(0); return; }
+    if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
+    for (let i = 0; i < liveCenters.length - 1; i++) {
+      if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
     }
+    onDropZoneChange(liveCenters.length);
   }, [isDragging, isDraggingDown, dragY, onDropZoneChange, nonPendingEvents]);
 
 
