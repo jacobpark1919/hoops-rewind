@@ -70,6 +70,20 @@ export function Timeline({
   const [naturalPaddingTop, setNaturalPaddingTop] = useState(0);
   const innerWrapperRef = useRef<HTMLDivElement>(null);
 
+  // Tracks whether the user has ever activated a non-zero drop zone during the
+  // current drag. Once they have, the first drop zone (position 0) reverts to
+  // the standard transition physics instead of the instant-appear behavior.
+  const hasLeftFirstZoneRef = useRef(false);
+  useEffect(() => {
+    if (!isDragging) {
+      hasLeftFirstZoneRef.current = false;
+      return;
+    }
+    if (activeDropZone !== null && activeDropZone !== 0) {
+      hasLeftFirstZoneRef.current = true;
+    }
+  }, [isDragging, activeDropZone]);
+
   // Measure available space
   useEffect(() => {
     const measure = () => {
