@@ -70,6 +70,20 @@ export function Timeline({
   const [naturalPaddingTop, setNaturalPaddingTop] = useState(0);
   const innerWrapperRef = useRef<HTMLDivElement>(null);
 
+  // Tracks whether the user has ever activated a non-zero drop zone during the
+  // current drag. Once they have, the first drop zone (position 0) reverts to
+  // the standard transition physics instead of the instant-appear behavior.
+  const hasLeftFirstZoneRef = useRef(false);
+  useEffect(() => {
+    if (!isDragging) {
+      hasLeftFirstZoneRef.current = false;
+      return;
+    }
+    if (activeDropZone !== null && activeDropZone !== 0) {
+      hasLeftFirstZoneRef.current = true;
+    }
+  }, [isDragging, activeDropZone]);
+
   // Measure available space
   useEffect(() => {
     const measure = () => {
@@ -318,7 +332,10 @@ export function Timeline({
     }
 
     // Normal drop zone (during drag, or collapsed)
-    const isFirst = position === 0;
+    // The first drop zone (position 0) appears instantly — but only on the
+    // initial pickup. Once the user has hovered any other drop zone, it
+    // reverts to the standard transition physics on the way back up.
+    const useInstantFirst = position === 0 && !hasLeftFirstZoneRef.current;
     return (
       <div
         key={`drop-${position}`}
@@ -331,9 +348,9 @@ export function Timeline({
           height: isActive ? (window.innerWidth >= 640 ? 128 : 112) : 0,
           marginTop: isActive && marginClass?.includes('mt-3') ? 12 : 0,
           marginBottom: isActive && marginClass?.includes('mb-3') ? 12 : 0,
-          transition: isFirst
+          transition: useInstantFirst
             ? 'none'
-            : 'height 300ms ease-out, margin 300ms ease-out',
+            : 'height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), margin 350ms cubic-bezier(0.25, 0.1, 0.25, 1)',
         }}
       >
         {isActive && (
