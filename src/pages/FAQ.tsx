@@ -68,7 +68,7 @@ export default function FAQ() {
         </script>
       </Helmet>
       <Link
-        to="/home"
+        to="/"
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6"
       >
         <ArrowLeft className="w-4 h-4" /> Back
