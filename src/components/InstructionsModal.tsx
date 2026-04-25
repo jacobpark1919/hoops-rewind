@@ -47,7 +47,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
             <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30">
               {/* LIGHT MODE */}
               <svg
-                viewBox="0 0 280 285"
+                viewBox="0 0 280 292"
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-full block dark:hidden"
                 role="img"
@@ -62,7 +62,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vl-yt{fill:hsl(220,30%,12%);font-family:ui-monospace,monospace;font-size:8px;font-weight:700;text-anchor:middle;}
                   .vl-gh{fill:none;stroke:hsl(20,82%,53%);stroke-width:1.25;stroke-dasharray:3 2.5;opacity:0.35;}
                   .vl-dz{fill:hsl(20,82%,53%,0.10);stroke:hsl(20,82%,53%);stroke-width:1.25;stroke-dasharray:3 2.5;}
-                  .vl-dztext{fill:hsl(20,82%,45%);font-family:ui-sans-serif,sans-serif;font-size:8px;font-weight:700;text-anchor:middle;}
+                  .vl-dzt{fill:hsl(20,82%,45%);font-family:ui-sans-serif,sans-serif;font-size:8px;font-weight:700;text-anchor:middle;}
                   .vl-cl{fill:hsl(220,9%,70%);}
                   .vl-ca{fill:hsl(0,0%,100%);stroke:hsl(20,82%,53%);stroke-width:1.5;}
                   .vl-cu{fill:hsl(220,30%,16%);stroke:hsl(0,0%,100%);stroke-width:0.6;}
@@ -72,108 +72,96 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vl-tt{fill:#fff;font-family:ui-sans-serif,sans-serif;font-size:8.5px;font-weight:700;text-anchor:middle;}
                   .vl-cf{fill:none;stroke:hsl(142,71%,45%);stroke-width:2;}
                   .vl-lb{fill:hsl(35,18%,58%);font-family:ui-sans-serif,sans-serif;font-size:7.5px;font-weight:700;text-anchor:middle;letter-spacing:0.08em;}
-                  .vl-ac{animation:vl-card 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vl-au{animation:vl-cur 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vl-ad1{animation:vl-dz1 6.5s ease-in-out infinite;}
-                  .vl-ad2{animation:vl-dz2 6.5s ease-in-out infinite;}
-                  .vl-r92{animation:vl-r1992 6.5s ease-in-out infinite;}
-                  .vl-r2k{animation:vl-r2000 6.5s ease-in-out infinite;}
-                  .vl-at{animation:vl-tap 6.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-a1{animation:vl-p1 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-a2{animation:vl-p2 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-a3{animation:vl-p3 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-af{animation:vl-cf 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-ay{animation:vl-yr 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-ac{animation:vl-card 8s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vl-au{animation:vl-cur 8s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vl-d1{animation:vl-dz1 8s ease-in-out infinite;}
+                  .vl-d2{animation:vl-dz2 8s ease-in-out infinite;}
+                  .vl-r92{animation:vl-r1992 8s ease-in-out infinite;}
+                  .vl-r2k{animation:vl-r2000 8s ease-in-out infinite;}
+                  .vl-at{animation:vl-tap 8s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a1{animation:vl-p1 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a2{animation:vl-p2 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a3{animation:vl-p3 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-af{animation:vl-cf 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-ay{animation:vl-yr 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
                   @keyframes vl-card{
                     0%  {transform:translate(0,0);opacity:0;}
                     5%  {transform:translate(0,0);opacity:1;}
                     17% {transform:translate(0,0);opacity:1;}
-                    38% {transform:translate(0,90px);opacity:1;}
-                    46% {transform:translate(0,90px);opacity:1;}
-                    58% {transform:translate(0,122px);opacity:1;}
-                    90% {transform:translate(0,122px);opacity:1;}
-                    96% {transform:translate(0,122px);opacity:0;}
+                    35% {transform:translate(0,98px);opacity:1;}
+                    43% {transform:translate(0,98px);opacity:1;}
+                    55% {transform:translate(0,130px);opacity:1;}
+                    96% {transform:translate(0,130px);opacity:1;}
+                    99% {transform:translate(0,130px);opacity:0;}
                     100%{transform:translate(0,0);opacity:0;}
                   }
                   @keyframes vl-cur{
                     0%  {transform:translate(290px,44px);opacity:1;}
                     13% {transform:translate(212px,44px);opacity:1;}
                     17% {transform:translate(212px,44px);opacity:1;}
-                    38% {transform:translate(212px,134px);opacity:1;}
-                    46% {transform:translate(212px,134px);opacity:1;}
-                    58% {transform:translate(212px,166px);opacity:1;}
-                    65% {transform:translate(212px,166px);opacity:1;}
-                    71% {transform:translate(150px,160px);opacity:1;}
-                    89% {transform:translate(150px,160px);opacity:1;}
-                    94% {transform:translate(150px,160px);opacity:0;}
+                    35% {transform:translate(212px,142px);opacity:1;}
+                    43% {transform:translate(212px,142px);opacity:1;}
+                    55% {transform:translate(212px,174px);opacity:1;}
+                    63% {transform:translate(212px,174px);opacity:1;}
+                    69% {transform:translate(150px,169px);opacity:1;}
+                    94% {transform:translate(150px,169px);opacity:1;}
+                    98% {transform:translate(150px,169px);opacity:0;}
                     100%{transform:translate(290px,44px);opacity:0;}
                   }
-                  @keyframes vl-dz1{
-                    0%,26%{opacity:0;}33%{opacity:1;}45%{opacity:1;}52%,100%{opacity:0;}
-                  }
-                  @keyframes vl-dz2{
-                    0%,49%{opacity:0;}55%{opacity:1;}58%{opacity:1;}66%,100%{opacity:0;}
-                  }
+                  @keyframes vl-dz1{0%,25%{opacity:0;}31%{opacity:1;}42%{opacity:1;}49%,100%{opacity:0;}}
+                  @keyframes vl-dz2{0%,47%{opacity:0;}53%{opacity:1;}55%{opacity:1;}64%,100%{opacity:0;}}
                   @keyframes vl-r1992{
-                    0%,23%{transform:translate(0,0);}
-                    36%{transform:translate(0,32px);}
-                    46%{transform:translate(0,32px);}
-                    54%{transform:translate(0,0);}
-                    96%,100%{transform:translate(0,0);}
+                    0%,20%{transform:translate(0,0);}
+                    29%{transform:translate(0,48px);}
+                    43%{transform:translate(0,48px);}
+                    51%{transform:translate(0,0);}
+                    97%,100%{transform:translate(0,0);}
                   }
                   @keyframes vl-r2000{
-                    0%,23%{transform:translate(0,0);}
-                    36%,95%{transform:translate(0,32px);}
+                    0%,20%{transform:translate(0,0);}
+                    29%,96%{transform:translate(0,48px);}
                     100%{transform:translate(0,0);}
                   }
                   @keyframes vl-tap{
-                    0%,67%{transform:scale(0);opacity:0;}
-                    71%{transform:scale(1);opacity:1;}
-                    76%{transform:scale(1);opacity:1;}
-                    79%{transform:scale(0.9);opacity:1;}
-                    82%{transform:scale(1);opacity:1;}
-                    89%{transform:scale(1);opacity:1;}
-                    93%,100%{transform:scale(1);opacity:0;}
+                    0%,65%{transform:scale(0);opacity:0;}
+                    69%{transform:scale(1);opacity:1;}
+                    74%{transform:scale(1);opacity:1;}
+                    77%{transform:scale(0.9);opacity:1;}
+                    80%{transform:scale(1);opacity:1;}
+                    88%{transform:scale(1);opacity:1;}
+                    92%,100%{transform:scale(1);opacity:0;}
                   }
                   @keyframes vl-p1{
                     0%,11%{transform:scale(0);opacity:0;}14%{transform:scale(0.3);opacity:0.85;}
                     21%{transform:scale(7);opacity:0;}22%,100%{transform:scale(0);opacity:0;}
                   }
                   @keyframes vl-p2{
-                    0%,55%{transform:scale(0);opacity:0;}58%{transform:scale(0.3);opacity:0.9;}
-                    66%{transform:scale(9);opacity:0;}67%,100%{transform:scale(0);opacity:0;}
+                    0%,52%{transform:scale(0);opacity:0;}55%{transform:scale(0.3);opacity:0.9;}
+                    63%{transform:scale(9);opacity:0;}64%,100%{transform:scale(0);opacity:0;}
                   }
                   @keyframes vl-p3{
-                    0%,76%{transform:scale(0);opacity:0;}79%{transform:scale(0.3);opacity:0.9;}
-                    87%{transform:scale(9);opacity:0;}88%,100%{transform:scale(0);opacity:0;}
+                    0%,74%{transform:scale(0);opacity:0;}77%{transform:scale(0.3);opacity:0.9;}
+                    85%{transform:scale(9);opacity:0;}86%,100%{transform:scale(0);opacity:0;}
                   }
                   @keyframes vl-cf{
-                    0%,77%{transform:scale(0.96);opacity:0;}81%{transform:scale(1);opacity:1;}
-                    89%{transform:scale(1.08);opacity:0;}90%,100%{transform:scale(0.96);opacity:0;}
+                    0%,75%{transform:scale(0.96);opacity:0;}79%{transform:scale(1);opacity:1;}
+                    87%{transform:scale(1.08);opacity:0;}88%,100%{transform:scale(0.96);opacity:0;}
                   }
                   @keyframes vl-yr{
-                    0%,85%{transform:scale(0);opacity:0;}89%{transform:scale(1.25);opacity:1;}
-                    93%{transform:scale(1);opacity:1;}96%{transform:scale(1);opacity:0;}
-                    100%{transform:scale(0);opacity:0;}
+                    0%,83%{transform:scale(0);opacity:0;}87%{transform:scale(1.25);opacity:1;}
+                    91%{transform:scale(1);opacity:1;}96%{transform:scale(1);opacity:1;}
+                    99%{transform:scale(1);opacity:0;}100%{transform:scale(0);opacity:0;}
                   }
                 `}</style>
 
-                <rect className="vl-bg" x="0" y="0" width="280" height="285"/>
-
+                <rect className="vl-bg" x="0" y="0" width="280" height="292"/>
                 <text className="vl-lb" x="154" y="80">BEFORE</text>
                 <line x1="44" y1="77" x2="114" y2="77" stroke="hsl(35,18%,62%)" strokeWidth="0.75" strokeDasharray="2 2"/>
                 <line x1="194" y1="77" x2="264" y2="77" stroke="hsl(35,18%,62%)" strokeWidth="0.75" strokeDasharray="2 2"/>
-
                 <rect className="vl-gh" x="34" y="30" width="240" height="28" rx="5"/>
 
-                <g className="vl-ad1">
-                  <rect className="vl-dz" x="34" y="120" width="240" height="28" rx="4"/>
-                  <text className="vl-dztext" x="154" y="138">Drop here</text>
-                </g>
-                <g className="vl-ad2">
-                  <rect className="vl-dz" x="34" y="152" width="240" height="28" rx="4"/>
-                  <text className="vl-dztext" x="154" y="170">Drop here</text>
-                </g>
+                <g className="vl-d1"><rect className="vl-dz" x="34" y="120" width="240" height="44" rx="5"/><text className="vl-dzt" x="154" y="146">Drop here</text></g>
+                <g className="vl-d2"><rect className="vl-dz" x="34" y="152" width="240" height="44" rx="5"/><text className="vl-dzt" x="154" y="178">Drop here</text></g>
 
                 <g transform="translate(0,88)">
                   <rect className="vl-rb" x="34" y="0" width="240" height="28" rx="5"/>
@@ -184,48 +172,40 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   <rect className="vl-rt" x="62" y="16" width="150" height="3" rx="1"/>
                 </g>
 
-                <g transform="translate(0,120)">
-                  <g className="vl-r92">
-                    <rect className="vl-rb" x="34" y="0" width="240" height="28" rx="5"/>
-                    <rect className="vl-yr" x="6" y="5" width="24" height="18" rx="3"/>
-                    <text className="vl-yt" x="18" y="17">1992</text>
-                    <circle className="vl-bl" cx="49" cy="14" r="5"/>
-                    <rect className="vl-rt" x="62" y="9" width="170" height="3" rx="1"/>
-                    <rect className="vl-rt" x="62" y="16" width="130" height="3" rx="1"/>
-                  </g>
-                </g>
+                <g transform="translate(0,120)"><g className="vl-r92">
+                  <rect className="vl-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                  <rect className="vl-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                  <text className="vl-yt" x="18" y="17">1992</text>
+                  <circle className="vl-bl" cx="49" cy="14" r="5"/>
+                  <rect className="vl-rt" x="62" y="9" width="170" height="3" rx="1"/>
+                  <rect className="vl-rt" x="62" y="16" width="130" height="3" rx="1"/>
+                </g></g>
 
-                <g transform="translate(0,152)">
-                  <g className="vl-r2k">
-                    <rect className="vl-rb" x="34" y="0" width="240" height="28" rx="5"/>
-                    <rect className="vl-yr" x="6" y="5" width="24" height="18" rx="3"/>
-                    <text className="vl-yt" x="18" y="17">2000</text>
-                    <circle className="vl-bl" cx="49" cy="14" r="5"/>
-                    <rect className="vl-rt" x="62" y="9" width="180" height="3" rx="1"/>
-                    <rect className="vl-rt" x="62" y="16" width="160" height="3" rx="1"/>
-                  </g>
-                </g>
+                <g transform="translate(0,152)"><g className="vl-r2k">
+                  <rect className="vl-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                  <rect className="vl-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                  <text className="vl-yt" x="18" y="17">2000</text>
+                  <circle className="vl-bl" cx="49" cy="14" r="5"/>
+                  <rect className="vl-rt" x="62" y="9" width="180" height="3" rx="1"/>
+                  <rect className="vl-rt" x="62" y="16" width="160" height="3" rx="1"/>
+                </g></g>
 
-                <g transform="translate(0,184)">
-                  <g className="vl-r2k">
-                    <rect className="vl-rb" x="34" y="0" width="240" height="28" rx="5"/>
-                    <rect className="vl-yr" x="6" y="5" width="24" height="18" rx="3"/>
-                    <text className="vl-yt" x="18" y="17">2002</text>
-                    <circle className="vl-bl" cx="49" cy="14" r="5"/>
-                    <rect className="vl-rt" x="62" y="9" width="160" height="3" rx="1"/>
-                    <rect className="vl-rt" x="62" y="16" width="120" height="3" rx="1"/>
-                  </g>
-                </g>
+                <g transform="translate(0,184)"><g className="vl-r2k">
+                  <rect className="vl-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                  <rect className="vl-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                  <text className="vl-yt" x="18" y="17">2002</text>
+                  <circle className="vl-bl" cx="49" cy="14" r="5"/>
+                  <rect className="vl-rt" x="62" y="9" width="160" height="3" rx="1"/>
+                  <rect className="vl-rt" x="62" y="16" width="120" height="3" rx="1"/>
+                </g></g>
 
-                <g transform="translate(0,226)">
-                  <g className="vl-r2k">
-                    <line x1="44" y1="8" x2="114" y2="8" stroke="hsl(35,18%,62%)" strokeWidth="0.75" strokeDasharray="2 2"/>
-                    <line x1="194" y1="8" x2="264" y2="8" stroke="hsl(35,18%,62%)" strokeWidth="0.75" strokeDasharray="2 2"/>
-                    <text className="vl-lb" x="154" y="11">AFTER</text>
-                  </g>
-                </g>
+                <g transform="translate(0,218)"><g className="vl-r2k">
+                  <line x1="44" y1="8" x2="114" y2="8" stroke="hsl(35,18%,62%)" strokeWidth="0.75" strokeDasharray="2 2"/>
+                  <line x1="194" y1="8" x2="264" y2="8" stroke="hsl(35,18%,62%)" strokeWidth="0.75" strokeDasharray="2 2"/>
+                  <text className="vl-lb" x="154" y="11">AFTER</text>
+                </g></g>
 
-                <rect className="vl-cf vl-af" x="34" y="152" width="240" height="28" rx="4" vectorEffect="non-scaling-stroke"/>
+                <rect className="vl-cf vl-af" x="34" y="160" width="240" height="28" rx="5" vectorEffect="non-scaling-stroke"/>
 
                 <g className="vl-ac">
                   <rect className="vl-ca" x="34" y="30" width="240" height="28" rx="5"/>
@@ -239,12 +219,10 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   </g>
                 </g>
 
-                <g transform="translate(114,155)">
-                  <g className="vl-at">
-                    <rect className="vl-tp" x="0" y="0" width="80" height="18" rx="9"/>
-                    <text className="vl-tt" x="40" y="12.5">Tap to place</text>
-                  </g>
-                </g>
+                <g transform="translate(114,163)"><g className="vl-at">
+                  <rect className="vl-tp" x="0" y="0" width="80" height="18" rx="9"/>
+                  <text className="vl-tt" x="40" y="12.5">Tap to place</text>
+                </g></g>
 
                 <g className="vl-au">
                   <circle className="vl-po vl-a1" cx="0" cy="0" r="2"/>
@@ -256,7 +234,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
 
               {/* DARK MODE */}
               <svg
-                viewBox="0 0 280 285"
+                viewBox="0 0 280 292"
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-full hidden dark:block"
                 role="img"
@@ -271,7 +249,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vd-yt{fill:hsl(45,30%,12%);font-family:ui-monospace,monospace;font-size:8px;font-weight:700;text-anchor:middle;}
                   .vd-gh{fill:none;stroke:hsl(20,82%,55%);stroke-width:1.25;stroke-dasharray:3 2.5;opacity:0.3;}
                   .vd-dz{fill:hsl(20,82%,55%,0.12);stroke:hsl(20,82%,55%);stroke-width:1.25;stroke-dasharray:3 2.5;}
-                  .vd-dztext{fill:hsl(20,82%,60%);font-family:ui-sans-serif,sans-serif;font-size:8px;font-weight:700;text-anchor:middle;}
+                  .vd-dzt{fill:hsl(20,82%,60%);font-family:ui-sans-serif,sans-serif;font-size:8px;font-weight:700;text-anchor:middle;}
                   .vd-cl{fill:hsl(220,8%,55%);}
                   .vd-ca{fill:hsl(220,12%,28%);stroke:hsl(20,82%,55%);stroke-width:1.5;}
                   .vd-cu{fill:hsl(220,10%,95%);stroke:hsl(220,12%,11%);stroke-width:0.6;}
@@ -281,108 +259,96 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vd-tt{fill:#fff;font-family:ui-sans-serif,sans-serif;font-size:8.5px;font-weight:700;text-anchor:middle;}
                   .vd-cf{fill:none;stroke:hsl(142,76%,50%);stroke-width:2;}
                   .vd-lb{fill:hsl(220,8%,50%);font-family:ui-sans-serif,sans-serif;font-size:7.5px;font-weight:700;text-anchor:middle;letter-spacing:0.08em;}
-                  .vd-ac{animation:vd-card 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vd-au{animation:vd-cur 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vd-ad1{animation:vd-dz1 6.5s ease-in-out infinite;}
-                  .vd-ad2{animation:vd-dz2 6.5s ease-in-out infinite;}
-                  .vd-r92{animation:vd-r1992 6.5s ease-in-out infinite;}
-                  .vd-r2k{animation:vd-r2000 6.5s ease-in-out infinite;}
-                  .vd-at{animation:vd-tap 6.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-a1{animation:vd-p1 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-a2{animation:vd-p2 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-a3{animation:vd-p3 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-af{animation:vd-cf 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-ay{animation:vd-yr 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-ac{animation:vd-card 8s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vd-au{animation:vd-cur 8s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vd-d1{animation:vd-dz1 8s ease-in-out infinite;}
+                  .vd-d2{animation:vd-dz2 8s ease-in-out infinite;}
+                  .vd-r92{animation:vd-r1992 8s ease-in-out infinite;}
+                  .vd-r2k{animation:vd-r2000 8s ease-in-out infinite;}
+                  .vd-at{animation:vd-tap 8s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a1{animation:vd-p1 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a2{animation:vd-p2 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a3{animation:vd-p3 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-af{animation:vd-cf 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-ay{animation:vd-yr 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
                   @keyframes vd-card{
                     0%  {transform:translate(0,0);opacity:0;}
                     5%  {transform:translate(0,0);opacity:1;}
                     17% {transform:translate(0,0);opacity:1;}
-                    38% {transform:translate(0,90px);opacity:1;}
-                    46% {transform:translate(0,90px);opacity:1;}
-                    58% {transform:translate(0,122px);opacity:1;}
-                    90% {transform:translate(0,122px);opacity:1;}
-                    96% {transform:translate(0,122px);opacity:0;}
+                    35% {transform:translate(0,98px);opacity:1;}
+                    43% {transform:translate(0,98px);opacity:1;}
+                    55% {transform:translate(0,130px);opacity:1;}
+                    96% {transform:translate(0,130px);opacity:1;}
+                    99% {transform:translate(0,130px);opacity:0;}
                     100%{transform:translate(0,0);opacity:0;}
                   }
                   @keyframes vd-cur{
                     0%  {transform:translate(290px,44px);opacity:1;}
                     13% {transform:translate(212px,44px);opacity:1;}
                     17% {transform:translate(212px,44px);opacity:1;}
-                    38% {transform:translate(212px,134px);opacity:1;}
-                    46% {transform:translate(212px,134px);opacity:1;}
-                    58% {transform:translate(212px,166px);opacity:1;}
-                    65% {transform:translate(212px,166px);opacity:1;}
-                    71% {transform:translate(150px,160px);opacity:1;}
-                    89% {transform:translate(150px,160px);opacity:1;}
-                    94% {transform:translate(150px,160px);opacity:0;}
+                    35% {transform:translate(212px,142px);opacity:1;}
+                    43% {transform:translate(212px,142px);opacity:1;}
+                    55% {transform:translate(212px,174px);opacity:1;}
+                    63% {transform:translate(212px,174px);opacity:1;}
+                    69% {transform:translate(150px,169px);opacity:1;}
+                    94% {transform:translate(150px,169px);opacity:1;}
+                    98% {transform:translate(150px,169px);opacity:0;}
                     100%{transform:translate(290px,44px);opacity:0;}
                   }
-                  @keyframes vd-dz1{
-                    0%,26%{opacity:0;}33%{opacity:1;}45%{opacity:1;}52%,100%{opacity:0;}
-                  }
-                  @keyframes vd-dz2{
-                    0%,49%{opacity:0;}55%{opacity:1;}58%{opacity:1;}66%,100%{opacity:0;}
-                  }
+                  @keyframes vd-dz1{0%,25%{opacity:0;}31%{opacity:1;}42%{opacity:1;}49%,100%{opacity:0;}}
+                  @keyframes vd-dz2{0%,47%{opacity:0;}53%{opacity:1;}55%{opacity:1;}64%,100%{opacity:0;}}
                   @keyframes vd-r1992{
-                    0%,23%{transform:translate(0,0);}
-                    36%{transform:translate(0,32px);}
-                    46%{transform:translate(0,32px);}
-                    54%{transform:translate(0,0);}
-                    96%,100%{transform:translate(0,0);}
+                    0%,20%{transform:translate(0,0);}
+                    29%{transform:translate(0,48px);}
+                    43%{transform:translate(0,48px);}
+                    51%{transform:translate(0,0);}
+                    97%,100%{transform:translate(0,0);}
                   }
                   @keyframes vd-r2000{
-                    0%,23%{transform:translate(0,0);}
-                    36%,95%{transform:translate(0,32px);}
+                    0%,20%{transform:translate(0,0);}
+                    29%,96%{transform:translate(0,48px);}
                     100%{transform:translate(0,0);}
                   }
                   @keyframes vd-tap{
-                    0%,67%{transform:scale(0);opacity:0;}
-                    71%{transform:scale(1);opacity:1;}
-                    76%{transform:scale(1);opacity:1;}
-                    79%{transform:scale(0.9);opacity:1;}
-                    82%{transform:scale(1);opacity:1;}
-                    89%{transform:scale(1);opacity:1;}
-                    93%,100%{transform:scale(1);opacity:0;}
+                    0%,65%{transform:scale(0);opacity:0;}
+                    69%{transform:scale(1);opacity:1;}
+                    74%{transform:scale(1);opacity:1;}
+                    77%{transform:scale(0.9);opacity:1;}
+                    80%{transform:scale(1);opacity:1;}
+                    88%{transform:scale(1);opacity:1;}
+                    92%,100%{transform:scale(1);opacity:0;}
                   }
                   @keyframes vd-p1{
                     0%,11%{transform:scale(0);opacity:0;}14%{transform:scale(0.3);opacity:0.85;}
                     21%{transform:scale(7);opacity:0;}22%,100%{transform:scale(0);opacity:0;}
                   }
                   @keyframes vd-p2{
-                    0%,55%{transform:scale(0);opacity:0;}58%{transform:scale(0.3);opacity:0.9;}
-                    66%{transform:scale(9);opacity:0;}67%,100%{transform:scale(0);opacity:0;}
+                    0%,52%{transform:scale(0);opacity:0;}55%{transform:scale(0.3);opacity:0.9;}
+                    63%{transform:scale(9);opacity:0;}64%,100%{transform:scale(0);opacity:0;}
                   }
                   @keyframes vd-p3{
-                    0%,76%{transform:scale(0);opacity:0;}79%{transform:scale(0.3);opacity:0.9;}
-                    87%{transform:scale(9);opacity:0;}88%,100%{transform:scale(0);opacity:0;}
+                    0%,74%{transform:scale(0);opacity:0;}77%{transform:scale(0.3);opacity:0.9;}
+                    85%{transform:scale(9);opacity:0;}86%,100%{transform:scale(0);opacity:0;}
                   }
                   @keyframes vd-cf{
-                    0%,77%{transform:scale(0.96);opacity:0;}81%{transform:scale(1);opacity:1;}
-                    89%{transform:scale(1.08);opacity:0;}90%,100%{transform:scale(0.96);opacity:0;}
+                    0%,75%{transform:scale(0.96);opacity:0;}79%{transform:scale(1);opacity:1;}
+                    87%{transform:scale(1.08);opacity:0;}88%,100%{transform:scale(0.96);opacity:0;}
                   }
                   @keyframes vd-yr{
-                    0%,85%{transform:scale(0);opacity:0;}89%{transform:scale(1.25);opacity:1;}
-                    93%{transform:scale(1);opacity:1;}96%{transform:scale(1);opacity:0;}
-                    100%{transform:scale(0);opacity:0;}
+                    0%,83%{transform:scale(0);opacity:0;}87%{transform:scale(1.25);opacity:1;}
+                    91%{transform:scale(1);opacity:1;}96%{transform:scale(1);opacity:1;}
+                    99%{transform:scale(1);opacity:0;}100%{transform:scale(0);opacity:0;}
                   }
                 `}</style>
 
-                <rect className="vd-bg" x="0" y="0" width="280" height="285"/>
-
+                <rect className="vd-bg" x="0" y="0" width="280" height="292"/>
                 <text className="vd-lb" x="154" y="80">BEFORE</text>
                 <line x1="44" y1="77" x2="114" y2="77" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2"/>
                 <line x1="194" y1="77" x2="264" y2="77" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2"/>
-
                 <rect className="vd-gh" x="34" y="30" width="240" height="28" rx="5"/>
 
-                <g className="vd-ad1">
-                  <rect className="vd-dz" x="34" y="120" width="240" height="28" rx="4"/>
-                  <text className="vd-dztext" x="154" y="138">Drop here</text>
-                </g>
-                <g className="vd-ad2">
-                  <rect className="vd-dz" x="34" y="152" width="240" height="28" rx="4"/>
-                  <text className="vd-dztext" x="154" y="170">Drop here</text>
-                </g>
+                <g className="vd-d1"><rect className="vd-dz" x="34" y="120" width="240" height="44" rx="5"/><text className="vd-dzt" x="154" y="146">Drop here</text></g>
+                <g className="vd-d2"><rect className="vd-dz" x="34" y="152" width="240" height="44" rx="5"/><text className="vd-dzt" x="154" y="178">Drop here</text></g>
 
                 <g transform="translate(0,88)">
                   <rect className="vd-rb" x="34" y="0" width="240" height="28" rx="5"/>
@@ -393,48 +359,40 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   <rect className="vd-rt" x="62" y="16" width="150" height="3" rx="1"/>
                 </g>
 
-                <g transform="translate(0,120)">
-                  <g className="vd-r92">
-                    <rect className="vd-rb" x="34" y="0" width="240" height="28" rx="5"/>
-                    <rect className="vd-yr" x="6" y="5" width="24" height="18" rx="3"/>
-                    <text className="vd-yt" x="18" y="17">1992</text>
-                    <circle className="vd-bl" cx="49" cy="14" r="5"/>
-                    <rect className="vd-rt" x="62" y="9" width="170" height="3" rx="1"/>
-                    <rect className="vd-rt" x="62" y="16" width="130" height="3" rx="1"/>
-                  </g>
-                </g>
+                <g transform="translate(0,120)"><g className="vd-r92">
+                  <rect className="vd-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                  <rect className="vd-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                  <text className="vd-yt" x="18" y="17">1992</text>
+                  <circle className="vd-bl" cx="49" cy="14" r="5"/>
+                  <rect className="vd-rt" x="62" y="9" width="170" height="3" rx="1"/>
+                  <rect className="vd-rt" x="62" y="16" width="130" height="3" rx="1"/>
+                </g></g>
 
-                <g transform="translate(0,152)">
-                  <g className="vd-r2k">
-                    <rect className="vd-rb" x="34" y="0" width="240" height="28" rx="5"/>
-                    <rect className="vd-yr" x="6" y="5" width="24" height="18" rx="3"/>
-                    <text className="vd-yt" x="18" y="17">2000</text>
-                    <circle className="vd-bl" cx="49" cy="14" r="5"/>
-                    <rect className="vd-rt" x="62" y="9" width="180" height="3" rx="1"/>
-                    <rect className="vd-rt" x="62" y="16" width="160" height="3" rx="1"/>
-                  </g>
-                </g>
+                <g transform="translate(0,152)"><g className="vd-r2k">
+                  <rect className="vd-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                  <rect className="vd-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                  <text className="vd-yt" x="18" y="17">2000</text>
+                  <circle className="vd-bl" cx="49" cy="14" r="5"/>
+                  <rect className="vd-rt" x="62" y="9" width="180" height="3" rx="1"/>
+                  <rect className="vd-rt" x="62" y="16" width="160" height="3" rx="1"/>
+                </g></g>
 
-                <g transform="translate(0,184)">
-                  <g className="vd-r2k">
-                    <rect className="vd-rb" x="34" y="0" width="240" height="28" rx="5"/>
-                    <rect className="vd-yr" x="6" y="5" width="24" height="18" rx="3"/>
-                    <text className="vd-yt" x="18" y="17">2002</text>
-                    <circle className="vd-bl" cx="49" cy="14" r="5"/>
-                    <rect className="vd-rt" x="62" y="9" width="160" height="3" rx="1"/>
-                    <rect className="vd-rt" x="62" y="16" width="120" height="3" rx="1"/>
-                  </g>
-                </g>
+                <g transform="translate(0,184)"><g className="vd-r2k">
+                  <rect className="vd-rb" x="34" y="0" width="240" height="28" rx="5"/>
+                  <rect className="vd-yr" x="6" y="5" width="24" height="18" rx="3"/>
+                  <text className="vd-yt" x="18" y="17">2002</text>
+                  <circle className="vd-bl" cx="49" cy="14" r="5"/>
+                  <rect className="vd-rt" x="62" y="9" width="160" height="3" rx="1"/>
+                  <rect className="vd-rt" x="62" y="16" width="120" height="3" rx="1"/>
+                </g></g>
 
-                <g transform="translate(0,226)">
-                  <g className="vd-r2k">
-                    <line x1="44" y1="8" x2="114" y2="8" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2"/>
-                    <line x1="194" y1="8" x2="264" y2="8" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2"/>
-                    <text className="vd-lb" x="154" y="11">AFTER</text>
-                  </g>
-                </g>
+                <g transform="translate(0,218)"><g className="vd-r2k">
+                  <line x1="44" y1="8" x2="114" y2="8" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2"/>
+                  <line x1="194" y1="8" x2="264" y2="8" stroke="hsl(220,8%,38%)" strokeWidth="0.75" strokeDasharray="2 2"/>
+                  <text className="vd-lb" x="154" y="11">AFTER</text>
+                </g></g>
 
-                <rect className="vd-cf vd-af" x="34" y="152" width="240" height="28" rx="4" vectorEffect="non-scaling-stroke"/>
+                <rect className="vd-cf vd-af" x="34" y="160" width="240" height="28" rx="5" vectorEffect="non-scaling-stroke"/>
 
                 <g className="vd-ac">
                   <rect className="vd-ca" x="34" y="30" width="240" height="28" rx="5"/>
@@ -448,12 +406,10 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   </g>
                 </g>
 
-                <g transform="translate(114,155)">
-                  <g className="vd-at">
-                    <rect className="vd-tp" x="0" y="0" width="80" height="18" rx="9"/>
-                    <text className="vd-tt" x="40" y="12.5">Tap to place</text>
-                  </g>
-                </g>
+                <g transform="translate(114,163)"><g className="vd-at">
+                  <rect className="vd-tp" x="0" y="0" width="80" height="18" rx="9"/>
+                  <text className="vd-tt" x="40" y="12.5">Tap to place</text>
+                </g></g>
 
                 <g className="vd-au">
                   <circle className="vd-po vd-a1" cx="0" cy="0" r="2"/>
