@@ -69,6 +69,15 @@ export function Timeline({
   const [lockedGap, setLockedGap] = useState<number | null>(null);
   const [naturalPaddingTop, setNaturalPaddingTop] = useState(0);
   const innerWrapperRef = useRef<HTMLDivElement>(null);
+  // Ref to the flex-flow parent (NOT the translated child) so we can measure
+  // the untranslated viewport position of the cards container.
+  const cardsFlowRef = useRef<HTMLDivElement>(null);
+
+  // When in instant-first-zone mode, pin the timeline cards to their pre-drag
+  // viewport position so they stay physically still while only the "Before"
+  // label and timeline line shift up to fill the source card's vacated space.
+  const cardsAnchorRef = useRef<number | null>(null);
+  const [cardsCompensateY, setCardsCompensateY] = useState(0);
 
   // Tracks whether the user has ever activated a non-zero drop zone during the
   // current drag. Once they have, the first drop zone (position 0) reverts to
@@ -77,12 +86,43 @@ export function Timeline({
   useEffect(() => {
     if (!isDragging) {
       hasLeftFirstZoneRef.current = false;
+      cardsAnchorRef.current = null;
+      setCardsCompensateY(0);
       return;
     }
     if (activeDropZone !== null && activeDropZone !== 0) {
       hasLeftFirstZoneRef.current = true;
+      // Once we leave instant-first mode, release the pin so cards can flow
+      // normally with the rest of the layout again.
+      cardsAnchorRef.current = null;
+      setCardsCompensateY(0);
     }
   }, [isDragging, activeDropZone]);
+
+  // Capture the cards' flow-position viewport Y when drag begins (in instant-
+  // first mode), then on every frame compute how far the flow has shifted and
+  // counter-translate the inner wrapper to keep cards visually pinned.
+  useEffect(() => {
+    if (!isDragging || hasLeftFirstZoneRef.current) return;
+    if (!cardsFlowRef.current) return;
+
+    if (cardsAnchorRef.current === null) {
+      cardsAnchorRef.current = cardsFlowRef.current.getBoundingClientRect().top;
+    }
+
+    let rafId: number;
+    const tick = () => {
+      if (!cardsFlowRef.current || cardsAnchorRef.current === null) return;
+      const currentTop = cardsFlowRef.current.getBoundingClientRect().top;
+      // Compensate by the delta: if the flow-position has moved up by N px,
+      // push the inner wrapper back down by N px via translateY.
+      const delta = cardsAnchorRef.current - currentTop;
+      setCardsCompensateY(delta);
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [isDragging]);
 
   // Measure available space
   useEffect(() => {
@@ -482,11 +522,18 @@ export function Timeline({
         <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
 
         {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
-        <div 
+        <div
+          ref={cardsFlowRef}
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
           style={{ paddingTop: naturalPaddingTop }}
         >
-          <div className="relative flex flex-col" ref={innerWrapperRef}>
+          <div
+            className="relative flex flex-col"
+            ref={innerWrapperRef}
+            style={{
+              transform: cardsCompensateY ? `translateY(${cardsCompensateY}px)` : undefined,
+            }}
+          >
             {firstZoneInstantMode && (
               <div
                 className={`absolute left-0 right-0 rounded-xl border-2 border-dashed flex items-center justify-center z-40 pointer-events-none ${
