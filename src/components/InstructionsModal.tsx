@@ -142,6 +142,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   }
                 `}</style>
 
+                <rect x="0" y="0" width="280" height="360" fill="hsl(35,28%,82%)"/>
                 <g transform="translate(0, 88)">
                   <rect className="dhl-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhl-year" x="6" y="5" width="24" height="18" rx="3" />
@@ -316,6 +317,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   }
                 `}</style>
 
+                <rect x="0" y="0" width="280" height="360" fill="hsl(220,12%,11%)"/>
                 <g transform="translate(0, 88)">
                   <rect className="dhd-rowbg" x="34" y="0" width="240" height="28" rx="5" />
                   <rect className="dhd-year" x="6" y="5" width="24" height="18" rx="3" />
