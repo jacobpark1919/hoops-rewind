@@ -91,10 +91,13 @@ export function Timeline({
       }
       return;
     }
-    if (activeDropZone !== null && activeDropZone !== 0) {
+    // As soon as ANY drop zone has been detected (including the first one),
+    // exit instant-first mode so the standard in-flow physics take over for
+    // the rest of the drag. The visual state is preserved because the cards
+    // are already pinned and the first zone has already appeared in its
+    // overlay slot — the swap to in-flow rendering is imperceptible.
+    if (activeDropZone !== null) {
       hasLeftFirstZoneRef.current = true;
-      // Once we leave instant-first mode, release the pin so cards can flow
-      // normally with the rest of the layout again.
       cardsAnchorRef.current = null;
       if (innerWrapperRef.current) {
         innerWrapperRef.current.style.transform = '';
