@@ -92,7 +92,6 @@ export function Timeline({
       return;
     }
     if (activeDropZone !== null && activeDropZone !== 0) {
-      hasLeftFirstZoneRef.current = true;
       // Once we leave instant-first mode, release the pin so cards can flow
       // normally with the rest of the layout again.
       cardsAnchorRef.current = null;
@@ -106,7 +105,8 @@ export function Timeline({
   // first mode), then on every frame compute how far the flow has shifted and
   // counter-translate the inner wrapper to keep cards visually pinned.
   useEffect(() => {
-    if (!isDragging || hasLeftFirstZoneRef.current) return;
+    if (!isDragging) return;
+    if (activeDropZone !== null && activeDropZone !== 0) return;
     if (!cardsFlowRef.current) return;
 
     if (cardsAnchorRef.current === null) {
@@ -129,7 +129,7 @@ export function Timeline({
     };
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, [isDragging]);
+  }, [isDragging, activeDropZone]);
 
   // Measure available space
   useEffect(() => {
