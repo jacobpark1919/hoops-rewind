@@ -41,6 +41,9 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
 
         {/* Content */}
         <div className="text-center">
+          <h2 className="font-display text-lg sm:text-2xl font-bold text-foreground mb-1.5 sm:mb-2">
+            How to Play
+          </h2>
           {/* Drag illustration — light + dark variants */}
           <div className="my-2 sm:my-6 flex justify-center">
             <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30">
