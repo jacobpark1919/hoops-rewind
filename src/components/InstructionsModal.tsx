@@ -46,12 +46,13 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
           </h2>
           {/* Drag illustration — light + dark variants */}
           <div className="my-2 sm:my-6 flex justify-center">
-            <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30">
+            <div className="w-full rounded-lg sm:rounded-xl overflow-hidden bg-muted/30 aspect-[280/306] sm:aspect-auto">
               {/* LIGHT MODE SVG */}
               <svg
                 viewBox="0 0 280 340"
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-full block dark:hidden"
+                className="w-full h-full block dark:hidden"
+                preserveAspectRatio="xMidYMin slice"
                 role="img"
                 aria-label="Drag a card into the timeline and tap to place"
               >
