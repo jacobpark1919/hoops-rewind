@@ -69,6 +69,9 @@ export function Timeline({
   const [lockedGap, setLockedGap] = useState<number | null>(null);
   const [naturalPaddingTop, setNaturalPaddingTop] = useState(0);
   const innerWrapperRef = useRef<HTMLDivElement>(null);
+  // Ref to the flex-flow parent (NOT the translated child) so we can measure
+  // the untranslated viewport position of the cards container.
+  const cardsFlowRef = useRef<HTMLDivElement>(null);
 
   // When in instant-first-zone mode, pin the timeline cards to their pre-drag
   // viewport position so they stay physically still while only the "Before"
@@ -96,23 +99,23 @@ export function Timeline({
     }
   }, [isDragging, activeDropZone]);
 
-  // Capture the inner cards' viewport Y when drag begins (in instant-first
-  // mode), then on every frame compute how far it has shifted and counter-
-  // translate to keep it visually pinned.
+  // Capture the cards' flow-position viewport Y when drag begins (in instant-
+  // first mode), then on every frame compute how far the flow has shifted and
+  // counter-translate the inner wrapper to keep cards visually pinned.
   useEffect(() => {
     if (!isDragging || hasLeftFirstZoneRef.current) return;
-    if (!innerWrapperRef.current) return;
+    if (!cardsFlowRef.current) return;
 
     if (cardsAnchorRef.current === null) {
-      cardsAnchorRef.current = innerWrapperRef.current.getBoundingClientRect().top;
+      cardsAnchorRef.current = cardsFlowRef.current.getBoundingClientRect().top;
     }
 
     let rafId: number;
     const tick = () => {
-      if (!innerWrapperRef.current || cardsAnchorRef.current === null) return;
-      const currentTop = innerWrapperRef.current.getBoundingClientRect().top;
-      // Compensate by the delta: if the wrapper has moved up by N px, push it
-      // back down by N px via translateY.
+      if (!cardsFlowRef.current || cardsAnchorRef.current === null) return;
+      const currentTop = cardsFlowRef.current.getBoundingClientRect().top;
+      // Compensate by the delta: if the flow-position has moved up by N px,
+      // push the inner wrapper back down by N px via translateY.
       const delta = cardsAnchorRef.current - currentTop;
       setCardsCompensateY(delta);
       rafId = requestAnimationFrame(tick);
