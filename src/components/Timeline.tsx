@@ -405,7 +405,6 @@ export function Timeline({
           height: isActive ? expandedHeight : 0,
           marginTop: isActive && marginClass?.includes('mt-3') ? 12 : 0,
           marginBottom: isActive && marginClass?.includes('mb-3') ? 12 : 0,
-          transition: 'height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), margin 350ms cubic-bezier(0.25, 0.1, 0.25, 1)',
         }}
       >
         {isActive && (
