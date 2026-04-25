@@ -336,6 +336,11 @@ export function Timeline({
     // initial pickup. Once the user has hovered any other drop zone, it
     // reverts to the standard transition physics on the way back up.
     const useInstantFirst = position === 0 && !hasLeftFirstZoneRef.current;
+    const expandedHeight = window.innerWidth >= 640 ? 128 : 112;
+    // When in instant-first mode, this returns null — the overlay is rendered
+    // separately below as an absolutely-positioned sibling so it doesn't push
+    // the timeline downward.
+    if (useInstantFirst) return null;
     return (
       <div
         key={`drop-${position}`}
@@ -345,12 +350,10 @@ export function Timeline({
             : 'border-transparent overflow-hidden'
         }`}
         style={{
-          height: isActive ? (window.innerWidth >= 640 ? 128 : 112) : 0,
+          height: isActive ? expandedHeight : 0,
           marginTop: isActive && marginClass?.includes('mt-3') ? 12 : 0,
           marginBottom: isActive && marginClass?.includes('mb-3') ? 12 : 0,
-          transition: useInstantFirst
-            ? 'none'
-            : 'height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), margin 350ms cubic-bezier(0.25, 0.1, 0.25, 1)',
+          transition: 'height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), margin 350ms cubic-bezier(0.25, 0.1, 0.25, 1)',
         }}
       >
         {isActive && (
@@ -361,10 +364,18 @@ export function Timeline({
   };
 
   // Build items
-  const items: JSX.Element[] = [];
+  const items: (JSX.Element | null)[] = [];
 
   // Whether to show drop zones (during drag OR frozen/pending state)
   const showDropZones = isDragging || activeDropZone !== null;
+
+  // The first drop zone, when in instant-first mode, is rendered as an
+  // absolutely-positioned overlay above the timeline content so it doesn't
+  // push existing cards downward.
+  const firstZoneInstantMode =
+    showDropZones && !hasLeftFirstZoneRef.current && !(activeDropZone === 0 && !isDragging && pendingItem);
+  const firstZoneActive = activeDropZone === 0;
+  const expandedHeightFirst = window.innerWidth >= 640 ? 128 : 112;
 
   // Drop zone BEFORE first card
   if (showDropZones) {
@@ -475,7 +486,27 @@ export function Timeline({
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
           style={{ paddingTop: naturalPaddingTop }}
         >
-          <div className="flex flex-col" ref={innerWrapperRef}>
+          <div className="relative flex flex-col" ref={innerWrapperRef}>
+            {firstZoneInstantMode && (
+              <div
+                className={`absolute left-0 right-0 rounded-xl border-2 border-dashed flex items-center justify-center z-40 pointer-events-none ${
+                  firstZoneActive
+                    ? 'border-primary bg-primary/20 shadow-lg'
+                    : 'border-transparent'
+                }`}
+                style={{
+                  bottom: '100%',
+                  marginBottom: 8,
+                  height: expandedHeightFirst,
+                  opacity: firstZoneActive ? 1 : 0,
+                  transition: 'opacity 150ms ease-out',
+                }}
+              >
+                {firstZoneActive && (
+                  <span className="text-primary text-sm font-semibold">Drop here</span>
+                )}
+              </div>
+            )}
             {items}
           </div>
         </div>
