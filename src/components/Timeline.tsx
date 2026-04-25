@@ -102,17 +102,28 @@ export function Timeline({
     }
   }, [isDragging, activeDropZone]);
 
-  // Pin the FIRST CARD's viewport position throughout the drag. This way,
-  // when the standard in-flow first drop zone expands (after the initial
-  // appearance), it would normally push the first card down — but the pin
-  // counter-translates the inner wrapper to keep it visually still.
-  // Net result: the first appearance feels like a non-pushing overlay,
-  // and subsequent expand/collapse cycles also keep cards still.
+  // Pin the FIRST CARD's viewport position ONLY while we're in instant-first
+  // mode (i.e., before any drop zone has activated). This prevents the cards
+  // from reflowing upward when the source card is removed from the unplaced
+  // area. As soon as a drop zone activates, the pin releases so standard
+  // in-flow expansion physics take over (drop zones push cards downward).
   useEffect(() => {
-    if (!isDragging) return;
+    if (!isDragging || hasLeftFirstZoneRef.current) {
+      // Release any active pin when exiting instant-first mode.
+      if (innerWrapperRef.current) {
+        innerWrapperRef.current.style.transform = '';
+      }
+      return;
+    }
 
     let rafId: number;
     const tick = () => {
+      if (hasLeftFirstZoneRef.current) {
+        if (innerWrapperRef.current) {
+          innerWrapperRef.current.style.transform = '';
+        }
+        return;
+      }
       // Find the first non-pending card by looking at placedEvents directly.
       const firstCardItem = placedEvents.find(p => p.status !== 'pending');
       const firstCardEl = firstCardItem ? cardRefs.current.get(firstCardItem.event.id) : null;
@@ -133,7 +144,7 @@ export function Timeline({
     };
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, [isDragging, placedEvents]);
+  }, [isDragging, placedEvents, activeDropZone]);
 
   // Measure available space
   useEffect(() => {
