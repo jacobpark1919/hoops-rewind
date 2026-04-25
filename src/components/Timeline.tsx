@@ -241,6 +241,18 @@ export function Timeline({
 
   // Snapshot card centers at the moment drag begins (before any zone expansion).
   const snapshotCenters = useRef<number[]>([]);
+  // Captures timelineRef's viewport top at drag start, so that when in
+  // normal (post-instant-first) mode we can convert dragY (computed from a
+  // pre-collapse rect) into the same coordinate frame as the live, settled
+  // card centers.
+  const timelineAnchorRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (!isDragging) {
+      timelineAnchorRef.current = null;
+    } else if (timelineAnchorRef.current === null && timelineRef.current) {
+      timelineAnchorRef.current = timelineRef.current.getBoundingClientRect().top;
+    }
+  }, [isDragging]);
 
   useLayoutEffect(() => {
     if (isDragging && snapshotCenters.current.length === 0) {
