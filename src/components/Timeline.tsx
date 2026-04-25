@@ -77,7 +77,6 @@ export function Timeline({
   // viewport position so they stay physically still while only the "Before"
   // label and timeline line shift up to fill the source card's vacated space.
   const cardsAnchorRef = useRef<number | null>(null);
-  const [cardsCompensateY, setCardsCompensateY] = useState(0);
 
   // Tracks whether the user has ever activated a non-zero drop zone during the
   // current drag. Once they have, the first drop zone (position 0) reverts to
@@ -87,7 +86,9 @@ export function Timeline({
     if (!isDragging) {
       hasLeftFirstZoneRef.current = false;
       cardsAnchorRef.current = null;
-      setCardsCompensateY(0);
+      if (innerWrapperRef.current) {
+        innerWrapperRef.current.style.transform = '';
+      }
       return;
     }
     if (activeDropZone !== null && activeDropZone !== 0) {
@@ -95,7 +96,9 @@ export function Timeline({
       // Once we leave instant-first mode, release the pin so cards can flow
       // normally with the rest of the layout again.
       cardsAnchorRef.current = null;
-      setCardsCompensateY(0);
+      if (innerWrapperRef.current) {
+        innerWrapperRef.current.style.transform = '';
+      }
     }
   }, [isDragging, activeDropZone]);
 
@@ -116,8 +119,12 @@ export function Timeline({
       const currentTop = cardsFlowRef.current.getBoundingClientRect().top;
       // Compensate by the delta: if the flow-position has moved up by N px,
       // push the inner wrapper back down by N px via translateY.
+      // Apply directly to the DOM (no React state) to avoid a re-render lag
+      // that would cause visible jitter.
       const delta = cardsAnchorRef.current - currentTop;
-      setCardsCompensateY(delta);
+      if (innerWrapperRef.current) {
+        innerWrapperRef.current.style.transform = delta ? `translateY(${delta}px)` : '';
+      }
       rafId = requestAnimationFrame(tick);
     };
     rafId = requestAnimationFrame(tick);
@@ -530,9 +537,6 @@ export function Timeline({
           <div
             className="relative flex flex-col"
             ref={innerWrapperRef}
-            style={{
-              transform: cardsCompensateY ? `translateY(${cardsCompensateY}px)` : undefined,
-            }}
           >
             {firstZoneInstantMode && (
               <div
