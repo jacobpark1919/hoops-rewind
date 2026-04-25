@@ -91,18 +91,12 @@ export function Timeline({
       }
       return;
     }
-    // As soon as ANY drop zone has been detected (including the first one),
-    // exit instant-first mode so the standard in-flow physics take over for
-    // the rest of the drag. The visual state is preserved because the cards
-    // are already pinned and the first zone has already appeared in its
-    // overlay slot — the swap to in-flow rendering is imperceptible.
-    if (activeDropZone !== null) {
-      hasLeftFirstZoneRef.current = true;
-      cardsAnchorRef.current = null;
-      if (innerWrapperRef.current) {
-        innerWrapperRef.current.style.transform = '';
-      }
-    }
+    // Instant-first mode (overlay rendering + pin) stays active for the
+    // entire drag so the timeline cards never reflow downward when the
+    // first drop zone appears. Detection logic uses live centers, which
+    // remain accurate because both the cards and `dragY` are in viewport
+    // coordinates — so dragging mechanics still behave correctly even
+    // while the visual pin is in effect.
   }, [isDragging, activeDropZone]);
 
   // Capture the cards' flow-position viewport Y when drag begins (in instant-
