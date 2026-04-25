@@ -113,8 +113,8 @@ export function Timeline({
 
     let rafId: number;
     const tick = () => {
-      // Find the first non-pending card element.
-      const firstCardItem = nonPendingEvents[0];
+      // Find the first non-pending card by looking at placedEvents directly.
+      const firstCardItem = placedEvents.find(p => p.status !== 'pending');
       const firstCardEl = firstCardItem ? cardRefs.current.get(firstCardItem.event.id) : null;
       if (firstCardEl && innerWrapperRef.current) {
         // Temporarily remove our transform to measure the untransformed position.
@@ -133,7 +133,7 @@ export function Timeline({
     };
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, [isDragging, nonPendingEvents]);
+  }, [isDragging, placedEvents]);
 
   // Measure available space
   useEffect(() => {
