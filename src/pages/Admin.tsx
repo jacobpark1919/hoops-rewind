@@ -324,7 +324,7 @@ export default function Admin() {
         {/* Header */}
         <header className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <button onClick={() => navigate("/home")} className="p-1.5 rounded-full hover:bg-muted transition-colors">
+            <button onClick={() => navigate("/")} className="p-1.5 rounded-full hover:bg-muted transition-colors">
               <Home className="w-5 h-5 text-muted-foreground" />
             </button>
             <h1 className="font-display text-xl font-bold text-foreground">Admin</h1>
