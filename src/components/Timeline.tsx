@@ -91,32 +91,9 @@ export function Timeline({
     }
   }, [isDragging]);
 
-  // Compensate only for the whole Timeline moving upward when the source card
-  // area collapses. We intentionally do NOT measure the first card itself here:
-  // in-flow drop-zone expansion must still push cards downward normally.
-  useEffect(() => {
-    if (!isDragging) {
-      if (innerWrapperRef.current) {
-        innerWrapperRef.current.style.transform = '';
-      }
-      return;
-    }
-
-    let rafId: number;
-    const tick = () => {
-      if (timelineRef.current && innerWrapperRef.current) {
-        const timelineTop = timelineRef.current.getBoundingClientRect().top;
-        if (timelineTopAnchorRef.current === null) {
-          timelineTopAnchorRef.current = timelineTop;
-        }
-        const delta = timelineTopAnchorRef.current - timelineTop;
-        innerWrapperRef.current.style.transform = delta ? `translateY(${delta}px)` : '';
-      }
-      rafId = requestAnimationFrame(tick);
-    };
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
-  }, [isDragging]);
+  // No container-level pin: the first drop zone is rendered as an
+  // absolute overlay (see below), so it doesn't displace the cards.
+  // All other drop zones expand in-flow exactly like normal.
 
   // Measure available space
   useEffect(() => {
