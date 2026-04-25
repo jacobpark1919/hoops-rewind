@@ -522,11 +522,18 @@ export function Timeline({
         <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
 
         {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
-        <div 
+        <div
+          ref={cardsFlowRef}
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
           style={{ paddingTop: naturalPaddingTop }}
         >
-          <div className="relative flex flex-col" ref={innerWrapperRef}>
+          <div
+            className="relative flex flex-col"
+            ref={innerWrapperRef}
+            style={{
+              transform: cardsCompensateY ? `translateY(${cardsCompensateY}px)` : undefined,
+            }}
+          >
             {firstZoneInstantMode && (
               <div
                 className={`absolute left-0 right-0 rounded-xl border-2 border-dashed flex items-center justify-center z-40 pointer-events-none ${
