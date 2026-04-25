@@ -431,6 +431,19 @@ export function Timeline({
     const isCta = item.event.id === CTA_EVENT_ID;
     const otherModes = SPORT_MODE_OPTIONS.filter(s => s.value !== (sportFilter ?? null));
 
+    // Compensate so that an expanding drop zone only pushes the single card
+    // directly below it down — all cards further below stay visually put.
+    // The card directly below an active zone is the card whose nonPendingIndex
+    // equals the active drop zone position. Cards with nonPendingIndex strictly
+    // greater than that need to be translated back up by the zone's height.
+    const expandedZoneHeight = window.innerWidth >= 640 ? 128 : 112;
+    const zoneMarginExtra = 12; // matches the mt-3/mb-3 (12px) added to active zones
+    const shouldCompensate =
+      activeDropZone !== null &&
+      activeDropZone !== 0 && // first zone is overlay-rendered, doesn't take flow
+      nonPendingIndex > activeDropZone;
+    const compensateY = shouldCompensate ? -(expandedZoneHeight + zoneMarginExtra) : 0;
+
     items.push(
       <div
         key={item.event.id}
@@ -442,8 +455,12 @@ export function Timeline({
         style={{
           marginTop,
           zIndex: isHovered ? 50 : baseZIndex,
-          transform: isHovered ? 'translateY(-20px) scale(1.02)' : 'none',
-          transition: 'margin-top 0.3s ease-out, transform 0.2s ease-out, z-index 0s',
+          transform: isHovered
+            ? 'translateY(-20px) scale(1.02)'
+            : compensateY
+              ? `translateY(${compensateY}px)`
+              : 'none',
+          transition: 'margin-top 0.3s ease-out, transform 350ms cubic-bezier(0.25, 0.1, 0.25, 1), z-index 0s',
         }}
         onMouseEnter={() => !isDragging && setHoveredCardId(item.event.id)}
         onMouseLeave={() => setHoveredCardId(null)}
