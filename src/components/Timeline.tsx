@@ -405,6 +405,7 @@ export function Timeline({
           height: isActive ? expandedHeight : 0,
           marginTop: isActive && marginClass?.includes('mt-3') ? 12 : 0,
           marginBottom: isActive && marginClass?.includes('mb-3') ? 12 : 0,
+          transition: 'height 300ms ease-out, margin 300ms ease-out',
         }}
       >
         {isActive && (
