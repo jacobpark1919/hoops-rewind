@@ -561,19 +561,28 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
               <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent text-accent-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">
                 1
               </span>
-              <p className="text-foreground text-xs sm:text-sm">Grab an event card from the top of the screen</p>
+              <p className="text-foreground text-xs sm:text-sm">Grab an event card from the top of the screen.</p>
             </div>
             <div className="flex items-start gap-2 sm:gap-3">
               <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent text-accent-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">
                 2
               </span>
               <p className="text-foreground text-xs sm:text-sm">
-                Place it into the timeline where you think it belongs chronologically.
+                Drag it into the timeline where you think it belongs chronologically.
               </p>
             </div>
             <div className="flex items-start gap-2 sm:gap-3">
               <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent text-accent-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">
                 3
+              </span>
+              <p className="text-foreground text-xs sm:text-sm">
+                Press 'Tap to Place' when you're ready to lock it in! Incorrect events are automatically moved to the
+                correct place in the timeline.
+              </p>
+            </div>
+            <div className="flex items-start gap-2 sm:gap-3">
+              <span className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-accent text-accent-foreground font-display font-bold text-[11px] sm:text-sm flex items-center justify-center">
+                4
               </span>
               <p className="text-foreground text-xs sm:text-sm">Daily game — come back tomorrow for a new puzzle!</p>
             </div>
