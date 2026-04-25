@@ -60,7 +60,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vl-bl{fill:hsl(20,82%,53%);}
                   .vl-yr{fill:hsl(45,90%,55%);}
                   .vl-yt{fill:hsl(220,30%,12%);font-family:ui-monospace,monospace;font-size:8px;font-weight:700;text-anchor:middle;}
-                  .vl-gh{fill:none;stroke:hsl(20,82%,53%);stroke-width:1.25;stroke-dasharray:3 2.5;opacity:0.35;}
+                  .vl-gh{fill:none;stroke:hsl(20,82%,53%);stroke-width:2;stroke-dasharray:3 2.5;opacity:0.7;}
                   .vl-dz{fill:hsl(20,82%,53%,0.10);stroke:hsl(20,82%,53%);stroke-width:1.25;stroke-dasharray:3 2.5;}
                   .vl-dztext{fill:hsl(20,82%,45%);font-family:ui-sans-serif,sans-serif;font-size:8px;font-weight:700;text-anchor:middle;}
                   .vl-cl{fill:hsl(220,9%,70%);}
@@ -72,18 +72,18 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vl-tt{fill:#fff;font-family:ui-sans-serif,sans-serif;font-size:8.5px;font-weight:700;text-anchor:middle;}
                   .vl-cf{fill:none;stroke:hsl(142,71%,45%);stroke-width:2;}
                   .vl-lb{fill:hsl(35,18%,58%);font-family:ui-sans-serif,sans-serif;font-size:7.5px;font-weight:700;text-anchor:middle;letter-spacing:0.08em;}
-                  .vl-ac{animation:vl-card 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vl-au{animation:vl-cur 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vl-ad1{animation:vl-dz1 6.5s ease-in-out infinite;}
-                  .vl-ad2{animation:vl-dz2 6.5s ease-in-out infinite;}
-                  .vl-r92{animation:vl-r1992 6.5s ease-in-out infinite;}
-                  .vl-r2k{animation:vl-r2000 6.5s ease-in-out infinite;}
-                  .vl-at{animation:vl-tap 6.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-a1{animation:vl-p1 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-a2{animation:vl-p2 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-a3{animation:vl-p3 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-af{animation:vl-cf 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-ay{animation:vl-yr 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-ac{animation:vl-card 8s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vl-au{animation:vl-cur 8s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vl-ad1{animation:vl-dz1 8s ease-in-out infinite;}
+                  .vl-ad2{animation:vl-dz2 8s ease-in-out infinite;}
+                  .vl-r92{animation:vl-r1992 8s ease-in-out infinite;}
+                  .vl-r2k{animation:vl-r2000 8s ease-in-out infinite;}
+                  .vl-at{animation:vl-tap 8s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a1{animation:vl-p1 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a2{animation:vl-p2 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a3{animation:vl-p3 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-af{animation:vl-cf 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-ay{animation:vl-yr 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
                   @keyframes vl-card{
                     0%  {transform:translate(0,0);opacity:0;}
                     5%  {transform:translate(0,0);opacity:1;}
@@ -91,8 +91,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     38% {transform:translate(0,90px);opacity:1;}
                     46% {transform:translate(0,90px);opacity:1;}
                     58% {transform:translate(0,122px);opacity:1;}
-                    90% {transform:translate(0,122px);opacity:1;}
-                    96% {transform:translate(0,122px);opacity:0;}
+                    93% {transform:translate(0,122px);opacity:1;}
+                    99% {transform:translate(0,122px);opacity:0;}
                     100%{transform:translate(0,0);opacity:0;}
                   }
                   @keyframes vl-cur{
@@ -104,8 +104,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     58% {transform:translate(212px,166px);opacity:1;}
                     65% {transform:translate(212px,166px);opacity:1;}
                     71% {transform:translate(150px,160px);opacity:1;}
-                    89% {transform:translate(150px,160px);opacity:1;}
-                    94% {transform:translate(150px,160px);opacity:0;}
+                    93% {transform:translate(150px,160px);opacity:1;}
+                    99% {transform:translate(150px,160px);opacity:0;}
                     100%{transform:translate(290px,44px);opacity:0;}
                   }
                   @keyframes vl-dz1{
@@ -132,8 +132,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     76%{transform:scale(1);opacity:1;}
                     79%{transform:scale(0.9);opacity:1;}
                     82%{transform:scale(1);opacity:1;}
-                    89%{transform:scale(1);opacity:1;}
-                    93%,100%{transform:scale(1);opacity:0;}
+                    93%{transform:scale(1);opacity:1;}
+                    99%,100%{transform:scale(1);opacity:0;}
                   }
                   @keyframes vl-p1{
                     0%,11%{transform:scale(0);opacity:0;}14%{transform:scale(0.3);opacity:0.85;}
@@ -153,7 +153,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   }
                   @keyframes vl-yr{
                     0%,85%{transform:scale(0);opacity:0;}89%{transform:scale(1.25);opacity:1;}
-                    93%{transform:scale(1);opacity:1;}96%{transform:scale(1);opacity:0;}
+                    93%{transform:scale(1);opacity:1;}99%{transform:scale(1);opacity:0;}
                     100%{transform:scale(0);opacity:0;}
                   }
                 `}</style>
@@ -269,7 +269,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vd-bl{fill:hsl(20,82%,55%);}
                   .vd-yr{fill:hsl(45,75%,55%);}
                   .vd-yt{fill:hsl(45,30%,12%);font-family:ui-monospace,monospace;font-size:8px;font-weight:700;text-anchor:middle;}
-                  .vd-gh{fill:none;stroke:hsl(20,82%,55%);stroke-width:1.25;stroke-dasharray:3 2.5;opacity:0.3;}
+                  .vd-gh{fill:none;stroke:hsl(20,82%,55%);stroke-width:2;stroke-dasharray:3 2.5;opacity:0.65;}
                   .vd-dz{fill:hsl(20,82%,55%,0.12);stroke:hsl(20,82%,55%);stroke-width:1.25;stroke-dasharray:3 2.5;}
                   .vd-dztext{fill:hsl(20,82%,60%);font-family:ui-sans-serif,sans-serif;font-size:8px;font-weight:700;text-anchor:middle;}
                   .vd-cl{fill:hsl(220,8%,55%);}
@@ -281,18 +281,18 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vd-tt{fill:#fff;font-family:ui-sans-serif,sans-serif;font-size:8.5px;font-weight:700;text-anchor:middle;}
                   .vd-cf{fill:none;stroke:hsl(142,76%,50%);stroke-width:2;}
                   .vd-lb{fill:hsl(220,8%,50%);font-family:ui-sans-serif,sans-serif;font-size:7.5px;font-weight:700;text-anchor:middle;letter-spacing:0.08em;}
-                  .vd-ac{animation:vd-card 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vd-au{animation:vd-cur 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vd-ad1{animation:vd-dz1 6.5s ease-in-out infinite;}
-                  .vd-ad2{animation:vd-dz2 6.5s ease-in-out infinite;}
-                  .vd-r92{animation:vd-r1992 6.5s ease-in-out infinite;}
-                  .vd-r2k{animation:vd-r2000 6.5s ease-in-out infinite;}
-                  .vd-at{animation:vd-tap 6.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-a1{animation:vd-p1 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-a2{animation:vd-p2 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-a3{animation:vd-p3 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-af{animation:vd-cf 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-ay{animation:vd-yr 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-ac{animation:vd-card 8s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vd-au{animation:vd-cur 8s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vd-ad1{animation:vd-dz1 8s ease-in-out infinite;}
+                  .vd-ad2{animation:vd-dz2 8s ease-in-out infinite;}
+                  .vd-r92{animation:vd-r1992 8s ease-in-out infinite;}
+                  .vd-r2k{animation:vd-r2000 8s ease-in-out infinite;}
+                  .vd-at{animation:vd-tap 8s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a1{animation:vd-p1 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a2{animation:vd-p2 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a3{animation:vd-p3 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-af{animation:vd-cf 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-ay{animation:vd-yr 8s ease-out infinite;transform-box:fill-box;transform-origin:center;}
                   @keyframes vd-card{
                     0%  {transform:translate(0,0);opacity:0;}
                     5%  {transform:translate(0,0);opacity:1;}
@@ -300,8 +300,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     38% {transform:translate(0,90px);opacity:1;}
                     46% {transform:translate(0,90px);opacity:1;}
                     58% {transform:translate(0,122px);opacity:1;}
-                    90% {transform:translate(0,122px);opacity:1;}
-                    96% {transform:translate(0,122px);opacity:0;}
+                    93% {transform:translate(0,122px);opacity:1;}
+                    99% {transform:translate(0,122px);opacity:0;}
                     100%{transform:translate(0,0);opacity:0;}
                   }
                   @keyframes vd-cur{
@@ -313,8 +313,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     58% {transform:translate(212px,166px);opacity:1;}
                     65% {transform:translate(212px,166px);opacity:1;}
                     71% {transform:translate(150px,160px);opacity:1;}
-                    89% {transform:translate(150px,160px);opacity:1;}
-                    94% {transform:translate(150px,160px);opacity:0;}
+                    93% {transform:translate(150px,160px);opacity:1;}
+                    99% {transform:translate(150px,160px);opacity:0;}
                     100%{transform:translate(290px,44px);opacity:0;}
                   }
                   @keyframes vd-dz1{
@@ -341,8 +341,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     76%{transform:scale(1);opacity:1;}
                     79%{transform:scale(0.9);opacity:1;}
                     82%{transform:scale(1);opacity:1;}
-                    89%{transform:scale(1);opacity:1;}
-                    93%,100%{transform:scale(1);opacity:0;}
+                    93%{transform:scale(1);opacity:1;}
+                    99%,100%{transform:scale(1);opacity:0;}
                   }
                   @keyframes vd-p1{
                     0%,11%{transform:scale(0);opacity:0;}14%{transform:scale(0.3);opacity:0.85;}
@@ -362,7 +362,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   }
                   @keyframes vd-yr{
                     0%,85%{transform:scale(0);opacity:0;}89%{transform:scale(1.25);opacity:1;}
-                    93%{transform:scale(1);opacity:1;}96%{transform:scale(1);opacity:0;}
+                    93%{transform:scale(1);opacity:1;}99%{transform:scale(1);opacity:0;}
                     100%{transform:scale(0);opacity:0;}
                   }
                 `}</style>
