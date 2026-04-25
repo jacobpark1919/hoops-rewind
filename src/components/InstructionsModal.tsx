@@ -60,7 +60,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vl-bl{fill:hsl(20,82%,53%);}
                   .vl-yr{fill:hsl(45,90%,55%);}
                   .vl-yt{fill:hsl(220,30%,12%);font-family:ui-monospace,monospace;font-size:8px;font-weight:700;text-anchor:middle;}
-                  .vl-gh{fill:none;stroke:hsl(20,82%,53%);stroke-width:2;stroke-dasharray:3 2.5;opacity:0.7;}
+                  .vl-gh{fill:none;stroke:hsl(20,82%,53%);stroke-width:1.25;stroke-dasharray:3 2.5;opacity:0.35;}
                   .vl-dz{fill:hsl(20,82%,53%,0.10);stroke:hsl(20,82%,53%);stroke-width:1.25;stroke-dasharray:3 2.5;}
                   .vl-dztext{fill:hsl(20,82%,45%);font-family:ui-sans-serif,sans-serif;font-size:8px;font-weight:700;text-anchor:middle;}
                   .vl-cl{fill:hsl(220,9%,70%);}
@@ -72,18 +72,18 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vl-tt{fill:#fff;font-family:ui-sans-serif,sans-serif;font-size:8.5px;font-weight:700;text-anchor:middle;}
                   .vl-cf{fill:none;stroke:hsl(142,71%,45%);stroke-width:2;}
                   .vl-lb{fill:hsl(35,18%,58%);font-family:ui-sans-serif,sans-serif;font-size:7.5px;font-weight:700;text-anchor:middle;letter-spacing:0.08em;}
-                  .vl-ac{animation:vl-card 10s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vl-au{animation:vl-cur 10s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vl-ad1{animation:vl-dz1 10s ease-in-out infinite;}
-                  .vl-ad2{animation:vl-dz2 10s ease-in-out infinite;}
-                  .vl-r92{animation:vl-r1992 10s ease-in-out infinite;}
-                  .vl-r2k{animation:vl-r2000 10s ease-in-out infinite;}
-                  .vl-at{animation:vl-tap 10s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-a1{animation:vl-p1 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-a2{animation:vl-p2 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-a3{animation:vl-p3 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-af{animation:vl-cf 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vl-ay{animation:vl-yr 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-ac{animation:vl-card 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vl-au{animation:vl-cur 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vl-ad1{animation:vl-dz1 6.5s ease-in-out infinite;}
+                  .vl-ad2{animation:vl-dz2 6.5s ease-in-out infinite;}
+                  .vl-r92{animation:vl-r1992 6.5s ease-in-out infinite;}
+                  .vl-r2k{animation:vl-r2000 6.5s ease-in-out infinite;}
+                  .vl-at{animation:vl-tap 6.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a1{animation:vl-p1 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a2{animation:vl-p2 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-a3{animation:vl-p3 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-af{animation:vl-cf 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vl-ay{animation:vl-yr 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
                   @keyframes vl-card{
                     0%  {transform:translate(0,0);opacity:0;}
                     5%  {transform:translate(0,0);opacity:1;}
@@ -91,8 +91,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     38% {transform:translate(0,90px);opacity:1;}
                     46% {transform:translate(0,90px);opacity:1;}
                     58% {transform:translate(0,122px);opacity:1;}
-                    93% {transform:translate(0,122px);opacity:1;}
-                    99% {transform:translate(0,122px);opacity:0;}
+                    90% {transform:translate(0,122px);opacity:1;}
+                    96% {transform:translate(0,122px);opacity:0;}
                     100%{transform:translate(0,0);opacity:0;}
                   }
                   @keyframes vl-cur{
@@ -104,8 +104,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     58% {transform:translate(212px,166px);opacity:1;}
                     65% {transform:translate(212px,166px);opacity:1;}
                     71% {transform:translate(150px,160px);opacity:1;}
-                    93% {transform:translate(150px,160px);opacity:1;}
-                    99% {transform:translate(150px,160px);opacity:0;}
+                    89% {transform:translate(150px,160px);opacity:1;}
+                    94% {transform:translate(150px,160px);opacity:0;}
                     100%{transform:translate(290px,44px);opacity:0;}
                   }
                   @keyframes vl-dz1{
@@ -132,8 +132,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     76%{transform:scale(1);opacity:1;}
                     79%{transform:scale(0.9);opacity:1;}
                     82%{transform:scale(1);opacity:1;}
-                    93%{transform:scale(1);opacity:1;}
-                    99%,100%{transform:scale(1);opacity:0;}
+                    89%{transform:scale(1);opacity:1;}
+                    93%,100%{transform:scale(1);opacity:0;}
                   }
                   @keyframes vl-p1{
                     0%,11%{transform:scale(0);opacity:0;}14%{transform:scale(0.3);opacity:0.85;}
@@ -153,7 +153,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   }
                   @keyframes vl-yr{
                     0%,85%{transform:scale(0);opacity:0;}89%{transform:scale(1.25);opacity:1;}
-                    93%{transform:scale(1);opacity:1;}99%{transform:scale(1);opacity:0;}
+                    93%{transform:scale(1);opacity:1;}96%{transform:scale(1);opacity:0;}
                     100%{transform:scale(0);opacity:0;}
                   }
                 `}</style>
@@ -167,11 +167,11 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 <rect className="vl-gh" x="34" y="30" width="240" height="28" rx="5"/>
 
                 <g className="vl-ad1">
-                  <rect className="vl-dz" x="34" y="115" width="240" height="38" rx="4"/>
+                  <rect className="vl-dz" x="34" y="120" width="240" height="28" rx="4"/>
                   <text className="vl-dztext" x="154" y="138">Drop here</text>
                 </g>
                 <g className="vl-ad2">
-                  <rect className="vl-dz" x="34" y="147" width="240" height="38" rx="4"/>
+                  <rect className="vl-dz" x="34" y="152" width="240" height="28" rx="4"/>
                   <text className="vl-dztext" x="154" y="170">Drop here</text>
                 </g>
 
@@ -225,7 +225,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   </g>
                 </g>
 
-                <rect className="vl-cf vl-af" x="34" y="147" width="240" height="38" rx="4" vectorEffect="non-scaling-stroke"/>
+                <rect className="vl-cf vl-af" x="34" y="152" width="240" height="28" rx="4" vectorEffect="non-scaling-stroke"/>
 
                 <g className="vl-ac">
                   <rect className="vl-ca" x="34" y="30" width="240" height="28" rx="5"/>
@@ -269,7 +269,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vd-bl{fill:hsl(20,82%,55%);}
                   .vd-yr{fill:hsl(45,75%,55%);}
                   .vd-yt{fill:hsl(45,30%,12%);font-family:ui-monospace,monospace;font-size:8px;font-weight:700;text-anchor:middle;}
-                  .vd-gh{fill:none;stroke:hsl(20,82%,55%);stroke-width:2;stroke-dasharray:3 2.5;opacity:0.65;}
+                  .vd-gh{fill:none;stroke:hsl(20,82%,55%);stroke-width:1.25;stroke-dasharray:3 2.5;opacity:0.3;}
                   .vd-dz{fill:hsl(20,82%,55%,0.12);stroke:hsl(20,82%,55%);stroke-width:1.25;stroke-dasharray:3 2.5;}
                   .vd-dztext{fill:hsl(20,82%,60%);font-family:ui-sans-serif,sans-serif;font-size:8px;font-weight:700;text-anchor:middle;}
                   .vd-cl{fill:hsl(220,8%,55%);}
@@ -281,18 +281,18 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .vd-tt{fill:#fff;font-family:ui-sans-serif,sans-serif;font-size:8.5px;font-weight:700;text-anchor:middle;}
                   .vd-cf{fill:none;stroke:hsl(142,76%,50%);stroke-width:2;}
                   .vd-lb{fill:hsl(220,8%,50%);font-family:ui-sans-serif,sans-serif;font-size:7.5px;font-weight:700;text-anchor:middle;letter-spacing:0.08em;}
-                  .vd-ac{animation:vd-card 10s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vd-au{animation:vd-cur 10s cubic-bezier(0.4,0,0.2,1) infinite;}
-                  .vd-ad1{animation:vd-dz1 10s ease-in-out infinite;}
-                  .vd-ad2{animation:vd-dz2 10s ease-in-out infinite;}
-                  .vd-r92{animation:vd-r1992 10s ease-in-out infinite;}
-                  .vd-r2k{animation:vd-r2000 10s ease-in-out infinite;}
-                  .vd-at{animation:vd-tap 10s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-a1{animation:vd-p1 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-a2{animation:vd-p2 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-a3{animation:vd-p3 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-af{animation:vd-cf 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
-                  .vd-ay{animation:vd-yr 10s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-ac{animation:vd-card 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vd-au{animation:vd-cur 6.5s cubic-bezier(0.4,0,0.2,1) infinite;}
+                  .vd-ad1{animation:vd-dz1 6.5s ease-in-out infinite;}
+                  .vd-ad2{animation:vd-dz2 6.5s ease-in-out infinite;}
+                  .vd-r92{animation:vd-r1992 6.5s ease-in-out infinite;}
+                  .vd-r2k{animation:vd-r2000 6.5s ease-in-out infinite;}
+                  .vd-at{animation:vd-tap 6.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a1{animation:vd-p1 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a2{animation:vd-p2 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-a3{animation:vd-p3 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-af{animation:vd-cf 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
+                  .vd-ay{animation:vd-yr 6.5s ease-out infinite;transform-box:fill-box;transform-origin:center;}
                   @keyframes vd-card{
                     0%  {transform:translate(0,0);opacity:0;}
                     5%  {transform:translate(0,0);opacity:1;}
@@ -300,8 +300,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     38% {transform:translate(0,90px);opacity:1;}
                     46% {transform:translate(0,90px);opacity:1;}
                     58% {transform:translate(0,122px);opacity:1;}
-                    93% {transform:translate(0,122px);opacity:1;}
-                    99% {transform:translate(0,122px);opacity:0;}
+                    90% {transform:translate(0,122px);opacity:1;}
+                    96% {transform:translate(0,122px);opacity:0;}
                     100%{transform:translate(0,0);opacity:0;}
                   }
                   @keyframes vd-cur{
@@ -313,8 +313,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     58% {transform:translate(212px,166px);opacity:1;}
                     65% {transform:translate(212px,166px);opacity:1;}
                     71% {transform:translate(150px,160px);opacity:1;}
-                    93% {transform:translate(150px,160px);opacity:1;}
-                    99% {transform:translate(150px,160px);opacity:0;}
+                    89% {transform:translate(150px,160px);opacity:1;}
+                    94% {transform:translate(150px,160px);opacity:0;}
                     100%{transform:translate(290px,44px);opacity:0;}
                   }
                   @keyframes vd-dz1{
@@ -341,8 +341,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                     76%{transform:scale(1);opacity:1;}
                     79%{transform:scale(0.9);opacity:1;}
                     82%{transform:scale(1);opacity:1;}
-                    93%{transform:scale(1);opacity:1;}
-                    99%,100%{transform:scale(1);opacity:0;}
+                    89%{transform:scale(1);opacity:1;}
+                    93%,100%{transform:scale(1);opacity:0;}
                   }
                   @keyframes vd-p1{
                     0%,11%{transform:scale(0);opacity:0;}14%{transform:scale(0.3);opacity:0.85;}
@@ -362,7 +362,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   }
                   @keyframes vd-yr{
                     0%,85%{transform:scale(0);opacity:0;}89%{transform:scale(1.25);opacity:1;}
-                    93%{transform:scale(1);opacity:1;}99%{transform:scale(1);opacity:0;}
+                    93%{transform:scale(1);opacity:1;}96%{transform:scale(1);opacity:0;}
                     100%{transform:scale(0);opacity:0;}
                   }
                 `}</style>
@@ -376,11 +376,11 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 <rect className="vd-gh" x="34" y="30" width="240" height="28" rx="5"/>
 
                 <g className="vd-ad1">
-                  <rect className="vd-dz" x="34" y="115" width="240" height="38" rx="4"/>
+                  <rect className="vd-dz" x="34" y="120" width="240" height="28" rx="4"/>
                   <text className="vd-dztext" x="154" y="138">Drop here</text>
                 </g>
                 <g className="vd-ad2">
-                  <rect className="vd-dz" x="34" y="147" width="240" height="38" rx="4"/>
+                  <rect className="vd-dz" x="34" y="152" width="240" height="28" rx="4"/>
                   <text className="vd-dztext" x="154" y="170">Drop here</text>
                 </g>
 
@@ -434,7 +434,7 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   </g>
                 </g>
 
-                <rect className="vd-cf vd-af" x="34" y="147" width="240" height="38" rx="4" vectorEffect="non-scaling-stroke"/>
+                <rect className="vd-cf vd-af" x="34" y="152" width="240" height="28" rx="4" vectorEffect="non-scaling-stroke"/>
 
                 <g className="vd-ac">
                   <rect className="vd-ca" x="34" y="30" width="240" height="28" rx="5"/>
