@@ -333,7 +333,7 @@ export function Timeline({
           marginBottom: isActive && marginClass?.includes('mb-3') ? 12 : 0,
           transition: isFirst
             ? 'none'
-            : 'height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), margin 350ms cubic-bezier(0.25, 0.1, 0.25, 1)',
+            : 'height 300ms ease-out, margin 300ms ease-out',
         }}
       >
         {isActive && (
