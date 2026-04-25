@@ -241,13 +241,6 @@ export function Timeline({
 
   // Snapshot card centers at the moment drag begins (before any zone expansion).
   const snapshotCenters = useRef<number[]>([]);
-  // Snapshot the timeline container's viewport top at drag start. This lets us
-  // anchor `dragY` (finger screen position) to the timeline's pre-drag frame.
-  // Without this, if the source-card slot above the timeline collapses
-  // (animated 300ms), the timeline shifts upward in the viewport and the
-  // live card centers drop relative to the finger — causing drop zones
-  // farther down the timeline to falsely trigger before nearer ones.
-  const timelineAnchorRef = useRef<number | null>(null);
 
   useLayoutEffect(() => {
     if (isDragging && snapshotCenters.current.length === 0) {
@@ -263,16 +256,6 @@ export function Timeline({
     }
     if (!isDragging) {
       snapshotCenters.current = [];
-    }
-  }, [isDragging]);
-
-  // Capture / release the timeline-anchor for the source-slot-collapse fix.
-  useLayoutEffect(() => {
-    if (isDragging && timelineAnchorRef.current === null && timelineRef.current) {
-      timelineAnchorRef.current = timelineRef.current.getBoundingClientRect().top;
-    }
-    if (!isDragging) {
-      timelineAnchorRef.current = null;
     }
   }, [isDragging]);
 
@@ -295,22 +278,12 @@ export function Timeline({
     });
     liveCenters.sort((a, b) => a - b);
 
-    // Compensate for any timeline shift since drag-start (e.g. source-slot
-    // collapse pulling the timeline upward). We compare the finger's position
-    // in the original timeline frame against each card's offset within the
-    // current timeline frame. Both quantities are stable under the collapse,
-    // so neighboring drop zones can no longer be skipped.
-    const currentTimelineTop = timelineRef.current.getBoundingClientRect().top;
-    const anchorTop = timelineAnchorRef.current ?? currentTimelineTop;
-    const adjustedDragY = dragY - anchorTop;
-    const adjustedCenters = liveCenters.map((c) => c - currentTimelineTop);
-
-    if (adjustedCenters.length === 0) { onDropZoneChange(0); return; }
-    if (adjustedDragY < adjustedCenters[0]) { onDropZoneChange(0); return; }
-    for (let i = 0; i < adjustedCenters.length - 1; i++) {
-      if (adjustedDragY < adjustedCenters[i + 1]) { onDropZoneChange(i + 1); return; }
+    if (liveCenters.length === 0) { onDropZoneChange(0); return; }
+    if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
+    for (let i = 0; i < liveCenters.length - 1; i++) {
+      if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
     }
-    onDropZoneChange(adjustedCenters.length);
+    onDropZoneChange(liveCenters.length);
   }, [isDragging, isDraggingDown, dragY, onDropZoneChange, nonPendingEvents]);
 
 
