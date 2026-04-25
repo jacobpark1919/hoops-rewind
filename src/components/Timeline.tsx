@@ -250,6 +250,9 @@ export function Timeline({
 
   useLayoutEffect(() => {
     if (isDragging && snapshotCenters.current.length === 0) {
+      if (timelineRef.current) {
+        timelineAnchorRef.current = timelineRef.current.getBoundingClientRect().top;
+      }
       const centers: number[] = [];
       nonPendingEvents.forEach((item) => {
         const el = cardRefs.current.get(item.event.id);
@@ -266,30 +269,39 @@ export function Timeline({
   }, [isDragging]);
 
   useEffect(() => {
-    if (!isDragging || dragY === null || !timelineRef.current) {
+    if (!isDragging || dragY === null || !timelineRef.current || timelineAnchorRef.current === null) {
       onDropZoneChange(null);
       return;
     }
 
-    // Use live card centers for both directions — mirrors the downward
-    // mechanics for upward dragging, which the user has confirmed feels
-    // correct on first drag.
-    const liveCenters: number[] = [];
-    nonPendingEvents.forEach((item) => {
-      const el = cardRefs.current.get(item.event.id);
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        liveCenters.push((rect.top + rect.bottom) / 2);
-      }
-    });
-    liveCenters.sort((a, b) => a - b);
+    // During the initial drag (before the user has activated any other zone),
+    // use the snapshot centers captured at drag-start. This anchors hit
+    // detection to the pre-animation layout so the drop zones don't "run
+    // away" from the user's finger as cards collapse/expand. Once the user
+    // has left the first zone, switch to live centers for fluid adjustment.
+    const useSnapshots = !hasLeftFirstZoneRef.current && snapshotCenters.current.length > 0;
 
-    if (liveCenters.length === 0) { onDropZoneChange(0); return; }
-    if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
-    for (let i = 0; i < liveCenters.length - 1; i++) {
-      if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
+    const centersToUse = useSnapshots
+      ? snapshotCenters.current
+      : nonPendingEvents
+          .map((item) => {
+            const el = cardRefs.current.get(item.event.id);
+            if (!el) return 0;
+            const rect = el.getBoundingClientRect();
+            return (rect.top + rect.bottom) / 2;
+          })
+          .filter((c) => c !== 0)
+          .sort((a, b) => a - b);
+
+    const adjustedDragY = dragY - timelineAnchorRef.current;
+    const adjustedCenters = centersToUse.map((c) => c - (timelineAnchorRef.current as number));
+
+    if (adjustedCenters.length === 0) { onDropZoneChange(0); return; }
+    if (adjustedDragY < adjustedCenters[0]) { onDropZoneChange(0); return; }
+    for (let i = 0; i < adjustedCenters.length - 1; i++) {
+      if (adjustedDragY < adjustedCenters[i + 1]) { onDropZoneChange(i + 1); return; }
     }
-    onDropZoneChange(liveCenters.length);
+    onDropZoneChange(adjustedCenters.length);
   }, [isDragging, isDraggingDown, dragY, onDropZoneChange, nonPendingEvents]);
 
 
