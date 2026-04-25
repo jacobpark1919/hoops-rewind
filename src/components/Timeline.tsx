@@ -439,7 +439,7 @@ export function Timeline({
     >
       {/* Earliest label - centered above timeline */}
       <div className="relative mb-2">
-        <p className="absolute text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider left-4 sm:left-6 whitespace-nowrap">
+        <p className="absolute text-[12px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider left-4 sm:left-6 whitespace-nowrap">
           Before
         </p>
         <div className="h-3" />
@@ -463,7 +463,7 @@ export function Timeline({
 
       {/* Latest label - centered below timeline */}
       <div className="relative mt-2">
-        <p className="absolute text-[10px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider left-4 sm:left-6 whitespace-nowrap">
+        <p className="absolute text-[12px] sm:text-xs text-muted-foreground font-bold uppercase tracking-wider left-4 sm:left-6 whitespace-nowrap">
           After
         </p>
         <div className="h-3" />
