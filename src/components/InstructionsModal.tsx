@@ -82,63 +82,63 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .dhl-year-anim { animation: dhl-year 5.5s ease-out infinite; transform-box: fill-box; transform-origin: center; }
                   @keyframes dhl-card {
                     0%   { transform: translate(0px, 0px); opacity: 0; }
-                    4%   { transform: translate(0px, 0px); opacity: 1; }
-                    32%  { transform: translate(0px, 0px); opacity: 1; }
-                    55%  { transform: translate(0px, 130px); opacity: 1; }
-                    94%  { transform: translate(0px, 130px); opacity: 1; }
-                    98%  { transform: translate(0px, 130px); opacity: 0; }
+                    5%   { transform: translate(0px, 0px); opacity: 1; }
+                    18%  { transform: translate(0px, 0px); opacity: 1; }
+                    48%  { transform: translate(0px, 130px); opacity: 1; }
+                    92%  { transform: translate(0px, 130px); opacity: 1; }
+                    97%  { transform: translate(0px, 130px); opacity: 0; }
                     100% { transform: translate(0px, 0px); opacity: 0; }
                   }
                   @keyframes dhl-cur {
                     0%   { transform: translate(290px, 44px); opacity: 1; }
                     14%  { transform: translate(212px, 44px); opacity: 1; }
-                    30%  { transform: translate(212px, 44px); opacity: 1; }
-                    55%  { transform: translate(212px, 174px); opacity: 1; }
-                    63%  { transform: translate(212px, 174px); opacity: 1; }
-                    70%  { transform: translate(150px, 169px); opacity: 1; }
-                    90%  { transform: translate(150px, 169px); opacity: 1; }
-                    95%  { transform: translate(150px, 169px); opacity: 0; }
+                    18%  { transform: translate(212px, 44px); opacity: 1; }
+                    48%  { transform: translate(212px, 174px); opacity: 1; }
+                    56%  { transform: translate(212px, 174px); opacity: 1; }
+                    63%  { transform: translate(150px, 169px); opacity: 1; }
+                    88%  { transform: translate(150px, 169px); opacity: 1; }
+                    93%  { transform: translate(150px, 169px); opacity: 0; }
                     100% { transform: translate(290px, 44px); opacity: 0; }
                   }
                   @keyframes dhl-zone {
-                    0%, 35%   { opacity: 0; }
+                    0%, 28%   { opacity: 0; }
+                    40%       { opacity: 1; }
                     48%       { opacity: 1; }
-                    55%       { opacity: 1; }
-                    62%, 100% { opacity: 0; }
+                    55%, 100% { opacity: 0; }
                   }
                   @keyframes dhl-tap {
-                    0%, 58%   { transform: scale(0); opacity: 0; }
-                    64%       { transform: scale(1); opacity: 1; }
-                    74%       { transform: scale(1); opacity: 1; }
-                    77%       { transform: scale(0.9); opacity: 1; }
-                    80%       { transform: scale(1); opacity: 1; }
-                    84%       { transform: scale(1); opacity: 1; }
-                    88%, 100% { transform: scale(1); opacity: 0; }
+                    0%, 56%   { transform: scale(0); opacity: 0; }
+                    62%       { transform: scale(1); opacity: 1; }
+                    72%       { transform: scale(1); opacity: 1; }
+                    75%       { transform: scale(0.9); opacity: 1; }
+                    78%       { transform: scale(1); opacity: 1; }
+                    86%       { transform: scale(1); opacity: 1; }
+                    90%, 100% { transform: scale(1); opacity: 0; }
                   }
                   @keyframes dhl-pulse1 {
                     0%, 12%   { transform: scale(0); opacity: 0; }
                     15%       { transform: scale(0.3); opacity: 0.85; }
-                    24%       { transform: scale(7); opacity: 0; }
-                    25%, 100% { transform: scale(0); opacity: 0; }
+                    22%       { transform: scale(7); opacity: 0; }
+                    23%, 100% { transform: scale(0); opacity: 0; }
                   }
                   @keyframes dhl-pulse2 {
-                    0%, 74%   { transform: scale(0); opacity: 0; }
-                    77%       { transform: scale(0.3); opacity: 0.9; }
-                    85%       { transform: scale(9); opacity: 0; }
-                    86%, 100% { transform: scale(0); opacity: 0; }
+                    0%, 45%   { transform: scale(0); opacity: 0; }
+                    48%       { transform: scale(0.3); opacity: 0.9; }
+                    56%       { transform: scale(9); opacity: 0; }
+                    57%, 100% { transform: scale(0); opacity: 0; }
                   }
                   @keyframes dhl-confirm {
-                    0%, 76%   { transform: scale(0.96); opacity: 0; }
-                    80%       { transform: scale(1); opacity: 1; }
-                    88%       { transform: scale(1.08); opacity: 0; }
-                    89%, 100% { transform: scale(0.96); opacity: 0; }
+                    0%, 73%   { transform: scale(0.96); opacity: 0; }
+                    77%       { transform: scale(1); opacity: 1; }
+                    85%       { transform: scale(1.08); opacity: 0; }
+                    86%, 100% { transform: scale(0.96); opacity: 0; }
                   }
                   @keyframes dhl-year {
-                    0%, 84%   { transform: scale(0); opacity: 0; }
-                    88%       { transform: scale(1.25); opacity: 1; }
-                    92%       { transform: scale(1); opacity: 1; }
-                    94%       { transform: scale(1); opacity: 1; }
-                    100%      { transform: scale(1); opacity: 0; }
+                    0%, 82%  { transform: scale(0); opacity: 0; }
+                    86%      { transform: scale(1.25); opacity: 1; }
+                    90%      { transform: scale(1); opacity: 1; }
+                    95%      { transform: scale(1); opacity: 1; }
+                    100%     { transform: scale(1); opacity: 0; }
                   }
                 `}</style>
 
@@ -257,63 +257,63 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                   .dhd-year-anim { animation: dhd-year 5.5s ease-out infinite; transform-box: fill-box; transform-origin: center; }
                   @keyframes dhd-card {
                     0%   { transform: translate(0px, 0px); opacity: 0; }
-                    4%   { transform: translate(0px, 0px); opacity: 1; }
-                    32%  { transform: translate(0px, 0px); opacity: 1; }
-                    55%  { transform: translate(0px, 130px); opacity: 1; }
-                    94%  { transform: translate(0px, 130px); opacity: 1; }
-                    98%  { transform: translate(0px, 130px); opacity: 0; }
+                    5%   { transform: translate(0px, 0px); opacity: 1; }
+                    18%  { transform: translate(0px, 0px); opacity: 1; }
+                    48%  { transform: translate(0px, 130px); opacity: 1; }
+                    92%  { transform: translate(0px, 130px); opacity: 1; }
+                    97%  { transform: translate(0px, 130px); opacity: 0; }
                     100% { transform: translate(0px, 0px); opacity: 0; }
                   }
                   @keyframes dhd-cur {
                     0%   { transform: translate(290px, 44px); opacity: 1; }
                     14%  { transform: translate(212px, 44px); opacity: 1; }
-                    30%  { transform: translate(212px, 44px); opacity: 1; }
-                    55%  { transform: translate(212px, 174px); opacity: 1; }
-                    63%  { transform: translate(212px, 174px); opacity: 1; }
-                    70%  { transform: translate(150px, 169px); opacity: 1; }
-                    90%  { transform: translate(150px, 169px); opacity: 1; }
-                    95%  { transform: translate(150px, 169px); opacity: 0; }
+                    18%  { transform: translate(212px, 44px); opacity: 1; }
+                    48%  { transform: translate(212px, 174px); opacity: 1; }
+                    56%  { transform: translate(212px, 174px); opacity: 1; }
+                    63%  { transform: translate(150px, 169px); opacity: 1; }
+                    88%  { transform: translate(150px, 169px); opacity: 1; }
+                    93%  { transform: translate(150px, 169px); opacity: 0; }
                     100% { transform: translate(290px, 44px); opacity: 0; }
                   }
                   @keyframes dhd-zone {
-                    0%, 35%   { opacity: 0; }
+                    0%, 28%   { opacity: 0; }
+                    40%       { opacity: 1; }
                     48%       { opacity: 1; }
-                    55%       { opacity: 1; }
-                    62%, 100% { opacity: 0; }
+                    55%, 100% { opacity: 0; }
                   }
                   @keyframes dhd-tap {
-                    0%, 58%   { transform: scale(0); opacity: 0; }
-                    64%       { transform: scale(1); opacity: 1; }
-                    74%       { transform: scale(1); opacity: 1; }
-                    77%       { transform: scale(0.9); opacity: 1; }
-                    80%       { transform: scale(1); opacity: 1; }
-                    84%       { transform: scale(1); opacity: 1; }
-                    88%, 100% { transform: scale(1); opacity: 0; }
+                    0%, 56%   { transform: scale(0); opacity: 0; }
+                    62%       { transform: scale(1); opacity: 1; }
+                    72%       { transform: scale(1); opacity: 1; }
+                    75%       { transform: scale(0.9); opacity: 1; }
+                    78%       { transform: scale(1); opacity: 1; }
+                    86%       { transform: scale(1); opacity: 1; }
+                    90%, 100% { transform: scale(1); opacity: 0; }
                   }
                   @keyframes dhd-pulse1 {
                     0%, 12%   { transform: scale(0); opacity: 0; }
                     15%       { transform: scale(0.3); opacity: 0.85; }
-                    24%       { transform: scale(7); opacity: 0; }
-                    25%, 100% { transform: scale(0); opacity: 0; }
+                    22%       { transform: scale(7); opacity: 0; }
+                    23%, 100% { transform: scale(0); opacity: 0; }
                   }
                   @keyframes dhd-pulse2 {
-                    0%, 74%   { transform: scale(0); opacity: 0; }
-                    77%       { transform: scale(0.3); opacity: 0.9; }
-                    85%       { transform: scale(9); opacity: 0; }
-                    86%, 100% { transform: scale(0); opacity: 0; }
+                    0%, 45%   { transform: scale(0); opacity: 0; }
+                    48%       { transform: scale(0.3); opacity: 0.9; }
+                    56%       { transform: scale(9); opacity: 0; }
+                    57%, 100% { transform: scale(0); opacity: 0; }
                   }
                   @keyframes dhd-confirm {
-                    0%, 76%   { transform: scale(0.96); opacity: 0; }
-                    80%       { transform: scale(1); opacity: 1; }
-                    88%       { transform: scale(1.08); opacity: 0; }
-                    89%, 100% { transform: scale(0.96); opacity: 0; }
+                    0%, 73%   { transform: scale(0.96); opacity: 0; }
+                    77%       { transform: scale(1); opacity: 1; }
+                    85%       { transform: scale(1.08); opacity: 0; }
+                    86%, 100% { transform: scale(0.96); opacity: 0; }
                   }
                   @keyframes dhd-year {
-                    0%, 84%   { transform: scale(0); opacity: 0; }
-                    88%       { transform: scale(1.25); opacity: 1; }
-                    92%       { transform: scale(1); opacity: 1; }
-                    94%       { transform: scale(1); opacity: 1; }
-                    100%      { transform: scale(1); opacity: 0; }
+                    0%, 82%  { transform: scale(0); opacity: 0; }
+                    86%      { transform: scale(1.25); opacity: 1; }
+                    90%      { transform: scale(1); opacity: 1; }
+                    95%      { transform: scale(1); opacity: 1; }
+                    100%     { transform: scale(1); opacity: 0; }
                   }
                 `}</style>
 
