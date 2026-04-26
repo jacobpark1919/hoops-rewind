@@ -479,7 +479,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   // otherwise the source slot snaps shut instantly on drag-start, causing
                   // the timeline below to visibly jump.
                   maxHeight: cardCollapsed || hasPendingPlacement ? 0 : 500,
-                  overflow: 'hidden',
+                  overflowY: 'hidden',
+                  overflowX: 'visible',
                   opacity: cardCollapsed || hasPendingPlacement ? 0 : 1,
                   transition: 'max-height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), opacity 200ms ease-out',
                 }}
