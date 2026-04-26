@@ -69,54 +69,6 @@ export function Timeline({
   const [lockedGap, setLockedGap] = useState<number | null>(null);
   const [naturalPaddingTop, setNaturalPaddingTop] = useState(0);
   const innerWrapperRef = useRef<HTMLDivElement>(null);
-  // Ref to the flex-flow parent (NOT the translated child) so we can measure
-  // the untranslated viewport position of the cards container.
-  const cardsFlowRef = useRef<HTMLDivElement>(null);
-
-  // Pin the timeline items against external movement of the Timeline component
-  // during a drag. This lets the "Before" label and line move up as the source
-  // card collapses, without moving the actual placed events in the viewport.
-  const timelineTopAnchorRef = useRef<number | null>(null);
-
-  // The first drop zone (position 0) is always rendered as an absolute
-  // overlay above the timeline content during a drag, so it never pushes
-  // the existing cards downward. The in-flow version of position 0 only
-  // exists when there's a pending (frozen) card living inside it.
-  useEffect(() => {
-    if (!isDragging) {
-      timelineTopAnchorRef.current = null;
-      if (innerWrapperRef.current) {
-        innerWrapperRef.current.style.transform = '';
-      }
-    }
-  }, [isDragging]);
-
-  // Compensate only for the whole Timeline moving upward when the source card
-  // area collapses. We intentionally do NOT measure the first card itself here:
-  // in-flow drop-zone expansion must still push cards downward normally.
-  useEffect(() => {
-    if (!isDragging) {
-      if (innerWrapperRef.current) {
-        innerWrapperRef.current.style.transform = '';
-      }
-      return;
-    }
-
-    let rafId: number;
-    const tick = () => {
-      if (timelineRef.current && innerWrapperRef.current) {
-        const timelineTop = timelineRef.current.getBoundingClientRect().top;
-        if (timelineTopAnchorRef.current === null) {
-          timelineTopAnchorRef.current = timelineTop;
-        }
-        const delta = timelineTopAnchorRef.current - timelineTop;
-        innerWrapperRef.current.style.transform = delta ? `translateY(${delta}px)` : '';
-      }
-      rafId = requestAnimationFrame(tick);
-    };
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
-  }, [isDragging]);
 
   // Measure available space
   useEffect(() => {
@@ -252,25 +204,35 @@ export function Timeline({
       return;
     }
 
-    // Use live card centers for both directions — mirrors the downward
-    // mechanics for upward dragging, which the user has confirmed feels
-    // correct on first drag.
-    const liveCenters: number[] = [];
-    nonPendingEvents.forEach((item) => {
-      const el = cardRefs.current.get(item.event.id);
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        liveCenters.push((rect.top + rect.bottom) / 2);
-      }
-    });
-    liveCenters.sort((a, b) => a - b);
+    if (isDraggingDown) {
+      const liveCenters: number[] = [];
+      nonPendingEvents.forEach((item) => {
+        const el = cardRefs.current.get(item.event.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          liveCenters.push((rect.top + rect.bottom) / 2);
+        }
+      });
+      liveCenters.sort((a, b) => a - b);
 
-    if (liveCenters.length === 0) { onDropZoneChange(0); return; }
-    if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
-    for (let i = 0; i < liveCenters.length - 1; i++) {
-      if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
+      if (liveCenters.length === 0) { onDropZoneChange(0); return; }
+
+      if (dragY < liveCenters[0]) { onDropZoneChange(0); return; }
+
+      for (let i = 0; i < liveCenters.length - 1; i++) {
+        if (dragY < liveCenters[i + 1]) { onDropZoneChange(i + 1); return; }
+      }
+      onDropZoneChange(liveCenters.length);
+    } else {
+      const centers = snapshotCenters.current;
+
+      if (centers.length === 0) { onDropZoneChange(0); return; }
+      if (dragY < centers[0]) { onDropZoneChange(0); return; }
+      for (let i = 0; i < centers.length - 1; i++) {
+        if (dragY < centers[i + 1]) { onDropZoneChange(i + 1); return; }
+      }
+      onDropZoneChange(centers.length);
     }
-    onDropZoneChange(liveCenters.length);
   }, [isDragging, isDraggingDown, dragY, onDropZoneChange, nonPendingEvents]);
 
 
@@ -355,15 +317,7 @@ export function Timeline({
       );
     }
 
-    // Normal drop zone (during drag, or collapsed).
-    // Position 0 is always rendered as an absolute overlay (see below)
-    // so it never pushes the timeline cards downward.
-    const useInstantFirst = position === 0;
-    const expandedHeight = window.innerWidth >= 640 ? 128 : 112;
-    // When in instant-first mode, this returns null — the overlay is rendered
-    // separately below as an absolutely-positioned sibling so it doesn't push
-    // the timeline downward.
-    if (useInstantFirst) return null;
+    // Normal drop zone (during drag, or collapsed)
     return (
       <div
         key={`drop-${position}`}
@@ -373,7 +327,7 @@ export function Timeline({
             : 'border-transparent overflow-hidden'
         }`}
         style={{
-          height: isActive ? expandedHeight : 0,
+          height: isActive ? (window.innerWidth >= 640 ? 128 : 112) : 0,
           marginTop: isActive && marginClass?.includes('mt-3') ? 12 : 0,
           marginBottom: isActive && marginClass?.includes('mb-3') ? 12 : 0,
           transition: 'height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), margin 350ms cubic-bezier(0.25, 0.1, 0.25, 1)',
@@ -387,18 +341,10 @@ export function Timeline({
   };
 
   // Build items
-  const items: (JSX.Element | null)[] = [];
+  const items: JSX.Element[] = [];
 
   // Whether to show drop zones (during drag OR frozen/pending state)
   const showDropZones = isDragging || activeDropZone !== null;
-
-  // The first drop zone, when in instant-first mode, is rendered as an
-  // absolutely-positioned overlay above the timeline content so it doesn't
-  // push existing cards downward.
-  const firstZoneInstantMode =
-    showDropZones && !(activeDropZone === 0 && !isDragging && pendingItem);
-  const firstZoneActive = activeDropZone === 0;
-  const expandedHeightFirst = window.innerWidth >= 640 ? 128 : 112;
 
   // Drop zone BEFORE first card
   if (showDropZones) {
@@ -505,35 +451,11 @@ export function Timeline({
         <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
 
         {/* Timeline content - centered via dynamic padding so it doesn't shift during drag */}
-        <div
-          ref={cardsFlowRef}
+        <div 
           className="relative pl-10 sm:pl-14 flex flex-col flex-1"
           style={{ paddingTop: naturalPaddingTop }}
         >
-          <div
-            className="relative flex flex-col"
-            ref={innerWrapperRef}
-          >
-            {firstZoneInstantMode && (
-              <div
-                className={`absolute left-0 right-0 rounded-xl border-2 border-dashed flex items-center justify-center z-40 pointer-events-none ${
-                  firstZoneActive
-                    ? 'border-primary bg-primary/20 shadow-lg'
-                    : 'border-transparent'
-                }`}
-                style={{
-                  bottom: '100%',
-                  marginBottom: 8,
-                  height: expandedHeightFirst,
-                  opacity: firstZoneActive ? 1 : 0,
-                  transition: 'opacity 150ms ease-out',
-                }}
-              >
-                {firstZoneActive && (
-                  <span className="text-primary text-sm font-semibold">Drop here</span>
-                )}
-              </div>
-            )}
+          <div className="flex flex-col" ref={innerWrapperRef}>
             {items}
           </div>
         </div>

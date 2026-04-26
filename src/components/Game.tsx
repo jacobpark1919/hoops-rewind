@@ -476,11 +476,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               <div
                 className="transition-all duration-300 ease-out"
                 style={{
-                  // Use max-height (animatable) instead of height: auto/0 (not animatable),
-                  // otherwise the source slot snaps shut instantly on drag-start, causing
-                  // the timeline below to visibly jump.
-                  maxHeight: cardCollapsed || hasPendingPlacement ? 0 : 500,
-                  overflow: 'hidden',
+                  minHeight: cardCollapsed || hasPendingPlacement ? 0 : undefined,
+                  height: cardCollapsed || hasPendingPlacement ? 0 : 'auto',
+                  overflow: cardCollapsed || hasPendingPlacement ? 'hidden' : 'visible',
                   opacity: cardCollapsed || hasPendingPlacement ? 0 : 1,
                 }}
               >
@@ -521,7 +519,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                     />
                   </div>
                   {showIdleHint && (
-                    <div className="flex items-center gap-1.5 justify-center mt-2 pb-2 drag-hint-arrow">
+                    <div className="flex items-center gap-1.5 justify-center mt-2 drag-hint-arrow">
                       <ArrowDown className="w-4 h-4 text-accent" />
                       <span className="text-xs sm:text-sm font-semibold text-accent">
                         Drag this card into the timeline
