@@ -82,6 +82,27 @@ export function Timeline({
   // current drag. Once they have, the first drop zone (position 0) reverts to
   // the standard transition physics instead of the instant-appear behavior.
   const hasLeftFirstZoneRef = useRef(false);
+
+  // Continuously tracked viewport top of the first non-pending card while NOT
+  // dragging. We use this as the anchor when a drag begins, so the cards stay
+  // pinned to their pre-drag position even though the source-card collapse
+  // shifts the layout upward.
+  const restingFirstCardTopRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (isDragging) return;
+    let rafId: number;
+    const measure = () => {
+      const firstItem = placedEvents.find(p => p.status !== 'pending');
+      const firstEl = firstItem ? cardRefs.current.get(firstItem.event.id) : null;
+      if (firstEl) {
+        restingFirstCardTopRef.current = firstEl.getBoundingClientRect().top;
+      }
+      rafId = requestAnimationFrame(measure);
+    };
+    rafId = requestAnimationFrame(measure);
+    return () => cancelAnimationFrame(rafId);
+  }, [isDragging, placedEvents]);
+
   useEffect(() => {
     if (!isDragging) {
       hasLeftFirstZoneRef.current = false;
@@ -268,14 +289,11 @@ export function Timeline({
         }
       });
       snapshotCenters.current = centers;
-      // Capture the first card's natural viewport top BEFORE the source-card
-      // collapse triggers any layout shift. Using useLayoutEffect ensures we
-      // measure synchronously after React commits but before the browser
-      // paints the collapsed source area.
-      const firstItem = nonPendingEvents[0];
-      const firstEl = firstItem ? cardRefs.current.get(firstItem.event.id) : null;
-      if (firstEl) {
-        cardsAnchorRef.current = firstEl.getBoundingClientRect().top;
+      // Adopt the resting (pre-drag) viewport top captured continuously while
+      // not dragging. This is the position we want to pin the cards to so they
+      // don't visually shift up when the source card's container collapses.
+      if (restingFirstCardTopRef.current !== null) {
+        cardsAnchorRef.current = restingFirstCardTopRef.current;
       }
     }
     if (!isDragging) {
