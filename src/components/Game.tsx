@@ -474,7 +474,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         {currentEvent && !gameComplete ? (
             <>
               <div
-                className="transition-all duration-300 ease-out"
                 style={{
                   // Use max-height (animatable) instead of height: auto/0 (not animatable),
                   // otherwise the source slot snaps shut instantly on drag-start, causing
@@ -482,6 +481,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   maxHeight: cardCollapsed || hasPendingPlacement ? 0 : 500,
                   overflow: 'hidden',
                   opacity: cardCollapsed || hasPendingPlacement ? 0 : 1,
+                  transition: 'max-height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), opacity 200ms ease-out',
                 }}
               >
                 <div key={currentEvent.id} className="animate-fade-in-up">
