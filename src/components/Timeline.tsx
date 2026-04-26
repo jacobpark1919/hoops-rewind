@@ -268,6 +268,15 @@ export function Timeline({
         }
       });
       snapshotCenters.current = centers;
+      // Capture the first card's natural viewport top BEFORE the source-card
+      // collapse triggers any layout shift. Using useLayoutEffect ensures we
+      // measure synchronously after React commits but before the browser
+      // paints the collapsed source area.
+      const firstItem = nonPendingEvents[0];
+      const firstEl = firstItem ? cardRefs.current.get(firstItem.event.id) : null;
+      if (firstEl) {
+        cardsAnchorRef.current = firstEl.getBoundingClientRect().top;
+      }
     }
     if (!isDragging) {
       snapshotCenters.current = [];
