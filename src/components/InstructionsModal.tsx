@@ -442,8 +442,8 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
                 3
               </span>
               <p className="text-foreground text-xs sm:text-sm">
-                Press 'Tap to Place' when you're ready to lock it in! Incorrect events are automatically moved to the
-                correct place in the timeline.
+                Press 'Tap to Place' when you're ready to lock it in!
+                <span className="hidden sm:inline"> Incorrect events are automatically moved to the correct place in the timeline.</span>
               </p>
             </div>
             <div className="flex items-start gap-2 sm:gap-3">
