@@ -338,7 +338,7 @@ export function Timeline({
         <div
           key={`drop-${position}`}
           className={`relative rounded-xl border-2 border-dashed border-primary bg-primary/10 z-40 flex flex-col justify-center p-2 ${marginClass ?? ''}`}
-          style={{ minHeight: isFirstDrop ? undefined : (window.innerWidth >= 640 ? 128 : 112) }}
+          style={{ minHeight: isFirstDrop ? undefined : (window.innerWidth >= 640 ? 128 : 100) }}
         >
           <div
             ref={(el) => {
@@ -388,7 +388,7 @@ export function Timeline({
     // initial pickup. Once the user has hovered any other drop zone, it
     // reverts to the standard transition physics on the way back up.
     const useInstantFirst = position === 0 && !hasLeftFirstZoneRef.current;
-    const expandedHeight = window.innerWidth >= 640 ? 128 : 112;
+    const expandedHeight = window.innerWidth >= 640 ? 128 : 100;
     // When in instant-first mode, this returns null — the overlay is rendered
     // separately below as an absolutely-positioned sibling so it doesn't push
     // the timeline downward.
@@ -427,7 +427,7 @@ export function Timeline({
   const firstZoneInstantMode =
     showDropZones && !hasLeftFirstZoneRef.current && !(activeDropZone === 0 && !isDragging && pendingItem);
   const firstZoneActive = activeDropZone === 0;
-  const expandedHeightFirst = window.innerWidth >= 640 ? 128 : 112;
+  const expandedHeightFirst = window.innerWidth >= 640 ? 128 : 100;
 
   // Drop zone BEFORE first card
   if (showDropZones) {
