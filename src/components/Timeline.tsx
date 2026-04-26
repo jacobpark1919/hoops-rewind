@@ -73,64 +73,29 @@ export function Timeline({
   // the untranslated viewport position of the cards container.
   const cardsFlowRef = useRef<HTMLDivElement>(null);
 
-  // When in instant-first-zone mode, pin the timeline cards to their pre-drag
-  // viewport position so they stay physically still while only the "Before"
-  // label and timeline line shift up to fill the source card's vacated space.
-  const cardsAnchorRef = useRef<number | null>(null);
+  // Pin the timeline items against external movement of the Timeline component
+  // during a drag. This lets the "Before" label and line move up as the source
+  // card collapses, without moving the actual placed events in the viewport.
+  const timelineTopAnchorRef = useRef<number | null>(null);
 
-  // Tracks whether the user has ever activated a non-zero drop zone during the
-  // current drag. Once they have, the first drop zone (position 0) reverts to
-  // the standard transition physics instead of the instant-appear behavior.
-  const hasLeftFirstZoneRef = useRef(false);
-
-  // Continuously tracked viewport top of the first non-pending card while NOT
-  // dragging. We use this as the anchor when a drag begins, so the cards stay
-  // pinned to their pre-drag position even though the source-card collapse
-  // shifts the layout upward.
-  const restingFirstCardTopRef = useRef<number | null>(null);
-  useEffect(() => {
-    if (isDragging) return;
-    let rafId: number;
-    const measure = () => {
-      const firstItem = placedEvents.find(p => p.status !== 'pending');
-      const firstEl = firstItem ? cardRefs.current.get(firstItem.event.id) : null;
-      if (firstEl) {
-        restingFirstCardTopRef.current = firstEl.getBoundingClientRect().top;
-      }
-      rafId = requestAnimationFrame(measure);
-    };
-    rafId = requestAnimationFrame(measure);
-    return () => cancelAnimationFrame(rafId);
-  }, [isDragging, placedEvents]);
-
+  // The first drop zone (position 0) is always rendered as an absolute
+  // overlay above the timeline content during a drag, so it never pushes
+  // the existing cards downward. The in-flow version of position 0 only
+  // exists when there's a pending (frozen) card living inside it.
   useEffect(() => {
     if (!isDragging) {
-      hasLeftFirstZoneRef.current = false;
-      cardsAnchorRef.current = null;
+      timelineTopAnchorRef.current = null;
       if (innerWrapperRef.current) {
         innerWrapperRef.current.style.transform = '';
       }
-      return;
     }
-    // As soon as ANY drop zone activates for the first time, exit
-    // instant-first mode so all subsequent drop-zone interactions
-    // (including hovering back over the first zone) use the standard
-    // expanding-in-flow physics. The visual pin (tracking the first
-    // card's position) keeps the cards from jumping during the
-    // transition itself.
-    if (activeDropZone !== null) {
-      hasLeftFirstZoneRef.current = true;
-    }
-  }, [isDragging, activeDropZone]);
+  }, [isDragging]);
 
-  // Pin the FIRST CARD's viewport position ONLY while we're in instant-first
-  // mode (i.e., before any drop zone has activated). This prevents the cards
-  // from reflowing upward when the source card is removed from the unplaced
-  // area. As soon as a drop zone activates, the pin releases so standard
-  // in-flow expansion physics take over (drop zones push cards downward).
+  // Compensate only for the whole Timeline moving upward when the source card
+  // area collapses. We intentionally do NOT measure the first card itself here:
+  // in-flow drop-zone expansion must still push cards downward normally.
   useEffect(() => {
-    if (!isDragging || hasLeftFirstZoneRef.current) {
-      // Release any active pin when exiting instant-first mode.
+    if (!isDragging) {
       if (innerWrapperRef.current) {
         innerWrapperRef.current.style.transform = '';
       }
@@ -139,33 +104,19 @@ export function Timeline({
 
     let rafId: number;
     const tick = () => {
-      if (hasLeftFirstZoneRef.current) {
-        if (innerWrapperRef.current) {
-          innerWrapperRef.current.style.transform = '';
+      if (timelineRef.current && innerWrapperRef.current) {
+        const timelineTop = timelineRef.current.getBoundingClientRect().top;
+        if (timelineTopAnchorRef.current === null) {
+          timelineTopAnchorRef.current = timelineTop;
         }
-        return;
-      }
-      // Find the first non-pending card by looking at placedEvents directly.
-      const firstCardItem = placedEvents.find(p => p.status !== 'pending');
-      const firstCardEl = firstCardItem ? cardRefs.current.get(firstCardItem.event.id) : null;
-      if (firstCardEl && innerWrapperRef.current) {
-        // Temporarily remove our transform to measure the untransformed position.
-        const prevTransform = innerWrapperRef.current.style.transform;
-        innerWrapperRef.current.style.transform = '';
-        const naturalTop = firstCardEl.getBoundingClientRect().top;
-        innerWrapperRef.current.style.transform = prevTransform;
-
-        if (cardsAnchorRef.current === null) {
-          cardsAnchorRef.current = naturalTop;
-        }
-        const delta = cardsAnchorRef.current - naturalTop;
+        const delta = timelineTopAnchorRef.current - timelineTop;
         innerWrapperRef.current.style.transform = delta ? `translateY(${delta}px)` : '';
       }
       rafId = requestAnimationFrame(tick);
     };
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, [isDragging, placedEvents, activeDropZone]);
+  }, [isDragging]);
 
   // Measure available space
   useEffect(() => {
@@ -289,12 +240,6 @@ export function Timeline({
         }
       });
       snapshotCenters.current = centers;
-      // Adopt the resting (pre-drag) viewport top captured continuously while
-      // not dragging. This is the position we want to pin the cards to so they
-      // don't visually shift up when the source card's container collapses.
-      if (restingFirstCardTopRef.current !== null) {
-        cardsAnchorRef.current = restingFirstCardTopRef.current;
-      }
     }
     if (!isDragging) {
       snapshotCenters.current = [];
@@ -410,11 +355,10 @@ export function Timeline({
       );
     }
 
-    // Normal drop zone (during drag, or collapsed)
-    // The first drop zone (position 0) appears instantly — but only on the
-    // initial pickup. Once the user has hovered any other drop zone, it
-    // reverts to the standard transition physics on the way back up.
-    const useInstantFirst = position === 0 && !hasLeftFirstZoneRef.current;
+    // Normal drop zone (during drag, or collapsed).
+    // Position 0 is always rendered as an absolute overlay (see below)
+    // so it never pushes the timeline cards downward.
+    const useInstantFirst = position === 0;
     const expandedHeight = window.innerWidth >= 640 ? 128 : 112;
     // When in instant-first mode, this returns null — the overlay is rendered
     // separately below as an absolutely-positioned sibling so it doesn't push
@@ -452,7 +396,7 @@ export function Timeline({
   // absolutely-positioned overlay above the timeline content so it doesn't
   // push existing cards downward.
   const firstZoneInstantMode =
-    showDropZones && !hasLeftFirstZoneRef.current && !(activeDropZone === 0 && !isDragging && pendingItem);
+    showDropZones && !(activeDropZone === 0 && !isDragging && pendingItem);
   const firstZoneActive = activeDropZone === 0;
   const expandedHeightFirst = window.innerWidth >= 640 ? 128 : 112;
 
