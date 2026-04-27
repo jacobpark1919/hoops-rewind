@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { Home, Plus, Trash2, Calendar, ChevronDown, ChevronUp, Lock, Pencil, ArrowUp, ArrowDown } from "lucide-react";
+import { Home, Plus, Trash2, Calendar, ChevronDown, ChevronUp, Lock, Pencil, ArrowUp, ArrowDown, Download } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface SportEvent {
@@ -648,6 +648,24 @@ export default function Admin() {
               <Button onClick={() => setShowAddEvent(!showAddEvent)} size="sm">
                 <Plus className="w-4 h-4 mr-1" /> Add Event
               </Button>
+            <Button
+              onClick={() => {
+                const payload = events.map(e => ({ event: e.title, year: e.year }));
+                const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `events-${new Date().toISOString().slice(0, 10)}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+              }}
+              size="sm"
+              variant="outline"
+            >
+              <Download className="w-4 h-4 mr-1" /> Download JSON
+            </Button>
               <select
                 value={filterSport}
                 onChange={e => setFilterSport(e.target.value)}
