@@ -10,6 +10,8 @@ interface SportEvent {
   year: number;
   sport: string;
   icon: string;
+  description?: string | null;
+  event_date?: string | null;
 }
 
 interface Challenge {
@@ -109,6 +111,10 @@ export default function Admin() {
           setJsonError(`Event ${i + 1} missing required fields (title, year, sport, icon).`);
           return;
         }
+        if (ev.date && !/^\d{4}-\d{2}-\d{2}$/.test(ev.date)) {
+          setJsonError(`Event ${i + 1} has an invalid 'date' (expected YYYY-MM-DD).`);
+          return;
+        }
       }
       setJsonLoading(true);
 
@@ -119,6 +125,8 @@ export default function Admin() {
           year: Number(ev.year),
           sport: ev.sport,
           icon: ev.icon,
+          description: ev.desc ?? ev.description ?? null,
+          event_date: ev.date ?? ev.event_date ?? null,
         })),
       }, undefined, passwordInput);
 
@@ -382,7 +390,7 @@ export default function Admin() {
               <div className="border border-border rounded-xl p-4 space-y-3 bg-card">
                 <h3 className="font-semibold text-foreground text-sm">Import Puzzle from JSON</h3>
                 <p className="text-xs text-muted-foreground">
-                  Paste JSON with this format: {`{"challenge_date":"YYYY-MM-DD","sport_filter":"Basketball"|null,"events":[{"title":"...","year":2020,"sport":"Basketball","icon":"🏀"},...]}`} — exactly 8 events.
+                  Paste JSON with this format: {`{"challenge_date":"YYYY-MM-DD","sport_filter":"Basketball"|null,"events":[{"title":"...","year":2020,"sport":"Basketball","icon":"🏀","date":"2020-06-15","desc":"answer key"},...]}`} — exactly 8 events. <code>date</code> (YYYY-MM-DD) and <code>desc</code> are optional.
                 </p>
                 <textarea
                   value={jsonInput}
@@ -650,7 +658,12 @@ export default function Admin() {
               </Button>
             <Button
               onClick={() => {
-                const payload = events.map(e => ({ event: e.title, year: e.year }));
+                const payload = events.map(e => ({
+                  event: e.title,
+                  year: e.year,
+                  date: e.event_date ?? null,
+                  desc: e.description ?? null,
+                }));
                 const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement("a");
