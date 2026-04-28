@@ -10,6 +10,8 @@ interface SportEvent {
   year: number;
   sport: string;
   icon: string;
+  description?: string | null;
+  event_date?: string | null;
 }
 
 interface Challenge {
