@@ -111,6 +111,10 @@ export default function Admin() {
           setJsonError(`Event ${i + 1} missing required fields (title, year, sport, icon).`);
           return;
         }
+        if (ev.date && !/^\d{4}-\d{2}-\d{2}$/.test(ev.date)) {
+          setJsonError(`Event ${i + 1} has an invalid 'date' (expected YYYY-MM-DD).`);
+          return;
+        }
       }
       setJsonLoading(true);
 
@@ -121,6 +125,8 @@ export default function Admin() {
           year: Number(ev.year),
           sport: ev.sport,
           icon: ev.icon,
+          description: ev.desc ?? ev.description ?? null,
+          event_date: ev.date ?? ev.event_date ?? null,
         })),
       }, undefined, passwordInput);
 
