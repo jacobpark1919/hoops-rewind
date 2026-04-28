@@ -390,7 +390,7 @@ export default function Admin() {
               <div className="border border-border rounded-xl p-4 space-y-3 bg-card">
                 <h3 className="font-semibold text-foreground text-sm">Import Puzzle from JSON</h3>
                 <p className="text-xs text-muted-foreground">
-                  Paste JSON with this format: {`{"challenge_date":"YYYY-MM-DD","sport_filter":"Basketball"|null,"events":[{"title":"...","year":2020,"sport":"Basketball","icon":"🏀"},...]}`} — exactly 8 events.
+                  Paste JSON with this format: {`{"challenge_date":"YYYY-MM-DD","sport_filter":"Basketball"|null,"events":[{"title":"...","year":2020,"sport":"Basketball","icon":"🏀","date":"2020-06-15","desc":"answer key"},...]}`} — exactly 8 events. <code>date</code> (YYYY-MM-DD) and <code>desc</code> are optional.
                 </p>
                 <textarea
                   value={jsonInput}
