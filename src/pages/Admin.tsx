@@ -658,7 +658,12 @@ export default function Admin() {
               </Button>
             <Button
               onClick={() => {
-                const payload = events.map(e => ({ event: e.title, year: e.year }));
+                const payload = events.map(e => ({
+                  event: e.title,
+                  year: e.year,
+                  date: e.event_date ?? null,
+                  desc: e.description ?? null,
+                }));
                 const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement("a");
