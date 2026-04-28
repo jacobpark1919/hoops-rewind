@@ -161,6 +161,8 @@ export type Database = {
       sports_events: {
         Row: {
           created_at: string
+          description: string | null
+          event_date: string | null
           icon: string
           id: string
           sport: string
@@ -169,6 +171,8 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          description?: string | null
+          event_date?: string | null
           icon: string
           id?: string
           sport: string
@@ -177,6 +181,8 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          description?: string | null
+          event_date?: string | null
           icon?: string
           id?: string
           sport?: string
