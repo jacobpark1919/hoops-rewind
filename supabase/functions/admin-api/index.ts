@@ -8,6 +8,8 @@ const addEventSchema = z.object({
   year: z.number().int().min(1800).max(2100),
   sport: z.string().min(1).max(100),
   icon: z.string().min(1).max(10),
+  description: z.string().max(2000).nullable().optional(),
+  event_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
 });
 
 const addEventsBulkSchema = z.object({
