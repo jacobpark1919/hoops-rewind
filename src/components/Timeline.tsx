@@ -458,13 +458,12 @@ export function Timeline({
           if (el) cardRefs.current.set(item.event.id, el);
           else cardRefs.current.delete(item.event.id);
         }}
-        className="relative flex items-center gap-3 select-none focus:outline-none"
+        className="relative flex items-center gap-3"
         style={{
           marginTop,
           zIndex: isHovered ? 50 : baseZIndex,
           transform: isHovered ? 'translateY(-20px) scale(1.02)' : 'none',
           transition: 'margin-top 0.3s ease-out, transform 0.2s ease-out, z-index 0s',
-          WebkitTapHighlightColor: 'transparent',
         }}
         onMouseEnter={() => !isDragging && setHoveredCardId(item.event.id)}
         onMouseLeave={() => setHoveredCardId(null)}
