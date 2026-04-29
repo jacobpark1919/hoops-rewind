@@ -497,7 +497,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   // without being cut off by the wrapper's edges.
                   overflow: currentCardHidden ? 'hidden' : 'visible',
                   opacity: currentCardHidden ? 0 : 1,
-                  transition: 'max-height 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 500ms ease-out 100ms',
+                  transition: currentCardHidden
+                    ? 'max-height 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 0s'
+                    : 'max-height 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 500ms ease-out 100ms',
                 }}
               >
                 <div key={currentEvent.id} className="animate-card-enter">
