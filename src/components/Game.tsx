@@ -309,7 +309,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     // plays first, instead of jittering simultaneously with the new card appearing.
     // Correct: short delay so the green flash registers before the next card slides in.
     // Incorrect: longer delay so the card first animates into its correct position.
-    const revealDelay = isCorrect ? 700 : 1400;
+    const revealDelay = isCorrect ? 700 : 1900;
     setIsAwaitingNextCard(true);
     setTimeout(() => {
       setCurrentEventIndex(nextIndex);
@@ -497,7 +497,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   // without being cut off by the wrapper's edges.
                   overflow: currentCardHidden ? 'hidden' : 'visible',
                   opacity: currentCardHidden ? 0 : 1,
-                  transition: 'max-height 450ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms ease-out',
+                  transition: 'max-height 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 500ms ease-out 100ms',
                 }}
               >
                 <div key={currentEvent.id} className="animate-card-enter">
