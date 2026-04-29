@@ -25,6 +25,7 @@ interface TimelineProps {
   sportFilter?: string | null;
   onRetry?: () => void;
   onSportChange?: (sport: string | null) => void;
+  isAwaitingNextCard?: boolean;
 }
 
 const NORMAL_GAP = 8;
@@ -57,6 +58,7 @@ export function Timeline({
   sportFilter,
   onRetry,
   onSportChange,
+  isAwaitingNextCard,
 }: TimelineProps) {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -215,15 +217,15 @@ export function Timeline({
   const hasPending = placedEvents.some(item => item.status === "pending");
 
   useEffect(() => {
-    if (!isDragging && !hasPending && innerWrapperRef.current) {
+    if (!isDragging && !hasPending && !isAwaitingNextCard && innerWrapperRef.current) {
       const contentHeight = innerWrapperRef.current.offsetHeight;
       setNaturalPaddingTop(Math.max(0, (availableHeight - contentHeight) / 2));
     }
-  }, [placedEvents, availableHeight, isDragging, hasPending, dynamicGap]);
+  }, [placedEvents, availableHeight, isDragging, hasPending, dynamicGap, isAwaitingNextCard]);
 
   const lockedRef = useRef<number | null>(null);
   useEffect(() => {
-    if (isDragging || hasPending) {
+    if (isDragging || hasPending || isAwaitingNextCard) {
       // Only capture once — don't overwrite once locked
       if (lockedRef.current === null) {
         lockedRef.current = dynamicGap;
@@ -233,7 +235,7 @@ export function Timeline({
       lockedRef.current = null;
       setLockedGap(null);
     }
-  }, [isDragging, hasPending]); // intentionally only depend on isDragging / hasPending
+  }, [isDragging, hasPending, isAwaitingNextCard]); // intentionally only depend on lock triggers
 
   const activeGap = lockedGap !== null ? lockedGap : dynamicGap;
   const isOverlapping = activeGap < 0;
