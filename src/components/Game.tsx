@@ -74,6 +74,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [frozenDropZone, setFrozenDropZone] = useState<number | null>(null);
   
   const [showIdleHint, setShowIdleHint] = useState(false);
+  // True between confirm() and the next card actually appearing — prevents the
+  // timeline from collapsing upward during the feedback animation window.
+  const [isAwaitingNextCard, setIsAwaitingNextCard] = useState(false);
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
   const cardRef = useRef<HTMLDivElement>(null);
