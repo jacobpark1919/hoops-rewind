@@ -309,7 +309,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     // plays first, instead of jittering simultaneously with the new card appearing.
     // Correct: short delay so the green flash registers before the next card slides in.
     // Incorrect: longer delay so the card first animates into its correct position.
-    const revealDelay = isCorrect ? 700 : 1400;
+    const revealDelay = isCorrect ? 700 : 1900;
     setIsAwaitingNextCard(true);
     setTimeout(() => {
       setCurrentEventIndex(nextIndex);
