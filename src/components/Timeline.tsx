@@ -465,8 +465,8 @@ export function Timeline({
           transform: isHovered ? 'translateY(-20px) scale(1.02)' : 'none',
           transition: 'margin-top 0.3s ease-out, transform 0.2s ease-out, z-index 0s',
         }}
-        onMouseEnter={() => !isDragging && setHoveredCardId(item.event.id)}
-        onMouseLeave={() => setHoveredCardId(null)}
+        onMouseEnter={() => !isDragging && !isMobile && setHoveredCardId(item.event.id)}
+        onMouseLeave={() => !isMobile && setHoveredCardId(null)}
         onClick={() => {
           if (isDragging) return;
           setHoveredCardId((prev) => (prev === item.event.id ? null : item.event.id));
