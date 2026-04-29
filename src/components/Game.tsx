@@ -579,6 +579,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             sportFilter={sportFilter}
             onRetry={initializeGame}
             onSportChange={onSportChange}
+            isAwaitingNextCard={isAwaitingNextCard}
           />
         </div>
 
