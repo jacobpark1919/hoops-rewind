@@ -467,6 +467,10 @@ export function Timeline({
         }}
         onMouseEnter={() => !isDragging && setHoveredCardId(item.event.id)}
         onMouseLeave={() => setHoveredCardId(null)}
+        onClick={() => {
+          if (isDragging) return;
+          setHoveredCardId((prev) => (prev === item.event.id ? null : item.event.id));
+        }}
       >
         {/* Year badge or dot for CTA */}
         <div className="absolute -left-6 sm:-left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
