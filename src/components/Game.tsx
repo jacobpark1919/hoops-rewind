@@ -497,10 +497,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   // without being cut off by the wrapper's edges.
                   overflow: currentCardHidden ? 'hidden' : 'visible',
                   opacity: currentCardHidden ? 0 : 1,
-                  transition: 'max-height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), opacity 200ms ease-out',
+                  transition: 'max-height 450ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms ease-out',
                 }}
               >
-                <div key={currentEvent.id} className="animate-fade-in-up">
+                <div key={currentEvent.id} className="animate-card-enter">
                   <div className="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-3">
                     <div className="flex items-center gap-1 shrink-0">
                       <p className="text-[11px] sm:text-sm text-muted-foreground font-bold uppercase tracking-wider">
