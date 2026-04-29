@@ -467,9 +467,18 @@ export function Timeline({
         }}
         onMouseEnter={() => !isDragging && !isMobile && setHoveredCardId(item.event.id)}
         onMouseLeave={() => !isMobile && setHoveredCardId(null)}
-        onClick={() => {
+        onClick={(e) => {
           if (isDragging) return;
-          setHoveredCardId((prev) => (prev === item.event.id ? null : item.event.id));
+          setHoveredCardId((prev) => {
+            const next = prev === item.event.id ? null : item.event.id;
+            if (next === null) {
+              (e.currentTarget as HTMLElement)?.blur();
+              if (typeof window !== 'undefined') {
+                (document.activeElement as HTMLElement | null)?.blur();
+              }
+            }
+            return next;
+          });
         }}
       >
         {/* Year badge or dot for CTA */}
