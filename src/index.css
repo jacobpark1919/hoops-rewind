@@ -411,6 +411,20 @@ html.admin-scroll, html.admin-scroll body {
   }
 }
 
+@keyframes card-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.96);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @keyframes float-1 {
   0%, 100% {
     transform: translate(0, 0) rotate(0deg);
