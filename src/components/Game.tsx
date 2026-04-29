@@ -302,7 +302,14 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
     }
 
     const nextIndex = currentEventIndex + 1;
-    setCurrentEventIndex(nextIndex); // always advance so round counter hits 8/8 and ghost card disappears
+    // Delay revealing the next card so the correct/incorrect feedback animation
+    // plays first, instead of jittering simultaneously with the new card appearing.
+    // Correct: short delay so the green flash registers before the next card slides in.
+    // Incorrect: longer delay so the card first animates into its correct position.
+    const revealDelay = isCorrect ? 700 : 1400;
+    setTimeout(() => {
+      setCurrentEventIndex(nextIndex);
+    }, revealDelay);
 
     if (nextIndex >= gameEvents.length) {
       const delay = isCorrect ? 500 : 2500;
