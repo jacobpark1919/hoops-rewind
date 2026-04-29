@@ -366,6 +366,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const isDragging = dragState.isDragging;
   const isDraggingNewCard = isDragging && dragSource === "new";
   const cardCollapsed = isDraggingNewCard && hasDragMoved;
+  const currentCardHidden = cardCollapsed || hasPendingPlacement || isAwaitingNextCard;
 
   const currentSport = SPORT_OPTIONS.find(s => s.value === sportFilter) || SPORT_OPTIONS[0];
 
@@ -490,12 +491,12 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   // Use max-height (animatable) instead of height: auto/0 (not animatable),
                   // otherwise the source slot snaps shut instantly on drag-start, causing
                   // the timeline below to visibly jump.
-                  maxHeight: cardCollapsed || hasPendingPlacement ? 0 : 500,
+                  maxHeight: currentCardHidden ? 0 : 500,
                   // Only clip during the collapse animation; otherwise allow the
                   // breathing card (translateY(-4px) scale(1.02)) to render freely
                   // without being cut off by the wrapper's edges.
-                  overflow: cardCollapsed || hasPendingPlacement ? 'hidden' : 'visible',
-                  opacity: cardCollapsed || hasPendingPlacement ? 0 : 1,
+                  overflow: currentCardHidden ? 'hidden' : 'visible',
+                  opacity: currentCardHidden ? 0 : 1,
                   transition: 'max-height 350ms cubic-bezier(0.25, 0.1, 0.25, 1), opacity 200ms ease-out',
                 }}
               >
