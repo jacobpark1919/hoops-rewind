@@ -156,8 +156,9 @@ export default function Admin() {
           setJsonError(`Event ${i + 1} missing required fields (title, year, sport, icon).`);
           return;
         }
-        if (ev.date && !/^\d{4}-\d{2}-\d{2}$/.test(ev.date)) {
-          setJsonError(`Event ${i + 1} has an invalid 'date' (expected YYYY-MM-DD).`);
+        const rawDate = readImportField(ev, ["event_date", "date", "eventDate", "answer_date", "answerDate"]);
+        if (rawDate && !normalizeImportDate(rawDate)) {
+          setJsonError(`Event ${i + 1} has an invalid date (expected YYYY-MM-DD, MM/DD/YYYY, or DD/MM/YYYY).`);
           return;
         }
       }
@@ -170,8 +171,8 @@ export default function Admin() {
           year: Number(ev.year),
           sport: ev.sport,
           icon: ev.icon,
-          description: ev.desc ?? ev.description ?? null,
-          event_date: ev.date ?? ev.event_date ?? null,
+          description: readImportText(ev, ["description", "desc", "answer", "answer_key", "answerKey"]),
+          event_date: normalizeImportDate(readImportField(ev, ["event_date", "date", "eventDate", "answer_date", "answerDate"])),
         })),
       }, undefined, passwordInput);
 
