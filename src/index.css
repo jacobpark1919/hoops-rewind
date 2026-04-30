@@ -266,7 +266,7 @@ html.admin-scroll, html.admin-scroll body {
   }
 
   .animate-card-enter {
-    animation: card-enter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: card-enter 0.2s ease-out both;
   }
 
   .animate-float-1 {
@@ -413,18 +413,12 @@ html.admin-scroll, html.admin-scroll body {
 
 @keyframes card-enter {
   0% {
-    opacity: 1;
-    transform: scaleY(0);
-    transform-origin: top center;
-  }
-  70% {
-    transform: scaleY(1.04);
-    transform-origin: top center;
+    opacity: 0;
+    transform: translateY(-12px) scale(0.96);
   }
   100% {
     opacity: 1;
-    transform: scaleY(1);
-    transform-origin: top center;
+    transform: translateY(0) scale(1);
   }
 }
 
