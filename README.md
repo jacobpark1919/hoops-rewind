@@ -1,73 +1,67 @@
-# Welcome to your Lovable project
+# Hoops Rewind
 
-## Project info
+A daily sports trivia game where players guess the year of historical NBA events.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Stack
 
-## How can I edit this code?
+- **Frontend:** Vite, React 18, TypeScript, Tailwind CSS, shadcn/ui, React Router, TanStack Query
+- **Backend:** Supabase (Postgres + Edge Functions)
+- **Validation:** Zod
+- **Tests:** Vitest + Testing Library
 
-There are several ways of editing your application.
+## Project layout
 
-**Use Lovable**
+```
+src/
+  pages/         Play (game), Admin, FAQ, Contact, legal pages
+  components/    UI components (shadcn-based)
+  integrations/  Supabase client
+  hooks/  lib/  data/
+supabase/
+  functions/admin-api/   Deno edge function for admin CRUD
+  migrations/            SQL schema migrations
+```
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+Routes: `/` (game), `/admin`, `/faq`, `/contact`, `/privacy`, `/terms`, `/cookies`.
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting started
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Requires Node.js 18+ and npm.
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+npm install
+cp .env.example .env   # fill in VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Scripts
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+| Command            | Description                          |
+| ------------------ | ------------------------------------ |
+| `npm run dev`      | Start the Vite dev server            |
+| `npm run build`    | Production build                     |
+| `npm run preview`  | Preview the production build locally |
+| `npm run lint`     | ESLint                               |
+| `npm test`         | Run the Vitest suite once            |
+| `npm run test:watch` | Vitest in watch mode               |
 
-**Use GitHub Codespaces**
+## Environment
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Client (exposed in browser builds):
 
-## What technologies are used for this project?
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
 
-This project is built with:
+Server-only (set as Supabase secrets, never in `.env`):
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `ADMIN_PASSWORD` — gate for admin write actions
+- `ALLOWED_ORIGIN` — CORS origin for the admin edge function (defaults to `*` if unset)
 
-## How can I deploy this project?
+## Admin
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+`/admin` is password-protected via `x-admin-password`. The page talks to the `admin-api` edge function for events, daily challenges, and bulk imports.
 
-## Can I connect a custom domain to my Lovable project?
+## Deploy
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Frontend is built with `npm run build` and deploys as a static SPA (Vercel config included). Database changes go through `supabase/migrations/`; the admin function lives under `supabase/functions/admin-api/`.

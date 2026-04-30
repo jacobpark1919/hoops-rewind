@@ -45,11 +45,13 @@ function safeCompare(a: string, b: string): boolean {
   return timingSafeEqual(aBytes, bBytes);
 }
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-admin-password, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+function corsHeaders(_req: Request) {
+  return {
+    "Access-Control-Allow-Origin": Deno.env.get("ALLOWED_ORIGIN") ?? "*",
+    "Access-Control-Allow-Headers":
+      "authorization, x-client-info, apikey, content-type, x-admin-password, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+  };
+}
 
 function auditLog(action: string | null, req: Request, extra?: Record<string, unknown>) {
   console.log("ADMIN ACTION", {
@@ -63,7 +65,7 @@ function auditLog(action: string | null, req: Request, extra?: Record<string, un
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders(req) });
   }
 
   try {
@@ -73,33 +75,6 @@ Deno.serve(async (req) => {
 
     const url = new URL(req.url);
     const action = url.searchParams.get("action");
-
-    // TEMP DEBUG: password-protected env dump for migration
-    if (req.method === "GET" && action === "debug-env") {
-      const providedPassword = url.searchParams.get("pw");
-      const adminPassword = Deno.env.get("ADMIN_PASSWORD");
-      if (!adminPassword || !providedPassword || !safeCompare(providedPassword, adminPassword)) {
-        return new Response(JSON.stringify({ error: "unauthorized" }), {
-          status: 401,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      const keys = [
-        "SUPABASE_URL",
-        "SUPABASE_DB_URL",
-        "SUPABASE_ANON_KEY",
-        "SUPABASE_SERVICE_ROLE_KEY",
-        "POSTGRES_URL",
-        "DATABASE_URL",
-      ];
-      const out: Record<string, string | null> = {};
-      for (const k of keys) out[k] = Deno.env.get(k) ?? null;
-      // Also list ALL env keys so we can spot anything we missed
-      const allKeys = Object.keys(Deno.env.toObject()).sort();
-      return new Response(JSON.stringify({ values: out, allKeys }, null, 2), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
 
     // GET actions (read-only, no auth required)
     if (req.method === "GET") {
@@ -111,7 +86,7 @@ Deno.serve(async (req) => {
         if (sport) query = query.eq("sport", sport);
         const { data, error } = await query;
         if (error) throw error;
-        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
       }
 
       if (action === "challenges") {
@@ -121,7 +96,7 @@ Deno.serve(async (req) => {
           .order("challenge_date", { ascending: false })
           .limit(30);
         if (error) throw error;
-        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
       }
     }
 
@@ -133,7 +108,7 @@ Deno.serve(async (req) => {
         auditLog(action, req, { authorized: false });
         return new Response(JSON.stringify({ error: "unauthorized" }), {
           status: 401,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          headers: { ...corsHeaders(req), "Content-Type": "application/json" },
         });
       }
 
@@ -144,7 +119,7 @@ Deno.serve(async (req) => {
       if (action === "add-event") {
         const parsed = addEventSchema.safeParse(body);
         if (!parsed.success) {
-          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
         }
         const { data, error } = await supabase
           .from("sports_events")
@@ -152,26 +127,26 @@ Deno.serve(async (req) => {
           .select()
           .single();
         if (error) throw error;
-        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
       }
 
       if (action === "add-events-bulk") {
         const parsed = addEventsBulkSchema.safeParse(body);
         if (!parsed.success) {
-          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
         }
         const { data, error } = await supabase
           .from("sports_events")
           .insert(parsed.data.events)
           .select();
         if (error) throw error;
-        return new Response(JSON.stringify(data), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        return new Response(JSON.stringify(data), { headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
       }
 
       if (action === "create-challenge") {
         const parsed = createChallengeSchema.safeParse(body);
         if (!parsed.success) {
-          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
         }
         const { challenge_date, sport_filter, event_ids } = parsed.data;
         const { data: challenge, error: challengeError } = await supabase
@@ -191,13 +166,13 @@ Deno.serve(async (req) => {
           .insert(challengeEvents);
         if (eventsError) throw eventsError;
 
-        return new Response(JSON.stringify(challenge), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        return new Response(JSON.stringify(challenge), { headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
       }
 
       if (action === "update-challenge") {
         const parsed = updateChallengeSchema.safeParse(body);
         if (!parsed.success) {
-          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
         }
         const { challenge_id, challenge_date, sport_filter, event_ids } = parsed.data;
         const updateData: Record<string, unknown> = {};
@@ -217,44 +192,44 @@ Deno.serve(async (req) => {
           const { error: eventsError } = await supabase.from("daily_challenge_events").insert(challengeEvents);
           if (eventsError) throw eventsError;
         }
-        return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
       }
 
       if (action === "delete-challenge") {
         const parsed = deleteChallengeSchema.safeParse(body);
         if (!parsed.success) {
-          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
         }
         await supabase.from("daily_challenge_events").delete().eq("challenge_id", parsed.data.challenge_id);
         const { error } = await supabase.from("daily_challenges").delete().eq("id", parsed.data.challenge_id);
         if (error) throw error;
-        return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
       }
 
       if (action === "delete-event") {
         const parsed = deleteEventSchema.safeParse(body);
         if (!parsed.success) {
-          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+          return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), { status: 400, headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
         }
         const { error } = await supabase.from("sports_events").delete().eq("id", parsed.data.event_id);
         if (error) throw error;
-        return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
       }
 
       if (action === "verify") {
-        return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders(req), "Content-Type": "application/json" } });
       }
     }
 
     return new Response(JSON.stringify({ error: "Unknown action" }), {
       status: 400,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...corsHeaders(req), "Content-Type": "application/json" },
     });
   } catch (error) {
     console.error("Admin API error:", error);
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...corsHeaders(req), "Content-Type": "application/json" },
     });
   }
 });
