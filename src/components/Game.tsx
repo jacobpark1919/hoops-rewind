@@ -499,7 +499,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   opacity: currentCardHidden ? 0 : 1,
                   transition: currentCardHidden
                     ? 'max-height 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 0s'
-                    : 'max-height 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 500ms ease-out 100ms',
+                    : 'max-height 1100ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms ease-out 200ms',
                 }}
               >
                 <div key={currentEvent.id} className="animate-card-enter">
