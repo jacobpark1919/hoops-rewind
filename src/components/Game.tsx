@@ -539,15 +539,20 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                       isDragging={false}
                     />
                   </div>
-                  {showIdleHint && (
-                    <div className="flex items-center gap-1.5 justify-center mt-2 pb-2 drag-hint-arrow">
-                      <ArrowDown className="w-4 h-4 text-accent" />
-                      <span className="text-xs sm:text-sm font-semibold text-accent">
-                        Drag this card into the timeline
-                      </span>
-                      <ArrowDown className="w-4 h-4 text-accent" />
-                    </div>
-                  )}
+                  <div
+                    aria-hidden={!showIdleHint}
+                    className="flex items-center gap-1.5 justify-center mt-2 pb-2 drag-hint-arrow"
+                    style={{
+                      visibility: showIdleHint ? 'visible' : 'hidden',
+                      opacity: showIdleHint ? 1 : 0,
+                    }}
+                  >
+                    <ArrowDown className="w-4 h-4 text-accent" />
+                    <span className="text-xs sm:text-sm font-semibold text-accent">
+                      Drag this card into the timeline
+                    </span>
+                    <ArrowDown className="w-4 h-4 text-accent" />
+                  </div>
                 </div>
               </div>
             </>
