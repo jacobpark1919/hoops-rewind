@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { lovable } from "@/integrations/lovable/index";
+import { supabase } from "@/integrations/supabase/client";
 
 interface SignUpCTAProps {
   gameData?: {
@@ -20,8 +20,11 @@ export function SignUpCTA({ gameData }: SignUpCTAProps) {
     if (gameData) {
       localStorage.setItem("pending_game_signup", JSON.stringify(gameData));
     }
-    const { error } = await lovable.auth.signInWithOAuth(provider, {
-      redirect_uri: window.location.origin + window.location.pathname + window.location.search,
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: window.location.origin + window.location.pathname + window.location.search,
+      },
     });
     if (error) {
       console.error("Sign in error:", error);

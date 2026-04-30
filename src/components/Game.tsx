@@ -11,7 +11,6 @@ import { useDrag } from "@/hooks/useDrag";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { ChevronDown, HelpCircle, ArrowDown, BarChart3, LogIn, CalendarDays } from "lucide-react";
-import { lovable } from "@/integrations/lovable/index";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { PastPuzzlePicker } from "./PastPuzzlePicker";
 
@@ -445,8 +444,11 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               <>
                 <button
                   onClick={() => {
-                    lovable.auth.signInWithOAuth("google", {
-                      redirect_uri: window.location.origin + window.location.pathname + window.location.search,
+                    supabase.auth.signInWithOAuth({
+                      provider: "google",
+                      options: {
+                        redirectTo: window.location.origin + window.location.pathname + window.location.search,
+                      },
                     });
                   }}
                   className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
