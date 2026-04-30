@@ -10,7 +10,7 @@ import { StatsModal } from "./StatsModal";
 import { useDrag } from "@/hooks/useDrag";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, HelpCircle, ArrowDown, BarChart3, LogIn, CalendarDays } from "lucide-react";
+import { ChevronDown, HelpCircle, ArrowDown, BarChart3, LogIn, LogOut, CalendarDays } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { PastPuzzlePicker } from "./PastPuzzlePicker";
 
@@ -49,7 +49,7 @@ interface GameProps {
 }
 
 export function Game({ sportFilter, onSportChange }: GameProps) {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const [showStats, setShowStats] = useState(false);
   const [sportDropdownOpen, setSportDropdownOpen] = useState(false);
   const [gameEvents, setGameEvents] = useState<SportsEvent[]>([]);
@@ -408,6 +408,17 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           {/* Right: Calendar + X + Help + Theme */}
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
 
+            {/* Sign out (desktop only, logged in) */}
+            {user && (
+              <button
+                onClick={() => signOut()}
+                className="hidden md:inline-flex p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                aria-label="Sign out"
+              >
+                <LogOut className="w-5 h-5 text-foreground" />
+              </button>
+            )}
+
             {/* Calendar - past puzzles (logged in only) */}
             {user && (
               <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
@@ -527,7 +538,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   opacity: currentCardHidden ? 0 : 1,
                   transition: currentCardHidden
                     ? 'max-height 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 0s'
-                    : 'max-height 4000ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1200ms ease-out 500ms',
+                    : 'max-height 4000ms cubic-bezier(0.22, 1, 0.36, 1), opacity 400ms ease-out 100ms',
                 }}
               >
                 <div key={currentEvent.id} className="animate-card-enter">
