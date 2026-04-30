@@ -74,6 +74,33 @@ Deno.serve(async (req) => {
     const url = new URL(req.url);
     const action = url.searchParams.get("action");
 
+    // TEMP DEBUG: password-protected env dump for migration
+    if (req.method === "GET" && action === "debug-env") {
+      const providedPassword = url.searchParams.get("pw");
+      const adminPassword = Deno.env.get("ADMIN_PASSWORD");
+      if (!adminPassword || !providedPassword || !safeCompare(providedPassword, adminPassword)) {
+        return new Response(JSON.stringify({ error: "unauthorized" }), {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const keys = [
+        "SUPABASE_URL",
+        "SUPABASE_DB_URL",
+        "SUPABASE_ANON_KEY",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "POSTGRES_URL",
+        "DATABASE_URL",
+      ];
+      const out: Record<string, string | null> = {};
+      for (const k of keys) out[k] = Deno.env.get(k) ?? null;
+      // Also list ALL env keys so we can spot anything we missed
+      const allKeys = Object.keys(Deno.env.toObject()).sort();
+      return new Response(JSON.stringify({ values: out, allKeys }, null, 2), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     // GET actions (read-only, no auth required)
     if (req.method === "GET") {
       auditLog(action, req);
