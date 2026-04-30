@@ -486,6 +486,32 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         <div className="mb-2 sm:mb-3">
         {currentEvent && !gameComplete ? (
             <>
+              {/* Header row — always visible, even while dragging or between cards */}
+              <div className="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-3">
+                <div className="flex items-center gap-1 shrink-0">
+                  <p className="text-[11px] sm:text-sm text-muted-foreground font-bold uppercase tracking-wider">
+                    Place this event in the timeline
+                  </p>
+                  <ArrowDown className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
+                </div>
+                <div className="flex items-center gap-1.5 sm:gap-2 ml-auto flex-1 justify-end">
+                  {Array.from({ length: TOTAL_ROUNDS }, (_, i) => {
+                    let bgColor = "bg-muted";
+                    if (i === 0) {
+                      bgColor = "bg-primary";
+                    } else if (i <= resultHistory.length) {
+                      const isCorrect = resultHistory[i - 1];
+                      bgColor = isCorrect ? "bg-success" : "bg-destructive";
+                    }
+                    return (
+                      <div
+                        key={i}
+                        className={`h-2.5 sm:h-3 flex-1 max-w-8 sm:max-w-10 rounded-full transition-colors duration-500 ${bgColor}`}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
               <div
                 style={{
                   // Use max-height (animatable) instead of height: auto/0 (not animatable),
@@ -503,31 +529,6 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                 }}
               >
                 <div key={currentEvent.id} className="animate-card-enter">
-                  <div className="flex items-center gap-2 sm:gap-3 mb-1.5 sm:mb-3">
-                    <div className="flex items-center gap-1 shrink-0">
-                      <p className="text-[11px] sm:text-sm text-muted-foreground font-bold uppercase tracking-wider">
-                        Place this event in the timeline
-                      </p>
-                      <ArrowDown className="w-3 h-3 sm:w-4 sm:h-4 text-muted-foreground" />
-                    </div>
-                    <div className="flex items-center gap-1.5 sm:gap-2 ml-auto flex-1 justify-end">
-                      {Array.from({ length: TOTAL_ROUNDS }, (_, i) => {
-                        let bgColor = "bg-muted";
-                        if (i === 0) {
-                          bgColor = "bg-primary";
-                        } else if (i <= resultHistory.length) {
-                          const isCorrect = resultHistory[i - 1];
-                          bgColor = isCorrect ? "bg-success" : "bg-destructive";
-                        }
-                        return (
-                          <div
-                            key={i}
-                            className={`h-2.5 sm:h-3 flex-1 max-w-8 sm:max-w-10 rounded-full transition-colors duration-500 ${bgColor}`}
-                          />
-                        );
-                      })}
-                    </div>
-                  </div>
                   <div
                     ref={cardRef}
                     onPointerDown={handleNewCardDragStart}
