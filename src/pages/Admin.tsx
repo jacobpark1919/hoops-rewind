@@ -42,6 +42,51 @@ const SPORT_ICONS: Record<string, string> = {
   "Olympics": "🏅",
 };
 
+const readImportField = (event: Record<string, unknown>, keys: string[]) => {
+  for (const key of keys) {
+    if (event[key] !== undefined && event[key] !== null) return event[key];
+  }
+  return null;
+};
+
+const readImportText = (event: Record<string, unknown>, keys: string[]) => {
+  const value = readImportField(event, keys);
+  if (value === null) return null;
+  const text = String(value).trim();
+  return text.length > 0 ? text : null;
+};
+
+const normalizeImportDate = (value: unknown) => {
+  if (value === undefined || value === null || value === "") return null;
+
+  const dateStr = String(value).trim();
+  const toIsoDate = (year: number, month: number, day: number) => {
+    if (year < 100) year += 2000;
+    const result = new Date(Date.UTC(year, month - 1, day));
+    if (
+      result.getUTCFullYear() !== year ||
+      result.getUTCMonth() !== month - 1 ||
+      result.getUTCDate() !== day
+    ) {
+      return null;
+    }
+    return `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+  };
+
+  const iso = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (iso) return toIsoDate(Number(iso[1]), Number(iso[2]), Number(iso[3]));
+
+  const numeric = dateStr.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/);
+  if (!numeric) return null;
+
+  const first = Number(numeric[1]);
+  const second = Number(numeric[2]);
+  const year = Number(numeric[3]);
+  const month = first > 12 ? second : first;
+  const day = first > 12 ? first : second;
+  return toIsoDate(year, month, day);
+};
+
 function callAdmin(action: string, method: "GET" | "POST" = "GET", body?: any, params?: Record<string, string>, password?: string) {
   const url = new URL(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-api`);
   url.searchParams.set("action", action);
@@ -111,8 +156,9 @@ export default function Admin() {
           setJsonError(`Event ${i + 1} missing required fields (title, year, sport, icon).`);
           return;
         }
-        if (ev.date && !/^\d{4}-\d{2}-\d{2}$/.test(ev.date)) {
-          setJsonError(`Event ${i + 1} has an invalid 'date' (expected YYYY-MM-DD).`);
+        const rawDate = readImportField(ev, ["event_date", "date", "eventDate", "answer_date", "answerDate"]);
+        if (rawDate && !normalizeImportDate(rawDate)) {
+          setJsonError(`Event ${i + 1} has an invalid date (expected YYYY-MM-DD, MM/DD/YYYY, or DD/MM/YYYY).`);
           return;
         }
       }
@@ -125,8 +171,8 @@ export default function Admin() {
           year: Number(ev.year),
           sport: ev.sport,
           icon: ev.icon,
-          description: ev.desc ?? ev.description ?? null,
-          event_date: ev.date ?? ev.event_date ?? null,
+          description: readImportText(ev, ["description", "desc", "answer", "answer_key", "answerKey"]),
+          event_date: normalizeImportDate(readImportField(ev, ["event_date", "date", "eventDate", "answer_date", "answerDate"])),
         })),
       }, undefined, passwordInput);
 
