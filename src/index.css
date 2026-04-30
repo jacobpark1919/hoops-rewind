@@ -413,15 +413,18 @@ html.admin-scroll, html.admin-scroll body {
 
 @keyframes card-enter {
   0% {
-    opacity: 0;
-    transform: translateY(-12px) scale(0.96);
-  }
-  60% {
     opacity: 1;
+    transform: scaleY(0);
+    transform-origin: top center;
+  }
+  70% {
+    transform: scaleY(1.04);
+    transform-origin: top center;
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scaleY(1);
+    transform-origin: top center;
   }
 }
 
