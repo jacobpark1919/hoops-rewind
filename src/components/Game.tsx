@@ -412,7 +412,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             {/* Privacy */}
             <Link
               to="/privacy"
-              className="inline-flex px-2 py-2 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
+              className="inline-flex px-[7.25px] py-[7.25px] sm:px-2 sm:py-2 rounded-lg text-[11.5px] sm:text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
             >
               Privacy
             </Link>
@@ -433,10 +433,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
               <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                 <PopoverTrigger asChild>
                   <button
-                    className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                    className="p-[7.25px] sm:p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
                     aria-label="Play past puzzles"
                   >
-                    <CalendarDays className="w-5 h-5 text-foreground" />
+                    <CalendarDays className="w-[18.5px] h-[18.5px] sm:w-5 sm:h-5 text-foreground" />
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="end">
@@ -455,10 +455,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             {user ? (
               <button
                 onClick={() => setShowStats(true)}
-                className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                className="p-[7.25px] sm:p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
                 aria-label="View your stats"
               >
-                <BarChart3 className="w-5 h-5 text-foreground" />
+                <BarChart3 className="w-[18.5px] h-[18.5px] sm:w-5 sm:h-5 text-foreground" />
               </button>
             ) : (
               <>
@@ -471,19 +471,19 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                       },
                     });
                   }}
-                  className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                  className="p-[7.25px] sm:p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
                   aria-label="Sign in"
                 >
-                  <LogIn className="w-5 h-5 text-foreground" />
+                  <LogIn className="w-[18.5px] h-[18.5px] sm:w-5 sm:h-5 text-foreground" />
                 </button>
                 <a
                   href="https://x.com/PlayHoopsRewind"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                  className="p-[7.25px] sm:p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
                   aria-label="Follow us on X"
                 >
-                  <svg className="w-5 h-5 text-foreground" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <svg className="w-[18.5px] h-[18.5px] sm:w-5 sm:h-5 text-foreground" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
                 </a>
@@ -493,10 +493,10 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             {/* How to play */}
             <button
               onClick={() => setShowInstructions(true)}
-              className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+              className="p-[7.25px] sm:p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
               aria-label="How to play"
             >
-              <HelpCircle className="w-5 h-5 text-foreground" />
+              <HelpCircle className="w-[18.5px] h-[18.5px] sm:w-5 sm:h-5 text-foreground" />
             </button>
 
             {/* Theme toggle */}
