@@ -382,18 +382,36 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
       <div className="container max-w-2xl mx-auto py-2 sm:py-4 px-3 sm:px-4 flex flex-col flex-1">
         {/* Compact header row with everything */}
         <header className="flex items-center justify-between mb-1 sm:mb-2 gap-1">
-          {/* Left: Round counter + date/puzzle */}
-          <div className="flex items-center gap-0.5 sm:gap-1.5 min-w-0">
-            <span className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">
+          {/* Left: Logo + round/puzzle */}
+          <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
+            {/* Logo */}
+            <Link
+              to="/"
+              aria-label="Hoops Rewind home"
+              className="inline-flex items-center gap-1 flex-shrink-0 hover:opacity-90 transition-opacity"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-500"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <polygon points="11,4 11,20 3,12" />
+                <polygon points="22,4 22,20 14,12" />
+              </svg>
+              <span className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">
+                Hoops Rewind
+              </span>
+            </Link>
+
+            {/* Round (desktop only) */}
+            <span className="hidden md:inline text-muted-foreground text-sm flex-shrink-0 ml-1">·</span>
+            <span className="hidden md:inline text-sm font-semibold text-foreground whitespace-nowrap">
               Round {currentEventIndex}/{TOTAL_ROUNDS}
             </span>
-            <span className="hidden md:inline text-muted-foreground text-xs sm:text-sm flex-shrink-0">·</span>
-            <span className="hidden md:inline text-xs sm:text-sm font-semibold text-foreground truncate">
-              {selectedDate
-                ? new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                : new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-            </span>
-            <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0">·</span>
+
+            {/* Puzzle # (always) */}
+            <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0 ml-1 md:ml-0">·</span>
             <span className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap flex-shrink-0">
               Puzzle #{(() => {
                 const origin = new Date('2026-02-12');
@@ -480,7 +498,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
                   href="https://x.com/PlayHoopsRewind"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-[7.25px] sm:p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                  className="hidden md:inline-flex p-[7.25px] sm:p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
                   aria-label="Follow us on X"
                 >
                   <svg className="w-[18.5px] h-[18.5px] sm:w-5 sm:h-5 text-foreground" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
