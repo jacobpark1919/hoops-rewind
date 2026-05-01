@@ -411,7 +411,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             </span>
 
             {/* Puzzle # (always) */}
-            <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0 ml-1 md:ml-0">·</span>
+            <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0">·</span>
             <span className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap flex-shrink-0">
               Puzzle #{(() => {
                 const origin = new Date('2026-02-12');
