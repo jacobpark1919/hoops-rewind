@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ChevronDown, HelpCircle, ArrowDown, BarChart3, LogIn, LogOut, CalendarDays } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { PastPuzzlePicker } from "./PastPuzzlePicker";
+import { Link } from "react-router-dom";
 
 const TOTAL_ROUNDS = 8;
 
@@ -386,8 +387,8 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             <span className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap">
               Round {currentEventIndex}/{TOTAL_ROUNDS}
             </span>
-            <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0">·</span>
-            <span className="text-xs sm:text-sm font-semibold text-foreground truncate">
+            <span className="hidden md:inline text-muted-foreground text-xs sm:text-sm flex-shrink-0">·</span>
+            <span className="hidden md:inline text-xs sm:text-sm font-semibold text-foreground truncate">
               {selectedDate
                 ? new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
                 : new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -407,6 +408,14 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
           
           {/* Right: Calendar + X + Help + Theme */}
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+
+            {/* Privacy */}
+            <Link
+              to="/privacy"
+              className="inline-flex px-2 py-2 rounded-lg text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
+            >
+              Privacy
+            </Link>
 
             {/* Sign out (desktop only, logged in) */}
             {user && (
