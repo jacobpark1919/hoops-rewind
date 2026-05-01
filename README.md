@@ -49,7 +49,7 @@ npm run dev
 
 Client (exposed in browser builds):
 
-- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_URL` 
 - `VITE_SUPABASE_PUBLISHABLE_KEY`
 
 Server-only (set as Supabase secrets, never in `.env`):
