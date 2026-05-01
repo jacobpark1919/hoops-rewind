@@ -2,6 +2,8 @@
 
 A daily sports trivia game where players guess the year of historical NBA events.
 
+https://hoopsrewind.app
+
 ## Stack
 
 - **Frontend:** Vite, React 18, TypeScript, Tailwind CSS, shadcn/ui, React Router, TanStack Query
