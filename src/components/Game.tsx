@@ -392,7 +392,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             >
               <svg
                 viewBox="0 0 24 24"
-                className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-500"
+                className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent"
                 fill="currentColor"
                 aria-hidden="true"
               >
@@ -405,7 +405,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             </Link>
 
             {/* Round (desktop only) */}
-            <span className="hidden md:inline text-muted-foreground text-sm flex-shrink-0 ml-1">·</span>
+            <span className="hidden md:inline text-muted-foreground text-sm flex-shrink-0">·</span>
             <span className="hidden md:inline text-sm font-semibold text-foreground whitespace-nowrap">
               Round {currentEventIndex}/{TOTAL_ROUNDS}
             </span>
@@ -413,7 +413,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             {/* Puzzle # (always) */}
             <span className="text-muted-foreground text-xs sm:text-sm flex-shrink-0">·</span>
             <span className="text-xs sm:text-sm font-semibold text-foreground whitespace-nowrap flex-shrink-0">
-              Puzzle #{(() => {
+              <span className={user ? "hidden md:inline" : ""}>Puzzle </span>#{(() => {
                 const origin = new Date('2026-02-12');
                 const dateStr = selectedDate || new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
                 const [y, m, d] = dateStr.split('-').map(Number);
@@ -430,7 +430,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
             {/* Privacy */}
             <Link
               to="/privacy"
-              className="inline-flex px-[7.25px] py-[7.25px] sm:px-2 sm:py-2 rounded-lg text-[11.5px] sm:text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
+              className="inline-flex px-[7.25px] py-[7.25px] sm:px-2 sm:py-2 -mr-1.5 sm:-mr-2 rounded-lg text-[11.5px] sm:text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
             >
               Privacy
             </Link>
