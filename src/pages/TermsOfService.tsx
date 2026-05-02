@@ -14,6 +14,7 @@ export default function TermsOfService() {
       <Helmet>
         <title>Terms of Service | Hoops Rewind</title>
         <meta name="description" content="Review the terms of service for Hoops Rewind, the daily NBA basketball history and sports trivia game. Understand your rights and responsibilities as a player." />
+        <link rel="canonical" href="https://hoopsrewind.app/terms" />
       </Helmet>
       <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
         <ArrowLeft className="w-4 h-4" /> Back

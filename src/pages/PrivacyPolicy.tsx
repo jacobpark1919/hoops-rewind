@@ -14,6 +14,7 @@ export default function PrivacyPolicy() {
       <Helmet>
         <title>Privacy Policy | Hoops Rewind</title>
         <meta name="description" content="Read the Hoops Rewind privacy policy. Learn how we collect, store, and protect your data on our daily NBA trivia and basketball history game." />
+        <link rel="canonical" href="https://hoopsrewind.app/privacy" />
       </Helmet>
       <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
         <ArrowLeft className="w-4 h-4" /> Back

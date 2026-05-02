@@ -14,6 +14,7 @@ export default function Contact() {
       <Helmet>
         <title>Contact Us | Hoops Rewind</title>
         <meta name="description" content="Have a question or feedback about Hoops Rewind? Get in touch with the team behind the daily NBA trivia and basketball history game." />
+        <link rel="canonical" href="https://hoopsrewind.app/contact" />
       </Helmet>
       <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
         <ArrowLeft className="w-4 h-4" /> Back

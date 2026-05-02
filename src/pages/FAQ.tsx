@@ -52,6 +52,7 @@ export default function FAQ() {
           name="description"
           content="Got questions about Hoops Rewind? Find answers about how to play, how scoring works, and more about the daily NBA basketball history and sports trivia game."
         />
+        <link rel="canonical" href="https://hoopsrewind.app/faq" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
