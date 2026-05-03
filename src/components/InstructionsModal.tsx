@@ -7,13 +7,24 @@ interface InstructionsModalProps {
 
 export function InstructionsModal({ onClose }: InstructionsModalProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [dontShow, setDontShow] = useState(false);
 
   useEffect(() => {
-    // Animate in
     setTimeout(() => setIsVisible(true), 50);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [dontShow]);
+
   const handleClose = () => {
+    if (dontShow) {
+      document.cookie = `hoops_skip_instructions=1; max-age=${365 * 24 * 60 * 60}; path=/; SameSite=Lax`;
+    }
     setIsVisible(false);
     setTimeout(onClose, 200);
   };
@@ -454,13 +465,24 @@ export function InstructionsModal({ onClose }: InstructionsModalProps) {
             </div>
           </div>
 
-          {/* Start button */}
-          <button
-            onClick={handleClose}
-            className="w-full py-2.5 sm:py-3 px-4 sm:px-6 bg-accent text-accent-foreground font-display font-bold text-sm sm:text-base rounded-lg sm:rounded-xl transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
-          >
-            Let's Go!
-          </button>
+          {/* Start button row */}
+          <div className="flex items-center justify-between gap-3">
+            <label className="flex items-center gap-1.5 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={dontShow}
+                onChange={(e) => setDontShow(e.target.checked)}
+                className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded accent-accent cursor-pointer flex-shrink-0"
+              />
+              <span className="text-[11px] sm:text-xs text-muted-foreground whitespace-nowrap">Don't show again</span>
+            </label>
+            <button
+              onClick={handleClose}
+              className="py-2.5 sm:py-3 px-4 sm:px-6 bg-accent text-accent-foreground font-display font-bold text-sm sm:text-base rounded-lg sm:rounded-xl transition-all duration-200 hover:opacity-90 hover:scale-[1.02]"
+            >
+              Let's Go!
+            </button>
+          </div>
         </div>
       </div>
     </div>

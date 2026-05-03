@@ -61,7 +61,9 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
   const [gameComplete, setGameComplete] = useState(false);
   const [isViewingTimeline, setIsViewingTimeline] = useState(false);
   const [pendingPlacement, setPendingPlacement] = useState<{ position: number } | null>(null);
-  const [showInstructions, setShowInstructions] = useState(true);
+  const [showInstructions, setShowInstructions] = useState(
+    () => !document.cookie.split(";").some((c) => c.trim().startsWith("hoops_skip_instructions="))
+  );
   const [resultHistory, setResultHistory] = useState<boolean[]>([]);
   const [incorrectEventIds, setIncorrectEventIds] = useState<Set<string>>(new Set());
   const [correctEventIds, setCorrectEventIds] = useState<Set<string>>(new Set());
