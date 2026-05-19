@@ -562,13 +562,13 @@ export default function Admin() {
                         const ev = events.find(e => e.id === eid);
                         if (!ev) return null;
                         return (
-                          <div key={eid} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/30 text-sm">
-                            <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-bold flex-shrink-0">
+                          <div key={eid} className="flex items-start gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/30 text-sm">
+                            <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-bold flex-shrink-0 mt-0.5">
                               {idx + 1}
                             </span>
-                            <span>{ev.icon}</span>
-                            <span className="flex-1 truncate">{ev.title}</span>
-                            <span className="text-muted-foreground text-xs">{ev.year}</span>
+                            <span className="flex-shrink-0 mt-0.5">{ev.icon}</span>
+                            <span className="flex-1 min-w-0 break-words">{ev.title}</span>
+                            <span className="text-muted-foreground text-xs flex-shrink-0 mt-0.5">{ev.year}</span>
                             <button
                               onClick={() => {
                                 if (idx === 0) return;
