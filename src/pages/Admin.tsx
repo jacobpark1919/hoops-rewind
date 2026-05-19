@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { Home, Plus, Trash2, Calendar, ChevronDown, ChevronUp, Lock, Pencil, ArrowUp, ArrowDown, Download } from "lucide-react";
+import { Home, Plus, Trash2, Calendar, ChevronDown, ChevronUp, Lock, Pencil, ArrowUp, ArrowDown, Download, Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface SportEvent {
@@ -118,6 +118,8 @@ export default function Admin() {
   // Add event form
   const [newTitle, setNewTitle] = useState("");
   const [newYear, setNewYear] = useState("");
+  const [newEventDate, setNewEventDate] = useState("");
+  const [newDescription, setNewDescription] = useState("");
   const [newSport, setNewSport] = useState("Basketball");
   const [newIcon, setNewIcon] = useState("🏀");
   const [showAddEvent, setShowAddEvent] = useState(false);
@@ -125,6 +127,8 @@ export default function Admin() {
   // Inline event creation (within challenge form)
   const [inlineTitle, setInlineTitle] = useState("");
   const [inlineYear, setInlineYear] = useState("");
+  const [inlineEventDate, setInlineEventDate] = useState("");
+  const [inlineDescription, setInlineDescription] = useState("");
   const [showInlineAdd, setShowInlineAdd] = useState(false);
 
   // Create challenge form
@@ -142,6 +146,7 @@ export default function Admin() {
   const [jsonInput, setJsonInput] = useState("");
   const [jsonError, setJsonError] = useState<string | null>(null);
   const [jsonLoading, setJsonLoading] = useState(false);
+  const [showJsonExample, setShowJsonExample] = useState(false);
 
   const handleJsonImport = async () => {
     setJsonError(null);
@@ -235,9 +240,13 @@ export default function Admin() {
       year: parseInt(newYear),
       sport: newSport,
       icon: newIcon,
+      event_date: newEventDate || null,
+      description: newDescription.trim() || null,
     }, undefined, passwordInput);
     setNewTitle("");
     setNewYear("");
+    setNewEventDate("");
+    setNewDescription("");
     setShowAddEvent(false);
     await fetchEvents();
     setLoading(false);
@@ -312,14 +321,17 @@ export default function Admin() {
       year: parseInt(inlineYear),
       sport,
       icon,
+      event_date: inlineEventDate || null,
+      description: inlineDescription.trim() || null,
     }, undefined, passwordInput);
     if (result?.id) {
       await fetchEvents();
-      // Auto-select the new event if under 8
       setSelectedEventIds(prev => prev.length < 8 ? [...prev, result.id] : prev);
     }
     setInlineTitle("");
     setInlineYear("");
+    setInlineEventDate("");
+    setInlineDescription("");
     setShowInlineAdd(false);
     setLoading(false);
   };
@@ -329,6 +341,15 @@ export default function Admin() {
   const usedEventIds = new Set(
     challenges
       .filter(ch => ch.challenge_date >= USAGE_CUTOFF)
+      .flatMap(ch => (ch.daily_challenge_events || []).map(ce => ce.event_id))
+  );
+
+  // Events used in a puzzle within the past 7 days (inclusive of today)
+  const todayET = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+  const sevenDaysAgoET = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+  const recentlyUsedEventIds = new Set(
+    challenges
+      .filter(ch => ch.challenge_date >= sevenDaysAgoET && ch.challenge_date <= todayET)
       .flatMap(ch => (ch.daily_challenge_events || []).map(ce => ce.event_id))
   );
 
@@ -366,7 +387,7 @@ export default function Admin() {
             autoFocus
           />
           {passwordError && <p className="text-destructive text-xs">Incorrect password</p>}
-          <Button onClick={handlePasswordSubmit} className="w-full">Enter</Button>
+          <Button onClick={handlePasswordSubmit} className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Enter</Button>
         </div>
       </div>
     );
@@ -391,6 +412,7 @@ export default function Admin() {
             variant={tab === "challenges" ? "default" : "outline"}
             size="sm"
             onClick={() => setTab("challenges")}
+            className={tab === "challenges" ? "bg-accent text-accent-foreground hover:bg-accent/90" : ""}
           >
             <Calendar className="w-4 h-4 mr-1" /> Challenges
           </Button>
@@ -398,6 +420,7 @@ export default function Admin() {
             variant={tab === "events" ? "default" : "outline"}
             size="sm"
             onClick={() => setTab("events")}
+            className={tab === "events" ? "bg-accent text-accent-foreground hover:bg-accent/90" : ""}
           >
             Events ({events.length})
           </Button>
@@ -420,7 +443,7 @@ export default function Admin() {
                   setShowCreateChallenge(true);
                   setShowJsonImport(false);
                 }
-              }} size="sm">
+              }} size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
                 <Plus className="w-4 h-4 mr-1" /> New Challenge
               </Button>
               <Button
@@ -434,10 +457,60 @@ export default function Admin() {
 
             {showJsonImport && (
               <div className="border border-border rounded-xl p-4 space-y-3 bg-card">
-                <h3 className="font-semibold text-foreground text-sm">Import Puzzle from JSON</h3>
-                <p className="text-xs text-muted-foreground">
-                  Paste JSON with this format: {`{"challenge_date":"YYYY-MM-DD","sport_filter":"Basketball"|null,"events":[{"title":"...","year":2020,"sport":"Basketball","icon":"🏀","date":"2020-06-15","desc":"answer key"},...]}`} — exactly 8 events. <code>date</code> (YYYY-MM-DD) and <code>desc</code> are optional.
-                </p>
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold text-foreground text-sm">Import Puzzle from JSON</h3>
+                  <button
+                    onClick={() => setShowJsonExample(v => !v)}
+                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <Info className="w-3.5 h-3.5" />
+                    {showJsonExample ? "Hide example" : "Show example"}
+                  </button>
+                </div>
+
+                {showJsonExample && (
+                  <div className="rounded-lg border border-border bg-muted/40 p-3 space-y-3 text-xs">
+                    <div>
+                      <p className="font-semibold text-foreground mb-1">With date &amp; description (optional fields)</p>
+                      <pre className="font-mono text-muted-foreground whitespace-pre-wrap break-all leading-relaxed">{`{
+  "challenge_date": "2026-06-01",
+  "sport_filter": "Basketball",
+  "events": [
+    {
+      "title": "LeBron scores career-high 61 pts",
+      "year": 2014,
+      "sport": "Basketball",
+      "icon": "🏀",
+      "event_date": "2014-03-03",
+      "description": "vs Charlotte Bobcats"
+    },
+    { "title": "...", "year": 2010, "sport": "Basketball", "icon": "🏀",
+      "event_date": "2010-06-17", "description": "..." }
+    // ... 6 more (8 total)
+  ]
+}`}</pre>
+                    </div>
+                    <div className="border-t border-border pt-3">
+                      <p className="font-semibold text-foreground mb-1">Without date &amp; description (minimal)</p>
+                      <pre className="font-mono text-muted-foreground whitespace-pre-wrap break-all leading-relaxed">{`{
+  "challenge_date": "2026-06-01",
+  "sport_filter": null,
+  "events": [
+    {
+      "title": "LeBron scores career-high 61 pts",
+      "year": 2014,
+      "sport": "Basketball",
+      "icon": "🏀"
+    },
+    { "title": "...", "year": 2010, "sport": "Basketball", "icon": "🏀" }
+    // ... 6 more (8 total)
+  ]
+}`}</pre>
+                    </div>
+                    <p className="text-muted-foreground">Required per event: <code className="bg-muted px-1 rounded">title</code>, <code className="bg-muted px-1 rounded">year</code>, <code className="bg-muted px-1 rounded">sport</code>, <code className="bg-muted px-1 rounded">icon</code>. Optional: <code className="bg-muted px-1 rounded">event_date</code> (YYYY-MM-DD), <code className="bg-muted px-1 rounded">description</code>.</p>
+                  </div>
+                )}
+
                 <textarea
                   value={jsonInput}
                   onChange={e => { setJsonInput(e.target.value); setJsonError(null); }}
@@ -446,10 +519,10 @@ export default function Admin() {
                 />
                 {jsonError && <p className="text-destructive text-xs">{jsonError}</p>}
                 <div className="flex gap-2">
-                  <Button onClick={handleJsonImport} disabled={!jsonInput.trim() || jsonLoading} size="sm">
+                  <Button onClick={handleJsonImport} disabled={!jsonInput.trim() || jsonLoading} size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
                     {jsonLoading ? "Importing..." : "Import & Create Puzzle"}
                   </Button>
-                  <Button variant="outline" size="sm" onClick={() => { setShowJsonImport(false); setJsonInput(""); setJsonError(null); }}>
+                  <Button variant="outline" size="sm" onClick={() => { setShowJsonImport(false); setJsonInput(""); setJsonError(null); setShowJsonExample(false); }}>
                     Cancel
                   </Button>
                 </div>
@@ -562,6 +635,7 @@ export default function Admin() {
                     {filteredEvents.map((event) => {
                       const isSelected = selectedEventIds.includes(event.id);
                       const isUsed = usedEventIds.has(event.id);
+                      const isRecent = recentlyUsedEventIds.has(event.id);
                       return (
                         <button
                           key={event.id}
@@ -569,15 +643,15 @@ export default function Admin() {
                           className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 ${
                             isSelected
                               ? "bg-primary/20 border border-primary opacity-50"
-                              : isUsed
-                                ? "bg-destructive/10 border border-destructive/30 hover:bg-destructive/20"
+                              : isRecent
+                                ? "bg-amber-500/10 border border-amber-500/40 hover:bg-amber-500/20"
                                 : "bg-muted/30 hover:bg-muted/60 border border-transparent"
                           }`}
                           disabled={isSelected}
                         >
                           <span>{event.icon}</span>
                           <span className="flex-1 truncate">{event.title}</span>
-                          {isUsed && !isSelected && <span className="text-destructive text-[10px] font-medium">USED</span>}
+                          {!isSelected && isRecent && <span className="text-amber-600 dark:text-amber-400 text-[10px] font-medium">RECENT</span>}
                           <span className="text-muted-foreground text-xs">{event.year}</span>
                         </button>
                       );
@@ -603,7 +677,17 @@ export default function Admin() {
                         className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
                         autoFocus
                       />
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 flex-wrap">
+                        <input
+                          type="date"
+                          value={inlineEventDate}
+                          onChange={e => {
+                            setInlineEventDate(e.target.value);
+                            if (e.target.value) setInlineYear(e.target.value.split("-")[0]);
+                          }}
+                          title="Exact date (optional) — year will be inferred"
+                          className="px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
+                        />
                         <input
                           type="number"
                           placeholder="Year"
@@ -611,10 +695,19 @@ export default function Admin() {
                           onChange={e => setInlineYear(e.target.value)}
                           className="w-24 px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
                         />
-                        <Button onClick={handleInlineAddEvent} disabled={!inlineTitle || !inlineYear || loading} size="sm">
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Description / answer key (optional)"
+                        value={inlineDescription}
+                        onChange={e => setInlineDescription(e.target.value)}
+                        className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
+                      />
+                      <div className="flex gap-2">
+                        <Button onClick={handleInlineAddEvent} disabled={!inlineTitle || !inlineYear || loading} size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
                           Add & Select
                         </Button>
-                        <Button variant="outline" size="sm" onClick={() => { setShowInlineAdd(false); setInlineTitle(""); setInlineYear(""); }}>
+                        <Button variant="outline" size="sm" onClick={() => { setShowInlineAdd(false); setInlineTitle(""); setInlineYear(""); setInlineEventDate(""); setInlineDescription(""); }}>
                           Cancel
                         </Button>
                       </div>
@@ -622,7 +715,7 @@ export default function Admin() {
                   )}
                 </div>
 
-                <Button onClick={handleCreateChallenge} disabled={selectedEventIds.length !== 8 || !challengeDate || loading} size="sm">
+                <Button onClick={handleCreateChallenge} disabled={selectedEventIds.length !== 8 || !challengeDate || loading} size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
                   {editingChallengeId ? "Save Changes" : "Create Challenge"}
                 </Button>
                 {editingChallengeId && (
@@ -661,11 +754,11 @@ export default function Admin() {
                       {ch.daily_challenge_events
                         ?.sort((a, b) => a.position - b.position)
                         .map(ce => (
-                          <div key={ce.event_id} className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <span className="w-5 text-center font-mono text-xs">{ce.position}</span>
-                            <span>{ce.sports_events?.icon}</span>
-                            <span className="break-words">{ce.sports_events?.title}</span>
-                            <span className="ml-auto text-xs">{ce.sports_events?.year}</span>
+                          <div key={ce.event_id} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <span className="w-5 text-center font-mono text-xs flex-shrink-0 mt-0.5">{ce.position}</span>
+                            <span className="flex-shrink-0">{ce.sports_events?.icon}</span>
+                            <span className="flex-1 min-w-0 break-words">{ce.sports_events?.title}</span>
+                            <span className="flex-shrink-0 text-xs">{ce.sports_events?.year}</span>
                           </div>
                         ))}
                       <div className="flex gap-2 mt-2">
@@ -699,7 +792,7 @@ export default function Admin() {
         {tab === "events" && (
           <div className="space-y-4">
             <div className="flex items-center gap-2 flex-wrap">
-              <Button onClick={() => setShowAddEvent(!showAddEvent)} size="sm">
+              <Button onClick={() => setShowAddEvent(!showAddEvent)} size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
                 <Plus className="w-4 h-4 mr-1" /> Add Event
               </Button>
             <Button
@@ -754,26 +847,51 @@ export default function Admin() {
                   onChange={e => setNewTitle(e.target.value)}
                   className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
                 />
-                <div className="flex gap-3">
-                  <input
-                    type="number"
-                    placeholder="Year"
-                    value={newYear}
-                    onChange={e => setNewYear(e.target.value)}
-                    className="w-24 px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
-                  />
-                  <select
-                    value={newSport}
-                    onChange={e => {
-                      setNewSport(e.target.value);
-                      setNewIcon(SPORT_ICONS[e.target.value] || "🏆");
-                    }}
-                    className="px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
-                  >
-                    {SPORTS.map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
+                <div className="flex gap-3 flex-wrap">
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] text-muted-foreground uppercase tracking-wide">Exact date (optional)</label>
+                    <input
+                      type="date"
+                      value={newEventDate}
+                      onChange={e => {
+                        setNewEventDate(e.target.value);
+                        if (e.target.value) setNewYear(e.target.value.split("-")[0]);
+                      }}
+                      className="px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] text-muted-foreground uppercase tracking-wide">Year</label>
+                    <input
+                      type="number"
+                      placeholder="Year"
+                      value={newYear}
+                      onChange={e => setNewYear(e.target.value)}
+                      className="w-24 px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] text-muted-foreground uppercase tracking-wide">Sport</label>
+                    <select
+                      value={newSport}
+                      onChange={e => {
+                        setNewSport(e.target.value);
+                        setNewIcon(SPORT_ICONS[e.target.value] || "🏆");
+                      }}
+                      className="px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
+                    >
+                      {SPORTS.map(s => <option key={s} value={s}>{s}</option>)}
+                    </select>
+                  </div>
                 </div>
-                <Button onClick={handleAddEvent} disabled={!newTitle || !newYear || loading} size="sm">
+                <input
+                  type="text"
+                  placeholder="Description / answer key (optional)"
+                  value={newDescription}
+                  onChange={e => setNewDescription(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-sm"
+                />
+                <Button onClick={handleAddEvent} disabled={!newTitle || !newYear || loading} size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
                   Add
                 </Button>
               </div>
@@ -782,18 +900,19 @@ export default function Admin() {
             <div className="space-y-1">
               {filteredEvents.map(event => {
                 const isUsed = usedEventIds.has(event.id);
+                const isRecent = recentlyUsedEventIds.has(event.id);
                 return (
                   <div
                     key={event.id}
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm ${
-                      isUsed
-                        ? "bg-destructive/10 border border-destructive/30"
+                      isRecent
+                        ? "bg-amber-500/10 border border-amber-500/40"
                         : "bg-muted/30"
                     }`}
                   >
                     <span>{event.icon}</span>
                     <span className="flex-1 truncate text-foreground">{event.title}</span>
-                    {isUsed && <span className="text-destructive text-[10px] font-medium">USED</span>}
+                    {isRecent && <span className="text-amber-600 dark:text-amber-400 text-[10px] font-medium">RECENT</span>}
                     <span className="text-muted-foreground text-xs">{event.year}</span>
                     <button onClick={() => handleDeleteEvent(event.id)} className="text-destructive hover:text-destructive/80 p-1">
                       <Trash2 className="w-3 h-3" />

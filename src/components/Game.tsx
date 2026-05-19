@@ -347,16 +347,15 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         {isLoadingEvents ? (
           <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
         ) : (
-          <div className="text-center p-8">
-            <p className="text-2xl mb-2">😔</p>
-            <p className="font-display text-lg font-bold text-foreground mb-1">No challenge today</p>
-            <p className="text-muted-foreground text-sm mb-4">Check back tomorrow or try a different sport.</p>
-            <button
-              onClick={() => window.location.href = '/'}
-              className="text-primary text-sm underline underline-offset-2"
+          <div className="text-center p-8 max-w-sm">
+            <p className="font-display text-lg font-bold text-foreground mb-2">Today's puzzle isn't available</p>
+            <p className="text-muted-foreground text-sm mb-1">We're sorry for the inconvenience. Please reach out and we'll get it fixed as soon as possible.</p>
+            <a
+              href="mailto:sportsrewind123@gmail.com"
+              className="text-accent text-sm font-medium hover:underline"
             >
-              ← Back to home
-            </button>
+              sportsrewind123@gmail.com
+            </a>
           </div>
         )}
       </div>
@@ -607,7 +606,11 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         <div className="mb-2 sm:mb-4 pb-20 sm:pb-0 relative flex-1 flex flex-col">
           <Timeline
             placedEvents={placedEvents}
-            activeDropZone={isDragging && hasDragMoved ? activeDropZone : frozenDropZone}
+            activeDropZone={
+              isDragging && hasDragMoved
+                ? (activeDropZone !== null ? activeDropZone : dragSource === "pending" ? frozenDropZone : null)
+                : frozenDropZone
+            }
             isDragging={isDragging && hasDragMoved}
             incorrectEventIds={incorrectEventIds}
             correctEventIds={correctEventIds}
