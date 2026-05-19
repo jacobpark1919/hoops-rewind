@@ -606,11 +606,7 @@ export function Game({ sportFilter, onSportChange }: GameProps) {
         <div className="mb-2 sm:mb-4 pb-20 sm:pb-0 relative flex-1 flex flex-col">
           <Timeline
             placedEvents={placedEvents}
-            activeDropZone={
-              isDragging && hasDragMoved
-                ? (activeDropZone !== null ? activeDropZone : dragSource === "pending" ? frozenDropZone : null)
-                : frozenDropZone
-            }
+            activeDropZone={isDragging && hasDragMoved ? activeDropZone : frozenDropZone}
             isDragging={isDragging && hasDragMoved}
             incorrectEventIds={incorrectEventIds}
             correctEventIds={correctEventIds}
