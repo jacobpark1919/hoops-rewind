@@ -344,12 +344,12 @@ export default function Admin() {
       .flatMap(ch => (ch.daily_challenge_events || []).map(ce => ce.event_id))
   );
 
-  // Events used in a puzzle within the past 7 days (inclusive of today)
+  // Events used in a puzzle within the past 14 days (inclusive of today)
   const todayET = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
-  const sevenDaysAgoET = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+  const fourteenDaysAgoET = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toLocaleDateString("en-CA", { timeZone: "America/New_York" });
   const recentlyUsedEventIds = new Set(
     challenges
-      .filter(ch => ch.challenge_date >= sevenDaysAgoET && ch.challenge_date <= todayET)
+      .filter(ch => ch.challenge_date >= fourteenDaysAgoET && ch.challenge_date <= todayET)
       .flatMap(ch => (ch.daily_challenge_events || []).map(ce => ce.event_id))
   );
 
