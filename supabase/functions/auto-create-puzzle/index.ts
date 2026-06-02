@@ -87,38 +87,51 @@ Deno.serve(async (req) => {
     }
 
     const chosen = new Set<string>();
+    const usedYears = new Set<number>();
 
-    // ── Rule 1: 2 events pre-2000 ─────────────────────────────────────────────
+    // ── Rule 1: 2 pre-2000 events with distinct years ─────────────────────────
     const pre2000 = shuffle(available.filter((e) => e.year < 2000));
-    if (pre2000.length < 2) {
-      throw new Error(`Not enough pre-2000 events: ${pre2000.length}`);
+    let pre2000Added = 0;
+    for (const e of pre2000) {
+      if (usedYears.has(e.year)) continue;
+      chosen.add(e.id);
+      usedYears.add(e.year);
+      if (++pre2000Added === 2) break;
     }
-    chosen.add(pre2000[0].id);
-    chosen.add(pre2000[1].id);
+    if (pre2000Added < 2) {
+      throw new Error(`Not enough pre-2000 events with distinct years (found ${pre2000Added})`);
+    }
 
-    // ── Rule 2: 2 events within 1 year of each other ─────────────────────────
-    const pool = available.filter((e) => !chosen.has(e.id));
+    // ── Rule 2: 2 events exactly 1 year apart, years not yet used ────────────
+    const pool = available.filter((e) => !chosen.has(e.id) && !usedYears.has(e.year));
     const closePairs: [typeof pool[0], typeof pool[0]][] = [];
     for (let i = 0; i < pool.length; i++) {
       for (let j = i + 1; j < pool.length; j++) {
-        if (Math.abs(pool[i].year - pool[j].year) <= 1) {
+        if (Math.abs(pool[i].year - pool[j].year) === 1) {
           closePairs.push([pool[i], pool[j]]);
         }
       }
     }
     if (closePairs.length === 0) {
-      throw new Error("No close-year pair (within 1 year) found in available events");
+      throw new Error("No adjacent-year pair found in available events");
     }
     const pair = closePairs[Math.floor(Math.random() * closePairs.length)];
-    chosen.add(pair[0].id);
-    chosen.add(pair[1].id);
+    chosen.add(pair[0].id); usedYears.add(pair[0].year);
+    chosen.add(pair[1].id); usedYears.add(pair[1].year);
 
-    // ── Rule 3: 4 more at random ──────────────────────────────────────────────
+    // ── Rule 3: 4 more events, each with a year not yet used ─────────────────
     const remaining = shuffle(available.filter((e) => !chosen.has(e.id)));
-    if (remaining.length < 4) {
-      throw new Error(`Not enough events for final 4 random slots: ${remaining.length}`);
+    const final4: typeof remaining = [];
+    for (const e of remaining) {
+      if (usedYears.has(e.year)) continue;
+      final4.push(e);
+      usedYears.add(e.year);
+      if (final4.length === 4) break;
     }
-    remaining.slice(0, 4).forEach((e) => chosen.add(e.id));
+    if (final4.length < 4) {
+      throw new Error(`Not enough events with unique years for final 4 (found ${final4.length})`);
+    }
+    final4.forEach((e) => chosen.add(e.id));
 
     // ── Create the challenge ──────────────────────────────────────────────────
     const finalIds = shuffle([...chosen]);
