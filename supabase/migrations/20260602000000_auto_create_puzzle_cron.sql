@@ -14,7 +14,7 @@ select cron.schedule(
   $cron$
   select net.http_post(
     url     := 'https://oyklvvbokossvubkhctj.supabase.co/functions/v1/auto-create-puzzle',
-    headers := '{"Content-Type":"application/json","Authorization":"Bearer some-long-random-string"}'::jsonb,
+    headers := '{"Content-Type":"application/json","Authorization":"Bearer ENTER CRON SECRET HERE"}'::jsonb,
     body    := '{}'::jsonb
   );
   $cron$
